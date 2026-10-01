@@ -12,13 +12,13 @@ export default function useCoverImage(basePath) {
       return undefined;
     }
 
-    let cancelled = false;
-    probeImageVariants(basePath).then((result) => {
-      if (!cancelled) setOk(Boolean(result));
+    const controller = new AbortController();
+    probeImageVariants(basePath, controller.signal).then((result) => {
+      if (!controller.signal.aborted) setOk(Boolean(result));
     });
 
     return () => {
-      cancelled = true;
+      controller.abort();
     };
   }, [basePath]);
 

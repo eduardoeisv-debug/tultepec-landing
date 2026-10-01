@@ -14,7 +14,7 @@ export default function useGalleryImages(category, active) {
   useEffect(() => {
     if (!active || !category) return undefined;
 
-    let cancelled = false;
+    const controller = new AbortController();
     setStatus("loading");
 
     const basePaths = Array.from({ length: MAX_PHOTOS }, (_, i) => {
@@ -22,14 +22,14 @@ export default function useGalleryImages(category, active) {
       return `/images/${category}/${n}`;
     });
 
-    Promise.all(basePaths.map((base) => probeImageVariants(base))).then((results) => {
-      if (cancelled) return;
+    Promise.all(basePaths.map((base) => probeImageVariants(base, controller.signal))).then((results) => {
+      if (controller.signal.aborted) return;
       setImages(results.filter(Boolean));
       setStatus("done");
     });
 
     return () => {
-      cancelled = true;
+      controller.abort();
     };
   }, [category, active]);
 
