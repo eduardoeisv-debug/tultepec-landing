@@ -49,7 +49,7 @@ export default function Hero({ onOpenBooks }) {
         <div className="hero__copy">
           <span className="eyebrow eyebrow--light">Tultepec, Estado de México</span>
           <h1 className="hero__title">
-            El pueblo que le puso <span>nombre al fuego</span>
+            Capital de la <span>Pirotecnia</span>
           </h1>
           <p className="hero__subtitle">
             Conocida como la Cuna del Fuego y la Capital Mundial de la Pirotecnia, Tultepec no
