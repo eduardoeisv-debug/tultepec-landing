@@ -79,7 +79,12 @@ export default function GalleryModal({ open, onClose, category, title }) {
                 onClick={() => setActiveIndex(i)}
                 aria-label={`Ver foto ${i + 1} de ${images.length}`}
               >
-                <img src={src} alt="" loading="lazy" />
+                <img
+                  src={src}
+                  alt=""
+                  loading="lazy"
+                  onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
+                />
               </button>
             ))}
           </div>

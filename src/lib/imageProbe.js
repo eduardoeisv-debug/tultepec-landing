@@ -16,14 +16,22 @@ export async function probeImage(src) {
 // formatos modernos (.webp).
 const EXTENSIONS = ["jpg", "jpeg", "png", "webp", "jfif"];
 
-// Prueba "<basePath>.jpg", "<basePath>.jpeg", etc. en orden y devuelve la
-// primera ruta que exista, o null si ninguna existe.
+// Prueba "<basePath>.jpg", "<basePath>.jpeg", etc. todas a la vez (no una
+// por una) y devuelve la primera que responda bien, o null si ninguna
+// existe. En la práctica cada foto solo existe con una extensión, así que
+// probarlas en paralelo no cambia el resultado -- solo evita que una foto
+// guardada como .jfif (la última de la lista) tarde 4 intentos en serie
+// antes de encontrarse.
 export async function probeImageVariants(basePath) {
-  for (const ext of EXTENSIONS) {
+  const checks = EXTENSIONS.map(async (ext) => {
     const src = `${basePath}.${ext}`;
-    // eslint-disable-next-line no-await-in-loop -- se prueba en orden a propósito
     const ok = await probeImage(src);
-    if (ok) return src;
+    if (!ok) throw new Error("not found");
+    return src;
+  });
+  try {
+    return await Promise.any(checks);
+  } catch {
+    return null;
   }
-  return null;
 }

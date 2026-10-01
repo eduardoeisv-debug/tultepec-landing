@@ -78,7 +78,7 @@
   overflow: hidden;
   border: 1px solid rgba(42, 28, 18, 0.1);
   padding: 0;
-  background: #fff;
+  background: var(--color-paper-dim);
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
@@ -92,6 +92,12 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.gallery-thumb img.is-loaded {
+  opacity: 1;
 }
 
 .gallery-viewer {
