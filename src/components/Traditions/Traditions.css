@@ -1,0 +1,35 @@
+.traditions {
+  background: var(--color-paper);
+  position: relative;
+  padding-bottom: var(--space-xl);
+}
+
+.traditions__timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.traditions__line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%) translateY(var(--parallax-y, 0));
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--color-terracotta) 0,
+    var(--color-terracotta) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  opacity: 0.5;
+}
+
+@media (max-width: 760px) {
+  .traditions__line {
+    left: 22px;
+  }
+}

@@ -1,0 +1,19 @@
+.papel-picado {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  filter: drop-shadow(0 4px 6px rgba(10, 14, 36, 0.15));
+  margin-bottom: var(--space-xl);
+}
+
+.papel-picado__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 560px) {
+  .papel-picado {
+    filter: drop-shadow(0 2px 4px rgba(10, 14, 36, 0.12));
+  }
+}

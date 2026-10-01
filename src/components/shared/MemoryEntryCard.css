@@ -1,0 +1,39 @@
+.memory-entry-card {
+  margin: 0;
+  background: #fff;
+  border: 1px solid rgba(42, 28, 18, 0.08);
+  border-radius: var(--radius-md);
+  padding: 1.7rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  box-shadow: var(--shadow-soft);
+  min-height: 100%;
+}
+
+.memory-entry-card blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.memory-entry-card figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-style: normal;
+}
+
+.memory-entry-card__name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--color-terracotta);
+}
+
+.memory-entry-card__meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}

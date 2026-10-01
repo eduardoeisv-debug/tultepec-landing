@@ -1,0 +1,72 @@
+.how {
+  background: var(--color-paper-dim);
+  padding: var(--space-xl) 0;
+}
+
+.how__steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.how-step {
+  position: relative;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.how-step__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-fire-red), var(--color-terracotta));
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 1.1rem;
+}
+
+.how-step h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.how-step p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 30ch;
+  margin: 0 auto;
+}
+
+.how-step__connector {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .how-step__connector {
+    display: block;
+    position: absolute;
+    top: 27px;
+    left: calc(50% + 45px);
+    width: calc(100% - 90px);
+    height: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--color-gold) 0,
+      var(--color-gold) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+  }
+}
+
+@media (max-width: 768px) {
+  .how__steps {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+}

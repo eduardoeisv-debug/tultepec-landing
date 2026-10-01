@@ -1,0 +1,46 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(10, 14, 36, 0.75);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(251, 241, 226, 0.1);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.site-header__brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-paper);
+  text-decoration: none;
+}
+
+.site-header__brand span {
+  color: var(--color-gold-light);
+  font-weight: 500;
+}
+
+.site-header__cta {
+  padding: 0.6rem 1.3rem;
+  font-size: 0.88rem;
+  background: var(--color-gold);
+  color: var(--color-night-900);
+}
+
+.site-header__cta:hover {
+  background: var(--color-gold-light);
+}
+
+@media (max-width: 520px) {
+  .site-header__cta {
+    display: none;
+  }
+}

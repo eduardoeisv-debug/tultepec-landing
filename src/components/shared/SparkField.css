@@ -1,0 +1,55 @@
+.spark-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  bottom: -10%;
+  border-radius: 50%;
+  opacity: 0;
+  animation-name: spark-rise;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+.spark--0 {
+  background: var(--color-gold);
+  box-shadow: 0 0 6px 1px rgba(227, 171, 61, 0.8);
+}
+
+.spark--1 {
+  background: var(--color-fire-red);
+  box-shadow: 0 0 6px 1px rgba(215, 38, 61, 0.7);
+}
+
+.spark--2 {
+  background: var(--color-gold-light);
+  box-shadow: 0 0 5px 1px rgba(243, 205, 122, 0.75);
+}
+
+@keyframes spark-rise {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(12px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark {
+    animation: none;
+    display: none;
+  }
+}

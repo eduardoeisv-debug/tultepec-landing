@@ -1,0 +1,56 @@
+:root {
+  /* Palette — fuego, fiesta y noche */
+  --color-night-950: #0a0e24;
+  --color-night-900: #10132b;
+  --color-night-800: #181c3d;
+  --color-night-700: #232852;
+
+  --color-paper: #fbf1e2;
+  --color-paper-dim: #f3e4cc;
+  --color-ink: #2a1c12;
+  --color-ink-soft: #5a4635;
+
+  --color-terracotta: #c1592f;
+  --color-terracotta-dark: #9a4523;
+  --color-gold: #e3ab3d;
+  --color-gold-light: #f3cd7a;
+  --color-fire-red: #d7263d;
+  --color-fire-red-dark: #a81b2d;
+
+  /* Semantic */
+  --bg-page: var(--color-paper);
+  --bg-night: var(--color-night-900);
+  --text-primary: var(--color-ink);
+  --text-inverse: var(--color-paper);
+  --text-muted: var(--color-ink-soft);
+  --accent-primary: var(--color-terracotta);
+  --accent-gold: var(--color-gold);
+  --accent-fire: var(--color-fire-red);
+
+  /* Typography */
+  --font-display: "Fraunces", "Iowan Old Style", serif;
+  --font-body: "Work Sans", "Segoe UI", sans-serif;
+
+  --fs-hero: clamp(2.6rem, 5.5vw, 4.6rem);
+  --fs-h2: clamp(2rem, 3.6vw, 2.9rem);
+  --fs-h3: clamp(1.35rem, 2.2vw, 1.7rem);
+  --fs-body: 1.05rem;
+  --fs-small: 0.9rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5.5rem;
+
+  --radius-md: 14px;
+  --radius-lg: 26px;
+
+  --shadow-soft: 0 20px 45px -20px rgba(16, 19, 43, 0.35);
+  --shadow-deep: 0 30px 60px -25px rgba(10, 14, 36, 0.55);
+
+  --max-width: 1180px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/moderar", "destination": "/index.html" }]
+}

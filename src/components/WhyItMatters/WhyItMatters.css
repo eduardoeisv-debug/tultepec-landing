@@ -1,0 +1,46 @@
+.why {
+  background: var(--color-paper-dim);
+  padding: var(--space-xl) 0;
+}
+
+.why__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.why-card {
+  background: var(--color-night-900);
+  color: var(--color-paper);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.why-card::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(227, 171, 61, 0.25), transparent 70%);
+}
+
+.why-card h3 {
+  font-size: var(--fs-h3);
+  color: var(--color-gold-light);
+  margin-bottom: 0.9rem;
+}
+
+.why-card p {
+  color: rgba(251, 241, 226, 0.82);
+  font-size: 0.98rem;
+}
+
+@media (max-width: 900px) {
+  .why__grid {
+    grid-template-columns: 1fr;
+  }
+}
