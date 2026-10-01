@@ -52,9 +52,10 @@ export default function Hero({ onOpenBooks }) {
             Capital de la <span>Pirotecnia</span>
           </h1>
           <p className="hero__subtitle">
-            Conocida como la Cuna del Fuego y la Capital Mundial de la Pirotecnia, Tultepec no
-            fabrica pólvora: fabrica memoria. Cada castillo, cada torito y cada feria es la
-            continuación de un oficio que las familias del pueblo han cuidado por generaciones.
+            Tultepec, reconocido como la capital mundial de la pirotecnia, no fabrica pólvora:
+            transforma el fuego en arte multicolor. Sus tradicionales castillos y toritos son
+            parte de un oficio artesanal que las familias de la comunidad han preservado y
+            transmitido por generaciones.
           </p>
           <div className="hero__actions">
             <a className="btn btn--primary" href="#tradiciones">
