@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fetchVoices } from "../../lib/testimonialsClient.js";
 import useReveal from "../../hooks/useReveal.js";
 import "./Testimonials.css";
@@ -94,7 +95,7 @@ export default function Testimonials({ onShareClick }) {
               onClick={() => goTo(active - 1)}
               aria-label="Testimonio anterior"
             >
-              ‹
+              <ChevronLeft size={22} strokeWidth={2} />
             </button>
 
             <div className="testimonials__stage">
@@ -114,7 +115,7 @@ export default function Testimonials({ onShareClick }) {
               onClick={() => goTo(active + 1)}
               aria-label="Testimonio siguiente"
             >
-              ›
+              <ChevronRight size={22} strokeWidth={2} />
             </button>
           </div>
         )}

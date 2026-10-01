@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 import { submitMemory } from "../../lib/submitMemory.js";
 import { RELATIONSHIP_OPTIONS } from "../../data/relationships.js";
 import Turnstile from "./Turnstile.jsx";
@@ -105,7 +106,7 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
         onMouseDown={(e) => e.stopPropagation()}
       >
         <button className="memory-modal__close" onClick={handleClose} aria-label="Cerrar">
-          ×
+          <X size={18} strokeWidth={2} />
         </button>
 
         {status === "success" ? (

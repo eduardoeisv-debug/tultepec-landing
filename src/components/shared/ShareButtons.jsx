@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link2, Check } from "lucide-react";
 import "./ShareButtons.css";
 
 const SITE_URL = "https://tultepec-landing.vercel.app/";
@@ -13,18 +14,6 @@ const WhatsAppIcon = (
 const FacebookIcon = (
   <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z" />
-  </svg>
-);
-
-const LinkIcon = (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path
-      d="M9.5 14.5 14.5 9.5M8 17l-2 2a3.5 3.5 0 0 1-5-5l3-3a3.5 3.5 0 0 1 5-.2M16 7l2-2a3.5 3.5 0 0 1 5 5l-3 3a3.5 3.5 0 0 1-5 .2"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
   </svg>
 );
 
@@ -73,7 +62,7 @@ export default function ShareButtons() {
           onClick={handleCopy}
           aria-label="Copiar enlace"
         >
-          {LinkIcon}
+          {copied ? <Check size={18} strokeWidth={2} /> : <Link2 size={18} strokeWidth={1.8} />}
         </button>
       </div>
       {copied && <span className="share-buttons__copied">¡Enlace copiado!</span>}

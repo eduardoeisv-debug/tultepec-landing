@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { X } from "lucide-react";
 import "./PrivacyModal.css";
 
 export default function PrivacyModal({ open, onClose }) {
@@ -34,7 +35,7 @@ export default function PrivacyModal({ open, onClose }) {
         onMouseDown={(e) => e.stopPropagation()}
       >
         <button className="privacy-modal__close" onClick={onClose} aria-label="Cerrar">
-          ×
+          <X size={18} strokeWidth={2} />
         </button>
 
         <span className="eyebrow">Aviso de privacidad</span>

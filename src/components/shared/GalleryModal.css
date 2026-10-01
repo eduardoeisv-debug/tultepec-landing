@@ -103,6 +103,9 @@
 
 .gallery-viewer__back {
   align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: none;
   border: none;
   color: var(--color-terracotta);

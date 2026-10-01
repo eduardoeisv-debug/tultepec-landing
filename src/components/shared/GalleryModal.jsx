@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { X, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 import useGalleryImages from "../../hooks/useGalleryImages.js";
 import "./GalleryModal.css";
 
@@ -51,7 +52,7 @@ export default function GalleryModal({ open, onClose, category, title }) {
         onMouseDown={(e) => e.stopPropagation()}
       >
         <button className="gallery-modal__close" onClick={onClose} aria-label="Cerrar">
-          ×
+          <X size={18} strokeWidth={2} />
         </button>
 
         <span className="eyebrow">Álbum de fotos</span>
@@ -91,7 +92,7 @@ export default function GalleryModal({ open, onClose, category, title }) {
               className="gallery-viewer__back"
               onClick={() => setActiveIndex(null)}
             >
-              ← Volver a la cuadrícula
+              <ArrowLeft size={15} strokeWidth={2} /> Volver a la cuadrícula
             </button>
 
             <div className="gallery-viewer__stage">
@@ -101,7 +102,7 @@ export default function GalleryModal({ open, onClose, category, title }) {
                 onClick={() => setActiveIndex((i) => (i - 1 + images.length) % images.length)}
                 aria-label="Foto anterior"
               >
-                ‹
+                <ChevronLeft size={22} strokeWidth={2} />
               </button>
 
               <img src={images[activeIndex]} alt="" className="gallery-viewer__image" />
@@ -112,7 +113,7 @@ export default function GalleryModal({ open, onClose, category, title }) {
                 onClick={() => setActiveIndex((i) => (i + 1) % images.length)}
                 aria-label="Foto siguiente"
               >
-                ›
+                <ChevronRight size={22} strokeWidth={2} />
               </button>
             </div>
 

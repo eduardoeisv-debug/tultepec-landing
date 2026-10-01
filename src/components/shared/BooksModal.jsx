@@ -1,23 +1,7 @@
 import { useEffect, useRef } from "react";
+import { X, BookOpen } from "lucide-react";
 import { BOOKS, WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE } from "../../data/books.js";
 import "./BooksModal.css";
-
-const BookIcon = (
-  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M8 10c4-2 10-2 14 1v25c-4-3-10-3-14-1V10Z"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M40 10c-4-2-10-2-14 1v25c4-3 10-3 14-1V10Z"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 const WhatsAppIcon = (
   <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -63,7 +47,7 @@ export default function BooksModal({ open, onClose }) {
         onMouseDown={(e) => e.stopPropagation()}
       >
         <button className="books-modal__close" onClick={onClose} aria-label="Cerrar">
-          ×
+          <X size={18} strokeWidth={2} />
         </button>
 
         <span className="eyebrow">Memorias de mi pueblo</span>
@@ -77,7 +61,9 @@ export default function BooksModal({ open, onClose }) {
           {BOOKS.map((book) => (
             <article className="book-card" key={book.id}>
               {book.placeholder && <span className="tag-illustrative">Datos de ejemplo</span>}
-              <span className="book-card__icon">{BookIcon}</span>
+              <span className="book-card__icon">
+                <BookOpen size={22} strokeWidth={1.8} />
+              </span>
               <h4>{book.title}</h4>
               <span className="book-card__author">{book.author}</span>
               <p className="book-card__description">{book.description}</p>
