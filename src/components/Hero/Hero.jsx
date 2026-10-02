@@ -62,12 +62,12 @@ export default function Hero({ onOpenBooks }) {
               Explora la historia
             </a>
             <a className="btn btn--ghost" href="#voces">
-              Conoce las memorias del pueblo
+              Conoce los textos de "Memorias de mi pueblo"
             </a>
             <span className="hero__tooltip-wrap">
               <button type="button" className="btn btn--gold" onClick={onOpenBooks}>
                 <span className="hero__books-icon">{BookIcon}</span>
-                Libros de mi pueblo
+                Compendios
               </button>
               <span className="hero__tooltip" role="tooltip">
                 Conoce los 3 libros ya publicados sobre la historia de Tultepec
