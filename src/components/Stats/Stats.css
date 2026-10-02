@@ -13,19 +13,54 @@
   position: relative;
   background: #fff;
   border: 1px solid rgba(42, 28, 18, 0.08);
+  border-top: 3px solid var(--stat-accent, var(--color-terracotta));
   border-radius: var(--radius-md);
-  padding: 1.6rem 1.4rem;
+  padding: 1.7rem 1.4rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   box-shadow: var(--shadow-soft);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-deep);
+}
+
+.stat-card--terracotta {
+  --stat-accent: var(--color-terracotta);
+}
+
+.stat-card--fire {
+  --stat-accent: var(--color-fire-red);
+}
+
+.stat-card--gold {
+  --stat-accent: var(--color-gold);
+}
+
+.stat-card--terracotta-dark {
+  --stat-accent: var(--color-terracotta-dark);
+}
+
+.stat-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin-bottom: 0.3rem;
+  color: var(--stat-accent, var(--color-terracotta));
+  background: color-mix(in srgb, var(--stat-accent, var(--color-terracotta)) 14%, transparent);
 }
 
 .stat-card__value {
   font-family: var(--font-display);
-  font-size: 2.1rem;
+  font-size: 2.3rem;
   font-weight: 700;
-  color: var(--color-terracotta);
+  color: var(--stat-accent, var(--color-terracotta));
 }
 
 .stat-card__label {
