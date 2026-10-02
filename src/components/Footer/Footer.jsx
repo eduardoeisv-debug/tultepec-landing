@@ -29,7 +29,7 @@ export default function Footer({ onOpenPrivacy }) {
         </div>
       </div>
       <div className="container footer__bottom">
-        <span>© {new Date().getFullYear()} Tultepec · Cuna del Fuego — proyecto de portafolio.</span>
+        <span>© {new Date().getFullYear()} Tultepec · Pueblo Pirotécnico — proyecto de portafolio.</span>
         <button type="button" className="footer__privacy-link" onClick={onOpenPrivacy}>
           Aviso de privacidad
         </button>
