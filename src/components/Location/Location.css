@@ -82,4 +82,10 @@
   .location__map {
     min-height: 280px;
   }
+
+  .location__cta {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
 }
