@@ -5,7 +5,7 @@ export default function Footer({ onOpenPrivacy }) {
     <footer className="footer">
       <div className="container footer__grid">
         <div>
-          <span className="footer__brand">Tultepec · Cuna del Fuego</span>
+          <span className="footer__brand">Tultepec · Pueblo Pirotécnico</span>
           <p className="footer__tagline">Un archivo hecho para honrar la memoria de un pueblo.</p>
           <p className="footer__thanks">
             Un agradecimiento especial a la Profesora Juanita y al Profesor Fernando Manuel
