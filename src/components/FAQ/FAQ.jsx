@@ -40,7 +40,7 @@ export default function FAQ() {
           </div>
 
           <div className="faq__visual reveal" aria-hidden="true">
-            <img src="/images/castillos-monumentales/08.jfif" alt="" loading="lazy" />
+            <img src="/images/san-juan-de-dios/03.jfif" alt="" loading="lazy" />
           </div>
         </div>
       </div>

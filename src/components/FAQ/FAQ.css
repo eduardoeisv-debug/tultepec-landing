@@ -7,7 +7,7 @@
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: var(--space-lg);
-  align-items: start;
+  align-items: stretch;
 }
 
 .faq__list {
@@ -21,10 +21,10 @@
   min-width: 0;
   position: sticky;
   top: 6rem;
+  align-self: stretch;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-soft);
-  aspect-ratio: 3 / 4;
 }
 
 .faq__visual img {
