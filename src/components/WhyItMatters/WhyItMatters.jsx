@@ -1,6 +1,10 @@
+import { Mic, HeartCrack, ShieldCheck } from "lucide-react";
 import { tensionPoints } from "../../data/content.js";
 import useReveal from "../../hooks/useReveal.js";
 import "./WhyItMatters.css";
+
+const ICONS = [Mic, HeartCrack, ShieldCheck];
+const TONES = ["terracotta", "fire", "gold"];
 
 export default function WhyItMatters() {
   const ref = useReveal();
@@ -18,12 +22,23 @@ export default function WhyItMatters() {
         </div>
 
         <div className="why__grid">
-          {tensionPoints.map((point, i) => (
-            <article className="why-card reveal" style={{ transitionDelay: `${i * 100}ms` }} key={point.title}>
-              <h3>{point.title}</h3>
-              <p>{point.text}</p>
-            </article>
-          ))}
+          {tensionPoints.map((point, i) => {
+            const Icon = ICONS[i % ICONS.length];
+            const tone = TONES[i % TONES.length];
+            return (
+              <article
+                className={`why-card why-card--${tone} reveal`}
+                style={{ transitionDelay: `${i * 100}ms` }}
+                key={point.title}
+              >
+                <span className="why-card__icon" aria-hidden="true">
+                  <Icon size={22} strokeWidth={1.8} />
+                </span>
+                <h3>{point.title}</h3>
+                <p>{point.text}</p>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

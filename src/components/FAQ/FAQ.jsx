@@ -15,27 +15,33 @@ export default function FAQ() {
           <h2>Para entender mejor la tradición</h2>
         </div>
 
-        <div className="faq__list reveal">
-          {faqs.map((item, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <div className={`faq-item ${isOpen ? "faq-item--open" : ""}`} key={item.question}>
-                <button
-                  className="faq-item__question"
-                  onClick={() => setOpenIndex(isOpen ? -1 : i)}
-                  aria-expanded={isOpen}
-                >
-                  {item.question}
-                  <span className="faq-item__icon" aria-hidden="true">
-                    {isOpen ? "−" : "+"}
-                  </span>
-                </button>
-                <div className="faq-item__answer" style={{ maxHeight: isOpen ? "240px" : "0px" }}>
-                  <p>{item.answer}</p>
+        <div className="faq__layout">
+          <div className="faq__list reveal">
+            {faqs.map((item, i) => {
+              const isOpen = openIndex === i;
+              return (
+                <div className={`faq-item ${isOpen ? "faq-item--open" : ""}`} key={item.question}>
+                  <button
+                    className="faq-item__question"
+                    onClick={() => setOpenIndex(isOpen ? -1 : i)}
+                    aria-expanded={isOpen}
+                  >
+                    {item.question}
+                    <span className="faq-item__icon" aria-hidden="true">
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+                  <div className="faq-item__answer" style={{ maxHeight: isOpen ? "240px" : "0px" }}>
+                    <p>{item.answer}</p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+
+          <div className="faq__visual reveal" aria-hidden="true">
+            <img src="/images/castillos-monumentales/08.jfif" alt="" loading="lazy" />
+          </div>
         </div>
       </div>
     </section>

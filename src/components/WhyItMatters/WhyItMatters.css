@@ -28,6 +28,31 @@
   background: radial-gradient(circle, rgba(227, 171, 61, 0.25), transparent 70%);
 }
 
+.why-card--terracotta {
+  --why-accent: var(--color-terracotta);
+}
+
+.why-card--fire {
+  --why-accent: var(--color-fire-red);
+}
+
+.why-card--gold {
+  --why-accent: var(--color-gold);
+}
+
+.why-card__icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  color: var(--why-accent, var(--color-gold-light));
+  background: color-mix(in srgb, var(--why-accent, var(--color-gold-light)) 20%, transparent);
+}
+
 .why-card h3 {
   font-size: var(--fs-h3);
   color: var(--color-gold-light);
