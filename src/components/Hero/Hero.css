@@ -1,17 +1,23 @@
 .hero {
   position: relative;
   background-image: linear-gradient(
+      90deg,
+      rgba(10, 14, 36, 0.88) 0%,
+      rgba(10, 14, 36, 0.55) 55%,
+      rgba(10, 14, 36, 0.3) 100%
+    ),
+    linear-gradient(
       180deg,
-      rgba(10, 14, 36, 0.85) 0%,
-      rgba(10, 14, 36, 0.58) 45%,
-      rgba(10, 14, 36, 0.88) 100%
+      rgba(10, 14, 36, 0.8) 0%,
+      rgba(10, 14, 36, 0.5) 45%,
+      rgba(10, 14, 36, 0.85) 100%
     ),
     url("/images/castillos-monumentales/16.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: var(--text-inverse);
-  padding: calc(var(--space-xl) + 2rem) 0 var(--space-xl);
+  padding: calc(var(--space-xl) + 1rem) 0 var(--space-lg);
   overflow: hidden;
 }
 
@@ -78,11 +84,41 @@
 }
 
 .hero__actions {
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
+}
+
+.hero__links {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.5rem;
+}
+
+.hero__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: rgba(251, 241, 226, 0.85);
+  text-decoration: underline;
+  text-decoration-color: rgba(251, 241, 226, 0.35);
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--ease-out), text-decoration-color 0.2s var(--ease-out);
+}
+
+.hero__link:hover {
+  color: var(--color-gold-light);
+  text-decoration-color: var(--color-gold-light);
 }
 
 .hero__books-icon {
@@ -146,19 +182,21 @@
     display: none;
   }
 
-  .hero__actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
   .hero__actions .btn {
     width: 100%;
     white-space: normal;
     text-align: center;
   }
 
-  .hero__tooltip-wrap {
-    width: 100%;
+  .hero__links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .hero__link {
+    white-space: normal;
+    text-align: left;
   }
 }
 

@@ -61,11 +61,14 @@ export default function Hero({ onOpenBooks }) {
             <a className="btn btn--primary" href="#tradiciones">
               Explora la historia
             </a>
-            <a className="btn btn--ghost" href="#voces">
+          </div>
+
+          <div className="hero__links">
+            <a className="hero__link" href="#voces">
               Conoce los textos de "Memorias de mi pueblo"
             </a>
             <span className="hero__tooltip-wrap">
-              <button type="button" className="btn btn--gold" onClick={onOpenBooks}>
+              <button type="button" className="hero__link" onClick={onOpenBooks}>
                 <span className="hero__books-icon">{BookIcon}</span>
                 Compendios
               </button>
