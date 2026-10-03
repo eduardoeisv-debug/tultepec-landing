@@ -147,6 +147,24 @@
   color: var(--festival-accent, var(--color-terracotta));
 }
 
+.festival-card__cta {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--festival-accent, var(--color-terracotta));
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.festival-card--clickable:hover .festival-card__cta,
+.festival-card--clickable:focus-visible .festival-card__cta {
+  opacity: 1;
+}
+
+.festival-card--highlight .festival-card__cta {
+  color: var(--color-gold-light);
+}
+
 /* --- Modal con el desglose de eventos del mes --- */
 
 .festival-modal__backdrop {

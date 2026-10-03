@@ -117,17 +117,16 @@ export default function FestivalCalendar({ embedded = false }) {
               }
 
               const hasMore = rest.length > 0;
-              const Tag = hasMore ? "button" : "article";
 
               return (
-                <Tag
-                  type={hasMore ? "button" : undefined}
+                <button
+                  type="button"
                   className={`festival-card festival-card--${tone} ${
                     primary.is_highlight ? "festival-card--highlight" : ""
-                  } ${hasMore ? "festival-card--clickable" : ""} reveal`}
+                  } festival-card--clickable reveal`}
                   style={{ transitionDelay: `${(i % 4) * 80}ms` }}
                   key={month.month}
-                  onClick={hasMore ? () => setOpenMonth(month) : undefined}
+                  onClick={() => setOpenMonth(month)}
                 >
                   {primary.is_example && <span className="tag-illustrative">Ejemplo</span>}
                   {primary.is_highlight && <span className="festival-card__badge">Evento principal</span>}
@@ -140,7 +139,8 @@ export default function FestivalCalendar({ embedded = false }) {
                   {hasMore && (
                     <span className="festival-card__more">+{rest.length} evento{rest.length > 1 ? "s" : ""} este mes</span>
                   )}
-                </Tag>
+                  {!hasMore && <span className="festival-card__cta">Ver detalle →</span>}
+                </button>
               );
             })}
           </div>
