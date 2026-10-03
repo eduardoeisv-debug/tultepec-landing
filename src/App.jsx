@@ -14,6 +14,7 @@ import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import BooksModal from "./components/shared/BooksModal.jsx";
 import PrivacyModal from "./components/shared/PrivacyModal.jsx";
+import useHashScrollFix from "./hooks/useHashScrollFix.js";
 
 const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal.jsx"));
 
@@ -21,6 +22,8 @@ export default function App() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [booksModalOpen, setBooksModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
+
+  useHashScrollFix();
 
   const openPrivacy = () => setPrivacyModalOpen(true);
   const openShare = () => setShareModalOpen(true);
