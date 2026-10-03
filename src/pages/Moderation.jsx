@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { login, logout, fetchMemories, updateMemoryStatus } from "../lib/moderationClient.js";
 import { fetchAllTestimonials, saveTestimonial, deleteTestimonial } from "../lib/testimonialsAdminClient.js";
+import {
+  fetchAllFestivalEvents,
+  saveFestivalEvent,
+  deleteFestivalEvent,
+} from "../lib/festivalEventsAdminClient.js";
 import { RELATIONSHIP_DISPLAY_LABELS } from "../data/relationships.js";
 import "./Moderation.css";
 
@@ -14,6 +19,22 @@ const TABS = [
 const SECTIONS = [
   { key: "memories", label: "Memorias de la comunidad" },
   { key: "testimonials", label: "Voces del pueblo" },
+  { key: "events", label: "Calendario de fiestas" },
+];
+
+const MONTH_NAMES = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
 ];
 
 const dateFormatter = new Intl.DateTimeFormat("es-MX", {
@@ -370,6 +391,195 @@ function TestimonialsSection() {
   );
 }
 
+const emptyEventForm = {
+  month: 1,
+  day: "",
+  title: "",
+  description: "",
+  is_highlight: false,
+  is_example: true,
+  published: true,
+};
+
+function EventForm({ initial, onCancel, onSaved }) {
+  const [form, setForm] = useState(initial ? { ...initial, day: initial.day ?? "" } : emptyEventForm);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (field) => (e) => {
+    const value =
+      field === "is_highlight" || field === "is_example" || field === "published"
+        ? e.target.checked
+        : field === "month"
+        ? Number(e.target.value)
+        : e.target.value;
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (form.title.trim().length < 3 || form.description.trim().length < 10) {
+      setError("Completa el título (mínimo 3 caracteres) y la descripción (mínimo 10).");
+      return;
+    }
+    setBusy(true);
+    setError("");
+    const { ok } = await saveFestivalEvent({ ...form, day: form.day === "" ? null : Number(form.day) });
+    setBusy(false);
+    if (!ok) {
+      setError("No se pudo guardar. Intenta de nuevo.");
+      return;
+    }
+    onSaved();
+  };
+
+  return (
+    <form className="testimonial-form" onSubmit={handleSubmit}>
+      <div className="testimonial-form__row">
+        <label>
+          <span>Mes</span>
+          <select value={form.month} onChange={handleChange("month")}>
+            {MONTH_NAMES.map((name, i) => (
+              <option value={i + 1} key={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          <span>Día (opcional)</span>
+          <input type="number" min="1" max="31" value={form.day} onChange={handleChange("day")} />
+        </label>
+      </div>
+
+      <label>
+        <span>Título del evento</span>
+        <input type="text" value={form.title} onChange={handleChange("title")} required />
+      </label>
+
+      <label>
+        <span>Descripción</span>
+        <textarea value={form.description} onChange={handleChange("description")} rows={3} maxLength={400} required />
+      </label>
+
+      <label className="testimonial-form__checkbox">
+        <input type="checkbox" checked={form.is_highlight} onChange={handleChange("is_highlight")} />
+        <span>Evento principal (se destaca más grande en el calendario)</span>
+      </label>
+      <label className="testimonial-form__checkbox">
+        <input type="checkbox" checked={form.is_example} onChange={handleChange("is_example")} />
+        <span>Es contenido de ejemplo (muestra la etiqueta "Ejemplo" en la landing)</span>
+      </label>
+      <label className="testimonial-form__checkbox">
+        <input type="checkbox" checked={form.published} onChange={handleChange("published")} />
+        <span>Publicado (visible en la landing)</span>
+      </label>
+
+      {error && <p className="moderation-login__error">{error}</p>}
+
+      <div className="testimonial-form__actions">
+        <button type="button" className="btn btn--ghost btn--on-light" onClick={onCancel}>
+          Cancelar
+        </button>
+        <button type="submit" className="btn btn--primary" disabled={busy}>
+          {busy ? "Guardando…" : "Guardar"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function EventsSection() {
+  const [items, setItems] = useState([]);
+  const [status, setStatus] = useState("loading");
+  const [editing, setEditing] = useState(null); // null | "new" | event object
+
+  const load = async () => {
+    setStatus("loading");
+    const { ok, events } = await fetchAllFestivalEvents();
+    if (!ok) {
+      setStatus("error");
+      return;
+    }
+    setItems(events);
+    setStatus("ready");
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const handleSaved = () => {
+    setEditing(null);
+    load();
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Borrar este evento? No se puede deshacer.")) return;
+    await deleteFestivalEvent(id);
+    load();
+  };
+
+  if (editing) {
+    return (
+      <EventForm initial={editing === "new" ? null : editing} onCancel={() => setEditing(null)} onSaved={handleSaved} />
+    );
+  }
+
+  return (
+    <>
+      <div className="testimonials-admin__header">
+        <p>Estos eventos alimentan el "Calendario de fiestas" dentro de "Planea tu visita" en la landing.</p>
+        <button type="button" className="btn btn--primary" onClick={() => setEditing("new")}>
+          + Agregar evento
+        </button>
+      </div>
+
+      {status === "loading" && <p>Cargando calendario…</p>}
+      {status === "error" && <p>No se pudieron cargar. Recarga la página.</p>}
+      {status === "ready" && items.length === 0 && <p>Todavía no hay eventos.</p>}
+
+      {status === "ready" && items.length > 0 && (
+        <div className="moderation-list">
+          {items.map((ev) => (
+            <article className="moderation-card" key={ev.id}>
+              <div className="moderation-card__meta">
+                <span
+                  className={`moderation-card__status ${
+                    ev.published ? "moderation-card__status--approved" : "moderation-card__status--pending"
+                  }`}
+                >
+                  {ev.published ? "publicado" : "oculto"}
+                </span>
+                {ev.is_highlight && <span className="moderation-card__status moderation-card__status--approved">principal</span>}
+                {ev.is_example && <span className="moderation-card__status moderation-card__status--pending">ejemplo</span>}
+              </div>
+
+              <p className="moderation-card__text">
+                {MONTH_NAMES[ev.month - 1]}
+                {ev.day ? ` ${ev.day}` : ""} — {ev.title}
+              </p>
+
+              <div className="moderation-card__details">
+                <span>{ev.description}</span>
+              </div>
+
+              <div className="moderation-card__actions">
+                <button type="button" className="btn btn--ghost btn--on-light" onClick={() => setEditing(ev)}>
+                  Editar
+                </button>
+                <button type="button" className="moderation-card__revert" onClick={() => handleDelete(ev.id)}>
+                  Borrar
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
 function Panel() {
   const [section, setSection] = useState("memories");
 
@@ -403,7 +613,9 @@ function Panel() {
         ))}
       </nav>
 
-      {section === "memories" ? <MemoriesSection /> : <TestimonialsSection />}
+      {section === "memories" && <MemoriesSection />}
+      {section === "testimonials" && <TestimonialsSection />}
+      {section === "events" && <EventsSection />}
     </div>
   );
 }

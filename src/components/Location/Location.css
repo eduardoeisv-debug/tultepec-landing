@@ -3,6 +3,11 @@
   background: var(--color-paper-dim);
 }
 
+.location--embedded {
+  padding: 0;
+  background: none;
+}
+
 .location__layout {
   display: grid;
   grid-template-columns: 1.3fr 1fr;

@@ -3,6 +3,16 @@
   padding: var(--space-xl) 0;
 }
 
+.festival-calendar--embedded {
+  padding: 0;
+  background: none;
+}
+
+.festival-calendar__status {
+  text-align: center;
+  color: var(--text-muted);
+}
+
 .festival-calendar__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -18,12 +28,24 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  font-family: inherit;
+  text-align: left;
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
-.festival-card:hover {
+.festival-card--clickable {
+  cursor: pointer;
+}
+
+.festival-card--clickable:hover,
+.festival-card--clickable:focus-visible {
   transform: translateY(-3px);
   box-shadow: var(--shadow-soft);
+}
+
+.festival-card--clickable:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
 }
 
 .festival-card--terracotta {
@@ -111,6 +133,112 @@
   font-size: 0.9rem;
 }
 
+.festival-card__empty {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  font-style: italic;
+  margin-top: 0.3rem;
+}
+
+.festival-card__more {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--festival-accent, var(--color-terracotta));
+}
+
+/* --- Modal con el desglose de eventos del mes --- */
+
+.festival-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(10, 14, 36, 0.72);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.festival-modal {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--color-paper);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-deep);
+}
+
+.festival-modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(42, 28, 18, 0.15);
+  background: #fff;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.festival-modal h3 {
+  font-size: var(--fs-h3);
+  margin-top: 0.3rem;
+  margin-bottom: var(--space-md);
+}
+
+.festival-modal__agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+}
+
+.festival-modal__item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(42, 28, 18, 0.08);
+}
+
+.festival-modal__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.festival-modal__day {
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-terracotta);
+}
+
+.festival-modal__item h4 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 1.02rem;
+  margin-bottom: 0.3rem;
+}
+
+.festival-modal__item p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
 @media (max-width: 1024px) {
   .festival-calendar__grid {
     grid-template-columns: repeat(2, 1fr);
@@ -128,5 +256,10 @@
 
   .festival-card--highlight {
     grid-column: span 1;
+  }
+
+  .festival-modal__item {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
   }
 }

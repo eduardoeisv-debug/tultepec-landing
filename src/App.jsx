@@ -9,8 +9,7 @@ import HowToExplore from "./components/HowToExplore/HowToExplore.jsx";
 import Traditions from "./components/Traditions/Traditions.jsx";
 import Testimonials from "./components/Testimonials/Testimonials.jsx";
 import FAQ from "./components/FAQ/FAQ.jsx";
-import FestivalCalendar from "./components/FestivalCalendar/FestivalCalendar.jsx";
-import Location from "./components/Location/Location.jsx";
+import PlanVisit from "./components/PlanVisit/PlanVisit.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import BooksModal from "./components/shared/BooksModal.jsx";
@@ -41,8 +40,7 @@ export default function App() {
         <Traditions />
         <Testimonials onShareClick={openShare} />
         <FAQ />
-        <FestivalCalendar />
-        <Location />
+        <PlanVisit />
         <FinalCTA />
       </main>
       <Footer onOpenPrivacy={openPrivacy} />

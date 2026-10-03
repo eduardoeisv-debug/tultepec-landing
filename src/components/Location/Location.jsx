@@ -6,15 +6,24 @@ const MAP_EMBED_SRC = "https://www.google.com/maps?q=Tultepec,+Estado+de+M%C3%A9
 const MAP_DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=Tultepec,+Estado+de+M%C3%A9xico";
 
-export default function Location() {
+export default function Location({ embedded = false }) {
   const ref = useReveal();
+  const Wrapper = embedded ? "div" : "section";
 
   return (
-    <section className="location" id="ubicacion" ref={ref}>
-      <div className="container">
+    <Wrapper
+      className={`location ${embedded ? "location--embedded" : ""}`}
+      id={embedded ? undefined : "ubicacion"}
+      ref={ref}
+    >
+      <div className={embedded ? "" : "container"}>
         <div className="section-head section-head--center reveal">
-          <span className="eyebrow">Cómo llegar</span>
-          <h2>Tultepec está más cerca de lo que crees</h2>
+          {!embedded && (
+            <>
+              <span className="eyebrow">Cómo llegar</span>
+              <h2>Tultepec está más cerca de lo que crees</h2>
+            </>
+          )}
           <p>
             A menos de una hora de la Ciudad de México, en el norte del Estado de México.
             Perfecto para una visita de un día.
@@ -84,6 +93,6 @@ export default function Location() {
           </div>
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }
