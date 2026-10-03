@@ -8,7 +8,7 @@ export default function Header() {
           Tultepec <span>· Pueblo Pirotécnico</span>
         </a>
         <a className="btn btn--dark site-header__cta" href="#ubicacion">
-          Cómo llegar
+          Planea tu visita
         </a>
       </div>
     </header>

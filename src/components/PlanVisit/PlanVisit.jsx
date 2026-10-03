@@ -5,23 +5,25 @@ import Location from "../Location/Location.jsx";
 import "./PlanVisit.css";
 
 const TABS = [
-  { key: "calendario", label: "Calendario de fiestas", icon: CalendarDays },
   { key: "ubicacion", label: "Cómo llegar", icon: MapPinned },
+  { key: "calendario", label: "Calendario de fiestas", icon: CalendarDays },
 ];
 
 // Agrupa el calendario y "cómo llegar" bajo un solo bloque con pestañas,
 // en vez de dos secciones grandes apiladas una tras otra -- misma
-// información, página más corta. El botón "Cómo llegar" del header sigue
-// apuntando a #ubicacion; este componente escucha el cambio de hash para
-// activar la pestaña correcta y llevar el scroll hasta aquí.
+// información, página más corta. El botón "Planea tu visita" del header
+// sigue apuntando a #ubicacion (la primera pestaña); este componente
+// escucha el cambio de hash para activar la pestaña correcta y llevar el
+// scroll hasta aquí.
 export default function PlanVisit() {
-  const [tab, setTab] = useState(() => (window.location.hash === "#ubicacion" ? "ubicacion" : "calendario"));
+  const [tab, setTab] = useState(() => (window.location.hash === "#calendario" ? "calendario" : "ubicacion"));
   const sectionRef = useRef(null);
 
   useEffect(() => {
     const onHashChange = () => {
-      if (window.location.hash !== "#ubicacion") return;
-      setTab("ubicacion");
+      const hash = window.location.hash;
+      if (hash !== "#ubicacion" && hash !== "#calendario") return;
+      setTab(hash === "#calendario" ? "calendario" : "ubicacion");
       requestAnimationFrame(() => sectionRef.current?.scrollIntoView());
     };
     window.addEventListener("hashchange", onHashChange);
