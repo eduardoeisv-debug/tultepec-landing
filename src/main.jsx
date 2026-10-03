@@ -19,6 +19,16 @@ const Moderation = lazy(() => import('./pages/Moderation.jsx'))
 
 const isModerationRoute = window.location.pathname.replace(/\/$/, '') === '/moderar'
 
+// Por defecto, el navegador restaura la posición de scroll al recargar la
+// página (no solo al usar atrás/adelante), lo que hacía que refrescar
+// pareciera "mandar a la mitad" aunque la URL no tuviera ningún ancla. Como
+// esta landing es una sola página sin rutas internas, forzamos que cada
+// carga empiece arriba -- el hook de anclas (#tradiciones, #voces...) sigue
+// llevando al lugar correcto cuando sí hay un hash en la URL.
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual'
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {isModerationRoute ? (
