@@ -28,8 +28,10 @@ dist-ssr
 
 .vercel
 
-# Claude Code session files
-.claude
+# Claude Code: ignore local/session files, but keep project skills
+# (.claude/skills) tracked so they travel with the repo.
+.claude/*
+!.claude/skills
 
 # Supabase CLI local cache
 supabase/.temp
