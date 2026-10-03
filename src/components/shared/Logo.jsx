@@ -71,16 +71,28 @@ export default function Logo({ size = 44, className }) {
         <rect x="153.5" y="76" width="5" height="12" />
       </g>
 
-      {/* robot: cabeza con antenas, de frente, como figura principal */}
+      {/* robot-torito: cabeza de robot con cuernos encendidos, de frente */}
       <g fill="var(--color-night-950)">
-        <line x1="82" y1="108" x2="74" y2="86" stroke="var(--color-night-950)" strokeWidth="4" strokeLinecap="round" />
-        <line x1="118" y1="108" x2="126" y2="86" stroke="var(--color-night-950)" strokeWidth="4" strokeLinecap="round" />
-        <circle cx="74" cy="82" r="5.5" />
-        <circle cx="126" cy="82" r="5.5" />
+        <path d="M78,112 C 60,106 46,92 40,68 C 58,84 78,98 92,116 Z" />
+        <path d="M122,112 C 140,106 154,92 160,68 C 142,84 122,98 108,116 Z" />
         <rect x="60" y="118" width="11" height="22" rx="4" />
         <rect x="129" y="118" width="11" height="22" rx="4" />
         <rect x="70" y="106" width="60" height="46" rx="14" />
       </g>
+
+      {/* chispas en la punta de los cuernos */}
+      <g stroke="var(--color-fire-red)" strokeWidth="1.8" strokeLinecap="round">
+        <line x1="40" y1="68" x2="40" y2="60" />
+        <line x1="40" y1="68" x2="46" y2="64" />
+        <line x1="40" y1="68" x2="34" y2="64" />
+      </g>
+      <circle cx="40" cy="68" r="2.6" fill="var(--color-gold-light)" />
+      <g stroke="var(--color-fire-red)" strokeWidth="1.8" strokeLinecap="round">
+        <line x1="160" y1="68" x2="160" y2="60" />
+        <line x1="160" y1="68" x2="166" y2="64" />
+        <line x1="160" y1="68" x2="154" y2="64" />
+      </g>
+      <circle cx="160" cy="68" r="2.6" fill="var(--color-gold-light)" />
       <circle cx="86" cy="128" r="5.5" fill="var(--color-gold-light)" />
       <circle cx="114" cy="128" r="5.5" fill="var(--color-gold-light)" />
       <circle cx="86" cy="128" r="2.2" fill="var(--color-night-950)" />

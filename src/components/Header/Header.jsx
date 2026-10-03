@@ -9,7 +9,7 @@ export default function Header() {
           Tultepec <span>· Pueblo Pirotécnico</span>
         </a>
         <a className="site-header__badge" href="#inicio" aria-label="Tultepec, Pueblo Pirotécnico">
-          <Logo size={52} />
+          <Logo size={68} />
         </a>
         <a className="btn btn--dark site-header__cta" href="#tradiciones">
           Explora la historia
