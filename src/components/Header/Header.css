@@ -8,28 +8,14 @@
 }
 
 .site-header__inner {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 76px;
   padding-top: 0.9rem;
   padding-bottom: 0.9rem;
 }
 
-.site-header__badge {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: inline-flex;
-  line-height: 0;
-}
-
 .site-header__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.05rem;
@@ -55,23 +41,6 @@
 
 @media (max-width: 520px) {
   .site-header__cta {
-    display: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .site-header__brand span {
-    display: none;
-  }
-
-  .site-header__badge svg {
-    width: 46px;
-    height: 46px;
-  }
-}
-
-@media (max-width: 360px) {
-  .site-header__badge {
     display: none;
   }
 }
