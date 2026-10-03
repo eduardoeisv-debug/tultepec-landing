@@ -144,3 +144,97 @@ export const faqs = [
       "De forma directa y práctica: niños y jóvenes acompañan a padres, tíos o abuelos en el taller, primero observando y con tareas sencillas, y con los años asumiendo procesos más delicados, siempre bajo supervisión.",
   },
 ];
+
+// Calendario ilustrativo: solo marzo (Feria Nacional de la Pirotecnia /
+// San Juan de Dios) está documentado — ver `stats` y `faqs` arriba. El
+// resto son marcadores de posición (`illustrative: true`) para mostrar
+// cómo se vería la sección completa; deben sustituirse por fechas y
+// nombres reales confirmados con el pueblo antes de publicarse como
+// información definitiva.
+export const festivalCalendar = [
+  {
+    month: "Enero",
+    icon: "sparkle",
+    title: "Año Nuevo y Día de Reyes",
+    text: "Recibimiento del año con cohetes y la tradicional rosca en las plazas del pueblo.",
+    illustrative: true,
+  },
+  {
+    month: "Febrero",
+    icon: "flower",
+    title: "Día de la Candelaria",
+    text: "Bendición de semillas y tamales en las capillas de las colonias.",
+    illustrative: true,
+  },
+  {
+    month: "Marzo",
+    icon: "flame",
+    title: "Feria Nacional de la Pirotecnia",
+    text: "El evento más importante del año: castillos monumentales, toritos y la fiesta patronal de San Juan de Dios.",
+    illustrative: false,
+    highlight: true,
+  },
+  {
+    month: "Abril",
+    icon: "church",
+    title: "Semana Santa",
+    text: "Procesiones y representaciones religiosas por las calles del centro.",
+    illustrative: true,
+  },
+  {
+    month: "Mayo",
+    icon: "music",
+    title: "Fiestas de mayo",
+    text: "Kermeses y encuentros comunitarios organizados por los barrios del pueblo.",
+    illustrative: true,
+  },
+  {
+    month: "Junio",
+    icon: "star",
+    title: "Corpus Christi",
+    text: "Danzas y procesiones en honor al Santísimo por las principales calles.",
+    illustrative: true,
+  },
+  {
+    month: "Julio",
+    icon: "sparkle",
+    title: "Feria de verano",
+    text: "Actividades culturales y artesanales para toda la familia.",
+    illustrative: true,
+  },
+  {
+    month: "Agosto",
+    icon: "drum",
+    title: "Fiestas patronales de barrio",
+    text: "Celebraciones locales con música, comida y cohetes en distintas colonias.",
+    illustrative: true,
+  },
+  {
+    month: "Septiembre",
+    icon: "flag",
+    title: "Fiestas Patrias",
+    text: "Grito de Independencia y desfile cívico en el centro del pueblo.",
+    illustrative: true,
+  },
+  {
+    month: "Octubre",
+    icon: "flower",
+    title: "Preparativos de Día de Muertos",
+    text: "Los talleres comienzan a decorar con motivos de cempasúchil y papel picado.",
+    illustrative: true,
+  },
+  {
+    month: "Noviembre",
+    icon: "candle",
+    title: "Día de Muertos",
+    text: "Ofrendas, flor de cempasúchil y procesiones en honor a los difuntos.",
+    illustrative: true,
+  },
+  {
+    month: "Diciembre",
+    icon: "gift",
+    title: "Posadas y Navidad",
+    text: "Posadas, pastorelas y el cierre de año con un último castillo encendido.",
+    illustrative: true,
+  },
+];

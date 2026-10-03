@@ -1,0 +1,132 @@
+.festival-calendar {
+  background: var(--color-paper);
+  padding: var(--space-xl) 0;
+}
+
+.festival-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+}
+
+.festival-card {
+  position: relative;
+  background: var(--color-paper-dim);
+  border: 1px solid rgba(42, 28, 18, 0.08);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+.festival-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-soft);
+}
+
+.festival-card--terracotta {
+  --festival-accent: var(--color-terracotta);
+}
+
+.festival-card--fire {
+  --festival-accent: var(--color-fire-red);
+}
+
+.festival-card--gold {
+  --festival-accent: var(--color-gold);
+}
+
+.festival-card--terracotta-dark {
+  --festival-accent: var(--color-terracotta-dark);
+}
+
+.festival-card--highlight {
+  background: var(--color-night-900);
+  border-color: var(--color-gold);
+  grid-column: span 2;
+}
+
+.festival-card--highlight .festival-card__month,
+.festival-card--highlight h3 {
+  color: var(--color-paper);
+}
+
+.festival-card--highlight p {
+  color: rgba(251, 241, 226, 0.8);
+}
+
+.festival-card--highlight .festival-card__icon {
+  background: rgba(227, 171, 61, 0.2);
+}
+
+.festival-card .tag-illustrative {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+}
+
+.festival-card__badge {
+  align-self: flex-start;
+  margin-bottom: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: var(--color-gold);
+  color: var(--color-night-900);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.festival-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  color: var(--festival-accent, var(--color-terracotta));
+  background: color-mix(in srgb, var(--festival-accent, var(--color-terracotta)) 16%, transparent);
+}
+
+.festival-card__month {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--festival-accent, var(--color-terracotta));
+}
+
+.festival-card h3 {
+  font-size: 1.1rem;
+  margin-top: 0.1rem;
+}
+
+.festival-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .festival-calendar__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .festival-card--highlight {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .festival-calendar__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .festival-card--highlight {
+    grid-column: span 1;
+  }
+}
