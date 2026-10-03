@@ -99,7 +99,7 @@ export default function MosaicTile({ icon, label, tone = "terracotta", large = f
       onClick={onClick}
     >
       {hasPhotos && (
-        <span className="mosaic-tile__badge" aria-hidden="true">
+        <span className="mosaic-tile__badge" title="Ver fotos" aria-hidden="true">
           <Camera size={14} strokeWidth={1.8} />
         </span>
       )}
