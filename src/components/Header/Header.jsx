@@ -6,8 +6,10 @@ export default function Header() {
     <header className="site-header">
       <div className="container site-header__inner">
         <a className="site-header__brand" href="#inicio">
-          <Logo size={48} />
           Tultepec <span>· Pueblo Pirotécnico</span>
+        </a>
+        <a className="site-header__badge" href="#inicio" aria-label="Tultepec, Pueblo Pirotécnico">
+          <Logo size={52} />
         </a>
         <a className="btn btn--dark site-header__cta" href="#tradiciones">
           Explora la historia

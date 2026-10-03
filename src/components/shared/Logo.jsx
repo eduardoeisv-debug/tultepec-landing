@@ -71,23 +71,33 @@ export default function Logo({ size = 44, className }) {
         <rect x="153.5" y="76" width="5" height="12" />
       </g>
 
-      {/* torito: cabeza con cuernos, de frente, como figura principal */}
+      {/* robot: cabeza con antenas, de frente, como figura principal */}
       <g fill="var(--color-night-950)">
-        <path d="M70,125 C 50,118 35,100 32,72 C 55,90 85,110 100,130 Z" />
-        <path d="M130,125 C 150,118 165,100 168,72 C 145,90 115,110 100,130 Z" />
-        <path d="M66,112 L74,96 L82,114 Z" />
-        <path d="M134,112 L126,96 L118,114 Z" />
-        <path d="M70,150 L70,128 C70,111 83,99 100,99 C117,99 130,111 130,128 L130,150 Z" />
+        <line x1="82" y1="108" x2="74" y2="86" stroke="var(--color-night-950)" strokeWidth="4" strokeLinecap="round" />
+        <line x1="118" y1="108" x2="126" y2="86" stroke="var(--color-night-950)" strokeWidth="4" strokeLinecap="round" />
+        <circle cx="74" cy="82" r="5.5" />
+        <circle cx="126" cy="82" r="5.5" />
+        <rect x="60" y="118" width="11" height="22" rx="4" />
+        <rect x="129" y="118" width="11" height="22" rx="4" />
+        <rect x="70" y="106" width="60" height="46" rx="14" />
       </g>
-      <circle cx="88" cy="128" r="3.2" fill="var(--color-gold-light)" />
-      <circle cx="112" cy="128" r="3.2" fill="var(--color-gold-light)" />
-      <path
-        d="M90,145 Q100,150 110,145"
+      <circle cx="86" cy="128" r="5.5" fill="var(--color-gold-light)" />
+      <circle cx="114" cy="128" r="5.5" fill="var(--color-gold-light)" />
+      <circle cx="86" cy="128" r="2.2" fill="var(--color-night-950)" />
+      <circle cx="114" cy="128" r="2.2" fill="var(--color-night-950)" />
+      <rect
+        x="88"
+        y="140"
+        width="24"
+        height="7"
+        rx="2"
+        fill="none"
         stroke="var(--color-gold-light)"
         strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
       />
+      <line x1="94" y1="140" x2="94" y2="147" stroke="var(--color-gold-light)" strokeWidth="1.6" />
+      <line x1="100" y1="140" x2="100" y2="147" stroke="var(--color-gold-light)" strokeWidth="1.6" />
+      <line x1="106" y1="140" x2="106" y2="147" stroke="var(--color-gold-light)" strokeWidth="1.6" />
 
       {/* listón con el nombre */}
       <path
