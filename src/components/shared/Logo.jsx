@@ -1,7 +1,7 @@
-// Insignia ilustrada de Tultepec: cielo encendido, silueta de castillo e
-// iglesia, torito al frente y el nombre del pueblo en el borde. Construida
-// a mano en SVG (sin librerías ni imágenes externas) para que escale nítida
-// a cualquier tamaño, desde el favicon hasta un sello grande.
+// Insignia ilustrada de Tultepec: cielo encendido, castillo monumental
+// como figura principal, iglesia pequeña al lado y el nombre del pueblo
+// en el borde. Construida a mano en SVG (sin librerías ni imágenes
+// externas) para que escale nítida a cualquier tamaño.
 const DOTS = Array.from({ length: 30 }, (_, i) => {
   const angle = (i / 30) * Math.PI * 2;
   return {
@@ -62,54 +62,30 @@ export default function Logo({ size = 44, className }) {
       <Burst x={48} y={48} scale={1} color="var(--color-paper)" />
       <Burst x={150} y={62} scale={0.8} color="var(--color-paper)" />
 
-      {/* silueta del pueblo (iglesia + castillo), pequeña y detrás del torito */}
+      {/* iglesia, pequeña y a un lado */}
       <g fill="var(--color-night-950)">
-        <path d="M27 136 L27 108 L37 108 L37 100 L44 100 L44 108 L54 108 L54 136 Z" />
-        <rect x="38" y="86" width="5" height="14" />
-        <path d="M35 86 L46 86 L40.5 75 Z" />
-        <path d="M149 136 L149 102 L156 88 L163 102 L163 136 Z" />
-        <rect x="153.5" y="76" width="5" height="12" />
+        <path d="M27 140 L27 112 L37 112 L37 104 L44 104 L44 112 L54 112 L54 140 Z" />
+        <rect x="38" y="90" width="5" height="14" />
+        <path d="M35 90 L46 90 L40.5 79 Z" />
       </g>
 
-      {/* robot-torito: cabeza de robot con cuernos encendidos, de frente */}
+      {/* castillo monumental, como figura principal */}
       <g fill="var(--color-night-950)">
-        <path d="M78,112 C 60,106 46,92 40,68 C 58,84 78,98 92,116 Z" />
-        <path d="M122,112 C 140,106 154,92 160,68 C 142,84 122,98 108,116 Z" />
-        <rect x="60" y="118" width="11" height="22" rx="4" />
-        <rect x="129" y="118" width="11" height="22" rx="4" />
-        <rect x="70" y="106" width="60" height="46" rx="14" />
+        <path d="M100 56 L110 76 L90 76 Z" />
+        <rect x="97" y="76" width="6" height="50" />
+        <path
+          d="M72 150 L100 84 L128 150 Z"
+          stroke="var(--color-night-950)"
+          strokeWidth="4.5"
+          strokeLinejoin="round"
+          fill="none"
+        />
+        <line x1="56" y1="152" x2="144" y2="152" stroke="var(--color-night-950)" strokeWidth="5" strokeLinecap="round" />
       </g>
-
-      {/* chispas en la punta de los cuernos */}
-      <g stroke="var(--color-fire-red)" strokeWidth="1.8" strokeLinecap="round">
-        <line x1="40" y1="68" x2="40" y2="60" />
-        <line x1="40" y1="68" x2="46" y2="64" />
-        <line x1="40" y1="68" x2="34" y2="64" />
-      </g>
-      <circle cx="40" cy="68" r="2.6" fill="var(--color-gold-light)" />
-      <g stroke="var(--color-fire-red)" strokeWidth="1.8" strokeLinecap="round">
-        <line x1="160" y1="68" x2="160" y2="60" />
-        <line x1="160" y1="68" x2="166" y2="64" />
-        <line x1="160" y1="68" x2="154" y2="64" />
-      </g>
-      <circle cx="160" cy="68" r="2.6" fill="var(--color-gold-light)" />
-      <circle cx="86" cy="128" r="5.5" fill="var(--color-gold-light)" />
-      <circle cx="114" cy="128" r="5.5" fill="var(--color-gold-light)" />
-      <circle cx="86" cy="128" r="2.2" fill="var(--color-night-950)" />
-      <circle cx="114" cy="128" r="2.2" fill="var(--color-night-950)" />
-      <rect
-        x="88"
-        y="140"
-        width="24"
-        height="7"
-        rx="2"
-        fill="none"
-        stroke="var(--color-gold-light)"
-        strokeWidth="2"
-      />
-      <line x1="94" y1="140" x2="94" y2="147" stroke="var(--color-gold-light)" strokeWidth="1.6" />
-      <line x1="100" y1="140" x2="100" y2="147" stroke="var(--color-gold-light)" strokeWidth="1.6" />
-      <line x1="106" y1="140" x2="106" y2="147" stroke="var(--color-gold-light)" strokeWidth="1.6" />
+      <circle cx="100" cy="104" r="4.6" fill="var(--color-fire-red)" />
+      <circle cx="84" cy="128" r="3.6" fill="var(--color-fire-red)" />
+      <circle cx="116" cy="128" r="3.6" fill="var(--color-fire-red)" />
+      <circle cx="100" cy="56" r="2.6" fill="var(--color-gold-light)" />
 
       {/* listón con el nombre */}
       <path
