@@ -1,0 +1,245 @@
+.promo-reel {
+  padding: var(--space-xl) 0;
+}
+
+.promo-reel__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 480;
+  overflow: hidden;
+  background: var(--color-night-950);
+  box-shadow: var(--shadow-deep);
+}
+
+@media (min-width: 720px) {
+  .promo-reel__stage {
+    border-radius: var(--radius-lg);
+    max-width: calc(var(--max-width) + var(--space-md) * 2);
+    margin: 0 auto;
+  }
+}
+
+.promo-reel__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.promo-reel__tag {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 3;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(10, 14, 36, 0.45);
+  backdrop-filter: blur(4px);
+  color: var(--color-paper);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.promo-reel__banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  transform: translateY(-6px);
+}
+
+.promo-reel__banner .papel-picado {
+  margin-bottom: 0;
+}
+
+.promo-reel__overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+  background: linear-gradient(to top, rgba(10, 14, 36, 0.75), rgba(10, 14, 36, 0));
+}
+
+.promo-reel__toggle {
+  position: absolute;
+  bottom: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 3;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 241, 226, 0.4);
+  background: rgba(10, 14, 36, 0.45);
+  backdrop-filter: blur(4px);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out);
+}
+
+.promo-reel__toggle:hover {
+  background: rgba(10, 14, 36, 0.7);
+}
+
+/* --- Estrellas --- */
+
+.promo-reel__star {
+  fill: var(--color-paper);
+  opacity: 0.25;
+  animation: promo-twinkle 4.5s ease-in-out infinite;
+}
+
+@keyframes promo-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* --- Cohetes / fuegos artificiales --- */
+
+.promo-reel__burst {
+  opacity: 0;
+  transform: scale(0.3);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: promo-burst 4.5s ease-out infinite;
+}
+
+@keyframes promo-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+  8% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 0.85;
+    transform: scale(1.25);
+  }
+  65%,
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+/* --- Rueda del castillo --- */
+
+.promo-reel__wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: promo-spin 2.4s linear infinite;
+}
+
+@keyframes promo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.promo-reel__castillo-spark {
+  fill: var(--color-gold-light);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: promo-castillo-spark 1.8s ease-out infinite;
+}
+
+@keyframes promo-castillo-spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--sx), -26px) scale(0.3);
+  }
+}
+
+/* --- Torito --- */
+
+.promo-reel__torito-track {
+  animation: promo-torito-run 9s linear infinite;
+}
+
+@keyframes promo-torito-run {
+  0% {
+    transform: translateX(-80px);
+  }
+  100% {
+    transform: translateX(1280px);
+  }
+}
+
+.promo-reel__torito-spark {
+  fill: var(--color-gold);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: promo-torito-spark 0.7s ease-out infinite;
+}
+
+@keyframes promo-torito-spark {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2) translateX(-8px);
+  }
+}
+
+/* --- Control de pausa: detiene todo lo animado dentro del escenario --- */
+
+.promo-reel__stage.is-paused .promo-reel__star,
+.promo-reel__stage.is-paused .promo-reel__burst,
+.promo-reel__stage.is-paused .promo-reel__wheel,
+.promo-reel__stage.is-paused .promo-reel__castillo-spark,
+.promo-reel__stage.is-paused .promo-reel__torito-track,
+.promo-reel__stage.is-paused .promo-reel__torito-spark {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-reel__star,
+  .promo-reel__burst,
+  .promo-reel__wheel,
+  .promo-reel__castillo-spark,
+  .promo-reel__torito-track,
+  .promo-reel__torito-spark {
+    animation: none;
+  }
+
+  .promo-reel__burst {
+    opacity: 0;
+  }
+
+  .promo-reel__castillo-spark,
+  .promo-reel__torito-spark {
+    opacity: 0;
+  }
+
+  .promo-reel__toggle {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .promo-reel__overlay {
+    padding: var(--space-md) var(--space-sm) var(--space-sm);
+  }
+}
