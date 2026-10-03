@@ -48,23 +48,25 @@ export default function Hero({ onOpenBooks }) {
       <SparkField />
       <div className="container hero__grid">
         <div className="hero__copy">
-          <span className="eyebrow eyebrow--light">Tultepec, Estado de México</span>
-          <h1 className="hero__title">
+          <span className="eyebrow eyebrow--light hero__enter hero__enter--1">
+            Tultepec, Estado de México
+          </span>
+          <h1 className="hero__title hero__enter hero__enter--2">
             Capital de la <span>Pirotecnia</span>
           </h1>
-          <p className="hero__subtitle">
+          <p className="hero__subtitle hero__enter hero__enter--3">
             Tultepec, reconocido como la capital mundial de la pirotecnia, no fabrica pólvora:
             transforma el fuego en arte multicolor. Sus tradicionales castillos y toritos son
             parte de un oficio artesanal que las familias de la comunidad han preservado y
             transmitido por generaciones.
           </p>
-          <div className="hero__actions">
+          <div className="hero__actions hero__enter hero__enter--4">
             <a className="btn btn--primary" href="#tradiciones">
               Explora la historia
             </a>
           </div>
 
-          <div className="hero__links">
+          <div className="hero__links hero__enter hero__enter--5">
             <a className="hero__link" href="#voces">
               <span className="hero__link-icon">
                 <ScrollText size={16} strokeWidth={1.8} />
@@ -84,7 +86,10 @@ export default function Hero({ onOpenBooks }) {
           </div>
         </div>
 
-        <div className="hero__visual" aria-label="Mosaico ilustrado de la tradición pirotécnica de Tultepec">
+        <div
+          className="hero__visual hero__visual--enter"
+          aria-label="Mosaico ilustrado de la tradición pirotécnica de Tultepec"
+        >
           {GALLERY_CATEGORIES.map((cat, i) => (
             <MosaicTile
               key={cat.slug}

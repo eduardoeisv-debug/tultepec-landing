@@ -44,6 +44,79 @@
   min-width: 0;
 }
 
+/* Entrada escalonada al cargar la página (una sola vez, no ligada al
+   scroll): cada elemento aparece con un pequeño desfase para dar una
+   primera impresión más cinematográfica sin bloquear el contenido real
+   detrás de ninguna pantalla intermedia. */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero__enter {
+  opacity: 0;
+  animation: hero-fade-up 0.8s var(--ease-out) forwards;
+}
+
+.hero__enter--1 {
+  animation-delay: 0.05s;
+}
+
+.hero__enter--2 {
+  animation-delay: 0.16s;
+}
+
+.hero__enter--3 {
+  animation-delay: 0.3s;
+}
+
+.hero__enter--4 {
+  animation-delay: 0.42s;
+}
+
+.hero__enter--5 {
+  animation-delay: 0.52s;
+}
+
+.hero__visual--enter .mosaic-tile {
+  opacity: 0;
+  animation: hero-fade-up 0.8s var(--ease-out) forwards;
+}
+
+.hero__visual--enter .mosaic-tile:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.hero__visual--enter .mosaic-tile:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.hero__visual--enter .mosaic-tile:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.hero__visual--enter .mosaic-tile:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.hero__visual--enter .mosaic-tile:nth-child(5) {
+  animation-delay: 0.7s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__enter,
+  .hero__visual--enter .mosaic-tile {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 .eyebrow--light {
   color: var(--color-gold-light);
 }
