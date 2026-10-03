@@ -36,6 +36,10 @@
   max-width: 34ch;
 }
 
+.footer__thanks strong {
+  color: var(--color-paper);
+}
+
 .footer__meta p {
   font-size: 0.82rem;
   line-height: 1.6;
