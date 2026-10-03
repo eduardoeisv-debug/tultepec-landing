@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ScrollText } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import MosaicTile from "../shared/MosaicTile.jsx";
 import GalleryModal from "../shared/GalleryModal.jsx";
@@ -65,12 +66,16 @@ export default function Hero({ onOpenBooks }) {
 
           <div className="hero__links">
             <a className="hero__link" href="#voces">
-              Conoce los textos de "Memorias de mi pueblo"
+              <span className="hero__link-icon">
+                <ScrollText size={16} strokeWidth={1.8} />
+              </span>
+              <span className="hero__link-text">Conoce los textos de "Memorias de mi pueblo"</span>
             </a>
+            <span className="hero__links-divider" aria-hidden="true" />
             <span className="hero__tooltip-wrap">
               <button type="button" className="hero__link" onClick={onOpenBooks}>
-                <span className="hero__books-icon">{BookIcon}</span>
-                Compendios
+                <span className="hero__link-icon">{BookIcon}</span>
+                <span className="hero__link-text">Compendios</span>
               </button>
               <span className="hero__tooltip" role="tooltip">
                 Conoce los 3 libros ya publicados sobre la historia de Tultepec
