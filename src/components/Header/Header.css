@@ -39,8 +39,19 @@
   background: var(--color-gold-light);
 }
 
-@media (max-width: 520px) {
-  .site-header__cta {
+@media (max-width: 640px) {
+  .site-header__brand span {
     display: none;
+  }
+
+  .site-header__cta {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header__brand {
+    font-size: 0.92rem;
   }
 }
