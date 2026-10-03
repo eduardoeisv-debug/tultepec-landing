@@ -7,7 +7,11 @@ export default function Header() {
         <a className="site-header__brand" href="#inicio">
           Tultepec <span>· Pueblo Pirotécnico</span>
         </a>
-        <a className="btn btn--dark site-header__cta" href="#ubicacion">
+        <a
+          className="btn btn--dark site-header__cta"
+          href="#ubicacion"
+          onClick={() => window.dispatchEvent(new Event("plan-visit:open"))}
+        >
           Planea tu visita
         </a>
       </div>
