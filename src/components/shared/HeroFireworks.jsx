@@ -4,8 +4,8 @@ import "./HeroFireworks.css";
 // Colores de las ráfagas: dorado, rosa mexicano, turquesa y blanco cálido.
 const COLORS = ["#f3cd7a", "#e3ab3d", "#ff2d8a", "#2fd3c8", "#fbf1e2"];
 
-const MIN_BURST_MS = 1000;
-const MAX_BURST_MS = 2000;
+const MIN_BURST_MS = 550;
+const MAX_BURST_MS = 1150;
 const GRAVITY = 0.025;
 const DRAG = 0.985;
 
@@ -29,6 +29,7 @@ export default function HeroFireworks() {
     let height = 0;
     let dpr = 1;
     let particles = [];
+    let flashes = [];
     let rafId = null;
     let lastBurstAt = 0;
     let nextDelay = randomBurstDelay();
@@ -46,7 +47,7 @@ export default function HeroFireworks() {
 
     const spawnBurst = () => {
       const isSmall = width < 640;
-      const particleCount = isSmall ? 12 : 22;
+      const particleCount = isSmall ? 20 : 36;
 
       // Sobre todo en los costados y arriba, evitando la franja central
       // donde vive el texto, para no competir visualmente con él.
@@ -66,23 +67,27 @@ export default function HeroFireworks() {
 
       const color = COLORS[Math.floor(Math.random() * COLORS.length)];
 
+      // Destello breve en el punto de origen para que la explosión se
+      // sienta con más impacto, no solo las chispas dispersándose.
+      flashes.push({ x, y, life: 1, size: isSmall ? 20 : 32, color });
+
       for (let i = 0; i < particleCount; i += 1) {
         const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.4;
-        const speed = 0.9 + Math.random() * 1.6;
+        const speed = 1.1 + Math.random() * 2.1;
         particles.push({
           x,
           y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           life: 1,
-          decay: 0.014 + Math.random() * 0.012,
+          decay: 0.012 + Math.random() * 0.011,
           color,
-          size: (isSmall ? 1.1 : 1.4) + Math.random() * 1.3,
+          size: (isSmall ? 1.3 : 1.7) + Math.random() * 1.5,
         });
       }
 
       // Tope de seguridad por si varias ráfagas se acumulan.
-      const maxParticles = isSmall ? 160 : 320;
+      const maxParticles = isSmall ? 260 : 480;
       if (particles.length > maxParticles) {
         particles = particles.slice(particles.length - maxParticles);
       }
@@ -97,6 +102,26 @@ export default function HeroFireworks() {
 
       ctx.clearRect(0, 0, width, height);
 
+      const nextFlashes = [];
+      for (const f of flashes) {
+        f.life -= 0.09;
+        if (f.life <= 0) continue;
+        const gradient = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.size);
+        gradient.addColorStop(0, f.color);
+        gradient.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.globalAlpha = Math.max(f.life, 0) * 0.8;
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+        ctx.fill();
+        nextFlashes.push(f);
+      }
+      flashes = nextFlashes;
+
+      // El resplandor (shadowBlur) es costoso en canvas; se omite en
+      // pantallas chicas para no afectar el rendimiento en celulares.
+      const withGlow = width >= 640;
+
       const next = [];
       for (const p of particles) {
         p.x += p.vx;
@@ -109,6 +134,10 @@ export default function HeroFireworks() {
 
         ctx.globalAlpha = Math.max(p.life, 0);
         ctx.fillStyle = p.color;
+        if (withGlow) {
+          ctx.shadowColor = p.color;
+          ctx.shadowBlur = p.size * 2.5;
+        }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
@@ -116,6 +145,7 @@ export default function HeroFireworks() {
       }
       particles = next;
       ctx.globalAlpha = 1;
+      if (withGlow) ctx.shadowBlur = 0;
 
       rafId = requestAnimationFrame(tick);
     };
