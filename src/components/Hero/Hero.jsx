@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Play, Flame, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Play, Flame, X, ChevronRight } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import MediaHubModal from "../shared/MediaHubModal.jsx";
 import GalleryModal from "../shared/GalleryModal.jsx";
 import VideoGalleryModal from "../shared/VideoGalleryModal.jsx";
+import HistoryModal from "../shared/HistoryModal.jsx";
+import MemoriesModal from "../shared/MemoriesModal.jsx";
 import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import "./Hero.css";
@@ -71,9 +73,11 @@ const VIDEO_TILE_TONES = {
   piromusicales: "night",
 };
 
-export default function Hero({ onOpenBooks }) {
+export default function Hero({ onOpenBooks, onShareClick }) {
   const [playing, setPlaying] = useState(false);
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [memoriesOpen, setMemoriesOpen] = useState(false);
   const [imagesHubOpen, setImagesHubOpen] = useState(false);
   const [videosHubOpen, setVideosHubOpen] = useState(false);
   const [activeImageCategory, setActiveImageCategory] = useState(null);
@@ -83,6 +87,12 @@ export default function Hero({ onOpenBooks }) {
   const activeVideo = VIDEO_CATEGORIES.find((c) => c.slug === activeVideoCategory);
 
   useScrollLock(mobileVideoOpen);
+
+  useEffect(() => {
+    const onOpenHistory = () => setHistoryOpen(true);
+    window.addEventListener("hero:open-history", onOpenHistory);
+    return () => window.removeEventListener("hero:open-history", onOpenHistory);
+  }, []);
 
   return (
     <section className="hero" id="inicio">
@@ -94,15 +104,17 @@ export default function Hero({ onOpenBooks }) {
           </span>
           <h1 className="hero__title hero__enter hero__enter--2">
             Capital de la <span>Pirotecnia</span>
-            <button
-              type="button"
-              className="hero__title-video-trigger"
-              onClick={() => setMobileVideoOpen(true)}
-              aria-label="Ver video de bienvenida a Tultepec"
-            >
-              <Play size={16} strokeWidth={0} fill="currentColor" />
-            </button>
           </h1>
+          <button
+            type="button"
+            className="hero__title-video-trigger"
+            onClick={() => setMobileVideoOpen(true)}
+          >
+            <span className="hero__title-video-trigger-icon" aria-hidden="true">
+              <Play size={14} strokeWidth={0} fill="currentColor" />
+            </span>
+            Ver video
+          </button>
           <p className="hero__subtitle hero__enter hero__enter--3">
             Tultepec, reconocido como la capital mundial de la pirotecnia, no fabrica pólvora:
             transforma el fuego en arte multicolor. Sus tradicionales castillos y toritos son
@@ -112,10 +124,11 @@ export default function Hero({ onOpenBooks }) {
           <ul className="hero__list hero__enter hero__enter--4">
             <li className="hero__list-item">
               <span className="hero__tooltip-wrap">
-                <a className="hero__list-link" href="#tradiciones">
+                <button type="button" className="hero__list-link" onClick={() => setHistoryOpen(true)}>
                   <TriangleBullet tone="fire" />
                   <span>Explora la historia</span>
-                </a>
+                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+                </button>
                 <span className="hero__tooltip" role="tooltip">
                   Explora los momentos y tradiciones
                 </span>
@@ -123,10 +136,11 @@ export default function Hero({ onOpenBooks }) {
             </li>
             <li className="hero__list-item">
               <span className="hero__tooltip-wrap">
-                <a className="hero__list-link" href="#voces">
+                <button type="button" className="hero__list-link" onClick={() => setMemoriesOpen(true)}>
                   <TriangleBullet tone="gold" />
                   <span>Memorias de mi pueblo</span>
-                </a>
+                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+                </button>
                 <span className="hero__tooltip" role="tooltip">
                   Conoce los textos de "Memorias de mi pueblo"
                 </span>
@@ -137,6 +151,7 @@ export default function Hero({ onOpenBooks }) {
                 <button type="button" className="hero__list-link" onClick={onOpenBooks}>
                   <TriangleBullet tone="terracotta" />
                   <span>Compendios</span>
+                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
                 </button>
                 <span className="hero__tooltip" role="tooltip">
                   Conoce los 3 libros ya publicados sobre la historia de Tultepec
@@ -144,16 +159,18 @@ export default function Hero({ onOpenBooks }) {
               </span>
             </li>
             <li className="hero__list-item">
-              <a className="hero__list-link" href="#" onClick={(e) => { e.preventDefault(); setImagesHubOpen(true); }}>
+              <button type="button" className="hero__list-link" onClick={() => setImagesHubOpen(true)}>
                 <TriangleBullet tone="gold" />
-                <span>Imágenes - tradiciones del pueblo</span>
-              </a>
+                <span>Imágenes</span>
+                <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+              </button>
             </li>
             <li className="hero__list-item">
-              <a className="hero__list-link" href="#" onClick={(e) => { e.preventDefault(); setVideosHubOpen(true); }}>
+              <button type="button" className="hero__list-link" onClick={() => setVideosHubOpen(true)}>
                 <TriangleBullet tone="terracotta" />
-                <span>Videos - tradiciones del pueblo</span>
-              </a>
+                <span>Videos</span>
+                <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+              </button>
             </li>
           </ul>
         </div>
@@ -188,6 +205,9 @@ export default function Hero({ onOpenBooks }) {
           </div>
         </div>
       </div>
+
+      <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} />
+      <MemoriesModal open={memoriesOpen} onClose={() => setMemoriesOpen(false)} onShareClick={onShareClick} />
 
       <MediaHubModal
         open={imagesHubOpen}
