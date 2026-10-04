@@ -1,24 +1,7 @@
 import { useState } from "react";
-import { ScrollText, Play, Flame } from "lucide-react";
+import { Play, Flame } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import "./Hero.css";
-
-const BookIcon = (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path
-      d="M4 5c2-1 5-1 7 .5V19c-2-1.5-5-1.5-7-.5V5Z"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M20 5c-2-1-5-1-7 .5V19c2-1.5 5-1.5 7-.5V5Z"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 export default function Hero({ onOpenBooks }) {
   const [playing, setPlaying] = useState(false);
@@ -40,30 +23,31 @@ export default function Hero({ onOpenBooks }) {
             parte de un oficio artesanal que las familias de la comunidad han preservado y
             transmitido por generaciones.
           </p>
-          <div className="hero__actions hero__enter hero__enter--4">
-            <a className="btn btn--primary" href="#tradiciones">
-              Explora la historia
-            </a>
-          </div>
-
-          <div className="hero__links hero__enter hero__enter--5">
-            <a className="hero__link" href="#voces">
-              <span className="hero__link-icon">
-                <ScrollText size={16} strokeWidth={1.8} />
+          <ul className="hero__list hero__enter hero__enter--4">
+            <li className="hero__list-item">
+              <a className="hero__list-link" href="#tradiciones">
+                <Play className="hero__list-bullet hero__list-bullet--fire" size={14} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+                <span>Explora la historia</span>
+              </a>
+            </li>
+            <li className="hero__list-item">
+              <a className="hero__list-link" href="#voces">
+                <Play className="hero__list-bullet hero__list-bullet--gold" size={14} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+                <span>Conoce los textos de "Memorias de mi pueblo"</span>
+              </a>
+            </li>
+            <li className="hero__list-item">
+              <span className="hero__tooltip-wrap">
+                <button type="button" className="hero__list-link" onClick={onOpenBooks}>
+                  <Play className="hero__list-bullet hero__list-bullet--terracotta" size={14} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+                  <span>Compendios</span>
+                </button>
+                <span className="hero__tooltip" role="tooltip">
+                  Conoce los 3 libros ya publicados sobre la historia de Tultepec
+                </span>
               </span>
-              <span className="hero__link-text">Conoce los textos de "Memorias de mi pueblo"</span>
-            </a>
-            <span className="hero__links-divider" aria-hidden="true" />
-            <span className="hero__tooltip-wrap">
-              <button type="button" className="hero__link" onClick={onOpenBooks}>
-                <span className="hero__link-icon">{BookIcon}</span>
-                <span className="hero__link-text">Compendios</span>
-              </button>
-              <span className="hero__tooltip" role="tooltip">
-                Conoce los 3 libros ya publicados sobre la historia de Tultepec
-              </span>
-            </span>
-          </div>
+            </li>
+          </ul>
         </div>
 
         <div className="hero__visual hero__visual--enter">
