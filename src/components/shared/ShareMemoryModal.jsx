@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { submitMemory } from "../../lib/submitMemory.js";
 import { RELATIONSHIP_OPTIONS } from "../../data/relationships.js";
 import Turnstile from "./Turnstile.jsx";
+import useScrollLock from "../../hooks/useScrollLock.js";
 import "./ShareMemoryModal.css";
 
 const MIN_LENGTH = 20;
@@ -25,6 +26,8 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
   const [errorMessage, setErrorMessage] = useState("");
   const dialogRef = useRef(null);
 
+  useScrollLock(open);
+
   useEffect(() => {
     if (!open) return undefined;
 
@@ -32,12 +35,10 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
     dialogRef.current?.querySelector("input, textarea, select")?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
     };
   }, [open, onClose]);
 

@@ -11,6 +11,18 @@ import useHashScrollFix from "./hooks/useHashScrollFix.js";
 
 const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal.jsx"));
 
+// El formulario de "Comparte tu memoria" se carga bajo demanda (lazy) para
+// no engordar el bundle principal. Sin un fallback visible, una conexión
+// de celular lenta deja la pantalla literalmente en blanco mientras
+// descarga -- esto le da al menos un fondo y un indicador de carga.
+function ModalLoading() {
+  return (
+    <div className="modal-loading__backdrop">
+      <span className="modal-loading__spinner" aria-label="Cargando…" />
+    </div>
+  );
+}
+
 export default function App() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [booksModalOpen, setBooksModalOpen] = useState(false);
@@ -35,7 +47,7 @@ export default function App() {
       <PrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} />
 
       {shareModalOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<ModalLoading />}>
           <ShareMemoryModal open={shareModalOpen} onClose={() => setShareModalOpen(false)} onOpenPrivacy={openPrivacy} />
         </Suspense>
       )}
