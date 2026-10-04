@@ -1,0 +1,12 @@
+.town-silhouette {
+  --town-fill: #1a0f2e;
+  --town-window: #f3cd7a;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  width: 100%;
+  height: clamp(90px, 16vw, 170px);
+  display: block;
+}

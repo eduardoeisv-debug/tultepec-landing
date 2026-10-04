@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Play, Flame, X, ChevronRight } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
+import HeroFireworks from "../shared/HeroFireworks.jsx";
+import TownSilhouette from "../shared/TownSilhouette.jsx";
+import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import MediaHubModal from "../shared/MediaHubModal.jsx";
 import GalleryModal from "../shared/GalleryModal.jsx";
 import VideoGalleryModal from "../shared/VideoGalleryModal.jsx";
@@ -90,7 +93,10 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
   return (
     <section className="hero" id="inicio">
+      <HeroFireworks />
       <SparkField />
+      <HeroPapelPicado />
+      <TownSilhouette />
       <div className="container hero__grid">
         <div className="hero__copy">
           <span className="eyebrow eyebrow--light hero__enter hero__enter--1">
@@ -195,6 +201,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
                 onClick={() => setPlaying(true)}
                 aria-label="Reproducir video de bienvenida a Tultepec"
               >
+                <SparkField count={7} />
                 <span className="hero__video-ring hero__video-ring--1" aria-hidden="true" />
                 <span className="hero__video-ring hero__video-ring--2" aria-hidden="true" />
                 <Flame className="hero__video-flame" size={22} strokeWidth={1.5} aria-hidden="true" />

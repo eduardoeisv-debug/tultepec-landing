@@ -1,0 +1,42 @@
+.hero-papel-picado {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: 54px;
+  overflow: hidden;
+  opacity: 0.85;
+}
+
+.hero-papel-picado__svg {
+  width: 110%;
+  height: 100%;
+  margin-left: -5%;
+}
+
+.hero-papel-picado__flag {
+  animation: papel-picado-sway 3.6s ease-in-out infinite;
+}
+
+@keyframes papel-picado-sway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-papel-picado__flag {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-papel-picado {
+    height: 38px;
+  }
+}

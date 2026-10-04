@@ -1,23 +1,57 @@
 .hero {
+  --hero-purple: #3a1368;
+  --hero-magenta: #7a2166;
+  --hero-ember: #c1592f;
   position: relative;
-  background: linear-gradient(165deg, var(--color-night-800) 0%, var(--color-night-950) 70%);
+  background:
+    radial-gradient(ellipse 60% 45% at 12% 96%, rgba(255, 45, 138, 0.3), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 88% 92%, rgba(227, 171, 61, 0.32), transparent 55%),
+    linear-gradient(
+      180deg,
+      var(--color-night-950) 0%,
+      #180a38 26%,
+      var(--hero-purple) 48%,
+      var(--hero-magenta) 68%,
+      var(--hero-ember) 90%,
+      #e3ab3d 100%
+    );
   color: var(--text-inverse);
-  padding: calc(var(--space-xl) + 1rem) 0 var(--space-lg);
-  overflow-x: hidden;
+  padding: calc(var(--space-xl) + 1rem) 0 clamp(140px, 20vw, 210px);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 14, 36, 0.8) 0%,
+    rgba(10, 14, 36, 0.58) 42%,
+    rgba(10, 14, 36, 0.2) 68%,
+    transparent 92%
+  );
+  pointer-events: none;
 }
 
 .hero::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
   background-image: radial-gradient(rgba(251, 241, 226, 0.06) 1px, transparent 1.4px);
   background-size: 22px 22px;
   pointer-events: none;
 }
 
+.hero .spark-field {
+  z-index: 1;
+}
+
 .hero__grid {
   position: relative;
-  z-index: 1;
+  z-index: 4;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: var(--space-xl);
@@ -275,7 +309,9 @@
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at 50% 44%, rgba(227, 171, 61, 0.28), transparent 52%),
+    radial-gradient(circle at 50% 44%, rgba(227, 171, 61, 0.3), transparent 52%),
+    radial-gradient(circle at 85% 12%, rgba(47, 211, 200, 0.16), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(255, 45, 138, 0.16), transparent 50%),
     linear-gradient(165deg, var(--color-night-800) 0%, var(--color-night-950) 70%);
   overflow: hidden;
 }
