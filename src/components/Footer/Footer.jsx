@@ -28,13 +28,15 @@ export default function Footer({ onOpenPrivacy }) {
           </p>
         </div>
       </div>
-      <div className="container footer__bottom">
-        <span className="footer__credit">
-          <span className="footer__credit-seal">
-            <img src="/images/brand/ea-seal.jpg" alt="Sello EA" />
-          </span>
+      <div className="container footer__signature">
+        <span className="footer__signature-seal">
+          <img src="/images/brand/ea-seal.jpg" alt="Sello EA — Dos mentes, una visión. Creamos el futuro." />
+        </span>
+        <span className="footer__signature-text">
           Hecho por <strong>EA</strong>
         </span>
+      </div>
+      <div className="container footer__bottom">
         <span>© {new Date().getFullYear()} Tultepec · Pueblo Pirotécnico — proyecto de portafolio.</span>
         <button type="button" className="footer__privacy-link" onClick={onOpenPrivacy}>
           Aviso de privacidad

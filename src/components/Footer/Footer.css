@@ -56,30 +56,36 @@
   gap: 0.6rem;
 }
 
-.footer__credit {
-  display: inline-flex;
+.footer__signature {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
+  padding-top: var(--space-md);
+  text-align: center;
 }
 
-.footer__credit-seal {
+.footer__signature-seal {
   display: block;
-  width: 26px;
-  height: 26px;
-  overflow: hidden;
-  border-radius: 7px;
+  width: 96px;
+  height: 96px;
+  border-radius: 20px;
 }
 
-.footer__credit-seal img {
+.footer__signature-seal img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.38);
   mix-blend-mode: screen;
 }
 
-.footer__credit strong {
+.footer__signature-text {
+  font-size: 0.82rem;
+  color: rgba(251, 241, 226, 0.55);
+}
+
+.footer__signature-text strong {
   color: var(--color-gold-light);
   font-weight: 700;
 }
