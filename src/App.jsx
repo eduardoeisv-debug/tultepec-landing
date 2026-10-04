@@ -2,7 +2,7 @@ import { lazy, Suspense, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header/Header.jsx";
 import Hero from "./components/Hero/Hero.jsx";
-import WelcomeVideo from "./components/WelcomeVideo/WelcomeVideo.jsx";
+import Gallery from "./components/Gallery/Gallery.jsx";
 import Stats from "./components/Stats/Stats.jsx";
 import WhyItMatters from "./components/WhyItMatters/WhyItMatters.jsx";
 import Benefits from "./components/Benefits/Benefits.jsx";
@@ -34,7 +34,7 @@ export default function App() {
       <Header />
       <main>
         <Hero onOpenBooks={() => setBooksModalOpen(true)} />
-        <WelcomeVideo />
+        <Gallery />
         <Stats />
         <WhyItMatters />
         <Benefits />

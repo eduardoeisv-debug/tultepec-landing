@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { ScrollText } from "lucide-react";
+import { ScrollText, Play, Flame } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
-import MosaicTile from "../shared/MosaicTile.jsx";
-import GalleryModal from "../shared/GalleryModal.jsx";
-import { GALLERY_CATEGORIES, coverImage } from "../../data/galleries.js";
 import "./Hero.css";
 
 const BookIcon = (
@@ -23,25 +20,8 @@ const BookIcon = (
   </svg>
 );
 
-const TILE_ICONS = {
-  "castillos-monumentales": "castillo",
-  "san-juan-de-dios": "fuego",
-  "talleres-familiares": "taller",
-  toritos: "torito",
-  mojigangas: "mojiganga",
-};
-
-const TILE_TONES = {
-  "castillos-monumentales": "fire",
-  "san-juan-de-dios": "gold",
-  "talleres-familiares": "night",
-  toritos: "terracotta",
-  mojigangas: "gold",
-};
-
 export default function Hero({ onOpenBooks }) {
-  const [activeGallery, setActiveGallery] = useState(null);
-  const activeCategory = GALLERY_CATEGORIES.find((c) => c.slug === activeGallery);
+  const [playing, setPlaying] = useState(false);
 
   return (
     <section className="hero" id="inicio">
@@ -86,30 +66,36 @@ export default function Hero({ onOpenBooks }) {
           </div>
         </div>
 
-        <div
-          className="hero__visual hero__visual--enter"
-          aria-label="Mosaico ilustrado de la tradición pirotécnica de Tultepec"
-        >
-          {GALLERY_CATEGORIES.map((cat, i) => (
-            <MosaicTile
-              key={cat.slug}
-              icon={TILE_ICONS[cat.slug]}
-              label={cat.label}
-              tone={TILE_TONES[cat.slug]}
-              large={i === 0}
-              image={coverImage(cat.slug)}
-              onClick={() => setActiveGallery(cat.slug)}
-            />
-          ))}
+        <div className="hero__visual hero__visual--enter">
+          <div className="hero__video">
+            {playing ? (
+              <video
+                className="hero__video-el"
+                src="/video/bienvenida.mp4"
+                controls
+                autoPlay
+                playsInline
+                preload="none"
+              />
+            ) : (
+              <button
+                type="button"
+                className="hero__video-poster"
+                onClick={() => setPlaying(true)}
+                aria-label="Reproducir video de bienvenida a Tultepec"
+              >
+                <span className="hero__video-ring hero__video-ring--1" aria-hidden="true" />
+                <span className="hero__video-ring hero__video-ring--2" aria-hidden="true" />
+                <Flame className="hero__video-flame" size={22} strokeWidth={1.5} aria-hidden="true" />
+                <span className="hero__video-play" aria-hidden="true">
+                  <Play size={26} strokeWidth={0} fill="currentColor" />
+                </span>
+                <span className="hero__video-label">Dale play</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
-
-      <GalleryModal
-        open={Boolean(activeCategory)}
-        onClose={() => setActiveGallery(null)}
-        category={activeCategory?.slug}
-        title={activeCategory?.label}
-      />
     </section>
   );
 }
