@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { X, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 import useGalleryImages from "../../hooks/useGalleryImages.js";
+import useScrollLock from "../../hooks/useScrollLock.js";
 import "./GalleryModal.css";
 
 export default function GalleryModal({ open, onClose, category, title }) {
   const { status, images } = useGalleryImages(category, open);
   const [activeIndex, setActiveIndex] = useState(null);
   const dialogRef = useRef(null);
+
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) {
@@ -29,12 +32,10 @@ export default function GalleryModal({ open, onClose, category, title }) {
     };
 
     document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
     dialogRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
     };
   }, [open, onClose, activeIndex, images.length]);
 

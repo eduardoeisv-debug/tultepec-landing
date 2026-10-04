@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Play, Flame } from "lucide-react";
+import { Play, Flame, X } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import MediaHubModal from "../shared/MediaHubModal.jsx";
 import GalleryModal from "../shared/GalleryModal.jsx";
 import VideoGalleryModal from "../shared/VideoGalleryModal.jsx";
 import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
+import useScrollLock from "../../hooks/useScrollLock.js";
 import "./Hero.css";
 
 const BULLET_STOPS = {
@@ -72,6 +73,7 @@ const VIDEO_TILE_TONES = {
 
 export default function Hero({ onOpenBooks }) {
   const [playing, setPlaying] = useState(false);
+  const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
   const [imagesHubOpen, setImagesHubOpen] = useState(false);
   const [videosHubOpen, setVideosHubOpen] = useState(false);
   const [activeImageCategory, setActiveImageCategory] = useState(null);
@@ -79,6 +81,8 @@ export default function Hero({ onOpenBooks }) {
 
   const activeImage = GALLERY_CATEGORIES.find((c) => c.slug === activeImageCategory);
   const activeVideo = VIDEO_CATEGORIES.find((c) => c.slug === activeVideoCategory);
+
+  useScrollLock(mobileVideoOpen);
 
   return (
     <section className="hero" id="inicio">
@@ -90,6 +94,14 @@ export default function Hero({ onOpenBooks }) {
           </span>
           <h1 className="hero__title hero__enter hero__enter--2">
             Capital de la <span>Pirotecnia</span>
+            <button
+              type="button"
+              className="hero__title-video-trigger"
+              onClick={() => setMobileVideoOpen(true)}
+              aria-label="Ver video de bienvenida a Tultepec"
+            >
+              <Play size={16} strokeWidth={0} fill="currentColor" />
+            </button>
           </h1>
           <p className="hero__subtitle hero__enter hero__enter--3">
             Tultepec, reconocido como la capital mundial de la pirotecnia, no fabrica pólvora:
@@ -179,7 +191,10 @@ export default function Hero({ onOpenBooks }) {
 
       <MediaHubModal
         open={imagesHubOpen}
-        onClose={() => setImagesHubOpen(false)}
+        onClose={() => {
+          setImagesHubOpen(false);
+          setActiveImageCategory(null);
+        }}
         eyebrow="Imágenes"
         title="Tradiciones del pueblo en fotos"
         description="Elige una categoría para ver su álbum completo."
@@ -188,15 +203,15 @@ export default function Hero({ onOpenBooks }) {
         tones={IMAGE_TILE_TONES}
         coverFn={coverImage}
         mediaType="image"
-        onSelect={(slug) => {
-          setImagesHubOpen(false);
-          setActiveImageCategory(slug);
-        }}
+        onSelect={(slug) => setActiveImageCategory(slug)}
       />
 
       <MediaHubModal
         open={videosHubOpen}
-        onClose={() => setVideosHubOpen(false)}
+        onClose={() => {
+          setVideosHubOpen(false);
+          setActiveVideoCategory(null);
+        }}
         eyebrow="Videos"
         title="Tradiciones del pueblo en video"
         description="Elige una categoría para ver sus videos."
@@ -205,10 +220,7 @@ export default function Hero({ onOpenBooks }) {
         tones={VIDEO_TILE_TONES}
         coverFn={coverVideo}
         mediaType="video"
-        onSelect={(slug) => {
-          setVideosHubOpen(false);
-          setActiveVideoCategory(slug);
-        }}
+        onSelect={(slug) => setActiveVideoCategory(slug)}
       />
 
       <GalleryModal
@@ -224,6 +236,28 @@ export default function Hero({ onOpenBooks }) {
         category={activeVideo?.slug}
         title={activeVideo?.label}
       />
+
+      {mobileVideoOpen && (
+        <div className="hero__mobile-video-backdrop" onMouseDown={() => setMobileVideoOpen(false)}>
+          <div className="hero__mobile-video-modal" onMouseDown={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="hero__mobile-video-close"
+              onClick={() => setMobileVideoOpen(false)}
+              aria-label="Cerrar"
+            >
+              <X size={18} strokeWidth={2} />
+            </button>
+            <video
+              className="hero__mobile-video-el"
+              src="/video/bienvenida.mp4"
+              controls
+              autoPlay
+              playsInline
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

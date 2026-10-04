@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { X, Camera, Video as VideoIcon } from "lucide-react";
 import useCoverImage from "../../hooks/useCoverImage.js";
 import useCoverVideo from "../../hooks/useCoverVideo.js";
+import useScrollLock from "../../hooks/useScrollLock.js";
 import MosaicTile from "./MosaicTile.jsx";
 import "./MediaHubModal.css";
 
@@ -42,6 +43,8 @@ export default function MediaHubModal({
 }) {
   const dialogRef = useRef(null);
 
+  useScrollLock(open);
+
   useEffect(() => {
     if (!open) return undefined;
 
@@ -50,12 +53,10 @@ export default function MediaHubModal({
     };
 
     document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
     dialogRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
     };
   }, [open, onClose]);
 

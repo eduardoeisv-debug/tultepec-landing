@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { X, Play, ArrowLeft } from "lucide-react";
 import useGalleryVideos from "../../hooks/useGalleryVideos.js";
+import useScrollLock from "../../hooks/useScrollLock.js";
 import "./VideoGalleryModal.css";
 
 export default function VideoGalleryModal({ open, onClose, category, title }) {
   const { status, videos } = useGalleryVideos(category, open);
   const [activeIndex, setActiveIndex] = useState(null);
   const dialogRef = useRef(null);
+
+  useScrollLock(open);
 
   useEffect(() => {
     if (!open) setActiveIndex(null);
@@ -23,12 +26,10 @@ export default function VideoGalleryModal({ open, onClose, category, title }) {
     };
 
     document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
     dialogRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
     };
   }, [open, onClose, activeIndex]);
 
