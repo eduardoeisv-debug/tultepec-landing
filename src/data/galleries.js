@@ -3,7 +3,7 @@
 // El número controla el orden en que aparecen en el álbum.
 export const GALLERY_CATEGORIES = [
   { slug: "castillos-monumentales", label: "Castillos monumentales" },
-  { slug: "san-juan-de-dios", label: "San Juan de Dios" },
+  { slug: "san-juan-de-dios", label: "Religión" },
   { slug: "talleres-familiares", label: "Talleres familiares" },
   { slug: "toritos", label: "Toritos" },
   { slug: "mojigangas", label: "Mojigangas" },
