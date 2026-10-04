@@ -14,33 +14,36 @@ const TABS = [
 // su propia pantalla (modal), en vez de tenerlos siempre desplegados en la
 // página -- misma información, página más corta.
 //
-// El botón "Planea tu visita" del header apunta a #ubicacion, pero el
-// hash no cambia de valor si el usuario ya había hecho clic antes (sigue
-// siendo "#ubicacion"), y sin un cambio de valor el evento "hashchange"
-// nunca se dispara -- un segundo clic no hacía nada. Por eso Header.jsx
-// además dispara un evento "plan-visit:open" en cada clic, sin importar
-// el hash: ese evento sí funciona siempre.
+// El botón "Planea tu visita" del header solo lleva a esta sección (con
+// las 2 opciones a la vista) -- ya no abre "Cómo llegar" directamente, para
+// que la persona elija cuál de las dos quiere explorar. Cerrar cualquiera
+// de los 2 modales siempre regresa a esta misma pantalla con ambas
+// opciones, listas para seguir explorando.
+//
+// El hash no cambia de valor si el usuario ya había hecho scroll aquí
+// antes (sigue siendo "#ubicacion"), y sin un cambio de valor el evento
+// "hashchange" nunca se dispara -- un segundo clic no hacía nada. Por eso
+// Header.jsx además dispara un evento "plan-visit:open" en cada clic, sin
+// importar el hash: ese evento sí funciona siempre.
 export default function PlanVisit() {
   const [openModal, setOpenModal] = useState(null);
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const openTab = (key) => {
-      setOpenModal(key);
+    const scrollToSection = () => {
       requestAnimationFrame(() => sectionRef.current?.scrollIntoView());
     };
     const onHashChange = () => {
       const hash = window.location.hash;
       if (hash !== "#ubicacion" && hash !== "#calendario") return;
-      openTab(hash === "#calendario" ? "calendario" : "ubicacion");
+      scrollToSection();
     };
-    const onOpenEvent = () => openTab("ubicacion");
 
     window.addEventListener("hashchange", onHashChange);
-    window.addEventListener("plan-visit:open", onOpenEvent);
+    window.addEventListener("plan-visit:open", scrollToSection);
     return () => {
       window.removeEventListener("hashchange", onHashChange);
-      window.removeEventListener("plan-visit:open", onOpenEvent);
+      window.removeEventListener("plan-visit:open", scrollToSection);
     };
   }, []);
 
