@@ -10,13 +10,13 @@ export default function Header() {
             <span className="site-header__subtitle">· Pueblo Pirotécnico</span>
           </span>
         </a>
-        <a
+        <button
+          type="button"
           className="btn btn--dark site-header__cta"
-          href="#ubicacion"
           onClick={() => window.dispatchEvent(new Event("plan-visit:open"))}
         >
           Planea tu visita
-        </a>
+        </button>
       </div>
     </header>
   );

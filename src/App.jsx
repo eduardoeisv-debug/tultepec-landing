@@ -2,7 +2,6 @@ import { lazy, Suspense, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header/Header.jsx";
 import Hero from "./components/Hero/Hero.jsx";
-import PlanVisit from "./components/PlanVisit/PlanVisit.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import BooksModal from "./components/shared/BooksModal.jsx";
@@ -38,7 +37,6 @@ export default function App() {
       <Header />
       <main>
         <Hero onOpenBooks={() => setBooksModalOpen(true)} onShareClick={openShare} />
-        <PlanVisit />
         <FinalCTA />
       </main>
       <Footer onOpenPrivacy={openPrivacy} />

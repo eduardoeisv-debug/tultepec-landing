@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Play, Flame, X, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Play, Flame, X, ChevronRight, ChevronLeft } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import TownSilhouette from "../shared/TownSilhouette.jsx";
@@ -9,6 +9,7 @@ import GalleryModal from "../shared/GalleryModal.jsx";
 import VideoGalleryModal from "../shared/VideoGalleryModal.jsx";
 import HistoryModal from "../shared/HistoryModal.jsx";
 import MemoriesModal from "../shared/MemoriesModal.jsx";
+import VisitModal from "../shared/VisitModal.jsx";
 import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import "./Hero.css";
@@ -81,6 +82,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [memoriesOpen, setMemoriesOpen] = useState(false);
+  const [visitOpen, setVisitOpen] = useState(false);
   const [imagesHubOpen, setImagesHubOpen] = useState(false);
   const [videosHubOpen, setVideosHubOpen] = useState(false);
   const [activeImageCategory, setActiveImageCategory] = useState(null);
@@ -90,6 +92,67 @@ export default function Hero({ onOpenBooks, onShareClick }) {
   const activeVideo = VIDEO_CATEGORIES.find((c) => c.slug === activeVideoCategory);
 
   useScrollLock(mobileVideoOpen);
+
+  useEffect(() => {
+    const onOpenVisit = () => setVisitOpen(true);
+    window.addEventListener("plan-visit:open", onOpenVisit);
+    return () => window.removeEventListener("plan-visit:open", onOpenVisit);
+  }, []);
+
+  const trackRef = useRef(null);
+
+  const scrollCarousel = (direction) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const slide = track.querySelector(".hero__carousel-slide");
+    const step = (slide?.offsetWidth || 220) + 12;
+    track.scrollBy({ left: direction * step, behavior: "smooth" });
+  };
+
+  const listItems = [
+    {
+      key: "history",
+      tone: "fire",
+      label: "Explora la historia",
+      tooltip: "Explora los momentos y tradiciones",
+      onClick: () => setHistoryOpen(true),
+    },
+    {
+      key: "memories",
+      tone: "gold",
+      label: "Memorias de mi pueblo",
+      tooltip: 'Conoce los textos de "Memorias de mi pueblo"',
+      onClick: () => setMemoriesOpen(true),
+    },
+    {
+      key: "books",
+      tone: "terracotta",
+      label: "Compendios",
+      tooltip: "Conoce los 3 libros ya publicados sobre la historia de Tultepec",
+      onClick: onOpenBooks,
+    },
+    {
+      key: "images",
+      tone: "gold",
+      label: "Imágenes",
+      tooltip: "Imágenes de Toritos, castillos, talleres, Mojigangas y Religión",
+      onClick: () => setImagesHubOpen(true),
+    },
+    {
+      key: "videos",
+      tone: "terracotta",
+      label: "Videos",
+      tooltip: "Videos de Toritos, castillos, piromusicales",
+      onClick: () => setVideosHubOpen(true),
+    },
+    {
+      key: "visit",
+      tone: "gold",
+      label: "Visítanos",
+      tooltip: "Tu visita a Tultepec",
+      onClick: () => setVisitOpen(true),
+    },
+  ];
 
   return (
     <section className="hero" id="inicio">
@@ -119,68 +182,42 @@ export default function Hero({ onOpenBooks, onShareClick }) {
             Tultepec convierte el fuego en arte: castillos y toritos que sus familias han
             heredado por generaciones.
           </p>
-          <ul className="hero__list hero__enter hero__enter--4">
-            <li className="hero__list-item">
-              <span className="hero__tooltip-wrap">
-                <button type="button" className="hero__list-link" onClick={() => setHistoryOpen(true)}>
-                  <TriangleBullet tone="fire" />
-                  <span>Explora la historia</span>
-                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-                </button>
-                <span className="hero__tooltip" role="tooltip">
-                  Explora los momentos y tradiciones
-                </span>
-              </span>
-            </li>
-            <li className="hero__list-item">
-              <span className="hero__tooltip-wrap">
-                <button type="button" className="hero__list-link" onClick={() => setMemoriesOpen(true)}>
-                  <TriangleBullet tone="gold" />
-                  <span>Memorias de mi pueblo</span>
-                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-                </button>
-                <span className="hero__tooltip" role="tooltip">
-                  Conoce los textos de "Memorias de mi pueblo"
-                </span>
-              </span>
-            </li>
-            <li className="hero__list-item">
-              <span className="hero__tooltip-wrap">
-                <button type="button" className="hero__list-link" onClick={onOpenBooks}>
-                  <TriangleBullet tone="terracotta" />
-                  <span>Compendios</span>
-                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-                </button>
-                <span className="hero__tooltip" role="tooltip">
-                  Conoce los 3 libros ya publicados sobre la historia de Tultepec
-                </span>
-              </span>
-            </li>
-            <li className="hero__list-item">
-              <span className="hero__tooltip-wrap">
-                <button type="button" className="hero__list-link" onClick={() => setImagesHubOpen(true)}>
-                  <TriangleBullet tone="gold" />
-                  <span>Imágenes</span>
-                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-                </button>
-                <span className="hero__tooltip" role="tooltip">
-                  Imágenes de Toritos, castillos, talleres, Mojigangas y Religión
-                </span>
-              </span>
-            </li>
-            <li className="hero__list-item">
-              <span className="hero__tooltip-wrap">
-                <button type="button" className="hero__list-link" onClick={() => setVideosHubOpen(true)}>
-                  <TriangleBullet tone="terracotta" />
-                  <span>Videos</span>
-                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-                </button>
-                <span className="hero__tooltip" role="tooltip">
-                  Videos de Toritos, castillos, piromusicales
-                </span>
-              </span>
-            </li>
-          </ul>
+          <div className="hero__carousel hero__enter hero__enter--4">
+            <button
+              type="button"
+              className="hero__carousel-arrow hero__carousel-arrow--prev"
+              onClick={() => scrollCarousel(-1)}
+              aria-label="Opción anterior"
+            >
+              <ChevronLeft size={18} strokeWidth={2.2} />
+            </button>
+
+            <ul className="hero__carousel-track" ref={trackRef}>
+              {listItems.map((item) => (
+                <li className="hero__carousel-slide" key={item.key}>
+                  <span className="hero__tooltip-wrap">
+                    <button type="button" className="hero__list-link" onClick={item.onClick}>
+                      <TriangleBullet tone={item.tone} />
+                      <span>{item.label}</span>
+                      <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+                    </button>
+                    <span className="hero__tooltip" role="tooltip">
+                      {item.tooltip}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <button
+              type="button"
+              className="hero__carousel-arrow hero__carousel-arrow--next"
+              onClick={() => scrollCarousel(1)}
+              aria-label="Siguiente opción"
+            >
+              <ChevronRight size={18} strokeWidth={2.2} />
+            </button>
+          </div>
         </div>
 
         <div className="hero__visual hero__visual--enter">
@@ -217,6 +254,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
       <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} />
       <MemoriesModal open={memoriesOpen} onClose={() => setMemoriesOpen(false)} onShareClick={onShareClick} />
+      <VisitModal open={visitOpen} onClose={() => setVisitOpen(false)} />
 
       <MediaHubModal
         open={imagesHubOpen}
