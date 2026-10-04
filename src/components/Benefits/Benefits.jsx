@@ -36,12 +36,13 @@ const ICONS = [
   </svg>,
 ];
 
-export default function Benefits() {
+export default function Benefits({ embedded = false }) {
   const ref = useReveal();
+  const Wrapper = embedded ? "div" : "section";
 
   return (
-    <section className="benefits" ref={ref}>
-      <div className="container">
+    <Wrapper className={`benefits ${embedded ? "benefits--embedded" : ""}`} ref={ref}>
+      <div className={embedded ? "" : "container"}>
         <div className="section-head reveal">
           <span className="eyebrow">Lo que vas a encontrar</span>
           <h2>Un álbum de memorias, no un folleto</h2>
@@ -57,6 +58,6 @@ export default function Benefits() {
           ))}
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }

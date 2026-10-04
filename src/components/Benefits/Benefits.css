@@ -2,6 +2,10 @@
   padding: var(--space-xl) 0;
 }
 
+.benefits--embedded {
+  padding: 0 0 var(--space-lg);
+}
+
 .benefits__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
