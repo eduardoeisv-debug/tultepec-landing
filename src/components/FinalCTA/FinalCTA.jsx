@@ -1,11 +1,15 @@
+import { useState } from "react";
+import { MessageCircle } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import ShareButtons from "../shared/ShareButtons.jsx";
 import LikeButton from "../shared/LikeButton.jsx";
+import CommentModal from "../shared/CommentModal.jsx";
 import useReveal from "../../hooks/useReveal.js";
 import "./FinalCTA.css";
 
 export default function FinalCTA() {
   const ref = useReveal();
+  const [commentOpen, setCommentOpen] = useState(false);
 
   return (
     <section className="final-cta" ref={ref}>
@@ -17,17 +21,36 @@ export default function FinalCTA() {
           Vuelve cuando quieras seguir el hilo de la tradición.
         </p>
         <div className="final-cta__actions">
-          <a className="btn btn--primary" href="#tradiciones">
+          <button
+            type="button"
+            className="btn btn--primary"
+            onClick={() => window.dispatchEvent(new Event("hero:open-history"))}
+          >
             Sigue explorando el archivo
-          </a>
+          </button>
         </div>
 
-        <LikeButton />
+        <div className="final-cta__engage">
+          <p className="final-cta__engage-text">
+            Hola, si te gustó el contenido de este sitio, déjanos tu like y un comentario
+          </p>
+          <div className="final-cta__engage-actions">
+            <LikeButton />
+            <button type="button" className="comment-button" onClick={() => setCommentOpen(true)}>
+              <span className="comment-button__icon">
+                <MessageCircle size={18} strokeWidth={1.8} />
+              </span>
+              <span>Comentar</span>
+            </button>
+          </div>
+        </div>
 
         <div className="final-cta__share">
           <ShareButtons />
         </div>
       </div>
+
+      <CommentModal open={commentOpen} onClose={() => setCommentOpen(false)} />
     </section>
   );
 }

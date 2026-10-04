@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { login, logout, fetchMemories, updateMemoryStatus } from "../lib/moderationClient.js";
+import {
+  login,
+  logout,
+  fetchMemories,
+  updateMemoryStatus,
+  fetchComments,
+  updateCommentStatus,
+} from "../lib/moderationClient.js";
 import { fetchAllTestimonials, saveTestimonial, deleteTestimonial } from "../lib/testimonialsAdminClient.js";
 import {
   fetchAllFestivalEvents,
@@ -19,6 +26,7 @@ const TABS = [
 const SECTIONS = [
   { key: "memories", label: "Memorias de la comunidad" },
   { key: "testimonials", label: "Voces del pueblo" },
+  { key: "comments", label: "Comentarios" },
   { key: "events", label: "Calendario de fiestas" },
 ];
 
@@ -205,6 +213,130 @@ function MemoriesSection() {
         <div className="moderation-list">
           {filtered.map((m) => (
             <MemoryRow key={m.id} memory={m} onUpdate={handleUpdate} />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+function CommentRow({ comment, onUpdate }) {
+  const [busy, setBusy] = useState(false);
+
+  const handleAction = async (status) => {
+    setBusy(true);
+    await onUpdate(comment.id, status);
+    setBusy(false);
+  };
+
+  return (
+    <article className={`moderation-card moderation-card--${comment.status}`}>
+      <div className="moderation-card__meta">
+        <span className={`moderation-card__status moderation-card__status--${comment.status}`}>
+          {comment.status}
+        </span>
+        <span>{dateFormatter.format(new Date(comment.created_at))}</span>
+      </div>
+
+      <p className="moderation-card__text">"{comment.comment_text}"</p>
+
+      <div className="moderation-card__details">
+        <span>
+          <strong>{comment.display_name || "Anónimo"}</strong>
+        </span>
+        {comment.contact_email && <span>Correo: {comment.contact_email}</span>}
+      </div>
+
+      <div className="moderation-card__actions">
+        {comment.status !== "approved" && (
+          <button
+            type="button"
+            className="btn btn--primary"
+            disabled={busy}
+            onClick={() => handleAction("approved")}
+          >
+            Aprobar
+          </button>
+        )}
+        {comment.status !== "rejected" && (
+          <button
+            type="button"
+            className="btn btn--ghost btn--on-light"
+            disabled={busy}
+            onClick={() => handleAction("rejected")}
+          >
+            Rechazar
+          </button>
+        )}
+        {comment.status !== "pending" && (
+          <button
+            type="button"
+            className="moderation-card__revert"
+            disabled={busy}
+            onClick={() => handleAction("pending")}
+          >
+            Volver a pendiente
+          </button>
+        )}
+      </div>
+    </article>
+  );
+}
+
+function CommentsSection() {
+  const [comments, setComments] = useState([]);
+  const [tab, setTab] = useState("pending");
+  const [status, setStatus] = useState("loading"); // loading | ready | error
+
+  const load = async () => {
+    setStatus("loading");
+    const { ok, comments: data } = await fetchComments();
+    if (!ok) {
+      setStatus("error");
+      return;
+    }
+    setComments(data);
+    setStatus("ready");
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const handleUpdate = async (id, newStatus) => {
+    await updateCommentStatus(id, newStatus);
+    setComments((prev) => prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c)));
+  };
+
+  const filtered = tab === "all" ? comments : comments.filter((c) => c.status === tab);
+  const counts = Object.fromEntries(
+    TABS.map((t) => [t.key, t.key === "all" ? comments.length : comments.filter((c) => c.status === t.key).length])
+  );
+
+  return (
+    <>
+      <nav className="moderation-tabs">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            className={`moderation-tabs__item ${tab === t.key ? "moderation-tabs__item--active" : ""}`}
+            onClick={() => setTab(t.key)}
+          >
+            {t.label} ({counts[t.key]})
+          </button>
+        ))}
+      </nav>
+
+      {status === "loading" && <p>Cargando comentarios…</p>}
+      {status === "error" && <p>No se pudieron cargar los comentarios. Recarga la página.</p>}
+
+      {status === "ready" && filtered.length === 0 && <p>No hay comentarios en esta categoría.</p>}
+
+      {status === "ready" && filtered.length > 0 && (
+        <div className="moderation-list">
+          {filtered.map((c) => (
+            <CommentRow key={c.id} comment={c} onUpdate={handleUpdate} />
           ))}
         </div>
       )}
@@ -615,6 +747,7 @@ function Panel() {
 
       {section === "memories" && <MemoriesSection />}
       {section === "testimonials" && <TestimonialsSection />}
+      {section === "comments" && <CommentsSection />}
       {section === "events" && <EventsSection />}
     </div>
   );

@@ -14,7 +14,7 @@ export function login(password) {
 }
 
 export function logout() {
-  return postJson("/api/moderation-logout");
+  return postJson("/api/moderation-login", { logout: true });
 }
 
 export async function fetchMemories() {
@@ -25,4 +25,14 @@ export async function fetchMemories() {
 
 export function updateMemoryStatus(id, status) {
   return postJson("/api/moderation-update", { id, status });
+}
+
+export async function fetchComments() {
+  const res = await fetch("/api/moderation-comments", { credentials: "same-origin" });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok && data.ok, status: res.status, comments: data.comments || [] };
+}
+
+export function updateCommentStatus(id, status) {
+  return postJson("/api/moderation-comments", { id, status });
 }
