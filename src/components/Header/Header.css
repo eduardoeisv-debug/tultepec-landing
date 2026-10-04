@@ -33,11 +33,11 @@
 
 .site-header__seal {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 7px;
+  border-radius: 9px;
 }
 
 .site-header__seal img {
@@ -78,7 +78,7 @@
   }
 
   .site-header__seal {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
   }
 }
