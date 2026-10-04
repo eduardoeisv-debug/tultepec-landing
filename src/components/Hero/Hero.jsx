@@ -116,10 +116,8 @@ export default function Hero({ onOpenBooks, onShareClick }) {
             Ver video
           </button>
           <p className="hero__subtitle hero__enter hero__enter--3">
-            Tultepec, reconocido como la capital mundial de la pirotecnia, no fabrica pólvora:
-            transforma el fuego en arte multicolor. Sus tradicionales castillos y toritos son
-            parte de un oficio artesanal que las familias de la comunidad han preservado y
-            transmitido por generaciones.
+            Tultepec convierte el fuego en arte: castillos y toritos que sus familias han
+            heredado por generaciones.
           </p>
           <ul className="hero__list hero__enter hero__enter--4">
             <li className="hero__list-item">
@@ -159,18 +157,28 @@ export default function Hero({ onOpenBooks, onShareClick }) {
               </span>
             </li>
             <li className="hero__list-item">
-              <button type="button" className="hero__list-link" onClick={() => setImagesHubOpen(true)}>
-                <TriangleBullet tone="gold" />
-                <span>Imágenes</span>
-                <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-              </button>
+              <span className="hero__tooltip-wrap">
+                <button type="button" className="hero__list-link" onClick={() => setImagesHubOpen(true)}>
+                  <TriangleBullet tone="gold" />
+                  <span>Imágenes</span>
+                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+                </button>
+                <span className="hero__tooltip" role="tooltip">
+                  Imágenes de Toritos, castillos, talleres, Mojigangas y Religión
+                </span>
+              </span>
             </li>
             <li className="hero__list-item">
-              <button type="button" className="hero__list-link" onClick={() => setVideosHubOpen(true)}>
-                <TriangleBullet tone="terracotta" />
-                <span>Videos</span>
-                <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-              </button>
+              <span className="hero__tooltip-wrap">
+                <button type="button" className="hero__list-link" onClick={() => setVideosHubOpen(true)}>
+                  <TriangleBullet tone="terracotta" />
+                  <span>Videos</span>
+                  <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+                </button>
+                <span className="hero__tooltip" role="tooltip">
+                  Videos de Toritos, castillos, piromusicales
+                </span>
+              </span>
             </li>
           </ul>
         </div>
