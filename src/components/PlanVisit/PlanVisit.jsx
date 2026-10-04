@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { CalendarDays, MapPinned } from "lucide-react";
 import FestivalCalendar from "../FestivalCalendar/FestivalCalendar.jsx";
 import Location from "../Location/Location.jsx";
+import ContentModal from "../shared/ContentModal.jsx";
 import "./PlanVisit.css";
 
 const TABS = [
@@ -9,9 +10,9 @@ const TABS = [
   { key: "calendario", label: "Calendario de fiestas", icon: CalendarDays },
 ];
 
-// Agrupa el calendario y "cómo llegar" bajo un solo bloque con pestañas,
-// en vez de dos secciones grandes apiladas una tras otra -- misma
-// información, página más corta.
+// Dos botones que abren "Cómo llegar" y "Calendario de fiestas" cada uno en
+// su propia pantalla (modal), en vez de tenerlos siempre desplegados en la
+// página -- misma información, página más corta.
 //
 // El botón "Planea tu visita" del header apunta a #ubicacion, pero el
 // hash no cambia de valor si el usuario ya había hecho clic antes (sigue
@@ -20,12 +21,12 @@ const TABS = [
 // además dispara un evento "plan-visit:open" en cada clic, sin importar
 // el hash: ese evento sí funciona siempre.
 export default function PlanVisit() {
-  const [tab, setTab] = useState(() => (window.location.hash === "#calendario" ? "calendario" : "ubicacion"));
+  const [openModal, setOpenModal] = useState(null);
   const sectionRef = useRef(null);
 
   useEffect(() => {
     const openTab = (key) => {
-      setTab(key);
+      setOpenModal(key);
       requestAnimationFrame(() => sectionRef.current?.scrollIntoView());
     };
     const onHashChange = () => {
@@ -59,9 +60,8 @@ export default function PlanVisit() {
                 key={t.key}
                 type="button"
                 role="tab"
-                aria-selected={tab === t.key}
-                className={`plan-visit__tab ${tab === t.key ? "plan-visit__tab--active" : ""}`}
-                onClick={() => setTab(t.key)}
+                className="plan-visit__tab"
+                onClick={() => setOpenModal(t.key)}
               >
                 <Icon size={17} strokeWidth={1.8} />
                 {t.label}
@@ -69,9 +69,25 @@ export default function PlanVisit() {
             );
           })}
         </div>
-
-        {tab === "calendario" ? <FestivalCalendar embedded /> : <Location embedded />}
       </div>
+
+      <ContentModal
+        open={openModal === "ubicacion"}
+        onClose={() => setOpenModal(null)}
+        eyebrow="Cómo llegar"
+        title="Tultepec está más cerca de lo que crees"
+      >
+        <Location embedded />
+      </ContentModal>
+
+      <ContentModal
+        open={openModal === "calendario"}
+        onClose={() => setOpenModal(null)}
+        eyebrow="Calendario de fiestas"
+        title="¿Cuándo vienes?"
+      >
+        <FestivalCalendar embedded />
+      </ContentModal>
     </section>
   );
 }

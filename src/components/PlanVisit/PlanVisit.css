@@ -7,7 +7,6 @@
   display: flex;
   justify-content: center;
   gap: 0.6rem;
-  margin-bottom: var(--space-lg);
   flex-wrap: wrap;
 }
 
@@ -30,16 +29,6 @@
 .plan-visit__tab:hover {
   border-color: var(--color-terracotta);
   color: var(--color-terracotta);
-}
-
-.plan-visit__tab--active {
-  background: var(--color-terracotta);
-  border-color: var(--color-terracotta);
-  color: var(--color-paper);
-}
-
-.plan-visit__tab--active:hover {
-  color: var(--color-paper);
 }
 
 @media (max-width: 560px) {
