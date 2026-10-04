@@ -60,10 +60,15 @@ export default function Hero({ onOpenBooks }) {
           </p>
           <ul className="hero__list hero__enter hero__enter--4">
             <li className="hero__list-item">
-              <a className="hero__list-link" href="#tradiciones">
-                <TriangleBullet tone="fire" />
-                <span>Explora la historia</span>
-              </a>
+              <span className="hero__tooltip-wrap">
+                <a className="hero__list-link" href="#tradiciones">
+                  <TriangleBullet tone="fire" />
+                  <span>Explora la historia</span>
+                </a>
+                <span className="hero__tooltip" role="tooltip">
+                  Explora los momentos y tradiciones
+                </span>
+              </span>
             </li>
             <li className="hero__list-item">
               <span className="hero__tooltip-wrap">
