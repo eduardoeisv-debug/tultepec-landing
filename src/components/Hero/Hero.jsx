@@ -66,10 +66,15 @@ export default function Hero({ onOpenBooks }) {
               </a>
             </li>
             <li className="hero__list-item">
-              <a className="hero__list-link" href="#voces">
-                <TriangleBullet tone="gold" />
-                <span>Conoce los textos de "Memorias de mi pueblo"</span>
-              </a>
+              <span className="hero__tooltip-wrap">
+                <a className="hero__list-link" href="#voces">
+                  <TriangleBullet tone="gold" />
+                  <span>Memorias de mi pueblo</span>
+                </a>
+                <span className="hero__tooltip" role="tooltip">
+                  Conoce los textos de "Memorias de mi pueblo"
+                </span>
+              </span>
             </li>
             <li className="hero__list-item">
               <span className="hero__tooltip-wrap">
