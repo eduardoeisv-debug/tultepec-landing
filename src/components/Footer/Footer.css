@@ -56,6 +56,23 @@
   gap: 0.6rem;
 }
 
+.footer__credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer__credit-seal {
+  width: 26px;
+  height: 26px;
+  mix-blend-mode: screen;
+}
+
+.footer__credit strong {
+  color: var(--color-gold-light);
+  font-weight: 700;
+}
+
 .footer__privacy-link {
   background: none;
   border: 1px solid rgba(227, 171, 61, 0.35);
