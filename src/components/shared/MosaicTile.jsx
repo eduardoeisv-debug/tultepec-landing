@@ -1,5 +1,4 @@
 import { Camera } from "lucide-react";
-import useCoverImage from "../../hooks/useCoverImage.js";
 import "./MosaicTile.css";
 
 // Grosor de línea unificado (1.8, con puntas y uniones redondeadas) para que
@@ -79,15 +78,32 @@ const ICONS = {
       <path d="M12 44 L18 52 M52 44 L46 52" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   ),
+  piromusical: (
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="46" r="7" fill="currentColor" />
+      <path d="M29 46 V14 L46 10 V38" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <circle cx="39" cy="38" r="7" fill="currentColor" />
+      <path d="M52 10 L54 16 M56 14 L50 18 M56 8 L50 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  ),
 };
 
 // El ícono ilustrado siempre se mantiene visible (no se reemplaza por una
-// foto de fondo, para no restarle legibilidad al título). `image`, si se
-// pasa y existe, solo se usa para mostrar una pequeña insignia de cámara en
-// la esquina, indicando que esa categoría ya tiene álbum. `onClick`, si se
-// pasa, vuelve la tarjeta un botón que abre el álbum completo.
-export default function MosaicTile({ icon, label, tone = "terracotta", large = false, image, onClick }) {
-  const hasPhotos = useCoverImage(image);
+// foto de fondo, para no restarle legibilidad al título). `hasMedia`, si es
+// true, muestra una pequeña insignia en la esquina (cámara por defecto, o
+// `badgeIcon` si se pasa otro), indicando que esa categoría ya tiene
+// contenido. `onClick`, si se pasa, vuelve la tarjeta un botón que abre el
+// contenido completo.
+export default function MosaicTile({
+  icon,
+  label,
+  tone = "terracotta",
+  large = false,
+  hasMedia = false,
+  badgeIcon: BadgeIcon = Camera,
+  badgeTitle = "Ver fotos",
+  onClick,
+}) {
   const Tag = onClick ? "button" : "div";
 
   return (
@@ -98,9 +114,9 @@ export default function MosaicTile({ icon, label, tone = "terracotta", large = f
       }`}
       onClick={onClick}
     >
-      {hasPhotos && (
-        <span className="mosaic-tile__badge" title="Ver fotos" aria-hidden="true">
-          <Camera size={14} strokeWidth={1.8} />
+      {hasMedia && (
+        <span className="mosaic-tile__badge" title={badgeTitle} aria-hidden="true">
+          <BadgeIcon size={14} strokeWidth={1.8} />
         </span>
       )}
       <span className="mosaic-tile__icon">{ICONS[icon]}</span>

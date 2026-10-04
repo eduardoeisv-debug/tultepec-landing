@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Play, Flame } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
+import MediaHubModal from "../shared/MediaHubModal.jsx";
+import GalleryModal from "../shared/GalleryModal.jsx";
+import VideoGalleryModal from "../shared/VideoGalleryModal.jsx";
+import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
 import "./Hero.css";
 
 const BULLET_STOPS = {
@@ -38,8 +42,43 @@ function TriangleBullet({ tone }) {
   );
 }
 
+const IMAGE_TILE_ICONS = {
+  "castillos-monumentales": "castillo",
+  "san-juan-de-dios": "fuego",
+  "talleres-familiares": "taller",
+  toritos: "torito",
+  mojigangas: "mojiganga",
+};
+
+const IMAGE_TILE_TONES = {
+  "castillos-monumentales": "fire",
+  "san-juan-de-dios": "gold",
+  "talleres-familiares": "night",
+  toritos: "terracotta",
+  mojigangas: "gold",
+};
+
+const VIDEO_TILE_ICONS = {
+  toritos: "torito",
+  "castillos-monumentales": "castillo",
+  piromusicales: "piromusical",
+};
+
+const VIDEO_TILE_TONES = {
+  toritos: "terracotta",
+  "castillos-monumentales": "fire",
+  piromusicales: "night",
+};
+
 export default function Hero({ onOpenBooks }) {
   const [playing, setPlaying] = useState(false);
+  const [imagesHubOpen, setImagesHubOpen] = useState(false);
+  const [videosHubOpen, setVideosHubOpen] = useState(false);
+  const [activeImageCategory, setActiveImageCategory] = useState(null);
+  const [activeVideoCategory, setActiveVideoCategory] = useState(null);
+
+  const activeImage = GALLERY_CATEGORIES.find((c) => c.slug === activeImageCategory);
+  const activeVideo = VIDEO_CATEGORIES.find((c) => c.slug === activeVideoCategory);
 
   return (
     <section className="hero" id="inicio">
@@ -92,6 +131,18 @@ export default function Hero({ onOpenBooks }) {
                 </span>
               </span>
             </li>
+            <li className="hero__list-item">
+              <a className="hero__list-link" href="#" onClick={(e) => { e.preventDefault(); setImagesHubOpen(true); }}>
+                <TriangleBullet tone="gold" />
+                <span>Imágenes - tradiciones del pueblo</span>
+              </a>
+            </li>
+            <li className="hero__list-item">
+              <a className="hero__list-link" href="#" onClick={(e) => { e.preventDefault(); setVideosHubOpen(true); }}>
+                <TriangleBullet tone="terracotta" />
+                <span>Videos - tradiciones del pueblo</span>
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -125,6 +176,54 @@ export default function Hero({ onOpenBooks }) {
           </div>
         </div>
       </div>
+
+      <MediaHubModal
+        open={imagesHubOpen}
+        onClose={() => setImagesHubOpen(false)}
+        eyebrow="Imágenes"
+        title="Tradiciones del pueblo en fotos"
+        description="Elige una categoría para ver su álbum completo."
+        categories={GALLERY_CATEGORIES}
+        icons={IMAGE_TILE_ICONS}
+        tones={IMAGE_TILE_TONES}
+        coverFn={coverImage}
+        mediaType="image"
+        onSelect={(slug) => {
+          setImagesHubOpen(false);
+          setActiveImageCategory(slug);
+        }}
+      />
+
+      <MediaHubModal
+        open={videosHubOpen}
+        onClose={() => setVideosHubOpen(false)}
+        eyebrow="Videos"
+        title="Tradiciones del pueblo en video"
+        description="Elige una categoría para ver sus videos."
+        categories={VIDEO_CATEGORIES}
+        icons={VIDEO_TILE_ICONS}
+        tones={VIDEO_TILE_TONES}
+        coverFn={coverVideo}
+        mediaType="video"
+        onSelect={(slug) => {
+          setVideosHubOpen(false);
+          setActiveVideoCategory(slug);
+        }}
+      />
+
+      <GalleryModal
+        open={Boolean(activeImage)}
+        onClose={() => setActiveImageCategory(null)}
+        category={activeImage?.slug}
+        title={activeImage?.label}
+      />
+
+      <VideoGalleryModal
+        open={Boolean(activeVideo)}
+        onClose={() => setActiveVideoCategory(null)}
+        category={activeVideo?.slug}
+        title={activeVideo?.label}
+      />
     </section>
   );
 }
