@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Play } from "lucide-react";
+import { Play, Flame } from "lucide-react";
 import useReveal from "../../hooks/useReveal.js";
 import "./WelcomeVideo.css";
 
@@ -37,15 +37,13 @@ export default function WelcomeVideo() {
               onClick={() => setPlaying(true)}
               aria-label="Reproducir video de bienvenida a Tultepec"
             >
-              <img
-                src="/images/castillos-monumentales/16.png"
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-              />
+              <span className="welcome-video__ring welcome-video__ring--1" aria-hidden="true" />
+              <span className="welcome-video__ring welcome-video__ring--2" aria-hidden="true" />
+              <Flame className="welcome-video__flame" size={22} strokeWidth={1.5} aria-hidden="true" />
               <span className="welcome-video__play" aria-hidden="true">
                 <Play size={26} strokeWidth={0} fill="currentColor" />
               </span>
+              <span className="welcome-video__cta-label">Dale play</span>
             </button>
           )}
         </div>
