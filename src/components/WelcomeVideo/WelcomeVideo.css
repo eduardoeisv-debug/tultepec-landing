@@ -1,0 +1,113 @@
+.welcome-video {
+  background: var(--color-night-900);
+  padding: var(--space-xl) 0;
+  color: var(--color-paper);
+}
+
+.welcome-video__layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.welcome-video__copy .eyebrow {
+  color: var(--color-gold-light);
+}
+
+.welcome-video__copy h2 {
+  font-size: var(--fs-h2);
+  margin: 0.6rem 0 1rem;
+}
+
+.welcome-video__copy p {
+  color: rgba(251, 241, 226, 0.82);
+  font-size: var(--fs-body);
+  max-width: 46ch;
+}
+
+.welcome-video__player {
+  justify-self: center;
+  width: min(300px, 70vw);
+  aspect-ratio: 478 / 850;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-deep);
+  background: var(--color-night-950);
+  position: relative;
+}
+
+.welcome-video__poster {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.welcome-video__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.welcome-video__poster:hover img {
+  transform: scale(1.04);
+}
+
+.welcome-video__poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(10, 14, 36, 0.55), rgba(10, 14, 36, 0) 45%);
+}
+
+.welcome-video__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: var(--color-night-900);
+  box-shadow: 0 10px 30px -10px rgba(227, 171, 61, 0.7);
+  transition: transform 0.25s var(--ease-out), background 0.25s var(--ease-out);
+}
+
+.welcome-video__poster:hover .welcome-video__play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: var(--color-gold-light);
+}
+
+.welcome-video__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: var(--color-night-950);
+}
+
+@media (max-width: 860px) {
+  .welcome-video__layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .welcome-video__copy p {
+    margin-inline: auto;
+  }
+
+  .welcome-video__player {
+    order: -1;
+    width: min(320px, 80vw);
+  }
+}
