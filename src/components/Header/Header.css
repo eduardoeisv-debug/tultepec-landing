@@ -16,6 +16,9 @@
 }
 
 .site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.05rem;
@@ -23,9 +26,27 @@
   text-decoration: none;
 }
 
-.site-header__brand span {
+.site-header__subtitle {
   color: var(--color-gold-light);
   font-weight: 500;
+}
+
+.site-header__seal {
+  display: block;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 7px;
+}
+
+.site-header__seal img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.38);
+  mix-blend-mode: screen;
 }
 
 .site-header__cta {
@@ -40,7 +61,7 @@
 }
 
 @media (max-width: 640px) {
-  .site-header__brand span {
+  .site-header__subtitle {
     display: none;
   }
 
@@ -53,5 +74,11 @@
 @media (max-width: 360px) {
   .site-header__brand {
     font-size: 0.92rem;
+    gap: 0.4rem;
+  }
+
+  .site-header__seal {
+    width: 24px;
+    height: 24px;
   }
 }

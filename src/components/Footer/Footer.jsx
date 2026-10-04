@@ -30,7 +30,9 @@ export default function Footer({ onOpenPrivacy }) {
       </div>
       <div className="container footer__bottom">
         <span className="footer__credit">
-          <img src="/images/brand/ea-seal.jpg" alt="Sello EA" className="footer__credit-seal" />
+          <span className="footer__credit-seal">
+            <img src="/images/brand/ea-seal.jpg" alt="Sello EA" />
+          </span>
           Hecho por <strong>EA</strong>
         </span>
         <span>© {new Date().getFullYear()} Tultepec · Pueblo Pirotécnico — proyecto de portafolio.</span>

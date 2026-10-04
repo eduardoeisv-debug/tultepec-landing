@@ -5,7 +5,10 @@ export default function Header() {
     <header className="site-header">
       <div className="container site-header__inner">
         <a className="site-header__brand" href="#inicio">
-          Tultepec <span>· Pueblo Pirotécnico</span>
+          <span className="site-header__seal">
+            <img src="/images/brand/ea-seal.jpg" alt="" aria-hidden="true" />
+          </span>
+          Tultepec <span className="site-header__subtitle">· Pueblo Pirotécnico</span>
         </a>
         <a
           className="btn btn--dark site-header__cta"
