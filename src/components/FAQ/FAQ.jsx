@@ -3,13 +3,14 @@ import { faqs } from "../../data/content.js";
 import useReveal from "../../hooks/useReveal.js";
 import "./FAQ.css";
 
-export default function FAQ() {
+export default function FAQ({ embedded = false }) {
   const [openIndex, setOpenIndex] = useState(0);
   const ref = useReveal();
+  const Wrapper = embedded ? "div" : "section";
 
   return (
-    <section className="faq" ref={ref}>
-      <div className="container">
+    <Wrapper className={`faq ${embedded ? "faq--embedded" : ""}`} ref={ref}>
+      <div className={embedded ? "" : "container"}>
         <div className="section-head reveal">
           <span className="eyebrow">Preguntas frecuentes</span>
           <h2>Para entender mejor la tradición</h2>
@@ -44,6 +45,6 @@ export default function FAQ() {
           </div>
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }

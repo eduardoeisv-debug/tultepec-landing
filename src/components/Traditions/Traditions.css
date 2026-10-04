@@ -4,6 +4,11 @@
   padding-bottom: var(--space-xl);
 }
 
+.traditions--embedded {
+  background: none;
+  padding-bottom: 0;
+}
+
 .traditions__timeline {
   position: relative;
   display: flex;

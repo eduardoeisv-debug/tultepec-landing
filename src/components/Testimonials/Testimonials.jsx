@@ -12,8 +12,9 @@ const QuoteMark = (
   </svg>
 );
 
-export default function Testimonials({ onShareClick }) {
+export default function Testimonials({ onShareClick, embedded = false }) {
   const ref = useReveal();
+  const Wrapper = embedded ? "div" : "section";
   const [status, setStatus] = useState("loading"); // loading | ready | empty | error
   const [items, setItems] = useState([]);
   const [active, setActive] = useState(0);
@@ -65,8 +66,8 @@ export default function Testimonials({ onShareClick }) {
   const current = items[active];
 
   return (
-    <section className="testimonials" id="voces" ref={ref}>
-      <div className="container">
+    <Wrapper className={`testimonials ${embedded ? "testimonials--embedded" : ""}`} id={embedded ? undefined : "voces"} ref={ref}>
+      <div className={embedded ? "" : "container"}>
         <div className="section-head section-head--center reveal">
           <span className="eyebrow eyebrow--light">Voces del pueblo</span>
           <h2 className="testimonials__title">Lo que cuentan quienes lo viven</h2>
@@ -142,6 +143,6 @@ export default function Testimonials({ onShareClick }) {
           </div>
         )}
       </div>
-    </section>
+    </Wrapper>
   );
 }

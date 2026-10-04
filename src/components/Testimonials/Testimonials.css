@@ -4,6 +4,11 @@
   padding: var(--space-xl) 0;
 }
 
+.testimonials--embedded {
+  padding: var(--space-lg) var(--space-md);
+  border-radius: var(--radius-lg);
+}
+
 .testimonials__title {
   color: var(--color-paper);
 }

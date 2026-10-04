@@ -3,6 +3,11 @@
   background: var(--color-paper);
 }
 
+.stats--embedded {
+  padding: 0 0 var(--space-lg);
+  background: none;
+}
+
 .stats__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

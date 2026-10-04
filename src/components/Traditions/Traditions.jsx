@@ -5,14 +5,15 @@ import useReveal from "../../hooks/useReveal.js";
 import useParallax from "../../hooks/useParallax.js";
 import "./Traditions.css";
 
-export default function Traditions() {
+export default function Traditions({ embedded = false }) {
   const headRef = useReveal();
   const lineRef = useParallax(30);
+  const Wrapper = embedded ? "div" : "section";
 
   return (
-    <section className="traditions" id="tradiciones">
-      <PapelPicadoDivider />
-      <div className="container">
+    <Wrapper className={`traditions ${embedded ? "traditions--embedded" : ""}`}>
+      {!embedded && <PapelPicadoDivider />}
+      <div className={embedded ? "" : "container"}>
         <div className="section-head section-head--center reveal" ref={headRef}>
           <span className="eyebrow">Momentos y tradiciones</span>
           <h2>La línea de tiempo del oficio</h2>
@@ -35,6 +36,6 @@ export default function Traditions() {
           ))}
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }

@@ -6,12 +6,13 @@ import "./Stats.css";
 const ICONS = [History, Flame, Users, Hammer];
 const TONES = ["terracotta", "fire", "gold", "terracotta-dark"];
 
-export default function Stats() {
+export default function Stats({ embedded = false }) {
   const ref = useReveal();
+  const Wrapper = embedded ? "div" : "section";
 
   return (
-    <section className="stats" ref={ref}>
-      <div className="container">
+    <Wrapper className={`stats ${embedded ? "stats--embedded" : ""}`} ref={ref}>
+      <div className={embedded ? "" : "container"}>
         <div className="section-head section-head--center reveal">
           <span className="eyebrow">De un vistazo</span>
           <h2>Una tradición que se mide en generaciones</h2>
@@ -43,6 +44,6 @@ export default function Stats() {
           })}
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }

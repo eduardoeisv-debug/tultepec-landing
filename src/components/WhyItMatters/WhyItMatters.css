@@ -3,6 +3,11 @@
   padding: var(--space-xl) 0;
 }
 
+.why--embedded {
+  background: none;
+  padding: 0 0 var(--space-lg);
+}
+
 .why__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -3,6 +3,11 @@
   padding: var(--space-xl) 0;
 }
 
+.faq--embedded {
+  background: none;
+  padding: 0;
+}
+
 .faq__layout {
   display: grid;
   grid-template-columns: 1.2fr 1fr;

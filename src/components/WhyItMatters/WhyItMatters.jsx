@@ -6,12 +6,13 @@ import "./WhyItMatters.css";
 const ICONS = [Mic, HeartCrack, ShieldCheck];
 const TONES = ["terracotta", "fire", "gold"];
 
-export default function WhyItMatters() {
+export default function WhyItMatters({ embedded = false }) {
   const ref = useReveal();
+  const Wrapper = embedded ? "div" : "section";
 
   return (
-    <section className="why" ref={ref}>
-      <div className="container">
+    <Wrapper className={`why ${embedded ? "why--embedded" : ""}`} ref={ref}>
+      <div className={embedded ? "" : "container"}>
         <div className="section-head reveal">
           <span className="eyebrow">Por qué esta historia importa</span>
           <h2>Entre el orgullo y el riesgo de olvidar</h2>
@@ -41,6 +42,6 @@ export default function WhyItMatters() {
           })}
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }
