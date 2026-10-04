@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Play, Flame, X, ChevronRight } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import MediaHubModal from "../shared/MediaHubModal.jsx";
@@ -87,12 +87,6 @@ export default function Hero({ onOpenBooks, onShareClick }) {
   const activeVideo = VIDEO_CATEGORIES.find((c) => c.slug === activeVideoCategory);
 
   useScrollLock(mobileVideoOpen);
-
-  useEffect(() => {
-    const onOpenHistory = () => setHistoryOpen(true);
-    window.addEventListener("hero:open-history", onOpenHistory);
-    return () => window.removeEventListener("hero:open-history", onOpenHistory);
-  }, []);
 
   return (
     <section className="hero" id="inicio">

@@ -20,16 +20,6 @@ export default function FinalCTA() {
           Cada visita a este archivo es una forma de mantener viva la historia de Tultepec.
           Vuelve cuando quieras seguir el hilo de la tradición.
         </p>
-        <div className="final-cta__actions">
-          <button
-            type="button"
-            className="btn btn--primary"
-            onClick={() => window.dispatchEvent(new Event("hero:open-history"))}
-          >
-            Sigue explorando el archivo
-          </button>
-        </div>
-
         <div className="final-cta__engage">
           <p className="final-cta__engage-text">
             Hola, si te gustó el contenido de este sitio, déjanos tu like y un comentario

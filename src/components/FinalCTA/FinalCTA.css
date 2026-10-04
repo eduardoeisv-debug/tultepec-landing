@@ -26,14 +26,6 @@
   color: rgba(251, 241, 226, 0.85);
 }
 
-.final-cta__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
 .final-cta__share {
   margin-top: 1.4rem;
   padding-top: 1.6rem;
