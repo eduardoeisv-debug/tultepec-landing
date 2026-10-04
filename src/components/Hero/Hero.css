@@ -188,24 +188,13 @@
 
 .hero__list-bullet {
   flex-shrink: 0;
+  filter: drop-shadow(0 1.5px 2px rgba(10, 14, 36, 0.5));
   transition: transform 0.2s var(--ease-out);
 }
 
 .hero__list-link:hover .hero__list-bullet,
 .hero__list-link:focus-visible .hero__list-bullet {
   transform: translateX(3px);
-}
-
-.hero__list-bullet--fire {
-  color: var(--color-fire-red);
-}
-
-.hero__list-bullet--gold {
-  color: var(--color-gold);
-}
-
-.hero__list-bullet--terracotta {
-  color: var(--color-terracotta);
 }
 
 .hero__tooltip-wrap {
@@ -408,8 +397,7 @@
   }
 
   .hero__visual {
-    order: -1;
-    margin-bottom: var(--space-md);
+    margin-top: var(--space-md);
   }
 
   .hero__video {

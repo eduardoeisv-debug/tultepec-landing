@@ -26,6 +26,15 @@
   text-decoration: none;
 }
 
+.site-header__brand-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.4rem;
+  row-gap: 0;
+  line-height: 1.2;
+}
+
 .site-header__subtitle {
   color: var(--color-gold-light);
   font-weight: 500;
@@ -61,13 +70,15 @@
 }
 
 @media (max-width: 640px) {
-  .site-header__subtitle {
-    display: none;
-  }
-
   .site-header__cta {
     padding: 0.5rem 0.9rem;
     font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header__subtitle {
+    font-size: 0.85em;
   }
 }
 
@@ -80,5 +91,10 @@
   .site-header__seal {
     width: 50px;
     height: 50px;
+  }
+
+  .site-header__cta {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.74rem;
   }
 }

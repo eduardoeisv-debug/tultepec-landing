@@ -3,6 +3,41 @@ import { Play, Flame } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import "./Hero.css";
 
+const BULLET_STOPS = {
+  fire: ["#ff9a86", "#d7263d", "#8f1522"],
+  gold: ["#fde7b8", "#e3ab3d", "#a6771d"],
+  terracotta: ["#e8a473", "#c1592f", "#7a3216"],
+};
+
+function TriangleBullet({ tone }) {
+  const id = `hero-bullet-${tone}`;
+  const [from, mid, to] = BULLET_STOPS[tone];
+  return (
+    <svg
+      className="hero__list-bullet"
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id={id} x1="10%" y1="5%" x2="90%" y2="95%">
+          <stop offset="0%" stopColor={from} />
+          <stop offset="55%" stopColor={mid} />
+          <stop offset="100%" stopColor={to} />
+        </linearGradient>
+      </defs>
+      <path d="M5 3 L20 12 L5 21 Z" fill={`url(#${id})`} />
+      <path
+        d="M6.5 5.8 L12.5 9.6"
+        stroke="rgba(255,255,255,0.65)"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export default function Hero({ onOpenBooks }) {
   const [playing, setPlaying] = useState(false);
 
@@ -26,20 +61,20 @@ export default function Hero({ onOpenBooks }) {
           <ul className="hero__list hero__enter hero__enter--4">
             <li className="hero__list-item">
               <a className="hero__list-link" href="#tradiciones">
-                <Play className="hero__list-bullet hero__list-bullet--fire" size={14} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+                <TriangleBullet tone="fire" />
                 <span>Explora la historia</span>
               </a>
             </li>
             <li className="hero__list-item">
               <a className="hero__list-link" href="#voces">
-                <Play className="hero__list-bullet hero__list-bullet--gold" size={14} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+                <TriangleBullet tone="gold" />
                 <span>Conoce los textos de "Memorias de mi pueblo"</span>
               </a>
             </li>
             <li className="hero__list-item">
               <span className="hero__tooltip-wrap">
                 <button type="button" className="hero__list-link" onClick={onOpenBooks}>
-                  <Play className="hero__list-bullet hero__list-bullet--terracotta" size={14} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+                  <TriangleBullet tone="terracotta" />
                   <span>Compendios</span>
                 </button>
                 <span className="hero__tooltip" role="tooltip">
