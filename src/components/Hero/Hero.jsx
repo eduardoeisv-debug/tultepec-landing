@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Play, Flame, X, ChevronRight, ChevronLeft } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
@@ -92,12 +92,6 @@ export default function Hero({ onOpenBooks, onShareClick }) {
   const activeVideo = VIDEO_CATEGORIES.find((c) => c.slug === activeVideoCategory);
 
   useScrollLock(mobileVideoOpen);
-
-  useEffect(() => {
-    const onOpenVisit = () => setVisitOpen(true);
-    window.addEventListener("plan-visit:open", onOpenVisit);
-    return () => window.removeEventListener("plan-visit:open", onOpenVisit);
-  }, []);
 
   const trackRef = useRef(null);
 

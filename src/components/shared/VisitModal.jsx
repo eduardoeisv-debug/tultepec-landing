@@ -10,9 +10,9 @@ const TABS = [
   { key: "calendario", label: "Calendario de fiestas", icon: CalendarDays },
 ];
 
-// Abierto desde el botón "Visítanos" del hero (y desde "Planea tu visita"
-// en el header). Muestra las 2 opciones; cerrar cualquiera de los 2
-// modales anidados regresa a esta misma pantalla para seguir explorando.
+// Abierto desde el botón "Visítanos" del hero. Muestra las 2 opciones;
+// cerrar cualquiera de los 2 modales anidados regresa a esta misma
+// pantalla para seguir explorando.
 export default function VisitModal({ open, onClose }) {
   const [openTab, setOpenTab] = useState(null);
 
