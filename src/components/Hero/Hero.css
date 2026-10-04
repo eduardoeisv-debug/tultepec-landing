@@ -371,10 +371,11 @@
   height: 72px;
   border-radius: 50%;
   background: linear-gradient(150deg, var(--color-gold-light) 0%, var(--color-gold) 55%, var(--color-terracotta) 130%);
-  border: 2px solid rgba(251, 241, 226, 0.3);
+  border: 3px solid rgba(251, 241, 226, 0.85);
   color: var(--color-night-900);
   box-shadow:
-    0 14px 34px -10px rgba(227, 171, 61, 0.75),
+    0 0 0 5px rgba(227, 171, 61, 0.22),
+    0 14px 34px -10px rgba(227, 171, 61, 0.8),
     inset 0 2px 3px rgba(255, 255, 255, 0.5),
     inset 0 -4px 8px rgba(154, 69, 35, 0.35);
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
@@ -387,6 +388,7 @@
 .hero__video-poster:hover .hero__video-play {
   transform: translate(-50%, -50%) scale(1.08);
   box-shadow:
+    0 0 0 6px rgba(227, 171, 61, 0.3),
     0 16px 40px -8px rgba(227, 171, 61, 0.9),
     inset 0 2px 3px rgba(255, 255, 255, 0.6),
     inset 0 -4px 8px rgba(154, 69, 35, 0.35);
