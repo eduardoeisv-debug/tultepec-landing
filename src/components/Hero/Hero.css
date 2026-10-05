@@ -160,80 +160,35 @@
   font-size: 1.12rem;
 }
 
-.hero__carousel {
-  position: relative;
+.hero__list {
   margin-top: var(--space-md);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
 }
 
-.hero__carousel-track {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  gap: 0.65rem;
-  list-style: none;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  /* El tooltip de cada tarjeta se dibuja por fuera de su propia caja; como
-     overflow-x:auto obliga a overflow-y a comportarse como "auto" también,
-     sin este padding (compensado por el margin negativo, para no mover el
-     contenido de abajo) el tooltip quedaría recortado por el scroll. */
-  padding-bottom: 96px;
-  margin-bottom: -96px;
-}
-
-.hero__carousel-track::-webkit-scrollbar {
-  display: none;
-}
-
-.hero__carousel-slide {
-  flex: 0 0 auto;
-  width: min(236px, 72vw);
-  scroll-snap-align: start;
-}
-
-.hero__carousel-arrow {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid rgba(251, 241, 226, 0.25);
-  background: rgba(251, 241, 226, 0.08);
-  color: var(--color-paper);
-  cursor: pointer;
-  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
-}
-
-.hero__carousel-arrow:hover {
-  background: rgba(227, 171, 61, 0.22);
-  border-color: var(--color-gold-light);
-  transform: scale(1.06);
+.hero__list-item:last-child {
+  grid-column: 1 / -1;
 }
 
 .hero__list-link {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
   width: 100%;
   background: rgba(251, 241, 226, 0.06);
   border: 1px solid rgba(251, 241, 226, 0.15);
   border-radius: 12px;
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 0.8rem;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   letter-spacing: 0.01em;
   color: rgba(251, 241, 226, 0.92);
   text-decoration: none;
   text-align: left;
+  white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
 }
@@ -323,14 +278,19 @@
   transform: translateX(-50%) translateY(0);
 }
 
+@media (max-width: 640px) {
+  .hero__list {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__list-item:last-child {
+    grid-column: auto;
+  }
+}
+
 @media (max-width: 560px) {
   .hero__tooltip {
     display: none;
-  }
-
-  .hero__list-link {
-    white-space: normal;
-    text-align: left;
   }
 }
 
@@ -357,29 +317,26 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background:
-    radial-gradient(circle at 50% 44%, rgba(227, 171, 61, 0.3), transparent 52%),
-    radial-gradient(circle at 85% 12%, rgba(47, 211, 200, 0.16), transparent 45%),
-    radial-gradient(circle at 10% 90%, rgba(255, 45, 138, 0.16), transparent 50%),
-    linear-gradient(165deg, var(--color-night-800) 0%, var(--color-night-950) 70%);
+  background: var(--color-night-950);
   overflow: hidden;
 }
 
-.hero__video-poster::before {
-  content: "";
+.hero__video-cover {
   position: absolute;
-  inset: -20% -20% auto -20%;
-  height: 65%;
-  background: radial-gradient(circle, rgba(215, 38, 61, 0.18), transparent 65%);
-  pointer-events: none;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.hero__video-flame {
+.hero__video-cover-tint {
   position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: rgba(243, 205, 122, 0.5);
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(227, 171, 61, 0.22), transparent 55%),
+    radial-gradient(circle at 85% 12%, rgba(47, 211, 200, 0.18), transparent 45%),
+    linear-gradient(195deg, rgba(10, 8, 26, 0.3) 0%, rgba(10, 8, 26, 0.55) 55%, rgba(10, 8, 26, 0.88) 100%);
+  pointer-events: none;
 }
 
 .hero__video-ring {

@@ -47,7 +47,10 @@ export default function HeroFireworks() {
 
     const spawnBurst = () => {
       const isSmall = width < 640;
-      const particleCount = isSmall ? 20 : 36;
+      // Rango pedido: 120-180 partículas por ráfaga en desktop; en celular
+      // se reduce para no afectar el rendimiento, pero sigue siendo una
+      // explosión grande y notoria (no la versión sutil de antes).
+      const particleCount = isSmall ? 90 : 150;
 
       // Sobre todo en los costados y arriba, evitando la franja central
       // donde vive el texto, para no competir visualmente con él.
@@ -69,7 +72,7 @@ export default function HeroFireworks() {
 
       // Destello breve en el punto de origen para que la explosión se
       // sienta con más impacto, no solo las chispas dispersándose.
-      flashes.push({ x, y, life: 1, size: isSmall ? 20 : 32, color });
+      flashes.push({ x, y, life: 1, size: isSmall ? 26 : 42, color });
 
       for (let i = 0; i < particleCount; i += 1) {
         const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.4;
@@ -87,7 +90,7 @@ export default function HeroFireworks() {
       }
 
       // Tope de seguridad por si varias ráfagas se acumulan.
-      const maxParticles = isSmall ? 260 : 480;
+      const maxParticles = isSmall ? 320 : 560;
       if (particles.length > maxParticles) {
         particles = particles.slice(particles.length - maxParticles);
       }

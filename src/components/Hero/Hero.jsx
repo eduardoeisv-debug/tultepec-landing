@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Play, Flame, X, ChevronRight, ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { Play, X, ChevronRight } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import TownSilhouette from "../shared/TownSilhouette.jsx";
@@ -93,16 +93,6 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
   useScrollLock(mobileVideoOpen);
 
-  const trackRef = useRef(null);
-
-  const scrollCarousel = (direction) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const slide = track.querySelector(".hero__carousel-slide");
-    const step = (slide?.offsetWidth || 220) + 12;
-    track.scrollBy({ left: direction * step, behavior: "smooth" });
-  };
-
   const listItems = [
     {
       key: "history",
@@ -176,42 +166,22 @@ export default function Hero({ onOpenBooks, onShareClick }) {
             Tultepec convierte el fuego en arte: castillos y toritos que sus familias han
             heredado por generaciones.
           </p>
-          <div className="hero__carousel hero__enter hero__enter--4">
-            <button
-              type="button"
-              className="hero__carousel-arrow hero__carousel-arrow--prev"
-              onClick={() => scrollCarousel(-1)}
-              aria-label="Opción anterior"
-            >
-              <ChevronLeft size={18} strokeWidth={2.2} />
-            </button>
-
-            <ul className="hero__carousel-track" ref={trackRef}>
-              {listItems.map((item) => (
-                <li className="hero__carousel-slide" key={item.key}>
-                  <span className="hero__tooltip-wrap">
-                    <button type="button" className="hero__list-link" onClick={item.onClick}>
-                      <TriangleBullet tone={item.tone} />
-                      <span>{item.label}</span>
-                      <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-                    </button>
-                    <span className="hero__tooltip" role="tooltip">
-                      {item.tooltip}
-                    </span>
+          <ul className="hero__list hero__enter hero__enter--4">
+            {listItems.map((item) => (
+              <li className="hero__list-item" key={item.key}>
+                <span className="hero__tooltip-wrap">
+                  <button type="button" className="hero__list-link" onClick={item.onClick}>
+                    <TriangleBullet tone={item.tone} />
+                    <span>{item.label}</span>
+                    <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
+                  </button>
+                  <span className="hero__tooltip" role="tooltip">
+                    {item.tooltip}
                   </span>
-                </li>
-              ))}
-            </ul>
-
-            <button
-              type="button"
-              className="hero__carousel-arrow hero__carousel-arrow--next"
-              onClick={() => scrollCarousel(1)}
-              aria-label="Siguiente opción"
-            >
-              <ChevronRight size={18} strokeWidth={2.2} />
-            </button>
-          </div>
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="hero__visual hero__visual--enter">
@@ -232,10 +202,16 @@ export default function Hero({ onOpenBooks, onShareClick }) {
                 onClick={() => setPlaying(true)}
                 aria-label="Reproducir video de bienvenida a Tultepec"
               >
+                <img
+                  className="hero__video-cover"
+                  src="/img/portada.jpg"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span className="hero__video-cover-tint" aria-hidden="true" />
                 <SparkField count={7} />
                 <span className="hero__video-ring hero__video-ring--1" aria-hidden="true" />
                 <span className="hero__video-ring hero__video-ring--2" aria-hidden="true" />
-                <Flame className="hero__video-flame" size={22} strokeWidth={1.5} aria-hidden="true" />
                 <span className="hero__video-play" aria-hidden="true">
                   <Play size={26} strokeWidth={0} fill="currentColor" />
                 </span>

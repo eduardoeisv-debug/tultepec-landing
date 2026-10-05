@@ -2,10 +2,10 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: linear-gradient(120deg, rgba(16, 10, 38, 0.72) 0%, rgba(42, 19, 56, 0.68) 100%);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border-bottom: 1px solid rgba(243, 205, 122, 0.18);
+  background: rgba(13, 17, 46, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(243, 205, 122, 0.4);
 }
 
 .site-header__inner {
