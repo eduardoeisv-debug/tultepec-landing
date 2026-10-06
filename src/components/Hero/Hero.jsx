@@ -194,6 +194,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
                 autoPlay
                 playsInline
                 preload="none"
+                onEnded={() => setPlaying(false)}
               />
             ) : (
               <button
@@ -291,6 +292,9 @@ export default function Hero({ onOpenBooks, onShareClick }) {
               controls
               autoPlay
               playsInline
+              onEnded={(e) => {
+                e.currentTarget.currentTime = 0;
+              }}
             />
           </div>
         </div>
