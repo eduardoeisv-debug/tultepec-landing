@@ -160,137 +160,96 @@
   font-size: 1.12rem;
 }
 
-.hero__list {
+.hero__cards {
   margin-top: var(--space-md);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
 }
 
-.hero__list-item:last-child {
-  grid-column: 1 / -1;
-}
-
-.hero__list-link {
+.hero__card {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
   width: 100%;
+  height: 100%;
   background: rgba(251, 241, 226, 0.06);
   border: 1px solid rgba(251, 241, 226, 0.15);
-  border-radius: 12px;
-  padding: 0.65rem 0.8rem;
+  border-radius: 14px;
+  padding: 0.9rem 1.6rem 0.85rem 0.85rem;
   font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.01em;
   color: rgba(251, 241, 226, 0.92);
-  text-decoration: none;
   text-align: left;
-  white-space: nowrap;
   cursor: pointer;
-  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+  transition:
+    transform 0.22s var(--ease-out),
+    border-color 0.22s var(--ease-out),
+    background 0.22s var(--ease-out),
+    box-shadow 0.22s var(--ease-out);
 }
 
-.hero__list-link:hover,
-.hero__list-link:focus-visible {
-  background: rgba(251, 241, 226, 0.12);
-  border-color: rgba(227, 171, 61, 0.55);
-  transform: translateX(3px);
+.hero__card:hover,
+.hero__card:focus-visible {
+  transform: translateY(-4px);
+  background: rgba(251, 241, 226, 0.1);
+  border-color: rgba(227, 171, 61, 0.65);
+  box-shadow: 0 14px 28px -14px rgba(227, 171, 61, 0.55);
 }
 
-.hero__list-bullet {
+.hero__card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(227, 171, 61, 0.14);
+  color: var(--color-gold-light);
   flex-shrink: 0;
-  filter: drop-shadow(0 1.5px 2px rgba(10, 14, 36, 0.5));
 }
 
-.hero__list-chevron {
-  margin-left: auto;
+.hero__card-title {
+  width: 100%;
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero__card-caption {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(251, 241, 226, 0.68);
+}
+
+.hero__card-arrow {
+  position: absolute;
+  top: 0.95rem;
+  right: 0.75rem;
   flex-shrink: 0;
-  opacity: 0.5;
-  transition: transform 0.2s var(--ease-out), opacity 0.2s var(--ease-out);
+  opacity: 0.45;
+  transition: transform 0.22s var(--ease-out), opacity 0.22s var(--ease-out);
 }
 
-.hero__list-link:hover .hero__list-chevron,
-.hero__list-link:focus-visible .hero__list-chevron {
+.hero__card:hover .hero__card-arrow,
+.hero__card:focus-visible .hero__card-arrow {
   opacity: 0.9;
   transform: translateX(3px);
 }
 
-.hero__tooltip-wrap {
-  position: relative;
-  display: flex;
-}
-
-.hero__tooltip {
-  position: absolute;
-  top: calc(100% + 16px);
-  left: 50%;
-  transform: translateX(-50%) translateY(-4px);
-  width: max-content;
-  max-width: 220px;
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-size: 0.8rem;
-  font-weight: 600;
-  line-height: 1.4;
-  text-align: center;
-  padding: 0.65rem 0.95rem;
-  border-radius: 18px;
-  box-shadow: var(--shadow-soft);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.2s var(--ease-out), transform 0.2s var(--ease-out);
-  z-index: 5;
-}
-
-.hero__tooltip::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-16px);
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--color-paper);
-}
-
-.hero__tooltip::before {
-  content: "";
-  position: absolute;
-  bottom: calc(100% + 7px);
-  left: 50%;
-  transform: translateX(-24px);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--color-paper);
-  z-index: 1;
-}
-
-.hero__tooltip-wrap:hover .hero__tooltip,
-.hero__tooltip-wrap:focus-within .hero__tooltip {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
+@media (max-width: 900px) {
+  .hero__cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
-  .hero__list {
+  .hero__cards {
     grid-template-columns: 1fr;
-  }
-
-  .hero__list-item:last-child {
-    grid-column: auto;
-  }
-}
-
-@media (max-width: 560px) {
-  .hero__tooltip {
-    display: none;
   }
 }
 
@@ -327,16 +286,35 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* La foto es azulada y fría de origen; bajamos un poco su saturación
+     (para que ese azul no domine) y subimos contraste antes de aplicarle
+     el degradado morado/naranja de la paleta encima. */
+  filter: contrast(1.22) saturate(0.82) brightness(0.95);
 }
 
 .hero__video-cover-tint {
   position: absolute;
   inset: 0;
+  /* Degradado morado/naranja de la paleta, a todo lo alto de la foto (no
+     solo las esquinas) para que el cielo azulado del original también
+     quede teñido, mezclado en modo multiply. El parche radial de la
+     esquina superior derecha tapa el escudo/marca de agua de la foto. */
   background:
-    radial-gradient(circle at 50% 44%, rgba(227, 171, 61, 0.22), transparent 55%),
-    radial-gradient(circle at 85% 12%, rgba(47, 211, 200, 0.18), transparent 45%),
-    linear-gradient(195deg, rgba(10, 8, 26, 0.3) 0%, rgba(10, 8, 26, 0.55) 55%, rgba(10, 8, 26, 0.88) 100%);
+    radial-gradient(circle at 92% 8%, rgba(10, 8, 26, 0.95), rgba(10, 8, 26, 0.55) 16%, transparent 26%),
+    radial-gradient(circle at 15% 95%, rgba(193, 89, 47, 0.6), transparent 62%),
+    linear-gradient(180deg, rgba(58, 19, 104, 0.7) 0%, rgba(74, 24, 92, 0.6) 38%, rgba(122, 33, 102, 0.4) 62%, rgba(10, 8, 26, 0.75) 100%);
+  mix-blend-mode: multiply;
   pointer-events: none;
+}
+
+.hero__video-cover-tint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(195deg, rgba(227, 171, 61, 0.3) 0%, rgba(193, 89, 47, 0.28) 45%, transparent 75%),
+    radial-gradient(circle at 50% 42%, rgba(227, 171, 61, 0.22), transparent 55%);
+  mix-blend-mode: overlay;
 }
 
 .hero__video-ring {

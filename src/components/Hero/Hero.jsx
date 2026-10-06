@@ -1,5 +1,15 @@
-import { useState } from "react";
-import { Play, X, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Play,
+  X,
+  ChevronRight,
+  Flame,
+  MessageSquareText,
+  BookOpen,
+  Image,
+  Video,
+  MapPinned,
+} from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import TownSilhouette from "../shared/TownSilhouette.jsx";
@@ -13,41 +23,6 @@ import VisitModal from "../shared/VisitModal.jsx";
 import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import "./Hero.css";
-
-const BULLET_STOPS = {
-  fire: ["#ff9a86", "#d7263d", "#8f1522"],
-  gold: ["#fde7b8", "#e3ab3d", "#a6771d"],
-  terracotta: ["#e8a473", "#c1592f", "#7a3216"],
-};
-
-function TriangleBullet({ tone }) {
-  const id = `hero-bullet-${tone}`;
-  const [from, mid, to] = BULLET_STOPS[tone];
-  return (
-    <svg
-      className="hero__list-bullet"
-      width="15"
-      height="15"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id={id} x1="10%" y1="5%" x2="90%" y2="95%">
-          <stop offset="0%" stopColor={from} />
-          <stop offset="55%" stopColor={mid} />
-          <stop offset="100%" stopColor={to} />
-        </linearGradient>
-      </defs>
-      <path d="M5 3 L20 12 L5 21 Z" fill={`url(#${id})`} />
-      <path
-        d="M6.5 5.8 L12.5 9.6"
-        stroke="rgba(255,255,255,0.65)"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 const IMAGE_TILE_ICONS = {
   "castillos-monumentales": "castillo",
@@ -93,47 +68,53 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
   useScrollLock(mobileVideoOpen);
 
+  useEffect(() => {
+    const onOpenVisit = () => setVisitOpen(true);
+    window.addEventListener("plan-visit:open", onOpenVisit);
+    return () => window.removeEventListener("plan-visit:open", onOpenVisit);
+  }, []);
+
   const listItems = [
     {
       key: "history",
-      tone: "fire",
+      Icon: Flame,
       label: "Explora la historia",
-      tooltip: "Explora los momentos y tradiciones",
+      caption: "Momentos y tradiciones",
       onClick: () => setHistoryOpen(true),
     },
     {
       key: "memories",
-      tone: "gold",
+      Icon: MessageSquareText,
       label: "Memorias de mi pueblo",
-      tooltip: 'Conoce los textos de "Memorias de mi pueblo"',
+      caption: "Testimonios del pueblo",
       onClick: () => setMemoriesOpen(true),
     },
     {
       key: "books",
-      tone: "terracotta",
+      Icon: BookOpen,
       label: "Compendios",
-      tooltip: "Conoce los 3 libros ya publicados sobre la historia de Tultepec",
+      caption: "3 libros publicados",
       onClick: onOpenBooks,
     },
     {
       key: "images",
-      tone: "gold",
+      Icon: Image,
       label: "Imágenes",
-      tooltip: "Imágenes de Toritos, castillos, talleres, Mojigangas y Religión",
+      caption: "Toritos, castillos y más",
       onClick: () => setImagesHubOpen(true),
     },
     {
       key: "videos",
-      tone: "terracotta",
+      Icon: Video,
       label: "Videos",
-      tooltip: "Videos de Toritos, castillos, piromusicales",
+      caption: "Castillos y piromusicales",
       onClick: () => setVideosHubOpen(true),
     },
     {
       key: "visit",
-      tone: "gold",
+      Icon: MapPinned,
       label: "Visítanos",
-      tooltip: "Tu visita a Tultepec",
+      caption: "Tu visita a Tultepec",
       onClick: () => setVisitOpen(true),
     },
   ];
@@ -166,19 +147,17 @@ export default function Hero({ onOpenBooks, onShareClick }) {
             Tultepec convierte el fuego en arte: castillos y toritos que sus familias han
             heredado por generaciones.
           </p>
-          <ul className="hero__list hero__enter hero__enter--4">
+          <ul className="hero__cards hero__enter hero__enter--4">
             {listItems.map((item) => (
-              <li className="hero__list-item" key={item.key}>
-                <span className="hero__tooltip-wrap">
-                  <button type="button" className="hero__list-link" onClick={item.onClick}>
-                    <TriangleBullet tone={item.tone} />
-                    <span>{item.label}</span>
-                    <ChevronRight className="hero__list-chevron" size={16} strokeWidth={2} aria-hidden="true" />
-                  </button>
-                  <span className="hero__tooltip" role="tooltip">
-                    {item.tooltip}
+              <li className="hero__card-item" key={item.key}>
+                <button type="button" className="hero__card" onClick={item.onClick}>
+                  <span className="hero__card-icon" aria-hidden="true">
+                    <item.Icon size={22} strokeWidth={1.7} />
                   </span>
-                </span>
+                  <span className="hero__card-title">{item.label}</span>
+                  <span className="hero__card-caption">{item.caption}</span>
+                  <ChevronRight className="hero__card-arrow" size={16} strokeWidth={2} aria-hidden="true" />
+                </button>
               </li>
             ))}
           </ul>
