@@ -41,14 +41,14 @@
 }
 
 .footer__meta p {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 0.7rem;
 }
 
 .footer__bottom {
   padding-top: var(--space-md);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   color: rgba(251, 241, 226, 0.5);
   display: flex;
   flex-wrap: wrap;
@@ -81,7 +81,7 @@
 }
 
 .footer__signature-text {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   color: rgba(251, 241, 226, 0.55);
 }
 
@@ -95,7 +95,7 @@
   border: 1px solid rgba(227, 171, 61, 0.35);
   border-radius: 999px;
   padding: 0.35rem 0.9rem;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-gold-light);
   transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out);

@@ -152,7 +152,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
               <li className="hero__card-item" key={item.key}>
                 <button type="button" className="hero__card" onClick={item.onClick}>
                   <span className="hero__card-icon" aria-hidden="true">
-                    <item.Icon size={22} strokeWidth={1.7} />
+                    <item.Icon size={26} strokeWidth={1.7} />
                   </span>
                   <span className="hero__card-title">{item.label}</span>
                   <span className="hero__card-caption">{item.caption}</span>
