@@ -398,8 +398,15 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(251, 241, 226, 0.75);
+  color: var(--color-paper);
   white-space: nowrap;
+  /* Pastilla oscura semitransparente para que el texto se lea sobre
+     cualquier zona de la foto, en vez de mezclarse con ella. */
+  background: rgba(10, 10, 30, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
 }
 
 .hero__video-el {
