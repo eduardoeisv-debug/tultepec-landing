@@ -70,6 +70,9 @@
   width: 96px;
   height: 96px;
   border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(243, 205, 122, 0.55);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 
 .footer__signature-seal img {

@@ -13,12 +13,18 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 120px;
-  /* Continúa el dorado con el que termina el fondo del hero y lo deja
-     caer a transparente, para que esta sección arranque como una
-     extensión de ese degradado en vez de un corte contra su propio
-     fondo morado/terracota. */
-  background: linear-gradient(180deg, rgba(227, 171, 61, 0.9) 0%, rgba(227, 171, 61, 0) 100%);
+  height: 180px;
+  /* Recorre los mismos tonos con los que termina el fondo del hero
+     (dorado -> naranja ember -> morado -> azul noche) para que la
+     transición sea un degradado continuo, no una franja plana de un
+     solo color cayendo sobre el fondo radial propio de esta sección. */
+  background: linear-gradient(
+    180deg,
+    #e3ab3d 0%,
+    #c1592f 32%,
+    #3a1368 64%,
+    var(--color-night-900) 100%
+  );
   pointer-events: none;
 }
 

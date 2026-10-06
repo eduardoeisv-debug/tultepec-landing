@@ -164,6 +164,8 @@
   margin-top: var(--space-md);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  align-items: stretch;
   gap: 0.65rem;
 }
 
@@ -172,7 +174,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.4rem;
   width: 100%;
   height: 100%;
@@ -226,6 +228,10 @@
   font-size: 0.72rem;
   line-height: 1.35;
   color: rgba(251, 241, 226, 0.68);
+  /* Reserva el alto de 2 líneas siempre, para que una tarjeta con
+     subtítulo corto (una línea) no desalinee el ícono/título respecto
+     a una con subtítulo largo (dos líneas). */
+  min-height: 1.95rem;
 }
 
 .hero__card-arrow {

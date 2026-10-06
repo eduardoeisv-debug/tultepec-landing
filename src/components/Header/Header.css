@@ -2,9 +2,9 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(13, 17, 46, 0.82);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(13, 17, 46, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(243, 205, 122, 0.4);
 }
 
