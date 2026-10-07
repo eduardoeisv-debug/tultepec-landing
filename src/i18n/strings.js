@@ -13,8 +13,8 @@ export const STRINGS = {
   "hero.title.line1": { es: "Tultepec Capital de la", en: "Tultepec Capital of" },
   "hero.title.line2": { es: "Pirotecnia", en: "Fireworks" },
   "hero.subtitle": {
-    es: "Tultepec convierte el fuego en arte: castillos y toritos que sus familias han heredado por generaciones.",
-    en: "Tultepec turns fire into art: castillos and toritos that families have passed down for generations.",
+    es: "Lugar donde el fuego se convierte en arte: entre papel, carrizo, madera, hilo y pólvora se crean espectaculares castillos, toros monumentales, luces de bengala, cohetes y muchos productos más.",
+    en: "A place where fire becomes art: with paper, reed, wood, thread and gunpowder, artisans create spectacular castillos, monumental toros, sparklers, firecrackers and many other products.",
   },
   "hero.verVideo": { es: "Ver video", en: "Watch video" },
   "hero.dalePlay": { es: "Dale play", en: "Press play" },
@@ -91,7 +91,7 @@ export const STRINGS = {
   "testimonials.next": { es: "Testimonio siguiente", en: "Next testimonial" },
   "testimonials.verTestimonio": { es: "Ver testimonio {n}", en: "View testimonial {n}" },
 
-  "visitInfo.eyebrow": { es: "Visítanos", en: "Visit us" },
+  "visitInfo.eyebrow": { es: "Planea tu visita", en: "Plan your visit" },
   "visitInfo.title": { es: "¿Cuándo vienes y cómo llegas?", en: "When should you come, and how do you get here?" },
   "visitInfo.monthsSubtitle": { es: "¿En qué mes hay eventos?", en: "Which month has events?" },
 
@@ -99,6 +99,7 @@ export const STRINGS = {
     es: "Tultepec es un municipio del Estado de México, dentro de la zona metropolitana norte del Valle de México: a menos de una hora de la Ciudad de México, perfecto para una visita de un día.",
     en: "Tultepec is a municipality in the State of Mexico, within the northern metropolitan area of the Valley of Mexico: less than an hour from Mexico City, perfect for a day trip.",
   },
+  "comoLlegar.heading": { es: "¿Cómo llegas?", en: "How do you get here?" },
   "comoLlegar.mapTitle": { es: "Mapa de Tultepec, Estado de México", en: "Map of Tultepec, State of Mexico" },
   "comoLlegar.comoLlegar": { es: "Cómo llegar", en: "Get directions" },
   "comoLlegar.card.cdmx.title": { es: "Desde la Ciudad de México", en: "From Mexico City" },

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { MapPinned, ExternalLink } from "lucide-react";
+import { MapPinned, ExternalLink, Navigation } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ComoLlegarBlock.css";
 
@@ -49,6 +49,12 @@ export default function ComoLlegarBlock() {
 
   return (
     <div className="como-llegar">
+      <div className="visit-info__block-head">
+        <span className="visit-info__block-icon visit-info__block-icon--alt" aria-hidden="true">
+          <Navigation size={20} strokeWidth={1.8} />
+        </span>
+        <h3>{t("comoLlegar.heading")}</h3>
+      </div>
       <p className="como-llegar__intro">{t("comoLlegar.intro")}</p>
 
       <div className="como-llegar__map" ref={mapWrapRef}>
