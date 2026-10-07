@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Car, Bus, MapPinned, ExternalLink } from "lucide-react";
+import { MapPinned, ExternalLink } from "lucide-react";
 import "./ComoLlegarBlock.css";
 
 // Coordenadas del centro del municipio de Tultepec, Estado de México
@@ -12,12 +12,13 @@ const OSM_EMBED_SRC = `https://www.openstreetmap.org/export/embed.html?bbox=${BB
 const GOOGLE_MAPS_DIRECTIONS =
   "https://www.google.com/maps/dir/?api=1&destination=Tultepec,+Estado+de+M%C3%A9xico";
 
-// En auto / En transporte público: sin datos confirmados todavía --
-// TODO: pedir detalle real de rutas/tiempos al pueblo y reemplazar
-// "Próximamente" aquí. "Desde la Ciudad de México" sí tiene dato real.
+// TODO: "En auto" y "En transporte público" se ocultaron (solo tenían
+// "Próximamente", sin dato real) -- cuando haya info real de rutas y
+// tiempos, vuelve a agregarlas aquí con su Icon (Car / Bus de
+// lucide-react) y quita el `grid-template-columns` de una sola columna
+// en ComoLlegarBlock.css. "Desde la Ciudad de México" sí tiene dato
+// real y se deja sola, a ancho completo.
 const LLEGAR_CARDS = [
-  { Icon: Car, title: "En auto", text: "Próximamente" },
-  { Icon: Bus, title: "En transporte público", text: "Próximamente" },
   {
     Icon: MapPinned,
     title: "Desde la Ciudad de México",

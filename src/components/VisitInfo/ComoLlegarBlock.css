@@ -39,12 +39,12 @@
 .como-llegar__cards {
   margin-top: var(--space-md);
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Por ahora solo hay una tarjeta con dato real ("Desde la Ciudad de
+     México"), a ancho completo -- igual que el resto del contenido de
+     la sección (ver el TODO en ComoLlegarBlock.jsx sobre "En auto" y
+     "En transporte público"). Vuelve a repeat(3, 1fr) cuando regresen. */
+  grid-template-columns: 1fr;
   gap: 0.8rem;
-  /* Cada tarjeta mide su propio contenido en vez de estirarse a la
-     altura de la más larga ("Desde la Ciudad de México") -- así "En
-     auto" / "En transporte público" no quedan altas y vacías mientras
-     no haya datos reales que poner ahí. */
   align-items: start;
 }
 

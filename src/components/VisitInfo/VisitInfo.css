@@ -2,7 +2,11 @@
   position: relative;
   background: var(--color-night-900);
   color: var(--color-paper);
-  padding: var(--space-xl) 0;
+  /* Abajo usa --space-lg (no --space-xl): el padding arriba se
+     necesita para el degradado de transición del hero, pero abajo solo
+     generaba un hueco grande antes de "La memoria del pueblo sigue
+     encendida". */
+  padding: var(--space-xl) 0 var(--space-lg);
 }
 
 .visit-info::before {

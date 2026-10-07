@@ -52,20 +52,35 @@ export default function HeroFireworks() {
       // explosión grande y notoria (no la versión sutil de antes).
       const particleCount = isSmall ? 90 : 150;
 
-      // Sobre todo en los costados y arriba, evitando la franja central
-      // donde vive el texto, para no competir visualmente con él.
+      // En escritorio (grid de 2 columnas) el texto ocupa toda la mitad
+      // izquierda -- no es un "costado angosto" que se pueda esquivar con
+      // un margen chico, así que ahí todas las ráfagas se mantienen a la
+      // derecha de esa columna (junto y alrededor del video). En
+      // celular/tableta (una sola columna) el texto ocupa casi todo el
+      // ancho, así que ahí las ráfagas se van muy arriba (por encima del
+      // eyebrow) o muy abajo (junto a la silueta), nunca a la altura del
+      // título.
+      const isDesktop = width >= 900;
       const zone = Math.random();
       let x;
       let y;
-      if (zone < 0.38) {
-        x = width * (0.04 + Math.random() * 0.16);
-        y = height * (0.12 + Math.random() * 0.38);
-      } else if (zone < 0.76) {
-        x = width * (0.8 + Math.random() * 0.17);
-        y = height * (0.1 + Math.random() * 0.4);
+      if (isDesktop) {
+        if (zone < 0.45) {
+          x = width * (0.46 + Math.random() * 0.14);
+          y = height * (0.04 + Math.random() * 0.22);
+        } else if (zone < 0.8) {
+          x = width * (0.78 + Math.random() * 0.19);
+          y = height * (0.1 + Math.random() * 0.55);
+        } else {
+          x = width * (0.5 + Math.random() * 0.46);
+          y = height * (0.62 + Math.random() * 0.2);
+        }
+      } else if (zone < 0.5) {
+        x = width * (0.05 + Math.random() * 0.9);
+        y = height * (0.015 + Math.random() * 0.035);
       } else {
-        x = width * (0.3 + Math.random() * 0.4);
-        y = height * (0.04 + Math.random() * 0.1);
+        x = width * (0.05 + Math.random() * 0.9);
+        y = height * (0.92 + Math.random() * 0.06);
       }
 
       const color = COLORS[Math.floor(Math.random() * COLORS.length)];
@@ -135,11 +150,17 @@ export default function HeroFireworks() {
         p.life -= p.decay;
         if (p.life <= 0) continue;
 
-        ctx.globalAlpha = Math.max(p.life, 0);
+        const life = Math.max(p.life, 0);
+        ctx.globalAlpha = life;
         ctx.fillStyle = p.color;
         if (withGlow) {
+          // El blur se reduce junto con la vida de la partícula -- si se
+          // queda fijo en p.size * 2.5, una partícula casi apagada (alfa
+          // bajo) sigue proyectando un resplandor del mismo tamaño, y
+          // muchas así superpuestas se ven como una mancha borrosa
+          // residual flotando después de que la explosión ya se apagó.
           ctx.shadowColor = p.color;
-          ctx.shadowBlur = p.size * 2.5;
+          ctx.shadowBlur = p.size * 2 * life;
         }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);

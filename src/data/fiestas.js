@@ -9,7 +9,9 @@
 //
 // TODO (datos pendientes de confirmar con el pueblo, no inventar):
 // - Semana Santa: fecha exacta del año (es movible; aquí solo se indica
-//   que cae en marzo o abril) y descripción del festejo local.
+//   que cae en marzo o abril). La descripción es genérica (celebración
+//   religiosa nacional) -- falta el detalle de cómo se festeja en
+//   Tultepec específicamente.
 // - Natividad de María (8 de septiembre): descripción del festejo local.
 // - Día de Muertos (1-2 de noviembre, fecha nacional): descripción del
 //   festejo local.
@@ -35,6 +37,7 @@ const fiestas = [
       {
         nombre: "Semana Santa",
         fecha: "Fecha variable (marzo o abril, según el año)",
+        descripcion: "Celebraciones religiosas previas a la temporada de fiestas del pueblo.",
       },
     ],
   },
