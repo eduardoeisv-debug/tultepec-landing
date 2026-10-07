@@ -1,10 +1,10 @@
 .final-cta {
   position: relative;
   overflow: hidden;
-  /* Fondo plano azul noche: esta sección ahora viene después de
-     "castillo-scroll" (ver CastilloScroll.css), que ya termina en este
-     mismo tono -- no hace falta una transición propia aquí, el
-     degradado del hero vive al inicio de esa sección. */
+  /* Fondo plano azul noche: esta sección viene después de "visit-info"
+     (ver VisitInfo.css), que ya termina en este mismo tono -- no hace
+     falta una transición propia aquí, el degradado del hero vive al
+     inicio de esa sección. */
   background: var(--color-night-900);
   color: var(--color-paper);
   text-align: center;

@@ -67,7 +67,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
   useScrollLock(mobileVideoOpen);
 
   const scrollToComoLlegar = () => {
-    document.getElementById("recorrido")?.scrollIntoView({ block: "start" });
+    document.getElementById("visita")?.scrollIntoView({ block: "start" });
   };
 
   const listItems = [
@@ -178,12 +178,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
                 onClick={() => setPlaying(true)}
                 aria-label="Reproducir video de bienvenida a Tultepec"
               >
-                <img
-                  className="hero__video-cover"
-                  src="/img/portada.jpg"
-                  alt=""
-                  aria-hidden="true"
-                />
+                <span className="hero__video-cover" aria-hidden="true" />
                 <span className="hero__video-cover-tint" aria-hidden="true" />
                 <SparkField count={7} />
                 <span className="hero__video-ring hero__video-ring--1" aria-hidden="true" />

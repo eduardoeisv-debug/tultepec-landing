@@ -293,11 +293,23 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background-size: cover;
+  background-position: center;
   /* La foto es azulada y fría de origen; bajamos un poco su saturación
      (para que ese azul no domine) y subimos contraste antes de aplicarle
      el degradado morado/naranja de la paleta encima. */
   filter: contrast(1.22) saturate(0.82) brightness(0.95);
+}
+
+/* La imagen de fondo solo se declara a partir de este ancho -- en
+   pantallas más angostas todo .hero__visual está display:none (ver
+   breakpoint de 640px más abajo), y un navegador no descarga un
+   background-image que vive dentro de un @media que no aplica. Así el
+   celular nunca pide portada.jpg, sin necesidad de JS. */
+@media (min-width: 641px) {
+  .hero__video-cover {
+    background-image: url("/img/portada.jpg");
+  }
 }
 
 .hero__video-cover-tint {
@@ -436,7 +448,21 @@
   .hero__video {
     width: min(340px, 100%);
   }
+}
 
+/* Celular: el rectángulo del video (foto + overlays) se oculta por
+   completo -- solo queda el botón "Ver video" de arriba del título, que
+   ya abre su propio modal de forma independiente (no depende de este
+   rectángulo para existir ni para obtener el <video>, ambos usan el
+   mismo <video src="/video/bienvenida.mp4"> por separado). Tablet y
+   escritorio no se tocan. */
+@media (max-width: 640px) {
+  .hero__visual {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
   .hero__title-video-trigger {
     display: inline-flex;
     align-items: center;

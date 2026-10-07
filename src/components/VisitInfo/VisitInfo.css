@@ -1,0 +1,54 @@
+.visit-info {
+  position: relative;
+  background: var(--color-night-900);
+  color: var(--color-paper);
+  padding: var(--space-xl) 0;
+}
+
+.visit-info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 240px;
+  /* Continúa el mismo degradado con el que termina el hero (ver
+     Hero.css): dorado -> ember -> magenta -> morado -> azul noche, para
+     que la transición sea continua y no un corte. */
+  background: linear-gradient(
+    180deg,
+    #e3ab3d 0%,
+    #c1592f 24%,
+    #7a2166 48%,
+    #3a1368 74%,
+    var(--color-night-900) 100%
+  );
+  pointer-events: none;
+}
+
+.visit-info__inner {
+  position: relative;
+  /* Por encima del canvas de fuegos al clic (z-index: 3, fijo a toda la
+     página) para que no se dibuje sobre el texto o los botones. */
+  z-index: 4;
+  max-width: 760px;
+}
+
+.visit-info .section-head h2 {
+  font-size: var(--fs-h2);
+}
+
+.visit-info__block {
+  margin-top: var(--space-lg);
+}
+
+.visit-info__block h3 {
+  font-size: var(--fs-h3);
+  color: var(--color-paper);
+  margin-bottom: var(--space-sm);
+}
+
+.visit-info__block + .visit-info__block {
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(251, 241, 226, 0.14);
+}

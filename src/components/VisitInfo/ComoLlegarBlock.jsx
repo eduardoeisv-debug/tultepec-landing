@@ -3,10 +3,8 @@ import { Car, Bus, MapPinned, Sun, Footprints, ShieldAlert, Navigation, External
 import "./ComoLlegarBlock.css";
 
 // Coordenadas del centro del municipio de Tultepec, Estado de México
-// (cabecera municipal), según Wikipedia/INEGI -- mismo lugar que ya usa
-// el mapa de Google en src/components/Location, solo que aquí se
-// necesitan como par lat/lon para el embed de OpenStreetMap (que no
-// requiere clave de pago).
+// (cabecera municipal), según Wikipedia/INEGI, como par lat/lon para el
+// embed de OpenStreetMap (que no requiere clave de pago).
 const LAT = 19.6787;
 const LON = -99.1135;
 const BBOX = "-99.155,19.655,-99.075,19.705";
