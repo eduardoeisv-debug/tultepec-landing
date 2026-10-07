@@ -1,0 +1,44 @@
+.overlay-papel-picado {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  height: 48px;
+  /* Deja un hueco a la derecha del ancho del botón de cerrar (44px) más
+     margen, para que la tira nunca quede recortada justo debajo de él. */
+  width: calc(100% - 58px);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.overlay-papel-picado__svg {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+
+.overlay-papel-picado__flag {
+  animation: overlay-papel-picado-sway 3.6s ease-in-out infinite;
+}
+
+@keyframes overlay-papel-picado-sway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay-papel-picado__flag {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .overlay-papel-picado {
+    height: 36px;
+  }
+}

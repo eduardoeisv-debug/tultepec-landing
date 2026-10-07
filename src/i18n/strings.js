@@ -8,10 +8,9 @@ export const STRINGS = {
   "app.cargando": { es: "Cargando…", en: "Loading…" },
   "memoryEntryCard.anonimo": { es: "Anónimo", en: "Anonymous" },
 
-  "header.subtitle": { es: "Pueblo Pirotécnico", en: "Firework-Making Town" },
+  "header.subtitle": { es: "Estado de México", en: "State of Mexico" },
 
-  "hero.eyebrow": { es: "Tultepec, Estado de México", en: "Tultepec, State of Mexico" },
-  "hero.title.line1": { es: "Capital de la", en: "Capital of" },
+  "hero.title.line1": { es: "Tultepec Capital de la", en: "Tultepec Capital of" },
   "hero.title.line2": { es: "Pirotecnia", en: "Fireworks" },
   "hero.subtitle": {
     es: "Tultepec convierte el fuego en arte: castillos y toritos que sus familias han heredado por generaciones.",
@@ -134,21 +133,22 @@ export const STRINGS = {
   "memoriesModal.eyebrow": { es: "Memorias de mi pueblo", en: "Memories of my town" },
   "memoriesModal.title": { es: "Lo que cuentan quienes lo viven", en: "What those who live it have to say" },
 
-  "booksModal.eyebrow": { es: "Memorias de mi pueblo", en: "Memories of my town" },
   "booksModal.title": { es: "Libros sobre la historia de Tultepec", en: "Books on the history of Tultepec" },
   "booksModal.intro": {
     es: "Tres publicaciones ya disponibles para quien quiera llevarse la memoria del pueblo más allá de esta página.",
     en: "Three publications already available for anyone who wants to take the town's memory beyond this page.",
   },
-  "booksModal.datosDeEjemplo": {
-    es: "Autor y precio por confirmar",
-    en: "Author and price pending",
-  },
   "booksModal.whatsapp": { es: "Preguntar por WhatsApp", en: "Ask via WhatsApp" },
   "booksModal.note": {
-    es: "Número y datos de contacto pendientes de configurar — ver src/data/books.js.",
-    en: "Phone number and contact details still pending — see src/data/books.js.",
+    es: "Número de contacto por WhatsApp pendiente de confirmar.",
+    en: "WhatsApp contact number still pending confirmation.",
   },
+  "booksModal.portadaAlt": {
+    es: "Portada de Memorias de mi Pueblo, tomo {tomo}",
+    en: "Cover of Memories of my Town, volume {tomo}",
+  },
+  "booksModal.dotsAriaLabel": { es: "Elegir tomo", en: "Choose volume" },
+  "booksModal.verTomo": { es: "Ver tomo {tomo}", en: "View volume {tomo}" },
 
   "hi.stats.eyebrow": { es: "De un vistazo", en: "At a glance" },
   "hi.stats.title": { es: "Una tradición que se mide en generaciones", en: "A tradition measured in generations" },

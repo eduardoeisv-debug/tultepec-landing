@@ -84,10 +84,7 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
       <TownSilhouette />
       <div className="container hero__grid">
         <div className="hero__copy">
-          <span className="eyebrow eyebrow--light hero__enter hero__enter--1">
-            {t("hero.eyebrow")}
-          </span>
-          <h1 className="hero__title hero__enter hero__enter--2">
+          <h1 className="hero__title hero__enter hero__enter--1">
             {t("hero.title.line1")} <span>{t("hero.title.line2")}</span>
           </h1>
           <button
@@ -100,8 +97,8 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
             </span>
             {t("hero.verVideo")}
           </button>
-          <p className="hero__subtitle hero__enter hero__enter--3">{t("hero.subtitle")}</p>
-          <ul className="hero__cards hero__enter hero__enter--4">
+          <p className="hero__subtitle hero__enter hero__enter--2">{t("hero.subtitle")}</p>
+          <ul className="hero__cards hero__enter hero__enter--3">
             {listItems.map((item) => (
               <li className="hero__card-item" key={item.key}>
                 <button type="button" className="hero__card" onClick={item.onClick} ref={item.ref}>

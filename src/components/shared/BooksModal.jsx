@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { BOOKS, WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE } from "../../data/books.js";
+import { LIBROS, WHATSAPP_NUMBER } from "../../data/libros.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
-import HeroPapelPicado from "./HeroPapelPicado.jsx";
+import OverlayPapelPicado from "./OverlayPapelPicado.jsx";
 import "./BooksModal.css";
 
 const CLOSE_ANIM_MS = 220;
@@ -19,15 +19,21 @@ const WhatsAppIcon = (
 
 // Pantalla de los libros de la antología "Memorias de mi Pueblo", con el
 // mismo lenguaje visual que GaleriaOverlay (overlay a pantalla completa,
-// degradado noche/morado, papel picado, bottom sheet en celular).
+// degradado noche/morado, papel picado, bottom sheet en celular). En
+// celular las portadas se muestran en un carrusel horizontal con snap +
+// puntos; de tablet para arriba, en una cuadrícula.
 export default function BooksModal({ open, onClose, triggerRef }) {
   const { t, pick, language } = useLanguage();
   const [closing, setClosing] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const dialogRef = useRef(null);
+  const trackRef = useRef(null);
+  const cardRefs = useRef({});
 
   useEffect(() => {
     if (!open) return undefined;
     setClosing(false);
+    setActiveIndex(0);
 
     const onKeyDown = (e) => {
       if (e.key === "Escape") requestClose();
@@ -41,6 +47,32 @@ export default function BooksModal({ open, onClose, triggerRef }) {
       document.body.style.overflow = "";
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  // Indicador de puntos del carrusel móvil: observa qué portada ocupa más
+  // la zona visible del track, en vez de calcular a mano con scrollLeft.
+  useEffect(() => {
+    if (!open) return undefined;
+    const track = trackRef.current;
+    if (!track || typeof IntersectionObserver === "undefined") return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const mostVisible = entries.reduce((best, entry) => (entry.intersectionRatio > (best?.intersectionRatio || 0) ? entry : best), null);
+        if (mostVisible && mostVisible.intersectionRatio > 0.5) {
+          const idx = Number(mostVisible.target.dataset.index);
+          if (!Number.isNaN(idx)) setActiveIndex(idx);
+        }
+      },
+      { root: track, threshold: [0.5, 0.75] }
+    );
+
+    LIBROS.forEach((libro) => {
+      const el = cardRefs.current[libro.id];
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, [open]);
 
   if (!open) return null;
@@ -59,9 +91,23 @@ export default function BooksModal({ open, onClose, triggerRef }) {
     setTimeout(finishClose, CLOSE_ANIM_MS);
   };
 
-  const waLink = (book) => {
-    const interested = language === "en" ? `I'm interested in: "${pick(book.title)}".` : `Me interesa: "${pick(book.title)}".`;
-    const message = `${pick(WHATSAPP_DEFAULT_MESSAGE)} ${interested}`;
+  const goToCard = (index) => {
+    const libro = LIBROS[index];
+    const el = cardRefs.current[libro?.id];
+    const track = trackRef.current;
+    if (!el || !track) return;
+    track.scrollTo({
+      left: el.offsetLeft - (track.clientWidth - el.clientWidth) / 2,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  };
+
+  const waLink = (libro) => {
+    const tomoLabel = language === "en" ? `volume ${libro.tomo}` : `tomo ${libro.tomo}`;
+    const message =
+      language === "en"
+        ? `Hi, I'm interested in the book ${pick(libro.titulo)}, ${tomoLabel}.`
+        : `Hola, me interesa el libro ${pick(libro.titulo)}, ${tomoLabel}.`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   };
 
@@ -76,41 +122,70 @@ export default function BooksModal({ open, onClose, triggerRef }) {
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <HeroPapelPicado />
+        <OverlayPapelPicado />
 
         <button type="button" className="books-overlay__close" onClick={requestClose} aria-label={t("common.cerrar")}>
           <X size={20} strokeWidth={2.2} />
         </button>
 
         <header className="books-overlay__head">
-          <span className="eyebrow eyebrow--light">{t("booksModal.eyebrow")}</span>
+          <span className="eyebrow eyebrow--light">{t("hero.card.books.title")}</span>
           <h2 id="books-modal-title">{t("booksModal.title")}</h2>
           <p>{t("booksModal.intro")}</p>
         </header>
 
         <div className="books-overlay__body">
-          <div className="books-grid">
-            {BOOKS.map((book) => (
-              <article className="book-card" key={book.id}>
+          <div className="books-grid" ref={trackRef}>
+            {LIBROS.map((libro, i) => (
+              <article
+                className="book-card"
+                key={libro.id}
+                data-index={i}
+                ref={(el) => (cardRefs.current[libro.id] = el)}
+              >
                 <div className="book-card__cover">
-                  <img src={book.cover} alt="" loading="lazy" />
+                  <img
+                    src={libro.portada}
+                    alt={t("booksModal.portadaAlt", { tomo: libro.tomo })}
+                    loading="lazy"
+                    width="900"
+                    height="1200"
+                  />
                 </div>
                 <div className="book-card__info">
-                  <h3>{pick(book.title)}</h3>
-                  {book.subtitle && <span className="book-card__subtitle">{pick(book.subtitle)}</span>}
-                  {book.placeholder && <span className="tag-illustrative">{t("booksModal.datosDeEjemplo")}</span>}
-                  <span className="book-card__author">{pick(book.author)}</span>
-                  <p className="book-card__description">{pick(book.description)}</p>
-                  <span className="book-card__price">{book.price}</span>
+                  <h3>
+                    {pick(libro.titulo)} <span className="book-card__tomo">{libro.tomo}</span>
+                  </h3>
+                  {libro.subtitulo && <span className="book-card__subtitle">{pick(libro.subtitulo)}</span>}
+                  {libro.autor && <span className="book-card__author">{pick(libro.autor)}</span>}
+                  {libro.descripcion && <p className="book-card__description">{pick(libro.descripcion)}</p>}
+                  {libro.precio && <span className="book-card__price">{libro.precio}</span>}
+
+                  <a className="book-card__whatsapp" href={waLink(libro)} target="_blank" rel="noopener noreferrer">
+                    <span className="book-card__whatsapp-icon">{WhatsAppIcon}</span>
+                    {t("booksModal.whatsapp")}
+                  </a>
                 </div>
               </article>
             ))}
           </div>
 
-          <a className="books-overlay__whatsapp" href={waLink(BOOKS[0])} target="_blank" rel="noopener noreferrer">
-            <span className="books-overlay__whatsapp-icon">{WhatsAppIcon}</span>
-            {t("booksModal.whatsapp")}
-          </a>
+          {LIBROS.length > 1 && (
+            <div className="books-dots" role="tablist" aria-label={t("booksModal.dotsAriaLabel")}>
+              {LIBROS.map((libro, i) => (
+                <button
+                  key={libro.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeIndex === i}
+                  aria-label={t("booksModal.verTomo", { tomo: libro.tomo })}
+                  className={`books-dots__dot ${activeIndex === i ? "is-active" : ""}`}
+                  onClick={() => goToCard(i)}
+                />
+              ))}
+            </div>
+          )}
+
           <p className="books-overlay__note">{t("booksModal.note")}</p>
         </div>
       </div>

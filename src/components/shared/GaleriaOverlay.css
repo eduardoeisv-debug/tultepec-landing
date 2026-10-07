@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 110;
-  background: rgba(8, 10, 26, 0.72);
+  background: rgba(6, 8, 20, 0.94);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   display: flex;

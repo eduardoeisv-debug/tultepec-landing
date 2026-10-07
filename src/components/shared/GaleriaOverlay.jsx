@@ -5,7 +5,7 @@ import useGaleriaImages from "../../hooks/useGaleriaImages.js";
 import useGaleriaVideos from "../../hooks/useGaleriaVideos.js";
 import { CHIPS } from "../../data/galeria.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
-import HeroPapelPicado from "./HeroPapelPicado.jsx";
+import OverlayPapelPicado from "./OverlayPapelPicado.jsx";
 import { TabImagenesIcon, TabVideosIcon } from "./GaleriaIcons.jsx";
 import "./GaleriaOverlay.css";
 
@@ -156,7 +156,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <HeroPapelPicado />
+        <OverlayPapelPicado />
 
         <button type="button" className="galeria-overlay__close" onClick={requestClose} aria-label={t("common.cerrar")}>
           <X size={20} strokeWidth={2.2} />

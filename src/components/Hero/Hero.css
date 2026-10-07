@@ -95,14 +95,6 @@
   animation-delay: 0.3s;
 }
 
-.hero__enter--4 {
-  animation-delay: 0.42s;
-}
-
-.hero__enter--5 {
-  animation-delay: 0.52s;
-}
-
 .hero__visual--enter .hero__video {
   opacity: 0;
   animation: hero-fade-up 0.8s var(--ease-out) forwards;

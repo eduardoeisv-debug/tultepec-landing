@@ -7,7 +7,9 @@
   position: fixed;
   inset: 0;
   z-index: 110;
-  background: rgba(8, 10, 26, 0.72);
+  /* Opaco (no solo semitransparente) para que el encabezado fijo del
+     sitio no se alcance a ver detrás del overlay. */
+  background: rgba(6, 8, 20, 0.94);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   display: flex;
@@ -93,6 +95,14 @@
   }
 }
 
+/* z-index por encima del encabezado fijo del sitio (z-index: 40) y del
+   resto del contenido -- el panel entero, no solo el botón, debe quedar
+   siempre arriba. */
+.books-overlay,
+.books-overlay__backdrop {
+  z-index: 110;
+}
+
 .books-overlay__close {
   position: absolute;
   top: 0.9rem;
@@ -147,6 +157,28 @@
   flex: 1;
   overflow-y: auto;
   padding: 1.4rem 2rem 2.2rem;
+
+  /* Scroll interno delgado, track transparente, thumb dorado traslúcido --
+     sin la barra blanca nativa del navegador. */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(227, 171, 61, 0.45) transparent;
+}
+
+.books-overlay__body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.books-overlay__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.books-overlay__body::-webkit-scrollbar-thumb {
+  background: rgba(227, 171, 61, 0.45);
+  border-radius: 999px;
+}
+
+.books-overlay__body::-webkit-scrollbar-thumb:hover {
+  background: rgba(227, 171, 61, 0.7);
 }
 
 .books-grid {
@@ -162,6 +194,23 @@
   overflow: hidden;
   background: rgba(251, 241, 226, 0.05);
   border: 1px solid rgba(251, 241, 226, 0.15);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+.book-card:hover,
+.book-card:focus-within {
+  transform: translateY(-6px) rotate(-0.6deg);
+  box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.65);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-card {
+    transition: none;
+  }
+  .book-card:hover,
+  .book-card:focus-within {
+    transform: none;
+  }
 }
 
 .book-card__cover {
@@ -181,13 +230,26 @@
   padding: 1rem 1.1rem 1.2rem;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.4rem;
 }
 
 .book-card__info h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
   font-family: var(--font-display);
   font-size: 1.05rem;
   color: var(--color-paper);
+}
+
+.book-card__tomo {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-night-900);
+  background: var(--color-gold-light);
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
 }
 
 .book-card__subtitle {
@@ -196,13 +258,6 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   margin-top: -0.2rem;
-}
-
-.book-card .tag-illustrative {
-  align-self: flex-start;
-  color: var(--color-gold-light);
-  background: rgba(227, 171, 61, 0.14);
-  border-color: rgba(227, 171, 61, 0.4);
 }
 
 .book-card__author {
@@ -214,7 +269,6 @@
 .book-card__description {
   font-size: 0.86rem;
   color: rgba(251, 241, 226, 0.65);
-  flex-grow: 1;
 }
 
 .book-card__price {
@@ -224,42 +278,72 @@
   font-size: 0.98rem;
 }
 
-.books-overlay__whatsapp {
-  margin-top: 1.8rem;
+.book-card__whatsapp {
+  margin-top: 0.5rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.85rem 1.7rem;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
   border-radius: 999px;
   background: #25d366;
   color: #fff;
   font-weight: 600;
+  font-size: 0.82rem;
   text-decoration: none;
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
-  box-shadow: 0 14px 30px -12px rgba(37, 211, 102, 0.6);
+  box-shadow: 0 10px 22px -10px rgba(37, 211, 102, 0.6);
 }
 
-.books-overlay__whatsapp:hover {
+.book-card__whatsapp:hover {
   transform: translateY(-2px);
 }
 
-.books-overlay__whatsapp:focus-visible {
+.book-card__whatsapp:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
 }
 
-.books-overlay__whatsapp-icon {
-  width: 20px;
-  height: 20px;
+.book-card__whatsapp-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
-.books-overlay__whatsapp-icon svg {
+.book-card__whatsapp-icon svg {
   width: 100%;
   height: 100%;
 }
 
+.books-dots {
+  display: none;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.books-dots__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(251, 241, 226, 0.3);
+  transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.books-dots__dot.is-active {
+  background: var(--color-gold-light);
+  transform: scale(1.25);
+}
+
+.books-dots__dot:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
 .books-overlay__note {
-  margin-top: 0.8rem;
+  margin-top: 1.2rem;
+  text-align: center;
   font-size: 0.76rem;
   color: rgba(251, 241, 226, 0.5);
 }
@@ -300,43 +384,41 @@
     animation: books-sheet-out 0.22s var(--ease-out) forwards;
   }
 
+  /* Carrusel horizontal con snap + puntos en vez de cuadrícula: las
+     portadas se ven completas, una (o casi dos) a la vez, sin scroll
+     horizontal de la página completa (el scroll queda contenido en
+     .books-grid). */
   .books-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.8rem;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding: 0.2rem 10% 0.6rem;
+    margin: 0 -1.2rem;
+    scrollbar-width: none;
   }
-}
 
-@keyframes books-sheet-in {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
+  .books-grid::-webkit-scrollbar {
+    display: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes books-sheet-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
+  .book-card {
+    flex: 0 0 80%;
+    scroll-snap-align: center;
   }
-  to {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .books-overlay,
-  .books-overlay.is-closing {
-    animation: none;
+  .book-card:hover,
+  .book-card:focus-within {
+    transform: none;
+  }
+
+  .books-dots {
+    display: flex;
   }
 }
 
 @media (max-width: 420px) {
-  .books-grid {
-    grid-template-columns: 1fr;
+  .book-card {
+    flex-basis: 88%;
   }
 }
