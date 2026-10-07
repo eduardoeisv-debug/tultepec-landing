@@ -12,7 +12,7 @@ import useScrollLock from "../../hooks/useScrollLock.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Hero.css";
 
-export default function Hero({ onOpenBooks, onShareClick }) {
+export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
   const { t } = useLanguage();
   const [playing, setPlaying] = useState(false);
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
@@ -57,6 +57,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
       label: t("hero.card.books.title"),
       caption: t("hero.card.books.caption"),
       onClick: onOpenBooks,
+      ref: booksTriggerRef,
     },
     {
       key: "galeria",

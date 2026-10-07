@@ -1,7 +1,9 @@
-// Plantilla para la ficha de libros. Todo aquí es de ejemplo (marcado con
-// `placeholder: true`) hasta que se reemplace con los datos reales de los
-// 3 libros y el número de contacto. Los campos de texto son bilingües
-// ({ es, en }); `price` no se traduce (es solo una cifra).
+// Ficha de los 3 libros de la antología "Memorias de mi Pueblo". Título,
+// subtítulo y portada son datos reales (fotos en Fotos_Libros/, copiadas a
+// public/images/libros/). Autor, descripción y precio siguen sin
+// confirmar -- `placeholder: true` marca justo esos campos, no el libro
+// completo, y BooksModal.jsx lo muestra como "Autor y precio por
+// confirmar" en vez de dar a entender que todo el libro es de ejemplo.
 
 // Formato internacional, solo dígitos (sin "+", espacios ni guiones).
 // Ejemplo real: "5215512345678" (52 = México, 1 = celular, resto el número).
@@ -15,7 +17,9 @@ export const WHATSAPP_DEFAULT_MESSAGE = {
 export const BOOKS = [
   {
     id: "libro-1",
-    title: { es: "Datos de ejemplar 1", en: "Sample book 1 details" },
+    title: { es: "Memorias de mi Pueblo I", en: "Memories of my Town I" },
+    subtitle: { es: "Antología narrativa", en: "Narrative anthology" },
+    cover: "/images/libros/libro-1.jpeg",
     author: { es: "Autor o autora", en: "Author" },
     description: {
       es: "Breve descripción de una o dos líneas sobre el contenido del libro.",
@@ -26,7 +30,9 @@ export const BOOKS = [
   },
   {
     id: "libro-2",
-    title: { es: "Datos de ejemplar 2", en: "Sample book 2 details" },
+    title: { es: "Memorias de mi Pueblo II", en: "Memories of my Town II" },
+    subtitle: { es: "Antología narrativa", en: "Narrative anthology" },
+    cover: "/images/libros/libro-2.jpeg",
     author: { es: "Autor o autora", en: "Author" },
     description: {
       es: "Breve descripción de una o dos líneas sobre el contenido del libro.",
@@ -37,7 +43,9 @@ export const BOOKS = [
   },
   {
     id: "libro-3",
-    title: { es: "Datos de ejemplar 3", en: "Sample book 3 details" },
+    title: { es: "Memorias de mi Pueblo III", en: "Memories of my Town III" },
+    subtitle: { es: "Antología narrativa", en: "Narrative anthology" },
+    cover: "/images/libros/libro-3.jpeg",
     author: { es: "Autor o autora", en: "Author" },
     description: {
       es: "Breve descripción de una o dos líneas sobre el contenido del libro.",

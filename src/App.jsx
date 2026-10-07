@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header/Header.jsx";
 import Hero from "./components/Hero/Hero.jsx";
@@ -30,6 +30,7 @@ export default function App() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [booksModalOpen, setBooksModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const booksTriggerRef = useRef(null);
 
   useHashScrollFix();
 
@@ -41,13 +42,13 @@ export default function App() {
       <ClickFireworks />
       <Header />
       <main>
-        <Hero onOpenBooks={() => setBooksModalOpen(true)} onShareClick={openShare} />
+        <Hero onOpenBooks={() => setBooksModalOpen(true)} onShareClick={openShare} booksTriggerRef={booksTriggerRef} />
         <VisitInfo />
         <FinalCTA />
       </main>
       <Footer onOpenPrivacy={openPrivacy} />
 
-      <BooksModal open={booksModalOpen} onClose={() => setBooksModalOpen(false)} />
+      <BooksModal open={booksModalOpen} onClose={() => setBooksModalOpen(false)} triggerRef={booksTriggerRef} />
       <PrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} />
 
       {shareModalOpen && (

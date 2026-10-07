@@ -140,7 +140,10 @@ export const STRINGS = {
     es: "Tres publicaciones ya disponibles para quien quiera llevarse la memoria del pueblo más allá de esta página.",
     en: "Three publications already available for anyone who wants to take the town's memory beyond this page.",
   },
-  "booksModal.datosDeEjemplo": { es: "Datos de ejemplo", en: "Sample data" },
+  "booksModal.datosDeEjemplo": {
+    es: "Autor y precio por confirmar",
+    en: "Author and price pending",
+  },
   "booksModal.whatsapp": { es: "Preguntar por WhatsApp", en: "Ask via WhatsApp" },
   "booksModal.note": {
     es: "Número y datos de contacto pendientes de configurar — ver src/data/books.js.",

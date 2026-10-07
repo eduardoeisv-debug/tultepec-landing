@@ -1,8 +1,15 @@
-import { useEffect, useRef } from "react";
-import { X, BookOpen } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 import { BOOKS, WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE } from "../../data/books.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import HeroPapelPicado from "./HeroPapelPicado.jsx";
 import "./BooksModal.css";
+
+const CLOSE_ANIM_MS = 220;
+
+function prefersReducedMotion() {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 const WhatsAppIcon = (
   <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -10,15 +17,20 @@ const WhatsAppIcon = (
   </svg>
 );
 
-export default function BooksModal({ open, onClose }) {
+// Pantalla de los libros de la antología "Memorias de mi Pueblo", con el
+// mismo lenguaje visual que GaleriaOverlay (overlay a pantalla completa,
+// degradado noche/morado, papel picado, bottom sheet en celular).
+export default function BooksModal({ open, onClose, triggerRef }) {
   const { t, pick, language } = useLanguage();
+  const [closing, setClosing] = useState(false);
   const dialogRef = useRef(null);
 
   useEffect(() => {
     if (!open) return undefined;
+    setClosing(false);
 
     const onKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") requestClose();
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
@@ -28,9 +40,24 @@ export default function BooksModal({ open, onClose }) {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
-  }, [open, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   if (!open) return null;
+
+  const finishClose = () => {
+    onClose();
+    triggerRef?.current?.focus();
+  };
+
+  const requestClose = () => {
+    if (prefersReducedMotion()) {
+      finishClose();
+      return;
+    }
+    setClosing(true);
+    setTimeout(finishClose, CLOSE_ANIM_MS);
+  };
 
   const waLink = (book) => {
     const interested = language === "en" ? `I'm interested in: "${pick(book.title)}".` : `Me interesa: "${pick(book.title)}".`;
@@ -39,9 +66,9 @@ export default function BooksModal({ open, onClose }) {
   };
 
   return (
-    <div className="books-modal__backdrop" onMouseDown={onClose}>
+    <div className={`books-overlay__backdrop ${closing ? "is-closing" : ""}`} onMouseDown={requestClose}>
       <div
-        className="books-modal"
+        className={`books-overlay ${closing ? "is-closing" : ""}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="books-modal-title"
@@ -49,34 +76,43 @@ export default function BooksModal({ open, onClose }) {
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <button className="books-modal__close" onClick={onClose} aria-label={t("common.cerrar")}>
-          <X size={18} strokeWidth={2} />
+        <HeroPapelPicado />
+
+        <button type="button" className="books-overlay__close" onClick={requestClose} aria-label={t("common.cerrar")}>
+          <X size={20} strokeWidth={2.2} />
         </button>
 
-        <span className="eyebrow">{t("booksModal.eyebrow")}</span>
-        <h3 id="books-modal-title">{t("booksModal.title")}</h3>
-        <p className="books-modal__intro">{t("booksModal.intro")}</p>
+        <header className="books-overlay__head">
+          <span className="eyebrow eyebrow--light">{t("booksModal.eyebrow")}</span>
+          <h2 id="books-modal-title">{t("booksModal.title")}</h2>
+          <p>{t("booksModal.intro")}</p>
+        </header>
 
-        <div className="books-modal__grid">
-          {BOOKS.map((book) => (
-            <article className="book-card" key={book.id}>
-              {book.placeholder && <span className="tag-illustrative">{t("booksModal.datosDeEjemplo")}</span>}
-              <span className="book-card__icon">
-                <BookOpen size={22} strokeWidth={1.8} />
-              </span>
-              <h4>{pick(book.title)}</h4>
-              <span className="book-card__author">{pick(book.author)}</span>
-              <p className="book-card__description">{pick(book.description)}</p>
-              <span className="book-card__price">{book.price}</span>
-            </article>
-          ))}
+        <div className="books-overlay__body">
+          <div className="books-grid">
+            {BOOKS.map((book) => (
+              <article className="book-card" key={book.id}>
+                <div className="book-card__cover">
+                  <img src={book.cover} alt="" loading="lazy" />
+                </div>
+                <div className="book-card__info">
+                  <h3>{pick(book.title)}</h3>
+                  {book.subtitle && <span className="book-card__subtitle">{pick(book.subtitle)}</span>}
+                  {book.placeholder && <span className="tag-illustrative">{t("booksModal.datosDeEjemplo")}</span>}
+                  <span className="book-card__author">{pick(book.author)}</span>
+                  <p className="book-card__description">{pick(book.description)}</p>
+                  <span className="book-card__price">{book.price}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <a className="books-overlay__whatsapp" href={waLink(BOOKS[0])} target="_blank" rel="noopener noreferrer">
+            <span className="books-overlay__whatsapp-icon">{WhatsAppIcon}</span>
+            {t("booksModal.whatsapp")}
+          </a>
+          <p className="books-overlay__note">{t("booksModal.note")}</p>
         </div>
-
-        <a className="books-modal__whatsapp" href={waLink(BOOKS[0])} target="_blank" rel="noopener noreferrer">
-          <span className="books-modal__whatsapp-icon">{WhatsAppIcon}</span>
-          {t("booksModal.whatsapp")}
-        </a>
-        <p className="books-modal__note">{t("booksModal.note")}</p>
       </div>
     </div>
   );
