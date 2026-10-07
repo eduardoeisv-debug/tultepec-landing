@@ -1,37 +1,14 @@
 .final-cta {
   position: relative;
   overflow: hidden;
-  /* Fondo plano: el degradado de transición en ::before ya hace todo
-     el trabajo de color en los primeros 240px, y termina exactamente
-     en este mismo tono -- así no hay un segundo degradado propio de
-     esta sección compitiendo con él y generando una segunda costura. */
+  /* Fondo plano azul noche: esta sección ahora viene después de
+     "castillo-scroll" (ver CastilloScroll.css), que ya termina en este
+     mismo tono -- no hace falta una transición propia aquí, el
+     degradado del hero vive al inicio de esa sección. */
   background: var(--color-night-900);
   color: var(--color-paper);
   text-align: center;
   padding: var(--space-xl) 0;
-}
-
-.final-cta::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 240px;
-  /* Un solo degradado continuo que recorre, en orden, los mismos
-     tonos con los que termina el fondo del hero: dorado -> naranja
-     ember -> magenta -> morado -> azul noche. Sin franjas planas: 5
-     paradas de color repartidas parejo en vez de un salto directo de
-     2 o 3 colores. */
-  background: linear-gradient(
-    180deg,
-    #e3ab3d 0%,
-    #c1592f 24%,
-    #7a2166 48%,
-    #3a1368 74%,
-    var(--color-night-900) 100%
-  );
-  pointer-events: none;
 }
 
 .final-cta__content {

@@ -1,0 +1,92 @@
+.fiestas-strip__months {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: 0.4rem;
+  scrollbar-width: thin;
+}
+
+.fiestas-strip__month {
+  all: unset;
+  cursor: pointer;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  min-width: 84px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 241, 226, 0.18);
+  background: rgba(251, 241, 226, 0.05);
+  color: rgba(251, 241, 226, 0.75);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.fiestas-strip__month.has-events {
+  border-color: rgba(227, 171, 61, 0.55);
+  color: var(--color-gold-light);
+}
+
+.fiestas-strip__month.is-selected {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
+.fiestas-strip__month:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+.fiestas-strip__events {
+  margin-top: var(--space-md);
+  min-height: 90px;
+}
+
+.fiestas-strip__empty {
+  font-size: 1rem;
+  color: rgba(251, 241, 226, 0.6);
+}
+
+.fiestas-strip__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.fiestas-strip__event {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: rgba(251, 241, 226, 0.06);
+  border: 1px solid rgba(251, 241, 226, 0.14);
+}
+
+.fiestas-strip__event-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-paper);
+}
+
+.fiestas-strip__event-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-gold-light);
+}
+
+.fiestas-strip__event-desc {
+  margin-top: 0.15rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: rgba(251, 241, 226, 0.8);
+}

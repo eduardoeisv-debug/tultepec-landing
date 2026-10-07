@@ -1,0 +1,83 @@
+.castillo-mobilebar {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .castillo-mobilebar {
+    position: sticky;
+    top: 54px;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(13, 17, 46, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(243, 205, 122, 0.25);
+  }
+
+  .castillo-mobilebar__floor {
+    all: unset;
+    cursor: pointer;
+    flex: 1 1 0;
+    max-width: 96px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+  }
+
+  .castillo-mobilebar__floor:focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 2px;
+  }
+
+  .castillo-mobilebar__wheel {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(251, 241, 226, 0.25);
+    position: relative;
+    transition: border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  }
+
+  .castillo-mobilebar__wheel::before,
+  .castillo-mobilebar__wheel::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-top: 1px solid rgba(251, 241, 226, 0.25);
+    border-radius: 50%;
+  }
+
+  .castillo-mobilebar__wheel::after {
+    transform: rotate(90deg);
+  }
+
+  .castillo-mobilebar__floor.is-dim .castillo-mobilebar__wheel {
+    border-color: var(--color-gold);
+    opacity: 0.6;
+  }
+
+  .castillo-mobilebar__floor.is-active .castillo-mobilebar__wheel {
+    border-color: var(--color-gold-light);
+    box-shadow: 0 0 10px rgba(243, 205, 122, 0.8);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .castillo-mobilebar__floor.is-active .castillo-mobilebar__wheel {
+      animation: castillo-mini-spin 2.4s linear infinite;
+    }
+  }
+
+  @keyframes castillo-mini-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

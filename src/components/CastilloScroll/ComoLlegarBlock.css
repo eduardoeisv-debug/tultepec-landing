@@ -1,0 +1,114 @@
+.como-llegar__map {
+  width: 100%;
+  min-height: 280px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-night-800);
+  box-shadow: var(--shadow-deep);
+}
+
+.como-llegar__map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  border: 0;
+  display: block;
+}
+
+.como-llegar__map-placeholder {
+  width: 100%;
+  height: 280px;
+  background: radial-gradient(circle at 50% 50%, rgba(227, 171, 61, 0.12), transparent 65%), var(--color-night-800);
+}
+
+.como-llegar__actions {
+  margin-top: var(--space-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.como-llegar__ghost-btn {
+  color: var(--color-paper);
+}
+
+.como-llegar__cards {
+  margin-top: var(--space-md);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+}
+
+.como-llegar__card {
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(251, 241, 226, 0.06);
+  border: 1px solid rgba(251, 241, 226, 0.14);
+  color: var(--color-gold-light);
+}
+
+.como-llegar__card h4 {
+  margin-top: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-paper);
+}
+
+.como-llegar__card p {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(251, 241, 226, 0.65);
+}
+
+.como-llegar__tips {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(251, 241, 226, 0.14);
+}
+
+.como-llegar__tips-title {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-paper);
+}
+
+.como-llegar__tips-grid {
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+}
+
+.como-llegar__tip {
+  display: flex;
+  gap: 0.6rem;
+  color: var(--color-gold-light);
+}
+
+.como-llegar__tip strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--color-paper);
+}
+
+.como-llegar__tip p {
+  margin-top: 0.2rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: rgba(251, 241, 226, 0.65);
+}
+
+@media (max-width: 640px) {
+  .como-llegar__cards,
+  .como-llegar__tips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .como-llegar__actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
