@@ -136,6 +136,22 @@ export const STRINGS = {
   "memoriesModal.eyebrow": { es: "Memorias de mi pueblo", en: "Memories of my town" },
   "memoriesModal.title": { es: "Lo que cuentan quienes lo viven", en: "What those who live it have to say" },
 
+  "relatos.title": { es: "Memorias de mi Pueblo", en: "Memories of my Town" },
+  "relatos.tabs.ariaLabel": { es: "Secciones de Relatos Escritos", en: "Written Accounts sections" },
+  "relatos.tabs.historia": { es: "Quiénes somos", en: "Who we are" },
+  "relatos.tabs.libros": { es: "Los libros", en: "The books" },
+  "relatos.historia.vacioTitulo": {
+    es: "Pronto compartiremos la historia de quienes formamos este grupo",
+    en: "We'll soon share the story of those who make up this group",
+  },
+  "relatos.historia.vacioSub": {
+    es: "Estamos preparando este contenido con cuidado.",
+    en: "We're putting this content together with care.",
+  },
+  "relatos.historia.hitosTitulo": { es: "Cómo nos formamos", en: "How we came together" },
+  "relatos.historia.integrantesTitulo": { es: "Quiénes lo integramos", en: "Who's part of it" },
+  "relatos.historia.verLibros": { es: "Ver los libros", en: "See the books" },
+
   "booksModal.title": { es: "Libros sobre la historia de Tultepec", en: "Books on the history of Tultepec" },
   "booksModal.intro": {
     es: "Tres publicaciones ya disponibles para quien quiera llevarse la memoria del pueblo más allá de esta página.",

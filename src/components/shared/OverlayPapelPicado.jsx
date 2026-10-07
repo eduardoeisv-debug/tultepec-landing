@@ -7,7 +7,7 @@ const GAP = 8;
 const TOTAL_WIDTH = FLAG_COUNT * (FLAG_WIDTH + GAP);
 
 // Papel picado para el borde superior de los overlays a pantalla completa
-// (GaleriaOverlay, BooksModal). A diferencia de HeroPapelPicado.jsx -- que
+// (GaleriaOverlay, RelatosModal). A diferencia de HeroPapelPicado.jsx -- que
 // usa un truco de ancho 110% + margen negativo pensado para sangrar fuera
 // del hero, que a todo lo ancho del viewport nunca se nota recortado --
 // aquí el panel es más angosto que la pantalla, así que ese mismo truco sí

@@ -5,7 +5,7 @@ import Hero from "./components/Hero/Hero.jsx";
 import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import Footer from "./components/Footer/Footer.jsx";
-import BooksModal from "./components/shared/BooksModal.jsx";
+import RelatosModal from "./components/shared/RelatosModal.jsx";
 import PrivacyModal from "./components/shared/PrivacyModal.jsx";
 import ClickFireworks from "./components/shared/ClickFireworks.jsx";
 import useHashScrollFix from "./hooks/useHashScrollFix.js";
@@ -48,7 +48,7 @@ export default function App() {
       </main>
       <Footer onOpenPrivacy={openPrivacy} />
 
-      <BooksModal open={booksModalOpen} onClose={() => setBooksModalOpen(false)} triggerRef={booksTriggerRef} />
+      <RelatosModal open={booksModalOpen} onClose={() => setBooksModalOpen(false)} triggerRef={booksTriggerRef} />
       <PrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} />
 
       {shareModalOpen && (

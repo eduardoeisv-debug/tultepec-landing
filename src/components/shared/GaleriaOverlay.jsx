@@ -6,10 +6,11 @@ import useGaleriaVideos from "../../hooks/useGaleriaVideos.js";
 import { CHIPS } from "../../data/galeria.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import OverlayPapelPicado from "./OverlayPapelPicado.jsx";
+import SegmentedTabs from "./SegmentedTabs.jsx";
 import { TabImagenesIcon, TabVideosIcon } from "./GaleriaIcons.jsx";
+import "./SegmentedTabs.css";
 import "./GaleriaOverlay.css";
 
-const TABS = ["imagenes", "videos"];
 const CLOSE_ANIM_MS = 220;
 
 function prefersReducedMotion() {
@@ -32,7 +33,6 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
   const [playingId, setPlayingId] = useState(null);
   const [closing, setClosing] = useState(false);
   const dialogRef = useRef(null);
-  const tabRefs = useRef({});
   const touchStartX = useRef(null);
 
   const { status: imgStatus, photos } = useGaleriaImages(open);
@@ -116,16 +116,6 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
   const goToTab = (nextTab) => {
     setTab(nextTab);
     setLightboxIndex(null);
-    tabRefs.current[nextTab]?.focus();
-  };
-
-  const onTabsKeyDown = (e) => {
-    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-      e.preventDefault();
-      const idx = TABS.indexOf(tab);
-      const nextIdx = e.key === "ArrowRight" ? (idx + 1) % TABS.length : (idx - 1 + TABS.length) % TABS.length;
-      goToTab(TABS[nextIdx]);
-    }
   };
 
   const onLightboxTouchStart = (e) => {
@@ -167,39 +157,26 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
           <p>{t("galeria.subtitle")}</p>
         </header>
 
-        <div className="galeria-tabs" role="tablist" aria-label={t("galeria.tabs.ariaLabel")} onKeyDown={onTabsKeyDown}>
-          <span className={`galeria-tabs__indicator ${tab === "videos" ? "is-videos" : ""}`} aria-hidden="true" />
-          <button
-            type="button"
-            role="tab"
-            id="galeria-tab-imagenes"
-            aria-selected={tab === "imagenes"}
-            aria-controls="galeria-panel-imagenes"
-            tabIndex={tab === "imagenes" ? 0 : -1}
-            ref={(el) => (tabRefs.current.imagenes = el)}
-            className={`galeria-tab ${tab === "imagenes" ? "is-active" : ""}`}
-            onClick={() => goToTab("imagenes")}
-          >
-            <TabImagenesIcon width={18} height={18} />
-            {t("galeria.tabs.imagenes")}
-            {imgStatus === "done" && <span className="galeria-tab__count">· {photos.length}</span>}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            id="galeria-tab-videos"
-            aria-selected={tab === "videos"}
-            aria-controls="galeria-panel-videos"
-            tabIndex={tab === "videos" ? 0 : -1}
-            ref={(el) => (tabRefs.current.videos = el)}
-            className={`galeria-tab ${tab === "videos" ? "is-active" : ""}`}
-            onClick={() => goToTab("videos")}
-          >
-            <TabVideosIcon width={18} height={18} />
-            {t("galeria.tabs.videos")}
-            {vidStatus === "done" && <span className="galeria-tab__count">· {videos.length}</span>}
-          </button>
-        </div>
+        <SegmentedTabs
+          idPrefix="galeria"
+          ariaLabel={t("galeria.tabs.ariaLabel")}
+          activeId={tab}
+          onChange={goToTab}
+          tabs={[
+            {
+              id: "imagenes",
+              icon: TabImagenesIcon,
+              label: t("galeria.tabs.imagenes"),
+              count: imgStatus === "done" ? photos.length : null,
+            },
+            {
+              id: "videos",
+              icon: TabVideosIcon,
+              label: t("galeria.tabs.videos"),
+              count: vidStatus === "done" ? videos.length : null,
+            },
+          ]}
+        />
 
         <div className="galeria-overlay__body">
           {tab === "imagenes" && (

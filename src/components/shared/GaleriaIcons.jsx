@@ -61,3 +61,43 @@ export function TabVideosIcon(props) {
     </svg>
   );
 }
+
+// Pestaña "Quiénes somos": dos personas (cabeza + hombros), mismo trazo
+// que el resto de los íconos de pestañas.
+export function TabPersonasIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <circle cx="9" cy="8.2" r="2.7" stroke="currentColor" strokeWidth="1.7" />
+      <path
+        d="M3.6 18.4c0-3 2.4-5 5.4-5s5.4 2 5.4 5"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <circle cx="16.3" cy="9.3" r="2.1" stroke="currentColor" strokeWidth="1.6" />
+      <path
+        d="M14.3 18.4c-.1-2.3 1.7-4 3.9-4 2.1 0 3.9 1.5 4.2 3.6"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        fill="none"
+      />
+    </svg>
+  );
+}
+
+// Pestaña "Los libros": libro abierto con lomo central.
+export function TabLibrosIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path
+        d="M12 6.2c-1.6-1.1-3.8-1.5-6.3-1.1a1 1 0 0 0-.8 1v11.4a1 1 0 0 0 1.2 1c2.1-.3 4.1 0 5.5 1 .3.2.7.2 1 0 1.4-1 3.4-1.3 5.5-1a1 1 0 0 0 1.2-1V6.1a1 1 0 0 0-.8-1c-2.5-.4-4.7 0-6.3 1.1Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path d="M12 6.2V19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}

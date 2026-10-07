@@ -2,7 +2,7 @@
 // mostrados en la ventana "Relatos Escritos". Portada, título, subtítulo y
 // tomo son datos reales (fotos en Fotos_Libros/, procesadas y copiadas a
 // public/images/libros/). `autor`, `descripcion` y `precio` van en null
-// hasta tener el dato real -- BooksModal.jsx oculta esos campos por
+// hasta tener el dato real -- RelatosModal.jsx oculta esos campos por
 // completo en vez de mostrar un marcador de "dato pendiente".
 //
 // TODO (pendiente de confirmar, no inventar):
