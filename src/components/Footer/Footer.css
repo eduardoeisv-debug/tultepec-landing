@@ -1,4 +1,8 @@
 .footer {
+  position: relative;
+  /* Por encima del canvas de fuegos al clic (z-index: 3, fijo a toda
+     la página) para que no se dibuje sobre el texto o los enlaces. */
+  z-index: 4;
   background: var(--color-night-950);
   color: rgba(251, 241, 226, 0.7);
   padding: var(--space-lg) 0 var(--space-md);

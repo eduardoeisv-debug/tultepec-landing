@@ -1,0 +1,11 @@
+.click-fireworks {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Por debajo del encabezado (40) y del contenido de cada sección
+     (hero__grid: 4, final-cta__content / footer: ver sus propios CSS),
+     pero por encima de los fondos decorativos. */
+  z-index: 3;
+  pointer-events: none;
+}

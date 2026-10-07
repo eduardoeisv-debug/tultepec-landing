@@ -6,6 +6,7 @@ import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import BooksModal from "./components/shared/BooksModal.jsx";
 import PrivacyModal from "./components/shared/PrivacyModal.jsx";
+import ClickFireworks from "./components/shared/ClickFireworks.jsx";
 import useHashScrollFix from "./hooks/useHashScrollFix.js";
 
 const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal.jsx"));
@@ -34,6 +35,7 @@ export default function App() {
 
   return (
     <>
+      <ClickFireworks />
       <Header />
       <main>
         <Hero onOpenBooks={() => setBooksModalOpen(true)} onShareClick={openShare} />
