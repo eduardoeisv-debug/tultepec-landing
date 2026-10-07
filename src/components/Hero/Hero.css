@@ -162,11 +162,24 @@
 
 .hero__cards {
   margin-top: var(--space-md);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: stretch;
   gap: 0.65rem;
+}
+
+.hero__card-item {
+  /* 3 por fila en escritorio; con 5 tarjetas la última fila (2) se reparte
+     el ancho completo y queda centrada en vez de dejar un hueco a la
+     derecha, que es lo que pasaría con una grilla rígida de 3 columnas.
+     min-width es solo una red de seguridad en pantallas muy angostas
+     antes de que entre el breakpoint de tablet (2 por fila) -- tiene que
+     ser menor al ancho real de la columna .hero__copy (~540px en
+     escritorio, no los 1280px completos del viewport). */
+  flex: 1 1 calc(33.333% - 0.45rem);
+  min-width: 150px;
+  display: flex;
 }
 
 .hero__card {
@@ -250,14 +263,14 @@
 }
 
 @media (max-width: 1023px) {
-  .hero__cards {
-    grid-template-columns: repeat(2, 1fr);
+  .hero__card-item {
+    flex-basis: calc(50% - 0.35rem);
   }
 }
 
 @media (max-width: 599px) {
-  .hero__cards {
-    grid-template-columns: 1fr;
+  .hero__card-item {
+    flex-basis: 100%;
   }
 }
 

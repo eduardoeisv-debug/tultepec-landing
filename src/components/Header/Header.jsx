@@ -2,9 +2,9 @@ import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import LanguageSwitcher from "../../i18n/LanguageSwitcher.jsx";
 import "./Header.css";
 
-// Ícono de torito dibujado a mano, el mismo trazo que ya se usa en
-// MosaicTile.jsx (src/components/shared/MosaicTile.jsx) para mantener un
-// solo estilo de ícono "torito" en todo el sitio.
+// Ícono de torito dibujado a mano, el mismo trazo (1.7-1.8, puntas y
+// uniones redondeadas) que el resto de los íconos propios del sitio (ver
+// GaleriaIcons.jsx) para mantener un solo estilo visual.
 function ToritoIcon() {
   return (
     <svg

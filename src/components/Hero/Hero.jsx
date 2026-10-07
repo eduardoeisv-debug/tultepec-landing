@@ -1,72 +1,36 @@
-import { useState } from "react";
-import {
-  Play,
-  X,
-  ChevronRight,
-  Flame,
-  MessageSquareText,
-  BookOpen,
-  Image,
-  Video,
-  MapPinned,
-} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, MapPinned } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import TownSilhouette from "../shared/TownSilhouette.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
-import MediaHubModal from "../shared/MediaHubModal.jsx";
-import GalleryModal from "../shared/GalleryModal.jsx";
-import VideoGalleryModal from "../shared/VideoGalleryModal.jsx";
+import GaleriaOverlay from "../shared/GaleriaOverlay.jsx";
+import { GaleriaCardIcon } from "../shared/GaleriaIcons.jsx";
 import HistoryModal from "../shared/HistoryModal.jsx";
 import MemoriesModal from "../shared/MemoriesModal.jsx";
-import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Hero.css";
 
-const IMAGE_TILE_ICONS = {
-  "castillos-monumentales": "castillo",
-  "san-juan-de-dios": "fuego",
-  "talleres-familiares": "taller",
-  toritos: "torito",
-  mojigangas: "mojiganga",
-};
-
-const IMAGE_TILE_TONES = {
-  "castillos-monumentales": "fire",
-  "san-juan-de-dios": "gold",
-  "talleres-familiares": "night",
-  toritos: "terracotta",
-  mojigangas: "gold",
-};
-
-const VIDEO_TILE_ICONS = {
-  toritos: "torito",
-  "castillos-monumentales": "castillo",
-  piromusicales: "piromusical",
-};
-
-const VIDEO_TILE_TONES = {
-  toritos: "terracotta",
-  "castillos-monumentales": "fire",
-  piromusicales: "night",
-};
-
 export default function Hero({ onOpenBooks, onShareClick }) {
-  const { t, pick } = useLanguage();
+  const { t } = useLanguage();
   const [playing, setPlaying] = useState(false);
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [memoriesOpen, setMemoriesOpen] = useState(false);
-  const [imagesHubOpen, setImagesHubOpen] = useState(false);
-  const [videosHubOpen, setVideosHubOpen] = useState(false);
-  const [activeImageCategory, setActiveImageCategory] = useState(null);
-  const [activeVideoCategory, setActiveVideoCategory] = useState(null);
-
-  const activeImage = GALLERY_CATEGORIES.find((c) => c.slug === activeImageCategory);
-  const activeVideo = VIDEO_CATEGORIES.find((c) => c.slug === activeVideoCategory);
+  const [galeriaOpen, setGaleriaOpen] = useState(false);
+  const galeriaTriggerRef = useRef(null);
 
   useScrollLock(mobileVideoOpen);
+
+  // Soporta enlaces directos a la galería: si la página se carga con
+  // #galeria/imagenes o #galeria/videos en la URL, la abre directamente
+  // (GaleriaOverlay lee el hash para elegir la pestaña inicial).
+  useEffect(() => {
+    if (window.location.hash.startsWith("#galeria/")) {
+      setGaleriaOpen(true);
+    }
+  }, []);
 
   const scrollToVisita = () => {
     document.getElementById("visita")?.scrollIntoView({ block: "start" });
@@ -95,18 +59,12 @@ export default function Hero({ onOpenBooks, onShareClick }) {
       onClick: onOpenBooks,
     },
     {
-      key: "images",
-      Icon: Image,
-      label: t("hero.card.images.title"),
-      caption: t("hero.card.images.caption"),
-      onClick: () => setImagesHubOpen(true),
-    },
-    {
-      key: "videos",
-      Icon: Video,
-      label: t("hero.card.videos.title"),
-      caption: t("hero.card.videos.caption"),
-      onClick: () => setVideosHubOpen(true),
+      key: "galeria",
+      Icon: GaleriaCardIcon,
+      label: t("hero.card.galeria.title"),
+      caption: t("hero.card.galeria.caption"),
+      onClick: () => setGaleriaOpen(true),
+      ref: galeriaTriggerRef,
     },
     {
       key: "visit",
@@ -145,7 +103,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
           <ul className="hero__cards hero__enter hero__enter--4">
             {listItems.map((item) => (
               <li className="hero__card-item" key={item.key}>
-                <button type="button" className="hero__card" onClick={item.onClick}>
+                <button type="button" className="hero__card" onClick={item.onClick} ref={item.ref}>
                   <span className="hero__card-icon" aria-hidden="true">
                     <item.Icon size={26} strokeWidth={1.7} />
                   </span>
@@ -194,54 +152,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
       <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} />
       <MemoriesModal open={memoriesOpen} onClose={() => setMemoriesOpen(false)} onShareClick={onShareClick} />
-
-      <MediaHubModal
-        open={imagesHubOpen}
-        onClose={() => {
-          setImagesHubOpen(false);
-          setActiveImageCategory(null);
-        }}
-        eyebrow={t("mediaHub.images.eyebrow")}
-        title={t("mediaHub.images.title")}
-        description={t("mediaHub.images.description")}
-        categories={GALLERY_CATEGORIES}
-        icons={IMAGE_TILE_ICONS}
-        tones={IMAGE_TILE_TONES}
-        coverFn={coverImage}
-        mediaType="image"
-        onSelect={(slug) => setActiveImageCategory(slug)}
-      />
-
-      <MediaHubModal
-        open={videosHubOpen}
-        onClose={() => {
-          setVideosHubOpen(false);
-          setActiveVideoCategory(null);
-        }}
-        eyebrow={t("mediaHub.videos.eyebrow")}
-        title={t("mediaHub.videos.title")}
-        description={t("mediaHub.videos.description")}
-        categories={VIDEO_CATEGORIES}
-        icons={VIDEO_TILE_ICONS}
-        tones={VIDEO_TILE_TONES}
-        coverFn={coverVideo}
-        mediaType="video"
-        onSelect={(slug) => setActiveVideoCategory(slug)}
-      />
-
-      <GalleryModal
-        open={Boolean(activeImage)}
-        onClose={() => setActiveImageCategory(null)}
-        category={activeImage?.slug}
-        title={pick(activeImage?.label)}
-      />
-
-      <VideoGalleryModal
-        open={Boolean(activeVideo)}
-        onClose={() => setActiveVideoCategory(null)}
-        category={activeVideo?.slug}
-        title={pick(activeVideo?.label)}
-      />
+      <GaleriaOverlay open={galeriaOpen} onClose={() => setGaleriaOpen(false)} triggerRef={galeriaTriggerRef} />
 
       {mobileVideoOpen && (
         <div className="hero__mobile-video-backdrop" onMouseDown={() => setMobileVideoOpen(false)}>

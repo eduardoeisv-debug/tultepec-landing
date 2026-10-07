@@ -16,6 +16,11 @@ export default function useHashScrollFix() {
   useEffect(() => {
     const scrollToHashAndClean = () => {
       if (!window.location.hash) return;
+      // "#galeria/imagenes" y "#galeria/videos" no son anclas de scroll --
+      // son la ruta que lee GaleriaOverlay para abrir en la pestaña
+      // correcta, y además rompen document.querySelector (la barra "/" no
+      // es válida en un selector de id sin escapar).
+      if (window.location.hash.startsWith("#galeria/")) return;
       const el = document.querySelector(window.location.hash);
       if (!el) return;
       el.scrollIntoView();

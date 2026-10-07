@@ -26,32 +26,15 @@ export const STRINGS = {
   "hero.card.memories.caption": { es: "Testimonios del pueblo", en: "Stories from the town" },
   "hero.card.books.title": { es: "Relatos Escritos", en: "Written Accounts" },
   "hero.card.books.caption": { es: "3 libros publicados", en: "3 published books" },
-  "hero.card.images.title": { es: "Imágenes", en: "Photos" },
-  "hero.card.images.caption": { es: "Toritos, castillos y más", en: "Toritos, castillos and more" },
-  "hero.card.videos.title": { es: "Videos", en: "Videos" },
-  "hero.card.videos.caption": { es: "Castillos y piromusicales", en: "Castillos and musical fireworks" },
   "hero.card.visit.title": { es: "Visítanos", en: "Visit us" },
   "hero.card.visit.caption": { es: "Mapa, fechas y consejos", en: "Map, dates and tips" },
+  "hero.card.galeria.title": { es: "Imágenes y videos", en: "Photos and videos" },
+  "hero.card.galeria.caption": { es: "Galería del pueblo", en: "Gallery of the town" },
   "hero.video.ariaLabel": {
     es: "Reproducir video de bienvenida a Tultepec",
     en: "Play Tultepec welcome video",
   },
   "common.cerrar": { es: "Cerrar", en: "Close" },
-
-  "mediaHub.images.eyebrow": { es: "Imágenes", en: "Photos" },
-  "mediaHub.images.title": { es: "Tradiciones del pueblo en fotos", en: "The town's traditions in photos" },
-  "mediaHub.images.description": {
-    es: "Elige una categoría para ver su álbum completo.",
-    en: "Choose a category to see its full album.",
-  },
-  "mediaHub.videos.eyebrow": { es: "Videos", en: "Videos" },
-  "mediaHub.videos.title": { es: "Tradiciones del pueblo en video", en: "The town's traditions on video" },
-  "mediaHub.videos.description": {
-    es: "Elige una categoría para ver sus videos.",
-    en: "Choose a category to see its videos.",
-  },
-  "mediaHub.badge.verFotos": { es: "Ver fotos", en: "View photos" },
-  "mediaHub.badge.verVideos": { es: "Ver videos", en: "View videos" },
 
   "footer.tagline": {
     es: "Un archivo hecho para honrar la memoria de un pueblo.",
@@ -144,26 +127,6 @@ export const STRINGS = {
 
   "likeButton.teGusta": { es: "Te gusta", en: "You like this" },
   "likeButton.meGusta": { es: "Me gusta", en: "Like" },
-
-  "galleryModal.eyebrow": { es: "Álbum de fotos", en: "Photo album" },
-  "galleryModal.loading": { es: "Buscando fotos…", en: "Looking for photos…" },
-  "galleryModal.empty": {
-    es: "Todavía no hay fotos aquí. Colócalas en {path} numeradas como {n1}, {n2}… (acepta .jpg, .jpeg, .png, .webp o .jfif) y aparecerán en este orden.",
-    en: "There are no photos here yet. Place them in {path} numbered {n1}, {n2}… (accepts .jpg, .jpeg, .png, .webp or .jfif) and they'll appear in that order.",
-  },
-  "galleryModal.verFoto": { es: "Ver foto {n} de {total}", en: "View photo {n} of {total}" },
-  "galleryModal.volver": { es: "Volver a la cuadrícula", en: "Back to the grid" },
-  "galleryModal.prevFoto": { es: "Foto anterior", en: "Previous photo" },
-  "galleryModal.nextFoto": { es: "Foto siguiente", en: "Next photo" },
-
-  "videoGalleryModal.eyebrow": { es: "Álbum de videos", en: "Video album" },
-  "videoGalleryModal.loading": { es: "Buscando videos…", en: "Looking for videos…" },
-  "videoGalleryModal.empty": {
-    es: "Todavía no hay videos aquí. Colócalos en {path} numerados como {n1}, {n2}… (acepta .mp4, .webm o .mov) y aparecerán en este orden.",
-    en: "There are no videos here yet. Place them in {path} numbered {n1}, {n2}… (accepts .mp4, .webm or .mov) and they'll appear in that order.",
-  },
-  "videoGalleryModal.verVideo": { es: "Ver video {n} de {total}", en: "View video {n} of {total}" },
-  "videoGalleryModal.videoN": { es: "Video {n}", en: "Video {n}" },
 
   "historyModal.eyebrow": { es: "Explora la historia", en: "Explore the history" },
   "historyModal.title": { es: "La historia de Tultepec", en: "The history of Tultepec" },
@@ -334,4 +297,29 @@ export const STRINGS = {
     es: "Este aviso puede actualizarse conforme el sitio evolucione. La fecha de la versión vigente siempre aparece al inicio de este texto.",
     en: "This notice may be updated as the site evolves. The date of the current version always appears at the top of this text.",
   },
+
+  "galeria.title": { es: "Galería", en: "Gallery" },
+  "galeria.subtitle": {
+    es: "Fotos y videos de las tradiciones del pueblo",
+    en: "Photos and videos of the town's traditions",
+  },
+  "galeria.tabs.ariaLabel": { es: "Secciones de la galería", en: "Gallery sections" },
+  "galeria.tabs.imagenes": { es: "Imágenes", en: "Photos" },
+  "galeria.tabs.videos": { es: "Videos", en: "Videos" },
+  "galeria.chips.ariaLabel": { es: "Filtrar por categoría", en: "Filter by category" },
+  "galeria.cargandoFotos": { es: "Buscando fotos…", en: "Looking for photos…" },
+  "galeria.cargandoVideos": { es: "Buscando videos…", en: "Looking for videos…" },
+  "galeria.vacio.titulo": { es: "Pronto compartiremos más", en: "More coming soon" },
+  "galeria.vacio.fotos": {
+    es: "Aún no hay fotos para esta categoría.",
+    en: "There are no photos for this category yet.",
+  },
+  "galeria.vacio.videos": {
+    es: "Todavía no hay videos publicados.",
+    en: "There are no published videos yet.",
+  },
+  "galeria.verFoto": { es: "Ver foto {n} de {total}", en: "View photo {n} of {total}" },
+  "galeria.fotoAnterior": { es: "Foto anterior", en: "Previous photo" },
+  "galeria.fotoSiguiente": { es: "Foto siguiente", en: "Next photo" },
+  "galeria.reproducir": { es: "Reproducir video: {titulo}", en: "Play video: {titulo}" },
 };
