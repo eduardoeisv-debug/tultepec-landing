@@ -1,3 +1,11 @@
+.como-llegar__intro {
+  margin-bottom: var(--space-sm);
+  max-width: 56ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(251, 241, 226, 0.8);
+}
+
 .como-llegar__map {
   width: 100%;
   min-height: 280px;
@@ -78,8 +86,8 @@
 .como-llegar__tips-grid {
   margin-top: 0.8rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.8rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem 1.2rem;
 }
 
 .como-llegar__tip {

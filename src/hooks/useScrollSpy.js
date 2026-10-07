@@ -45,7 +45,11 @@ export default function useScrollSpy(count) {
 
   const scrollToIndex = (index) => {
     const el = refs.current[index];
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Sin "behavior" explícito: así hereda scroll-behavior de <html> (ver
+    // src/styles/global.css), que es "smooth" por defecto y "auto" bajo
+    // prefers-reduced-motion -- pasar behavior:"smooth" aquí lo forzaría
+    // siempre, sin importar esa preferencia.
+    if (el) el.scrollIntoView({ block: "start" });
   };
 
   return { activeIndex, setRef, scrollToIndex };

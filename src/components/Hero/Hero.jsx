@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Play,
   X,
@@ -19,7 +19,6 @@ import GalleryModal from "../shared/GalleryModal.jsx";
 import VideoGalleryModal from "../shared/VideoGalleryModal.jsx";
 import HistoryModal from "../shared/HistoryModal.jsx";
 import MemoriesModal from "../shared/MemoriesModal.jsx";
-import VisitModal from "../shared/VisitModal.jsx";
 import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import "./Hero.css";
@@ -57,7 +56,6 @@ export default function Hero({ onOpenBooks, onShareClick }) {
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [memoriesOpen, setMemoriesOpen] = useState(false);
-  const [visitOpen, setVisitOpen] = useState(false);
   const [imagesHubOpen, setImagesHubOpen] = useState(false);
   const [videosHubOpen, setVideosHubOpen] = useState(false);
   const [activeImageCategory, setActiveImageCategory] = useState(null);
@@ -68,11 +66,9 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
   useScrollLock(mobileVideoOpen);
 
-  useEffect(() => {
-    const onOpenVisit = () => setVisitOpen(true);
-    window.addEventListener("plan-visit:open", onOpenVisit);
-    return () => window.removeEventListener("plan-visit:open", onOpenVisit);
-  }, []);
+  const scrollToComoLlegar = () => {
+    document.getElementById("recorrido")?.scrollIntoView({ block: "start" });
+  };
 
   const listItems = [
     {
@@ -113,9 +109,9 @@ export default function Hero({ onOpenBooks, onShareClick }) {
     {
       key: "visit",
       Icon: MapPinned,
-      label: "Visítanos",
-      caption: "Tu visita a Tultepec",
-      onClick: () => setVisitOpen(true),
+      label: "Cómo llegar",
+      caption: "Mapa, fechas y consejos",
+      onClick: scrollToComoLlegar,
     },
   ];
 
@@ -204,7 +200,6 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
       <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} />
       <MemoriesModal open={memoriesOpen} onClose={() => setMemoriesOpen(false)} onShareClick={onShareClick} />
-      <VisitModal open={visitOpen} onClose={() => setVisitOpen(false)} />
 
       <MediaHubModal
         open={imagesHubOpen}

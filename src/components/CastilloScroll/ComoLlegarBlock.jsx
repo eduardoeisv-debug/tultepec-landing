@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Car, Bus, MapPinned, Sun, Footprints, ShieldAlert, ExternalLink } from "lucide-react";
+import { Car, Bus, MapPinned, Sun, Footprints, ShieldAlert, Navigation, ExternalLink } from "lucide-react";
 import "./ComoLlegarBlock.css";
 
 // Coordenadas del centro del municipio de Tultepec, Estado de México
@@ -18,12 +18,21 @@ const GOOGLE_MAPS_DIRECTIONS =
 const LLEGAR_CARDS = [
   { Icon: Car, title: "En auto", text: "POR VERIFICAR" },
   { Icon: Bus, title: "En transporte público", text: "POR VERIFICAR" },
-  { Icon: MapPinned, title: "Desde la Ciudad de México", text: "POR VERIFICAR" },
+  {
+    Icon: MapPinned,
+    title: "Desde la Ciudad de México",
+    text: "Alrededor de 40 km, aproximadamente 1 hora por la Autopista México-Pachuca o el Circuito Exterior Mexiquense, según el tráfico.",
+  },
 ];
 
 const TIPS = [
   { Icon: Sun, title: "Clima", text: "POR VERIFICAR" },
   { Icon: Footprints, title: "Calzado", text: "POR VERIFICAR" },
+  {
+    Icon: Navigation,
+    title: "Antes de salir",
+    text: "Usa tu GPS el día de tu visita: durante la feria pirotécnica algunas calles cambian de sentido o se cierran al tráfico.",
+  },
   { Icon: ShieldAlert, title: "Seguridad en las quemas", text: "POR VERIFICAR" },
 ];
 
@@ -52,6 +61,12 @@ export default function ComoLlegarBlock() {
 
   return (
     <div className="como-llegar">
+      <p className="como-llegar__intro">
+        Tultepec es un municipio del Estado de México, dentro de la zona metropolitana norte del
+        Valle de México: a menos de una hora de la Ciudad de México, perfecto para una visita de
+        un día.
+      </p>
+
       <div className="como-llegar__map" ref={mapWrapRef}>
         {mapVisible ? (
           <iframe
