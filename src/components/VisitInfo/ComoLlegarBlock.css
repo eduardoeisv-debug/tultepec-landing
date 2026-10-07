@@ -41,6 +41,11 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.8rem;
+  /* Cada tarjeta mide su propio contenido en vez de estirarse a la
+     altura de la más larga ("Desde la Ciudad de México") -- así "En
+     auto" / "En transporte público" no quedan altas y vacías mientras
+     no haya datos reales que poner ahí. */
+  align-items: start;
 }
 
 .como-llegar__card {

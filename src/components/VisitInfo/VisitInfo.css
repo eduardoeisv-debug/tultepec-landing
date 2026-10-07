@@ -34,6 +34,14 @@
   max-width: 760px;
 }
 
+.visit-info .section-head {
+  /* El valor global (640px) es más angosto que el resto del contenido
+     de esta sección (760px, ver .visit-info__inner) -- se quita para
+     que el encabezado comparta exactamente el mismo ancho y margen
+     izquierdo que el calendario, el mapa y las tarjetas de abajo. */
+  max-width: none;
+}
+
 .visit-info .section-head h2 {
   font-size: var(--fs-h2);
 }

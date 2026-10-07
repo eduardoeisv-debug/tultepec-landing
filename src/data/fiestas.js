@@ -2,15 +2,22 @@
 // agregar, quitar o corregir eventos -- cada mes es un objeto con un
 // arreglo `eventos` (puede estar vacío).
 //
-// Campos de cada evento: { nombre, fecha, descripcion }.
+// Campos de cada evento: { nombre, fecha, descripcion }. `fecha` y
+// `descripcion` son opcionales: si no hay dato confirmado, omite el campo
+// o déjalo como "" -- FiestasStrip.jsx no renderiza esa línea cuando está
+// vacía, así que nunca se muestra texto de relleno en la UI.
 //
-// Solo se completaron con datos reales los eventos que ya aparecían en el
-// sitio (San Juan de Dios y Natividad de María, con su fecha exacta). Para
-// Día de Muertos, Navidad, Semana Santa y Santa Cecilia se usó únicamente
-// la fecha/temporada en la que esas celebraciones caen a nivel nacional
-// (son fechas públicas, no específicas de Tultepec); el detalle de cómo
-// se festejan en el pueblo queda marcado "POR VERIFICAR". Los meses sin
-// ningún evento confirmado también quedan marcados así.
+// TODO (datos pendientes de confirmar con el pueblo, no inventar):
+// - Semana Santa: fecha exacta del año (es movible; aquí solo se indica
+//   que cae en marzo o abril) y descripción del festejo local.
+// - Natividad de María (8 de septiembre): descripción del festejo local.
+// - Día de Muertos (1-2 de noviembre, fecha nacional): descripción del
+//   festejo local.
+// - Santa Cecilia: fecha exacta y descripción -- no hay dato alguno aún.
+// - Navidad (25 de diciembre, fecha nacional): descripción del festejo
+//   local.
+// - Enero, febrero, abril, mayo, junio, julio, agosto y octubre: sin
+//   ningún evento confirmado todavía.
 
 const fiestas = [
   { mes: 1, mesNombre: "Enero", eventos: [] },
@@ -27,8 +34,7 @@ const fiestas = [
       },
       {
         nombre: "Semana Santa",
-        fecha: "Fecha variable (marzo o abril, según el año) — POR VERIFICAR",
-        descripcion: "POR VERIFICAR",
+        fecha: "Fecha variable (marzo o abril, según el año)",
       },
     ],
   },
@@ -40,41 +46,21 @@ const fiestas = [
   {
     mes: 9,
     mesNombre: "Septiembre",
-    eventos: [
-      {
-        nombre: "Natividad de María",
-        fecha: "8 de septiembre",
-        descripcion: "POR VERIFICAR",
-      },
-    ],
+    eventos: [{ nombre: "Natividad de María", fecha: "8 de septiembre" }],
   },
   { mes: 10, mesNombre: "Octubre", eventos: [] },
   {
     mes: 11,
     mesNombre: "Noviembre",
     eventos: [
-      {
-        nombre: "Día de Muertos",
-        fecha: "1 y 2 de noviembre (fecha nacional) — POR VERIFICAR festejo local",
-        descripcion: "POR VERIFICAR",
-      },
-      {
-        nombre: "Santa Cecilia",
-        fecha: "POR VERIFICAR",
-        descripcion: "POR VERIFICAR",
-      },
+      { nombre: "Día de Muertos", fecha: "1 y 2 de noviembre (fecha nacional)" },
+      { nombre: "Santa Cecilia" },
     ],
   },
   {
     mes: 12,
     mesNombre: "Diciembre",
-    eventos: [
-      {
-        nombre: "Navidad",
-        fecha: "25 de diciembre (fecha nacional) — POR VERIFICAR festejo local",
-        descripcion: "POR VERIFICAR",
-      },
-    ],
+    eventos: [{ nombre: "Navidad", fecha: "25 de diciembre (fecha nacional)" }],
   },
 ];
 

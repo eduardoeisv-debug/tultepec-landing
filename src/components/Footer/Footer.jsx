@@ -24,8 +24,6 @@ export default function Footer({ onOpenPrivacy }) {
           <p>
             Datos históricos generales (fiesta de San Juan de Dios, origen de la Feria Nacional de
             la Pirotecnia) tomados de fuentes públicas de divulgación histórica y turística.
-            Testimonios y algunas cifras son ilustrativos, marcados en el contenido, y deben
-            sustituirse por material verificado del pueblo.
           </p>
         </div>
       </div>

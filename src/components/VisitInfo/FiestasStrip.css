@@ -1,10 +1,43 @@
+.fiestas-strip__months-wrap {
+  position: relative;
+}
+
+.fiestas-strip__months-wrap::before,
+.fiestas-strip__months-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0.4rem;
+  width: 28px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fiestas-strip__months-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-night-900), transparent);
+}
+
+.fiestas-strip__months-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-night-900), transparent);
+}
+
 .fiestas-strip__months {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
   scroll-snap-type: x proximity;
   padding-bottom: 0.4rem;
-  scrollbar-width: thin;
+  /* Oculta la barra de scroll nativa (el degradado de los bordes ya
+     indica que hay más meses); el scroll por touch, rueda y teclado
+     sigue funcionando normal, esto solo afecta lo visual. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.fiestas-strip__months::-webkit-scrollbar {
+  display: none;
 }
 
 .fiestas-strip__month {

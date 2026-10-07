@@ -12,9 +12,12 @@ const OSM_EMBED_SRC = `https://www.openstreetmap.org/export/embed.html?bbox=${BB
 const GOOGLE_MAPS_DIRECTIONS =
   "https://www.google.com/maps/dir/?api=1&destination=Tultepec,+Estado+de+M%C3%A9xico";
 
+// En auto / En transporte público: sin datos confirmados todavía --
+// TODO: pedir detalle real de rutas/tiempos al pueblo y reemplazar
+// "Próximamente" aquí. "Desde la Ciudad de México" sí tiene dato real.
 const LLEGAR_CARDS = [
-  { Icon: Car, title: "En auto", text: "POR VERIFICAR" },
-  { Icon: Bus, title: "En transporte público", text: "POR VERIFICAR" },
+  { Icon: Car, title: "En auto", text: "Próximamente" },
+  { Icon: Bus, title: "En transporte público", text: "Próximamente" },
   {
     Icon: MapPinned,
     title: "Desde la Ciudad de México",

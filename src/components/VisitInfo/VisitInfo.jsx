@@ -9,7 +9,7 @@ export default function VisitInfo() {
   return (
     <section className="visit-info" id="visita">
       <div className="container visit-info__inner">
-        <div className="section-head section-head--center">
+        <div className="section-head">
           <span className="eyebrow eyebrow--light">Visítanos</span>
           <h2>¿Cuándo vienes y cómo llegas?</h2>
         </div>
