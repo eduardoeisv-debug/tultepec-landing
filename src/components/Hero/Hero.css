@@ -162,15 +162,11 @@
 }
 
 .hero__card-item {
-  /* 3 por fila en escritorio; con 5 tarjetas la última fila (2) se reparte
-     el ancho completo y queda centrada en vez de dejar un hueco a la
-     derecha, que es lo que pasaría con una grilla rígida de 3 columnas.
-     min-width es solo una red de seguridad en pantallas muy angostas
-     antes de que entre el breakpoint de tablet (2 por fila) -- tiene que
-     ser menor al ancho real de la columna .hero__copy (~540px en
-     escritorio, no los 1280px completos del viewport). */
-  flex: 1 1 calc(33.333% - 0.45rem);
-  min-width: 150px;
+  /* Exactamente 4 tarjetas -> 1 columna en móvil (el título no cabe en
+     una sola línea a 2 por fila por debajo de 640px, ver el breakpoint
+     de abajo) y 2x2 fijo desde tablet hasta escritorio. */
+  flex: 1 1 100%;
+  min-width: 0;
   display: flex;
 }
 
@@ -254,15 +250,10 @@
   transform: translateX(3px);
 }
 
-@media (max-width: 1023px) {
+@media (min-width: 640px) {
   .hero__card-item {
-    flex-basis: calc(50% - 0.35rem);
-  }
-}
-
-@media (max-width: 599px) {
-  .hero__card-item {
-    flex-basis: 100%;
+    flex-basis: calc(50% - 0.325rem);
+    min-width: 150px;
   }
 }
 
@@ -550,4 +541,80 @@
   object-fit: cover;
   display: block;
   background: var(--color-night-950);
+}
+
+/* Indicación de scroll al final del hero, encima de la silueta (que mide
+   clamp(90px, 16vw, 170px) de alto, pegada a bottom:0) -- el offset de
+   abajo deja ese alto más un margen, para nunca encimarse con la silueta
+   en ninguna pantalla. */
+.hero__scroll-cue {
+  /* En flujo normal (no absolute) a propósito: así siempre aparece
+     después de las tarjetas/video sin importar cuál sea más alto en
+     cada ancho (p.ej. a 768px el video stackeado debajo de las tarjetas
+     es más alto que ellas) -- nunca puede quedar encima de ningún
+     contenido. El padding-bottom del .hero ya reserva espacio para la
+     silueta debajo de este punto, así que tampoco se le encima a ella. */
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  width: fit-content;
+  margin: clamp(1.8rem, 4vw, 2.6rem) auto 0;
+  background: none;
+  border: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 12px;
+  color: rgba(251, 241, 226, 0.85);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 0.2s var(--ease-out);
+}
+
+.hero__scroll-cue:hover,
+.hero__scroll-cue:focus-visible {
+  color: var(--color-gold-light);
+}
+
+.hero__scroll-cue:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+.hero__scroll-cue-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--color-gold-light);
+  animation: hero-scroll-cue-bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes hero-scroll-cue-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-cue-arrow {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero__scroll-cue {
+    font-size: 0.74rem;
+  }
+
+  .hero__scroll-cue-arrow {
+    width: 17px;
+    height: 17px;
+  }
 }

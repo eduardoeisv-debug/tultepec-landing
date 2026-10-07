@@ -18,6 +18,7 @@ export const STRINGS = {
   },
   "hero.verVideo": { es: "Ver video", en: "Watch video" },
   "hero.dalePlay": { es: "Dale play", en: "Press play" },
+  "hero.scrollCue": { es: "¿Cuándo vienes?", en: "When are you coming?" },
 
   "hero.card.history.title": { es: "Explora la historia", en: "Explore the history" },
   "hero.card.history.caption": { es: "Momentos y tradiciones", en: "Moments and traditions" },
@@ -25,8 +26,6 @@ export const STRINGS = {
   "hero.card.memories.caption": { es: "Testimonios del pueblo", en: "Stories from the town" },
   "hero.card.books.title": { es: "Relatos Escritos", en: "Written Accounts" },
   "hero.card.books.caption": { es: "3 libros publicados", en: "3 published books" },
-  "hero.card.visit.title": { es: "Visítanos", en: "Visit us" },
-  "hero.card.visit.caption": { es: "Mapa, fechas y consejos", en: "Map, dates and tips" },
   "hero.card.galeria.title": { es: "Imágenes y videos", en: "Photos and videos" },
   "hero.card.galeria.caption": { es: "Galería del pueblo", en: "Gallery of the town" },
   "hero.video.ariaLabel": {

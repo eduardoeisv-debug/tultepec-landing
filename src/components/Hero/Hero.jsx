@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, MapPinned } from "lucide-react";
+import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import TownSilhouette from "../shared/TownSilhouette.jsx";
@@ -32,6 +32,8 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
     }
   }, []);
 
+  // Reutilizado por la indicación de scroll al final del hero -- ya no hay
+  // ninguna tarjeta que lleve directo a "visita" (se quitó "Visítanos").
   const scrollToVisita = () => {
     document.getElementById("visita")?.scrollIntoView({ block: "start" });
   };
@@ -66,13 +68,6 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
       caption: t("hero.card.galeria.caption"),
       onClick: () => setGaleriaOpen(true),
       ref: galeriaTriggerRef,
-    },
-    {
-      key: "visit",
-      Icon: MapPinned,
-      label: t("hero.card.visit.title"),
-      caption: t("hero.card.visit.caption"),
-      onClick: scrollToVisita,
     },
   ];
 
@@ -147,6 +142,19 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
           </div>
         </div>
       </div>
+
+      <button type="button" className="hero__scroll-cue" onClick={scrollToVisita}>
+        <span className="hero__scroll-cue-label">{t("hero.scrollCue")}</span>
+        <svg
+          className="hero__scroll-cue-arrow"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path d="M12 4 L12 18 M6 12 L12 18 L18 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
 
       <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} />
       <MemoriesModal open={memoriesOpen} onClose={() => setMemoriesOpen(false)} onShareClick={onShareClick} />
