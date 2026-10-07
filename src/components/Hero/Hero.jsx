@@ -66,7 +66,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
 
   useScrollLock(mobileVideoOpen);
 
-  const scrollToComoLlegar = () => {
+  const scrollToVisita = () => {
     document.getElementById("visita")?.scrollIntoView({ block: "start" });
   };
 
@@ -109,9 +109,9 @@ export default function Hero({ onOpenBooks, onShareClick }) {
     {
       key: "visit",
       Icon: MapPinned,
-      label: "Cómo llegar",
+      label: "Visítanos",
       caption: "Mapa, fechas y consejos",
-      onClick: scrollToComoLlegar,
+      onClick: scrollToVisita,
     },
   ];
 
