@@ -32,6 +32,9 @@ export const STRINGS = {
     es: "Reproducir video de bienvenida a Tultepec",
     en: "Play Tultepec welcome video",
   },
+  "video.restart": { es: "Reiniciar video", en: "Restart video" },
+  "video.watchAgain": { es: "Ver de nuevo", en: "Watch again" },
+  "video.endedSub": { es: "El video ha terminado", en: "The video has ended" },
   "common.cerrar": { es: "Cerrar", en: "Close" },
 
   "footer.tagline": {

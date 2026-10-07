@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen } from "lucide-react";
+import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, RotateCcw } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import TownSilhouette from "../shared/TownSilhouette.jsx";
@@ -15,13 +15,38 @@ import "./Hero.css";
 export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
   const { t } = useLanguage();
   const [playing, setPlaying] = useState(false);
+  const [ended, setEnded] = useState(false);
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
+  const [mobileEnded, setMobileEnded] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [memoriesOpen, setMemoriesOpen] = useState(false);
   const [galeriaOpen, setGaleriaOpen] = useState(false);
   const galeriaTriggerRef = useRef(null);
+  const videoRef = useRef(null);
+  const mobileVideoRef = useRef(null);
 
   useScrollLock(mobileVideoOpen);
+
+  // Compartido por el botón de reinicio de esquina y el de "Ver de nuevo"
+  // del overlay de fin, en ambos reproductores (escritorio y móvil).
+  const restartVideo = (ref, setEndedState) => {
+    const el = ref.current;
+    if (!el) return;
+    el.currentTime = 0;
+    const playPromise = el.play();
+    // Safari a veces devuelve una promesa que rechaza si el gesto del
+    // usuario no se considera "directo" -- el clic en este botón sí lo
+    // es, pero igual no dejamos una promesa rechazada sin atrapar.
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+    setEndedState(false);
+  };
+
+  const closeMobileVideo = () => {
+    setMobileVideoOpen(false);
+    setMobileEnded(false);
+  };
 
   // Soporta enlaces directos a la galería: si la página se carga con
   // #galeria/imagenes o #galeria/videos en la URL, la abre directamente
@@ -85,7 +110,10 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
           <button
             type="button"
             className="hero__title-video-trigger"
-            onClick={() => setMobileVideoOpen(true)}
+            onClick={() => {
+              setMobileEnded(false);
+              setMobileVideoOpen(true);
+            }}
           >
             <span className="hero__title-video-trigger-icon" aria-hidden="true">
               <Play size={14} strokeWidth={0} fill="currentColor" />
@@ -112,15 +140,45 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
         <div className="hero__visual hero__visual--enter">
           <div className="hero__video">
             {playing ? (
-              <video
-                className="hero__video-el"
-                src="/video/bienvenida.mp4"
-                controls
-                autoPlay
-                playsInline
-                preload="none"
-                onEnded={() => setPlaying(false)}
-              />
+              <>
+                <video
+                  ref={videoRef}
+                  className="hero__video-el"
+                  src="/video/bienvenida.mp4"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="none"
+                  onEnded={() => setEnded(true)}
+                  onPlay={() => setEnded(false)}
+                />
+                {!ended && (
+                  <button
+                    type="button"
+                    className="hero__video-restart"
+                    onClick={() => restartVideo(videoRef, setEnded)}
+                    aria-label={t("video.restart")}
+                    title={t("video.restart")}
+                  >
+                    <RotateCcw size={18} strokeWidth={2} />
+                  </button>
+                )}
+                {ended && (
+                  <div className="hero__video-ended-overlay">
+                    <button
+                      type="button"
+                      className="hero__video-ended-btn"
+                      onClick={() => restartVideo(videoRef, setEnded)}
+                    >
+                      <span className="hero__video-ended-icon" aria-hidden="true">
+                        <RotateCcw size={26} strokeWidth={2} />
+                      </span>
+                      <span className="hero__video-ended-label">{t("video.watchAgain")}</span>
+                    </button>
+                    <p className="hero__video-ended-sub">{t("video.endedSub")}</p>
+                  </div>
+                )}
+              </>
             ) : (
               <button
                 type="button"
@@ -161,26 +219,52 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
       <GaleriaOverlay open={galeriaOpen} onClose={() => setGaleriaOpen(false)} triggerRef={galeriaTriggerRef} />
 
       {mobileVideoOpen && (
-        <div className="hero__mobile-video-backdrop" onMouseDown={() => setMobileVideoOpen(false)}>
+        <div className="hero__mobile-video-backdrop" onMouseDown={closeMobileVideo}>
           <div className="hero__mobile-video-modal" onMouseDown={(e) => e.stopPropagation()}>
             <button
               type="button"
               className="hero__mobile-video-close"
-              onClick={() => setMobileVideoOpen(false)}
+              onClick={closeMobileVideo}
               aria-label={t("common.cerrar")}
             >
               <X size={18} strokeWidth={2} />
             </button>
             <video
+              ref={mobileVideoRef}
               className="hero__mobile-video-el"
               src="/video/bienvenida.mp4"
               controls
               autoPlay
               playsInline
-              onEnded={(e) => {
-                e.currentTarget.currentTime = 0;
-              }}
+              onEnded={() => setMobileEnded(true)}
+              onPlay={() => setMobileEnded(false)}
             />
+            {!mobileEnded && (
+              <button
+                type="button"
+                className="hero__video-restart hero__video-restart--mobile"
+                onClick={() => restartVideo(mobileVideoRef, setMobileEnded)}
+                aria-label={t("video.restart")}
+                title={t("video.restart")}
+              >
+                <RotateCcw size={18} strokeWidth={2} />
+              </button>
+            )}
+            {mobileEnded && (
+              <div className="hero__video-ended-overlay">
+                <button
+                  type="button"
+                  className="hero__video-ended-btn"
+                  onClick={() => restartVideo(mobileVideoRef, setMobileEnded)}
+                >
+                  <span className="hero__video-ended-icon" aria-hidden="true">
+                    <RotateCcw size={26} strokeWidth={2} />
+                  </span>
+                  <span className="hero__video-ended-label">{t("video.watchAgain")}</span>
+                </button>
+                <p className="hero__video-ended-sub">{t("video.endedSub")}</p>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -543,6 +543,132 @@
   background: var(--color-night-950);
 }
 
+/* Botón de reinicio, visible en la esquina mientras el video se
+   reproduce. En escritorio va arriba a la derecha (sin nada más ahí); en
+   el modal de celular el cierre (X) ya ocupa esa esquina, así que el de
+   reinicio va abajo a la derecha -- lejos de los controles nativos, que
+   se dibujan pegados al borde inferior pero con su propio padding. */
+.hero__video-restart {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(251, 241, 226, 0.25);
+  background: rgba(10, 14, 36, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--color-gold-light);
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.hero__video-restart:hover {
+  background: rgba(10, 14, 36, 0.78);
+  border-color: rgba(227, 171, 61, 0.6);
+  transform: scale(1.06);
+}
+
+.hero__video-restart:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+.hero__video-restart--mobile {
+  top: auto;
+  bottom: 3.2rem;
+  right: 0.7rem;
+}
+
+/* Overlay al terminar el video: mismo degradado dorado del botón de
+   play original, ahora con etiqueta ("Ver de nuevo") en vez de ser solo
+   un ícono, para que quede claro que es una acción y no decoración. */
+.hero__video-ended-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: rgba(10, 10, 30, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: hero-video-ended-in 0.3s var(--ease-out);
+}
+
+@keyframes hero-video-ended-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__video-ended-overlay {
+    animation: none;
+  }
+}
+
+.hero__video-ended-btn {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.hero__video-ended-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--color-gold-light) 0%, var(--color-gold) 55%, var(--color-terracotta) 130%);
+  color: var(--color-night-900);
+  box-shadow:
+    0 14px 34px -10px rgba(227, 171, 61, 0.8),
+    inset 0 2px 3px rgba(255, 255, 255, 0.5),
+    inset 0 -4px 8px rgba(154, 69, 35, 0.35);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+.hero__video-ended-btn:hover .hero__video-ended-icon,
+.hero__video-ended-btn:focus-visible .hero__video-ended-icon {
+  transform: scale(1.08);
+}
+
+.hero__video-ended-btn:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+.hero__video-ended-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+}
+
+.hero__video-ended-sub {
+  font-size: 0.78rem;
+  color: rgba(251, 241, 226, 0.6);
+  text-align: center;
+  padding: 0 1.2rem;
+}
+
 /* Indicación de scroll al final del hero, encima de la silueta (que mide
    clamp(90px, 16vw, 170px) de alto, pegada a bottom:0) -- el offset de
    abajo deja ese alto más un margen, para nunca encimarse con la silueta
