@@ -88,7 +88,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
     {
       key: "books",
       Icon: BookOpen,
-      label: "Compendios",
+      label: "Relatos Escritos",
       caption: "3 libros publicados",
       onClick: onOpenBooks,
     },
