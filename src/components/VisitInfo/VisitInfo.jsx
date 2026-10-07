@@ -15,7 +15,7 @@ export default function VisitInfo() {
         </div>
 
         <div className="visit-info__block">
-          <h3>¿En qué mes hay fiesta?</h3>
+          <h3>¿En qué mes hay eventos?</h3>
           <FiestasStrip />
         </div>
 
