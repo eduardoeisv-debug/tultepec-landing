@@ -36,10 +36,6 @@
   gap: 0.7rem;
 }
 
-.como-llegar__ghost-btn {
-  color: var(--color-paper);
-}
-
 .como-llegar__cards {
   margin-top: var(--space-md);
   display: grid;
@@ -70,48 +66,8 @@
   color: rgba(251, 241, 226, 0.65);
 }
 
-.como-llegar__tips {
-  margin-top: var(--space-md);
-  padding-top: var(--space-md);
-  border-top: 1px solid rgba(251, 241, 226, 0.14);
-}
-
-.como-llegar__tips-title {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--color-paper);
-}
-
-.como-llegar__tips-grid {
-  margin-top: 0.8rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.8rem 1.2rem;
-}
-
-.como-llegar__tip {
-  display: flex;
-  gap: 0.6rem;
-  color: var(--color-gold-light);
-}
-
-.como-llegar__tip strong {
-  display: block;
-  font-size: 0.95rem;
-  color: var(--color-paper);
-}
-
-.como-llegar__tip p {
-  margin-top: 0.2rem;
-  font-size: 0.88rem;
-  line-height: 1.45;
-  color: rgba(251, 241, 226, 0.65);
-}
-
 @media (max-width: 640px) {
-  .como-llegar__cards,
-  .como-llegar__tips-grid {
+  .como-llegar__cards {
     grid-template-columns: 1fr;
   }
 

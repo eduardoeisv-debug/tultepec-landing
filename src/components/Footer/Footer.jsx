@@ -8,7 +8,8 @@ export default function Footer({ onOpenPrivacy }) {
           <span className="footer__brand">Tultepec · Pueblo Pirotécnico</span>
           <p className="footer__tagline">Un archivo hecho para honrar la memoria de un pueblo.</p>
           <p className="footer__thanks">
-            Un agradecimiento especial a <strong>la Profesora Juanita</strong> y al{" "}
+            Un agradecimiento especial a{" "}
+            <strong>la Profesora Juana Antonieta Zuñiga Urban</strong> y al{" "}
             <strong>Profesor Fernando Manuel Torices Ramírez</strong>, por compartir con
             generosidad su conocimiento y sus recuerdos — el verdadero corazón de este archivo.
           </p>

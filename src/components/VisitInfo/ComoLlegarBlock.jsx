@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Car, Bus, MapPinned, Sun, Footprints, ShieldAlert, Navigation, ExternalLink } from "lucide-react";
+import { Car, Bus, MapPinned, ExternalLink } from "lucide-react";
 import "./ComoLlegarBlock.css";
 
 // Coordenadas del centro del municipio de Tultepec, Estado de México
@@ -9,7 +9,6 @@ const LAT = 19.6787;
 const LON = -99.1135;
 const BBOX = "-99.155,19.655,-99.075,19.705";
 const OSM_EMBED_SRC = `https://www.openstreetmap.org/export/embed.html?bbox=${BBOX}&layer=mapnik&marker=${LAT}%2C${LON}`;
-const GOOGLE_MAPS_VIEW = "https://www.google.com/maps?q=Tultepec,+Estado+de+M%C3%A9xico";
 const GOOGLE_MAPS_DIRECTIONS =
   "https://www.google.com/maps/dir/?api=1&destination=Tultepec,+Estado+de+M%C3%A9xico";
 
@@ -21,17 +20,6 @@ const LLEGAR_CARDS = [
     title: "Desde la Ciudad de México",
     text: "Alrededor de 40 km, aproximadamente 1 hora por la Autopista México-Pachuca o el Circuito Exterior Mexiquense, según el tráfico.",
   },
-];
-
-const TIPS = [
-  { Icon: Sun, title: "Clima", text: "POR VERIFICAR" },
-  { Icon: Footprints, title: "Calzado", text: "POR VERIFICAR" },
-  {
-    Icon: Navigation,
-    title: "Antes de salir",
-    text: "Usa tu GPS el día de tu visita: durante la feria pirotécnica algunas calles cambian de sentido o se cierran al tráfico.",
-  },
-  { Icon: ShieldAlert, title: "Seguridad en las quemas", text: "POR VERIFICAR" },
 ];
 
 export default function ComoLlegarBlock() {
@@ -87,15 +75,6 @@ export default function ComoLlegarBlock() {
           Cómo llegar
           <ExternalLink size={16} strokeWidth={2} aria-hidden="true" />
         </a>
-        <a
-          className="btn btn--ghost como-llegar__ghost-btn"
-          href={GOOGLE_MAPS_VIEW}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Abrir en Google Maps
-          <ExternalLink size={16} strokeWidth={2} aria-hidden="true" />
-        </a>
       </div>
 
       <div className="como-llegar__cards">
@@ -106,21 +85,6 @@ export default function ComoLlegarBlock() {
             <p>{text}</p>
           </div>
         ))}
-      </div>
-
-      <div className="como-llegar__tips">
-        <h4 className="como-llegar__tips-title">Consejos de visita</h4>
-        <div className="como-llegar__tips-grid">
-          {TIPS.map(({ Icon, title, text }) => (
-            <div className="como-llegar__tip" key={title}>
-              <Icon size={18} strokeWidth={1.8} aria-hidden="true" />
-              <div>
-                <strong>{title}</strong>
-                <p>{text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
