@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { MapPinned, ExternalLink } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ComoLlegarBlock.css";
 
 // Coordenadas del centro del municipio de Tultepec, Estado de México
@@ -19,14 +20,11 @@ const GOOGLE_MAPS_DIRECTIONS =
 // en ComoLlegarBlock.css. "Desde la Ciudad de México" sí tiene dato
 // real y se deja sola, a ancho completo.
 const LLEGAR_CARDS = [
-  {
-    Icon: MapPinned,
-    title: "Desde la Ciudad de México",
-    text: "Alrededor de 40 km, aproximadamente 1 hora por la Autopista México-Pachuca o el Circuito Exterior Mexiquense, según el tráfico.",
-  },
+  { Icon: MapPinned, titleKey: "comoLlegar.card.cdmx.title", textKey: "comoLlegar.card.cdmx.text" },
 ];
 
 export default function ComoLlegarBlock() {
+  const { t } = useLanguage();
   const mapWrapRef = useRef(null);
   const [mapVisible, setMapVisible] = useState(false);
 
@@ -51,16 +49,12 @@ export default function ComoLlegarBlock() {
 
   return (
     <div className="como-llegar">
-      <p className="como-llegar__intro">
-        Tultepec es un municipio del Estado de México, dentro de la zona metropolitana norte del
-        Valle de México: a menos de una hora de la Ciudad de México, perfecto para una visita de
-        un día.
-      </p>
+      <p className="como-llegar__intro">{t("comoLlegar.intro")}</p>
 
       <div className="como-llegar__map" ref={mapWrapRef}>
         {mapVisible ? (
           <iframe
-            title="Mapa de Tultepec, Estado de México"
+            title={t("comoLlegar.mapTitle")}
             src={OSM_EMBED_SRC}
             loading="lazy"
           />
@@ -76,17 +70,17 @@ export default function ComoLlegarBlock() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Cómo llegar
+          {t("comoLlegar.comoLlegar")}
           <ExternalLink size={16} strokeWidth={2} aria-hidden="true" />
         </a>
       </div>
 
       <div className="como-llegar__cards">
-        {LLEGAR_CARDS.map(({ Icon, title, text }) => (
-          <div className="como-llegar__card" key={title}>
+        {LLEGAR_CARDS.map(({ Icon, titleKey, textKey }) => (
+          <div className="como-llegar__card" key={titleKey}>
             <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
-            <h4>{title}</h4>
-            <p>{text}</p>
+            <h4>{t(titleKey)}</h4>
+            <p>{t(textKey)}</p>
           </div>
         ))}
       </div>

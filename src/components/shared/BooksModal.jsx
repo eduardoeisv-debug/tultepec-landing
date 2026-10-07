@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { X, BookOpen } from "lucide-react";
 import { BOOKS, WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE } from "../../data/books.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./BooksModal.css";
 
 const WhatsAppIcon = (
@@ -10,6 +11,7 @@ const WhatsAppIcon = (
 );
 
 export default function BooksModal({ open, onClose }) {
+  const { t, pick, language } = useLanguage();
   const dialogRef = useRef(null);
 
   useEffect(() => {
@@ -31,7 +33,8 @@ export default function BooksModal({ open, onClose }) {
   if (!open) return null;
 
   const waLink = (book) => {
-    const message = `${WHATSAPP_DEFAULT_MESSAGE} Me interesa: "${book.title}".`;
+    const interested = language === "en" ? `I'm interested in: "${pick(book.title)}".` : `Me interesa: "${pick(book.title)}".`;
+    const message = `${pick(WHATSAPP_DEFAULT_MESSAGE)} ${interested}`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   };
 
@@ -46,27 +49,24 @@ export default function BooksModal({ open, onClose }) {
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <button className="books-modal__close" onClick={onClose} aria-label="Cerrar">
+        <button className="books-modal__close" onClick={onClose} aria-label={t("common.cerrar")}>
           <X size={18} strokeWidth={2} />
         </button>
 
-        <span className="eyebrow">Memorias de mi pueblo</span>
-        <h3 id="books-modal-title">Libros sobre la historia de Tultepec</h3>
-        <p className="books-modal__intro">
-          Tres publicaciones ya disponibles para quien quiera llevarse la memoria del pueblo más
-          allá de esta página.
-        </p>
+        <span className="eyebrow">{t("booksModal.eyebrow")}</span>
+        <h3 id="books-modal-title">{t("booksModal.title")}</h3>
+        <p className="books-modal__intro">{t("booksModal.intro")}</p>
 
         <div className="books-modal__grid">
           {BOOKS.map((book) => (
             <article className="book-card" key={book.id}>
-              {book.placeholder && <span className="tag-illustrative">Datos de ejemplo</span>}
+              {book.placeholder && <span className="tag-illustrative">{t("booksModal.datosDeEjemplo")}</span>}
               <span className="book-card__icon">
                 <BookOpen size={22} strokeWidth={1.8} />
               </span>
-              <h4>{book.title}</h4>
-              <span className="book-card__author">{book.author}</span>
-              <p className="book-card__description">{book.description}</p>
+              <h4>{pick(book.title)}</h4>
+              <span className="book-card__author">{pick(book.author)}</span>
+              <p className="book-card__description">{pick(book.description)}</p>
               <span className="book-card__price">{book.price}</span>
             </article>
           ))}
@@ -74,11 +74,9 @@ export default function BooksModal({ open, onClose }) {
 
         <a className="books-modal__whatsapp" href={waLink(BOOKS[0])} target="_blank" rel="noopener noreferrer">
           <span className="books-modal__whatsapp-icon">{WhatsAppIcon}</span>
-          Preguntar por WhatsApp
+          {t("booksModal.whatsapp")}
         </a>
-        <p className="books-modal__note">
-          Número y datos de contacto pendientes de configurar — ver src/data/books.js.
-        </p>
+        <p className="books-modal__note">{t("booksModal.note")}</p>
       </div>
     </div>
   );

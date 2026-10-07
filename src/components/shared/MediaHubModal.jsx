@@ -3,10 +3,12 @@ import { X, Camera, Video as VideoIcon } from "lucide-react";
 import useCoverImage from "../../hooks/useCoverImage.js";
 import useCoverVideo from "../../hooks/useCoverVideo.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import MosaicTile from "./MosaicTile.jsx";
 import "./MediaHubModal.css";
 
 function HubTile({ category, icon, tone, large, mediaType, coverPath, onSelect }) {
+  const { t, pick } = useLanguage();
   const hasImage = useCoverImage(mediaType === "image" ? coverPath : null);
   const hasVideo = useCoverVideo(mediaType === "video" ? coverPath : null);
   const hasMedia = mediaType === "image" ? hasImage : hasVideo;
@@ -14,12 +16,12 @@ function HubTile({ category, icon, tone, large, mediaType, coverPath, onSelect }
   return (
     <MosaicTile
       icon={icon}
-      label={category.label}
+      label={pick(category.label)}
       tone={tone}
       large={large}
       hasMedia={hasMedia}
       badgeIcon={mediaType === "video" ? VideoIcon : Camera}
-      badgeTitle={mediaType === "video" ? "Ver videos" : "Ver fotos"}
+      badgeTitle={mediaType === "video" ? t("mediaHub.badge.verVideos") : t("mediaHub.badge.verFotos")}
       onClick={() => onSelect(category.slug)}
     />
   );
@@ -41,6 +43,7 @@ export default function MediaHubModal({
   mediaType,
   onSelect,
 }) {
+  const { t } = useLanguage();
   const dialogRef = useRef(null);
 
   useScrollLock(open);
@@ -73,7 +76,7 @@ export default function MediaHubModal({
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <button className="media-hub__close" onClick={onClose} aria-label="Cerrar">
+        <button className="media-hub__close" onClick={onClose} aria-label={t("common.cerrar")}>
           <X size={18} strokeWidth={2} />
         </button>
 

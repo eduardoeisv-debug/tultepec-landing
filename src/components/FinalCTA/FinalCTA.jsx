@@ -5,9 +5,11 @@ import ShareButtons from "../shared/ShareButtons.jsx";
 import LikeButton from "../shared/LikeButton.jsx";
 import CommentModal from "../shared/CommentModal.jsx";
 import useReveal from "../../hooks/useReveal.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./FinalCTA.css";
 
 export default function FinalCTA() {
+  const { t } = useLanguage();
   const ref = useReveal();
   const [commentOpen, setCommentOpen] = useState(false);
 
@@ -15,22 +17,17 @@ export default function FinalCTA() {
     <section className="final-cta" ref={ref}>
       <SparkField count={14} />
       <div className="container final-cta__content reveal">
-        <h2>La memoria del pueblo sigue encendida</h2>
-        <p>
-          Cada visita a este archivo es una forma de mantener viva la historia de Tultepec.
-          Vuelve cuando quieras seguir el hilo de la tradición.
-        </p>
+        <h2>{t("finalCta.title")}</h2>
+        <p>{t("finalCta.text")}</p>
         <div className="final-cta__engage">
-          <p className="final-cta__engage-text">
-            Hola, si te gustó el contenido de este sitio, déjanos tu like y un comentario
-          </p>
+          <p className="final-cta__engage-text">{t("finalCta.engageText")}</p>
           <div className="final-cta__engage-actions">
             <LikeButton />
             <button type="button" className="comment-button" onClick={() => setCommentOpen(true)}>
               <span className="comment-button__icon">
                 <MessageCircle size={18} strokeWidth={1.8} />
               </span>
-              <span>Comentar</span>
+              <span>{t("finalCta.comentar")}</span>
             </button>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { Camera } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./MosaicTile.css";
 
 // Grosor de línea unificado (1.8, con puntas y uniones redondeadas) para que
@@ -101,10 +102,12 @@ export default function MosaicTile({
   large = false,
   hasMedia = false,
   badgeIcon: BadgeIcon = Camera,
-  badgeTitle = "Ver fotos",
+  badgeTitle,
   onClick,
 }) {
+  const { t } = useLanguage();
   const Tag = onClick ? "button" : "div";
+  const resolvedBadgeTitle = badgeTitle ?? t("mediaHub.badge.verFotos");
 
   return (
     <Tag
@@ -115,7 +118,7 @@ export default function MosaicTile({
       onClick={onClick}
     >
       {hasMedia && (
-        <span className="mosaic-tile__badge" title={badgeTitle} aria-hidden="true">
+        <span className="mosaic-tile__badge" title={resolvedBadgeTitle} aria-hidden="true">
           <BadgeIcon size={14} strokeWidth={1.8} />
         </span>
       )}

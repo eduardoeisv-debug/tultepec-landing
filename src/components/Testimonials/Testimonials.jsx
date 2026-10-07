@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fetchVoices } from "../../lib/testimonialsClient.js";
 import useReveal from "../../hooks/useReveal.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Testimonials.css";
 
 const AUTOPLAY_MS = 6000;
@@ -13,6 +14,7 @@ const QuoteMark = (
 );
 
 export default function Testimonials({ onShareClick, embedded = false }) {
+  const { t } = useLanguage();
   const ref = useReveal();
   const Wrapper = embedded ? "div" : "section";
   const [status, setStatus] = useState("loading"); // loading | ready | empty | error
@@ -69,21 +71,18 @@ export default function Testimonials({ onShareClick, embedded = false }) {
     <Wrapper className={`testimonials ${embedded ? "testimonials--embedded" : ""}`} id={embedded ? undefined : "voces"} ref={ref}>
       <div className={embedded ? "" : "container"}>
         <div className="section-head section-head--center reveal">
-          <span className="eyebrow eyebrow--light">Voces del pueblo</span>
-          <h2 className="testimonials__title">Lo que cuentan quienes lo viven</h2>
-          <p className="testimonials__subtitle">
-            Testimonios de artesanos y familias, junto con las memorias que la propia comunidad ha
-            compartido y ya fueron revisadas.
-          </p>
+          <span className="eyebrow eyebrow--light">{t("testimonials.eyebrow")}</span>
+          <h2 className="testimonials__title">{t("testimonials.title")}</h2>
+          <p className="testimonials__subtitle">{t("testimonials.subtitle")}</p>
         </div>
 
-        {status === "loading" && <p className="testimonials__status">Cargando voces…</p>}
-        {status === "error" && <p className="testimonials__status">No pudimos cargar los testimonios.</p>}
+        {status === "loading" && <p className="testimonials__status">{t("testimonials.loading")}</p>}
+        {status === "error" && <p className="testimonials__status">{t("testimonials.error")}</p>}
         {status === "empty" && (
           <div className="testimonials__empty reveal">
-            <p>Todavía no hay voces publicadas. Sé la primera persona en compartir la tuya.</p>
+            <p>{t("testimonials.empty")}</p>
             <button type="button" className="btn btn--primary" onClick={onShareClick}>
-              Comparte tu memoria
+              {t("testimonials.comparteTuMemoria")}
             </button>
           </div>
         )}
@@ -94,7 +93,7 @@ export default function Testimonials({ onShareClick, embedded = false }) {
               type="button"
               className="testimonials__nav testimonials__nav--prev"
               onClick={() => goTo(active - 1)}
-              aria-label="Testimonio anterior"
+              aria-label={t("testimonials.prev")}
             >
               <ChevronLeft size={22} strokeWidth={2} />
             </button>
@@ -114,7 +113,7 @@ export default function Testimonials({ onShareClick, embedded = false }) {
               type="button"
               className="testimonials__nav testimonials__nav--next"
               onClick={() => goTo(active + 1)}
-              aria-label="Testimonio siguiente"
+              aria-label={t("testimonials.next")}
             >
               <ChevronRight size={22} strokeWidth={2} />
             </button>
@@ -123,13 +122,13 @@ export default function Testimonials({ onShareClick, embedded = false }) {
 
         {status === "ready" && items.length > 1 && (
           <div className="testimonials__dots">
-            {items.map((t, i) => (
+            {items.map((item, i) => (
               <button
-                key={t.id}
+                key={item.id}
                 type="button"
                 className={`testimonials__dot ${i === active ? "testimonials__dot--active" : ""}`}
                 onClick={() => goTo(i)}
-                aria-label={`Ver testimonio ${i + 1}`}
+                aria-label={t("testimonials.verTestimonio", { n: i + 1 })}
               />
             ))}
           </div>
@@ -138,7 +137,7 @@ export default function Testimonials({ onShareClick, embedded = false }) {
         {status === "ready" && (
           <div className="testimonials__cta">
             <button type="button" className="btn btn--ghost" onClick={onShareClick}>
-              Comparte tu memoria
+              {t("testimonials.comparteTuMemoria")}
             </button>
           </div>
         )}

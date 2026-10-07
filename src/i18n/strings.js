@@ -1,0 +1,337 @@
+// Diccionario central de textos de interfaz (botones, encabezados, texto
+// fijo de los componentes). Cada llave tiene su versión `es` y `en`.
+// Los párrafos largos que viven en src/data/*.js (calendario, historia,
+// testimonios, libros) NO están aquí -- esos archivos guardan cada campo
+// traducible como { es, en } directamente, y se leen con `pick()` del
+// LanguageContext en vez de `t()`.
+export const STRINGS = {
+  "app.cargando": { es: "Cargando…", en: "Loading…" },
+  "memoryEntryCard.anonimo": { es: "Anónimo", en: "Anonymous" },
+
+  "header.subtitle": { es: "Pueblo Pirotécnico", en: "Firework-Making Town" },
+
+  "hero.eyebrow": { es: "Tultepec, Estado de México", en: "Tultepec, State of Mexico" },
+  "hero.title.line1": { es: "Capital de la", en: "Capital of" },
+  "hero.title.line2": { es: "Pirotecnia", en: "Fireworks" },
+  "hero.subtitle": {
+    es: "Tultepec convierte el fuego en arte: castillos y toritos que sus familias han heredado por generaciones.",
+    en: "Tultepec turns fire into art: castillos and toritos that families have passed down for generations.",
+  },
+  "hero.verVideo": { es: "Ver video", en: "Watch video" },
+  "hero.dalePlay": { es: "Dale play", en: "Press play" },
+
+  "hero.card.history.title": { es: "Explora la historia", en: "Explore the history" },
+  "hero.card.history.caption": { es: "Momentos y tradiciones", en: "Moments and traditions" },
+  "hero.card.memories.title": { es: "Memorias de mi pueblo", en: "Memories of my town" },
+  "hero.card.memories.caption": { es: "Testimonios del pueblo", en: "Stories from the town" },
+  "hero.card.books.title": { es: "Relatos Escritos", en: "Written Accounts" },
+  "hero.card.books.caption": { es: "3 libros publicados", en: "3 published books" },
+  "hero.card.images.title": { es: "Imágenes", en: "Photos" },
+  "hero.card.images.caption": { es: "Toritos, castillos y más", en: "Toritos, castillos and more" },
+  "hero.card.videos.title": { es: "Videos", en: "Videos" },
+  "hero.card.videos.caption": { es: "Castillos y piromusicales", en: "Castillos and musical fireworks" },
+  "hero.card.visit.title": { es: "Visítanos", en: "Visit us" },
+  "hero.card.visit.caption": { es: "Mapa, fechas y consejos", en: "Map, dates and tips" },
+  "hero.video.ariaLabel": {
+    es: "Reproducir video de bienvenida a Tultepec",
+    en: "Play Tultepec welcome video",
+  },
+  "common.cerrar": { es: "Cerrar", en: "Close" },
+
+  "mediaHub.images.eyebrow": { es: "Imágenes", en: "Photos" },
+  "mediaHub.images.title": { es: "Tradiciones del pueblo en fotos", en: "The town's traditions in photos" },
+  "mediaHub.images.description": {
+    es: "Elige una categoría para ver su álbum completo.",
+    en: "Choose a category to see its full album.",
+  },
+  "mediaHub.videos.eyebrow": { es: "Videos", en: "Videos" },
+  "mediaHub.videos.title": { es: "Tradiciones del pueblo en video", en: "The town's traditions on video" },
+  "mediaHub.videos.description": {
+    es: "Elige una categoría para ver sus videos.",
+    en: "Choose a category to see its videos.",
+  },
+  "mediaHub.badge.verFotos": { es: "Ver fotos", en: "View photos" },
+  "mediaHub.badge.verVideos": { es: "Ver videos", en: "View videos" },
+
+  "footer.tagline": {
+    es: "Un archivo hecho para honrar la memoria de un pueblo.",
+    en: "An archive made to honor the memory of a town.",
+  },
+  "footer.thanks": {
+    es: "Un agradecimiento especial a la Profesora Juana Antonieta Zuñiga Urban y al Profesor Fernando Manuel Torices Ramírez, por compartir con generosidad su conocimiento y sus recuerdos — el verdadero corazón de este archivo.",
+    en: "A special thanks to Professor Juana Antonieta Zuñiga Urban and Professor Fernando Manuel Torices Ramírez, for generously sharing their knowledge and memories — the true heart of this archive.",
+  },
+  "footer.thanksName1": { es: "la Profesora Juana Antonieta Zuñiga Urban", en: "Professor Juana Antonieta Zuñiga Urban" },
+  "footer.thanksName2": { es: "Profesor Fernando Manuel Torices Ramírez", en: "Professor Fernando Manuel Torices Ramírez" },
+  "footer.disclaimer": {
+    es: "Proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno, gremio pirotécnico ni organizador oficial de la Feria Nacional de la Pirotecnia.",
+    en: "Independent cultural project, made as a portfolio piece. It does not represent any government institution, pyrotechnic guild, or official organizer of the Feria Nacional de la Pirotecnia.",
+  },
+  "footer.sources": {
+    es: "Datos históricos generales (fiesta de San Juan de Dios, origen de la Feria Nacional de la Pirotecnia) tomados de fuentes públicas de divulgación histórica y turística.",
+    en: "General historical data (the San Juan de Dios feast day, the origin of the Feria Nacional de la Pirotecnia) drawn from public historical and tourism sources.",
+  },
+  "footer.sealAlt": {
+    es: "Sello EA — Dos mentes, una visión. Creamos el futuro.",
+    en: "EA Seal — Two minds, one vision. We create the future.",
+  },
+  "footer.madeBy": { es: "Hecho por", en: "Made by" },
+  "footer.copyright": {
+    es: "Tultepec · Pueblo Pirotécnico — proyecto de portafolio.",
+    en: "Tultepec · Firework-Making Town — portfolio project.",
+  },
+  "footer.privacyLink": { es: "Aviso de privacidad", en: "Privacy notice" },
+
+  "finalCta.title": { es: "La memoria del pueblo sigue encendida", en: "The town's memory still burns bright" },
+  "finalCta.text": {
+    es: "Cada visita a este archivo es una forma de mantener viva la historia de Tultepec. Vuelve cuando quieras seguir el hilo de la tradición.",
+    en: "Every visit to this archive helps keep Tultepec's history alive. Come back whenever you want to pick up the thread of tradition.",
+  },
+  "finalCta.engageText": {
+    es: "Hola, si te gustó el contenido de este sitio, déjanos tu like y un comentario",
+    en: "Hi! If you liked this site's content, leave us a like and a comment",
+  },
+  "finalCta.comentar": { es: "Comentar", en: "Comment" },
+
+  "testimonials.eyebrow": { es: "Voces del pueblo", en: "Voices of the town" },
+  "testimonials.title": { es: "Lo que cuentan quienes lo viven", en: "What those who live it have to say" },
+  "testimonials.subtitle": {
+    es: "Testimonios de artesanos y familias, junto con las memorias que la propia comunidad ha compartido y ya fueron revisadas.",
+    en: "Accounts from artisans and families, together with the memories the community itself has shared and that have already been reviewed.",
+  },
+  "testimonials.loading": { es: "Cargando voces…", en: "Loading voices…" },
+  "testimonials.error": { es: "No pudimos cargar los testimonios.", en: "We couldn't load the testimonials." },
+  "testimonials.empty": {
+    es: "Todavía no hay voces publicadas. Sé la primera persona en compartir la tuya.",
+    en: "There are no published voices yet. Be the first to share yours.",
+  },
+  "testimonials.comparteTuMemoria": { es: "Comparte tu memoria", en: "Share your memory" },
+  "testimonials.prev": { es: "Testimonio anterior", en: "Previous testimonial" },
+  "testimonials.next": { es: "Testimonio siguiente", en: "Next testimonial" },
+  "testimonials.verTestimonio": { es: "Ver testimonio {n}", en: "View testimonial {n}" },
+
+  "visitInfo.eyebrow": { es: "Visítanos", en: "Visit us" },
+  "visitInfo.title": { es: "¿Cuándo vienes y cómo llegas?", en: "When should you come, and how do you get here?" },
+  "visitInfo.monthsSubtitle": { es: "¿En qué mes hay eventos?", en: "Which month has events?" },
+
+  "comoLlegar.intro": {
+    es: "Tultepec es un municipio del Estado de México, dentro de la zona metropolitana norte del Valle de México: a menos de una hora de la Ciudad de México, perfecto para una visita de un día.",
+    en: "Tultepec is a municipality in the State of Mexico, within the northern metropolitan area of the Valley of Mexico: less than an hour from Mexico City, perfect for a day trip.",
+  },
+  "comoLlegar.mapTitle": { es: "Mapa de Tultepec, Estado de México", en: "Map of Tultepec, State of Mexico" },
+  "comoLlegar.comoLlegar": { es: "Cómo llegar", en: "Get directions" },
+  "comoLlegar.card.cdmx.title": { es: "Desde la Ciudad de México", en: "From Mexico City" },
+  "comoLlegar.card.cdmx.text": {
+    es: "Alrededor de 40 km, aproximadamente 1 hora por la Autopista México-Pachuca o el Circuito Exterior Mexiquense, según el tráfico.",
+    en: "About 40 km, roughly 1 hour via the México-Pachuca highway or the Circuito Exterior Mexiquense, depending on traffic.",
+  },
+
+  "fiestasStrip.mesesAriaLabel": { es: "Meses del año", en: "Months of the year" },
+  "fiestasStrip.sinEventos": {
+    es: "Aún no hay eventos confirmados para {mes}.",
+    en: "There are no confirmed events for {mes} yet.",
+  },
+
+  "shareButtons.label": { es: "Comparte esta página", en: "Share this page" },
+  "shareButtons.whatsapp": { es: "Compartir por WhatsApp", en: "Share via WhatsApp" },
+  "shareButtons.facebook": { es: "Compartir en Facebook", en: "Share on Facebook" },
+  "shareButtons.copyLink": { es: "Copiar enlace", en: "Copy link" },
+  "shareButtons.copied": { es: "¡Enlace copiado!", en: "Link copied!" },
+  "shareButtons.shareText": {
+    es: "Tultepec, el pueblo que le puso nombre al fuego — conoce su historia:",
+    en: "Tultepec, the town that gave fire its name — discover its history:",
+  },
+
+  "likeButton.teGusta": { es: "Te gusta", en: "You like this" },
+  "likeButton.meGusta": { es: "Me gusta", en: "Like" },
+
+  "galleryModal.eyebrow": { es: "Álbum de fotos", en: "Photo album" },
+  "galleryModal.loading": { es: "Buscando fotos…", en: "Looking for photos…" },
+  "galleryModal.empty": {
+    es: "Todavía no hay fotos aquí. Colócalas en {path} numeradas como {n1}, {n2}… (acepta .jpg, .jpeg, .png, .webp o .jfif) y aparecerán en este orden.",
+    en: "There are no photos here yet. Place them in {path} numbered {n1}, {n2}… (accepts .jpg, .jpeg, .png, .webp or .jfif) and they'll appear in that order.",
+  },
+  "galleryModal.verFoto": { es: "Ver foto {n} de {total}", en: "View photo {n} of {total}" },
+  "galleryModal.volver": { es: "Volver a la cuadrícula", en: "Back to the grid" },
+  "galleryModal.prevFoto": { es: "Foto anterior", en: "Previous photo" },
+  "galleryModal.nextFoto": { es: "Foto siguiente", en: "Next photo" },
+
+  "videoGalleryModal.eyebrow": { es: "Álbum de videos", en: "Video album" },
+  "videoGalleryModal.loading": { es: "Buscando videos…", en: "Looking for videos…" },
+  "videoGalleryModal.empty": {
+    es: "Todavía no hay videos aquí. Colócalos en {path} numerados como {n1}, {n2}… (acepta .mp4, .webm o .mov) y aparecerán en este orden.",
+    en: "There are no videos here yet. Place them in {path} numbered {n1}, {n2}… (accepts .mp4, .webm or .mov) and they'll appear in that order.",
+  },
+  "videoGalleryModal.verVideo": { es: "Ver video {n} de {total}", en: "View video {n} of {total}" },
+  "videoGalleryModal.videoN": { es: "Video {n}", en: "Video {n}" },
+
+  "historyModal.eyebrow": { es: "Explora la historia", en: "Explore the history" },
+  "historyModal.title": { es: "La historia de Tultepec", en: "The history of Tultepec" },
+
+  "memoriesModal.eyebrow": { es: "Memorias de mi pueblo", en: "Memories of my town" },
+  "memoriesModal.title": { es: "Lo que cuentan quienes lo viven", en: "What those who live it have to say" },
+
+  "booksModal.eyebrow": { es: "Memorias de mi pueblo", en: "Memories of my town" },
+  "booksModal.title": { es: "Libros sobre la historia de Tultepec", en: "Books on the history of Tultepec" },
+  "booksModal.intro": {
+    es: "Tres publicaciones ya disponibles para quien quiera llevarse la memoria del pueblo más allá de esta página.",
+    en: "Three publications already available for anyone who wants to take the town's memory beyond this page.",
+  },
+  "booksModal.datosDeEjemplo": { es: "Datos de ejemplo", en: "Sample data" },
+  "booksModal.whatsapp": { es: "Preguntar por WhatsApp", en: "Ask via WhatsApp" },
+  "booksModal.note": {
+    es: "Número y datos de contacto pendientes de configurar — ver src/data/books.js.",
+    en: "Phone number and contact details still pending — see src/data/books.js.",
+  },
+
+  "hi.stats.eyebrow": { es: "De un vistazo", en: "At a glance" },
+  "hi.stats.title": { es: "Una tradición que se mide en generaciones", en: "A tradition measured in generations" },
+  "hi.timeline.eyebrow": { es: "Momentos y tradiciones", en: "Moments and traditions" },
+  "hi.timeline.title": { es: "La línea de tiempo del oficio", en: "A timeline of the craft" },
+  "hi.why.eyebrow": { es: "Por qué esta historia importa", en: "Why this history matters" },
+  "hi.why.title": { es: "Entre el orgullo y el riesgo de olvidar", en: "Between pride and the risk of forgetting" },
+  "hi.benefits.eyebrow": { es: "Lo que vas a encontrar", en: "What you'll find" },
+  "hi.benefits.title": { es: "Un álbum de memorias, no un folleto", en: "An album of memories, not a brochure" },
+  "hi.faq.eyebrow": { es: "Preguntas frecuentes", en: "Frequently asked questions" },
+  "hi.faq.title": { es: "Para entender mejor la tradición", en: "To better understand the tradition" },
+
+  "commentModal.errorEmpty": { es: "Escribe un comentario antes de enviarlo.", en: "Write a comment before sending it." },
+  "commentModal.errorTurnstile": {
+    es: "Completa la verificación de seguridad antes de enviar.",
+    en: "Complete the security check before sending.",
+  },
+  "commentModal.errorSubmit": {
+    es: "No se pudo enviar tu comentario. Intenta de nuevo en unos minutos.",
+    en: "We couldn't send your comment. Please try again in a few minutes.",
+  },
+  "commentModal.successTitle": { es: "Gracias por tu comentario", en: "Thanks for your comment" },
+  "commentModal.successText": {
+    es: "Lo recibimos y pasará por una breve revisión antes de publicarse.",
+    en: "We received it and it'll go through a brief review before being published.",
+  },
+  "commentModal.eyebrow": { es: "Deja tu comentario", en: "Leave your comment" },
+  "commentModal.title": { es: "¿Qué te pareció este archivo?", en: "What did you think of this archive?" },
+  "commentModal.intro": {
+    es: "Cuéntanos qué te gustó o qué le agregarías. Antes de publicarse, cada comentario pasa por una revisión.",
+    en: "Tell us what you liked or what you'd add. Before being published, every comment goes through a review.",
+  },
+  "commentModal.nameLabel": { es: "Tu nombre (opcional)", en: "Your name (optional)" },
+  "commentModal.namePlaceholder": {
+    es: "Déjalo en blanco para comentar de forma anónima",
+    en: "Leave it blank to comment anonymously",
+  },
+  "commentModal.commentLabel": { es: "Tu comentario", en: "Your comment" },
+  "commentModal.commentPlaceholder": { es: "Escribe aquí tu comentario...", en: "Write your comment here..." },
+  "commentModal.charsRemaining": { es: "{n} caracteres restantes", en: "{n} characters left" },
+  "commentModal.emailLabel": { es: "Correo (opcional, no se hace público)", en: "Email (optional, never made public)" },
+  "commentModal.emailPlaceholder": {
+    es: "Solo por si queremos contactarte sobre tu comentario",
+    en: "Only in case we need to contact you about your comment",
+  },
+  "commentModal.cancelar": { es: "Cancelar", en: "Cancel" },
+  "commentModal.enviando": { es: "Enviando…", en: "Sending…" },
+  "commentModal.enviarComentario": { es: "Enviar comentario", en: "Send comment" },
+
+  "shareMemoryModal.errorTooShort": {
+    es: "Cuéntanos un poco más: al menos {n} caracteres.",
+    en: "Tell us a bit more: at least {n} characters.",
+  },
+  "shareMemoryModal.errorTurnstile": {
+    es: "Completa la verificación de seguridad antes de enviar.",
+    en: "Complete the security check before sending.",
+  },
+  "shareMemoryModal.errorSubmit": {
+    es: "No se pudo guardar tu memoria. Intenta de nuevo en unos minutos.",
+    en: "We couldn't save your memory. Please try again in a few minutes.",
+  },
+  "shareMemoryModal.successTitle": { es: "Gracias por compartir tu memoria", en: "Thanks for sharing your memory" },
+  "shareMemoryModal.successText": {
+    es: "La recibimos y pasará por una breve revisión antes de sumarse al archivo del pueblo. Apreciamos que hayas dedicado un momento a contarla.",
+    en: "We received it and it'll go through a brief review before joining the town's archive. We appreciate you taking a moment to share it.",
+  },
+  "shareMemoryModal.eyebrow": { es: "Comparte tu memoria", en: "Share your memory" },
+  "shareMemoryModal.title": { es: "Tu historia también es parte de Tultepec", en: "Your story is part of Tultepec too" },
+  "shareMemoryModal.intro": {
+    es: "Cuéntanos un recuerdo, una anécdota o algo que quieras que se sepa sobre el pueblo del fuego. Antes de publicarse, cada memoria pasa por una revisión.",
+    en: "Tell us a memory, an anecdote, or something you'd like people to know about the town of fire. Before being published, every memory goes through a review.",
+  },
+  "shareMemoryModal.nameLabel": { es: "Tu nombre (opcional)", en: "Your name (optional)" },
+  "shareMemoryModal.namePlaceholder": {
+    es: "Déjalo en blanco para compartir de forma anónima",
+    en: "Leave it blank to share anonymously",
+  },
+  "shareMemoryModal.relationshipLabel": { es: "¿Cuál es tu relación con Tultepec?", en: "What's your connection to Tultepec?" },
+  "shareMemoryModal.memoryLabel": { es: "Tu memoria", en: "Your memory" },
+  "shareMemoryModal.memoryPlaceholder": {
+    es: "Por ejemplo: lo que se siente ver un castillo encendido por primera vez, una historia de tu familia, un aprendizaje del taller...",
+    en: "For example: what it feels like to see a castillo lit for the first time, a story from your family, something you learned at the workshop...",
+  },
+  "shareMemoryModal.minChars": { es: "Mínimo {n} caracteres · ", en: "Minimum {n} characters · " },
+  "shareMemoryModal.emailLabel": { es: "Correo (opcional, no se hace público)", en: "Email (optional, never made public)" },
+  "shareMemoryModal.emailPlaceholder": {
+    es: "Solo por si queremos contactarte sobre tu memoria",
+    en: "Only in case we need to contact you about your memory",
+  },
+  "shareMemoryModal.consentPre": {
+    es: "Autorizo que esta memoria pueda mostrarse públicamente en este archivo (de forma anónima si no dejo mi nombre). Consulta nuestro",
+    en: "I authorize this memory to be shown publicly in this archive (anonymously if I don't leave my name). See our",
+  },
+  "shareMemoryModal.consentLink": { es: "aviso de privacidad", en: "privacy notice" },
+  "shareMemoryModal.enviando": { es: "Enviando…", en: "Sending…" },
+  "shareMemoryModal.enviarMemoria": { es: "Enviar mi memoria", en: "Send my memory" },
+
+  "privacyModal.eyebrow": { es: "Aviso de privacidad", en: "Privacy notice" },
+  "privacyModal.title": { es: "Cómo tratamos tus datos", en: "How we handle your data" },
+  "privacyModal.updated": { es: "Última actualización: septiembre de 2026.", en: "Last updated: September 2026." },
+  "privacyModal.h1": { es: "¿Quién es responsable de tus datos?", en: "Who is responsible for your data?" },
+  "privacyModal.p1": {
+    es: 'Este sitio es un proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno ni organización oficial. Los responsables del tratamiento de los datos recabados a través de este sitio son Addair del Rosario Torices Vargas y Eduardo Israel Sánchez Villaseñor, y pueden ser contactados en {email}.',
+    en: "This site is an independent cultural project, made as a portfolio piece. It does not represent any government institution or official organization. Those responsible for processing the data collected through this site are Addair del Rosario Torices Vargas and Eduardo Israel Sánchez Villaseñor, who can be reached at {email}.",
+  },
+  "privacyModal.h2": { es: "¿De dónde viene el contenido histórico?", en: "Where does the historical content come from?" },
+  "privacyModal.p2": {
+    es: "La historia, las memorias familiares y los testimonios que dan vida a este archivo provienen del conocimiento y los recuerdos compartidos por la Profesora Juana Antonieta Zuñiga Urban y el Profesor Fernando Manuel Torices Ramírez, a quienes pertenece esa historia. Addair del Rosario Torices Vargas y Eduardo Israel Sánchez Villaseñor son responsables únicamente de la creación, operación de este sitio web y del tratamiento de los datos personales descrito en este aviso.",
+    en: "The history, family memories, and testimonials that give life to this archive come from the knowledge and memories shared by Professor Juana Antonieta Zuñiga Urban and Professor Fernando Manuel Torices Ramírez, to whom that history belongs. Addair del Rosario Torices Vargas and Eduardo Israel Sánchez Villaseñor are responsible only for the creation and operation of this website and for the handling of personal data described in this notice.",
+  },
+  "privacyModal.h3": { es: "¿Qué datos recabamos y para qué?", en: "What data do we collect, and why?" },
+  "privacyModal.p3": {
+    es: 'Al usar la función "Comparte tu memoria" puedes proporcionar, de forma voluntaria:',
+    en: 'By using the "Share your memory" feature, you may voluntarily provide:',
+  },
+  "privacyModal.li1": {
+    es: "Tu nombre (opcional; puedes dejarlo en blanco y compartir de forma anónima).",
+    en: "Your name (optional; you can leave it blank and share anonymously).",
+  },
+  "privacyModal.li2": {
+    es: "Tu relación con Tultepec y el texto de tu memoria.",
+    en: "Your connection to Tultepec and the text of your memory.",
+  },
+  "privacyModal.li3": {
+    es: "Tu correo electrónico (opcional, solo para contactarte sobre tu envío; nunca se muestra públicamente).",
+    en: "Your email address (optional, only to contact you about your submission; never shown publicly).",
+  },
+  "privacyModal.p4": {
+    es: "Estos datos se usan únicamente para revisar tu memoria antes de decidir si se publica en el archivo del sitio, y para contactarte si dejaste tu correo y es necesario. No se venden ni se comparten con terceros con fines comerciales.",
+    en: "This data is used only to review your memory before deciding whether to publish it in the site's archive, and to contact you if you left your email and it's necessary. It is never sold or shared with third parties for commercial purposes.",
+  },
+  "privacyModal.h5": { es: "Verificación anti-spam y analítica", en: "Anti-spam verification and analytics" },
+  "privacyModal.p5": {
+    es: "Para evitar envíos automatizados (bots), este formulario usa Cloudflare Turnstile, que procesa información técnica del navegador (no datos personales identificables) para verificar que quien envía es una persona. Este sitio también puede usar analítica web agregada y anónima para entender cuántas personas lo visitan, sin identificarte individualmente.",
+    en: "To prevent automated (bot) submissions, this form uses Cloudflare Turnstile, which processes technical browser information (not personally identifiable data) to verify that a human is submitting it. This site may also use aggregated, anonymous web analytics to understand how many people visit it, without identifying you individually.",
+  },
+  "privacyModal.h6": { es: "¿Dónde se almacenan tus datos?", en: "Where is your data stored?" },
+  "privacyModal.p6": {
+    es: "Las memorias enviadas se guardan en una base de datos gestionada por Supabase. El acceso está restringido y cada envío pasa por una revisión manual antes de poder mostrarse públicamente.",
+    en: "Submitted memories are stored in a database managed by Supabase. Access is restricted, and every submission goes through a manual review before it can be shown publicly.",
+  },
+  "privacyModal.h7": { es: "Tus derechos (ARCO)", en: "Your rights (ARCO)" },
+  "privacyModal.p7": {
+    es: "Puedes solicitar en cualquier momento el Acceso, Rectificación, Cancelación u Oposición al tratamiento de los datos que nos hayas compartido, incluyendo pedir que se elimine una memoria ya enviada. Para ejercer cualquiera de estos derechos, escribe a {email}.",
+    en: "You can request Access, Rectification, Cancellation, or Opposition (ARCO) to the processing of the data you've shared with us at any time, including asking for a submitted memory to be deleted. To exercise any of these rights, write to {email}.",
+  },
+  "privacyModal.h8": { es: "Cambios a este aviso", en: "Changes to this notice" },
+  "privacyModal.p8": {
+    es: "Este aviso puede actualizarse conforme el sitio evolucione. La fecha de la versión vigente siempre aparece al inicio de este texto.",
+    en: "This notice may be updated as the site evolves. The date of the current version always appears at the top of this text.",
+  },
+};

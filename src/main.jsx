@@ -11,6 +11,7 @@ import '@fontsource/work-sans/600.css'
 import '@fontsource/work-sans/700.css'
 import './index.css'
 import App from './App.jsx'
+import { LanguageProvider } from './i18n/LanguageContext.jsx'
 
 // Cargado de forma diferida: casi nadie visita /moderar, así que su código
 // (y el de Moderation.css) no debe viajar en el bundle que descarga todo
@@ -36,7 +37,9 @@ createRoot(document.getElementById('root')).render(
         <Moderation />
       </Suspense>
     ) : (
-      <App />
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
     )}
   </StrictMode>,
 )

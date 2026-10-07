@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { submitComment } from "../../lib/submitComment.js";
 import Turnstile from "./Turnstile.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./CommentModal.css";
 
 const MAX_LENGTH = 500;
@@ -16,6 +17,7 @@ const initialForm = {
 };
 
 export default function CommentModal({ open, onClose }) {
+  const { t } = useLanguage();
   const [form, setForm] = useState(initialForm);
   const [turnstileToken, setTurnstileToken] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
@@ -58,13 +60,13 @@ export default function CommentModal({ open, onClose }) {
 
     if (form.comment_text.trim().length < 2) {
       setStatus("error");
-      setErrorMessage("Escribe un comentario antes de enviarlo.");
+      setErrorMessage(t("commentModal.errorEmpty"));
       return;
     }
 
     if (TURNSTILE_ENABLED && !turnstileToken) {
       setStatus("error");
-      setErrorMessage("Completa la verificación de seguridad antes de enviar.");
+      setErrorMessage(t("commentModal.errorTurnstile"));
       return;
     }
 
@@ -81,7 +83,7 @@ export default function CommentModal({ open, onClose }) {
 
     if (error) {
       setStatus("error");
-      setErrorMessage("No se pudo enviar tu comentario. Intenta de nuevo en unos minutos.");
+      setErrorMessage(t("commentModal.errorSubmit"));
       return;
     }
 
@@ -98,58 +100,55 @@ export default function CommentModal({ open, onClose }) {
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <button className="comment-modal__close" onClick={handleClose} aria-label="Cerrar">
+        <button className="comment-modal__close" onClick={handleClose} aria-label={t("common.cerrar")}>
           <X size={18} strokeWidth={2} />
         </button>
 
         {status === "success" ? (
           <div className="comment-modal__success">
-            <h3>Gracias por tu comentario</h3>
-            <p>Lo recibimos y pasará por una breve revisión antes de publicarse.</p>
+            <h3>{t("commentModal.successTitle")}</h3>
+            <p>{t("commentModal.successText")}</p>
             <button className="btn btn--primary" onClick={handleClose}>
-              Cerrar
+              {t("common.cerrar")}
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
-            <span className="eyebrow">Deja tu comentario</span>
-            <h3 id="comment-modal-title">¿Qué te pareció este archivo?</h3>
-            <p className="comment-modal__intro">
-              Cuéntanos qué te gustó o qué le agregarías. Antes de publicarse, cada comentario pasa
-              por una revisión.
-            </p>
+            <span className="eyebrow">{t("commentModal.eyebrow")}</span>
+            <h3 id="comment-modal-title">{t("commentModal.title")}</h3>
+            <p className="comment-modal__intro">{t("commentModal.intro")}</p>
 
             <label className="comment-modal__field">
-              <span>Tu nombre (opcional)</span>
+              <span>{t("commentModal.nameLabel")}</span>
               <input
                 type="text"
                 value={form.display_name}
                 onChange={handleChange("display_name")}
-                placeholder="Déjalo en blanco para comentar de forma anónima"
+                placeholder={t("commentModal.namePlaceholder")}
                 maxLength={80}
               />
             </label>
 
             <label className="comment-modal__field">
-              <span>Tu comentario</span>
+              <span>{t("commentModal.commentLabel")}</span>
               <textarea
                 value={form.comment_text}
                 onChange={handleChange("comment_text")}
-                placeholder="Escribe aquí tu comentario..."
+                placeholder={t("commentModal.commentPlaceholder")}
                 rows={4}
                 maxLength={MAX_LENGTH}
                 required
               />
-              <span className="comment-modal__counter">{remaining} caracteres restantes</span>
+              <span className="comment-modal__counter">{t("commentModal.charsRemaining", { n: remaining })}</span>
             </label>
 
             <label className="comment-modal__field">
-              <span>Correo (opcional, no se hace público)</span>
+              <span>{t("commentModal.emailLabel")}</span>
               <input
                 type="email"
                 value={form.contact_email}
                 onChange={handleChange("contact_email")}
-                placeholder="Solo por si queremos contactarte sobre tu comentario"
+                placeholder={t("commentModal.emailPlaceholder")}
               />
             </label>
 
@@ -177,10 +176,10 @@ export default function CommentModal({ open, onClose }) {
 
             <div className="comment-modal__actions">
               <button type="button" className="btn btn--ghost btn--on-light" onClick={handleClose}>
-                Cancelar
+                {t("commentModal.cancelar")}
               </button>
               <button type="submit" className="btn btn--primary" disabled={status === "submitting"}>
-                {status === "submitting" ? "Enviando…" : "Enviar comentario"}
+                {status === "submitting" ? t("commentModal.enviando") : t("commentModal.enviarComentario")}
               </button>
             </div>
           </form>

@@ -1,3 +1,5 @@
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import LanguageSwitcher from "../../i18n/LanguageSwitcher.jsx";
 import "./Header.css";
 
 // Ícono de torito dibujado a mano, el mismo trazo que ya se usa en
@@ -28,6 +30,8 @@ function ToritoIcon() {
 }
 
 export default function Header() {
+  const { t } = useLanguage();
+
   return (
     <header className="site-header">
       <div className="container site-header__inner">
@@ -35,9 +39,10 @@ export default function Header() {
           <ToritoIcon />
           <span className="site-header__brand-text">
             <span>Tultepec</span>
-            <span className="site-header__subtitle">· Pueblo Pirotécnico</span>
+            <span className="site-header__subtitle">· {t("header.subtitle")}</span>
           </span>
         </a>
+        <LanguageSwitcher />
       </div>
     </header>
   );

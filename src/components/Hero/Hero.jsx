@@ -21,6 +21,7 @@ import HistoryModal from "../shared/HistoryModal.jsx";
 import MemoriesModal from "../shared/MemoriesModal.jsx";
 import { GALLERY_CATEGORIES, VIDEO_CATEGORIES, coverImage, coverVideo } from "../../data/galleries.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Hero.css";
 
 const IMAGE_TILE_ICONS = {
@@ -52,6 +53,7 @@ const VIDEO_TILE_TONES = {
 };
 
 export default function Hero({ onOpenBooks, onShareClick }) {
+  const { t, pick } = useLanguage();
   const [playing, setPlaying] = useState(false);
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -74,43 +76,43 @@ export default function Hero({ onOpenBooks, onShareClick }) {
     {
       key: "history",
       Icon: Flame,
-      label: "Explora la historia",
-      caption: "Momentos y tradiciones",
+      label: t("hero.card.history.title"),
+      caption: t("hero.card.history.caption"),
       onClick: () => setHistoryOpen(true),
     },
     {
       key: "memories",
       Icon: MessageSquareText,
-      label: "Memorias de mi pueblo",
-      caption: "Testimonios del pueblo",
+      label: t("hero.card.memories.title"),
+      caption: t("hero.card.memories.caption"),
       onClick: () => setMemoriesOpen(true),
     },
     {
       key: "books",
       Icon: BookOpen,
-      label: "Relatos Escritos",
-      caption: "3 libros publicados",
+      label: t("hero.card.books.title"),
+      caption: t("hero.card.books.caption"),
       onClick: onOpenBooks,
     },
     {
       key: "images",
       Icon: Image,
-      label: "Imágenes",
-      caption: "Toritos, castillos y más",
+      label: t("hero.card.images.title"),
+      caption: t("hero.card.images.caption"),
       onClick: () => setImagesHubOpen(true),
     },
     {
       key: "videos",
       Icon: Video,
-      label: "Videos",
-      caption: "Castillos y piromusicales",
+      label: t("hero.card.videos.title"),
+      caption: t("hero.card.videos.caption"),
       onClick: () => setVideosHubOpen(true),
     },
     {
       key: "visit",
       Icon: MapPinned,
-      label: "Visítanos",
-      caption: "Mapa, fechas y consejos",
+      label: t("hero.card.visit.title"),
+      caption: t("hero.card.visit.caption"),
       onClick: scrollToVisita,
     },
   ];
@@ -124,10 +126,10 @@ export default function Hero({ onOpenBooks, onShareClick }) {
       <div className="container hero__grid">
         <div className="hero__copy">
           <span className="eyebrow eyebrow--light hero__enter hero__enter--1">
-            Tultepec, Estado de México
+            {t("hero.eyebrow")}
           </span>
           <h1 className="hero__title hero__enter hero__enter--2">
-            Capital de la <span>Pirotecnia</span>
+            {t("hero.title.line1")} <span>{t("hero.title.line2")}</span>
           </h1>
           <button
             type="button"
@@ -137,12 +139,9 @@ export default function Hero({ onOpenBooks, onShareClick }) {
             <span className="hero__title-video-trigger-icon" aria-hidden="true">
               <Play size={14} strokeWidth={0} fill="currentColor" />
             </span>
-            Ver video
+            {t("hero.verVideo")}
           </button>
-          <p className="hero__subtitle hero__enter hero__enter--3">
-            Tultepec convierte el fuego en arte: castillos y toritos que sus familias han
-            heredado por generaciones.
-          </p>
+          <p className="hero__subtitle hero__enter hero__enter--3">{t("hero.subtitle")}</p>
           <ul className="hero__cards hero__enter hero__enter--4">
             {listItems.map((item) => (
               <li className="hero__card-item" key={item.key}>
@@ -176,7 +175,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
                 type="button"
                 className="hero__video-poster"
                 onClick={() => setPlaying(true)}
-                aria-label="Reproducir video de bienvenida a Tultepec"
+                aria-label={t("hero.video.ariaLabel")}
               >
                 <span className="hero__video-cover" aria-hidden="true" />
                 <span className="hero__video-cover-tint" aria-hidden="true" />
@@ -186,7 +185,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
                 <span className="hero__video-play" aria-hidden="true">
                   <Play size={26} strokeWidth={0} fill="currentColor" />
                 </span>
-                <span className="hero__video-label">Dale play</span>
+                <span className="hero__video-label">{t("hero.dalePlay")}</span>
               </button>
             )}
           </div>
@@ -202,9 +201,9 @@ export default function Hero({ onOpenBooks, onShareClick }) {
           setImagesHubOpen(false);
           setActiveImageCategory(null);
         }}
-        eyebrow="Imágenes"
-        title="Tradiciones del pueblo en fotos"
-        description="Elige una categoría para ver su álbum completo."
+        eyebrow={t("mediaHub.images.eyebrow")}
+        title={t("mediaHub.images.title")}
+        description={t("mediaHub.images.description")}
         categories={GALLERY_CATEGORIES}
         icons={IMAGE_TILE_ICONS}
         tones={IMAGE_TILE_TONES}
@@ -219,9 +218,9 @@ export default function Hero({ onOpenBooks, onShareClick }) {
           setVideosHubOpen(false);
           setActiveVideoCategory(null);
         }}
-        eyebrow="Videos"
-        title="Tradiciones del pueblo en video"
-        description="Elige una categoría para ver sus videos."
+        eyebrow={t("mediaHub.videos.eyebrow")}
+        title={t("mediaHub.videos.title")}
+        description={t("mediaHub.videos.description")}
         categories={VIDEO_CATEGORIES}
         icons={VIDEO_TILE_ICONS}
         tones={VIDEO_TILE_TONES}
@@ -234,14 +233,14 @@ export default function Hero({ onOpenBooks, onShareClick }) {
         open={Boolean(activeImage)}
         onClose={() => setActiveImageCategory(null)}
         category={activeImage?.slug}
-        title={activeImage?.label}
+        title={pick(activeImage?.label)}
       />
 
       <VideoGalleryModal
         open={Boolean(activeVideo)}
         onClose={() => setActiveVideoCategory(null)}
         category={activeVideo?.slug}
-        title={activeVideo?.label}
+        title={pick(activeVideo?.label)}
       />
 
       {mobileVideoOpen && (
@@ -251,7 +250,7 @@ export default function Hero({ onOpenBooks, onShareClick }) {
               type="button"
               className="hero__mobile-video-close"
               onClick={() => setMobileVideoOpen(false)}
-              aria-label="Cerrar"
+              aria-label={t("common.cerrar")}
             >
               <X size={18} strokeWidth={2} />
             </button>

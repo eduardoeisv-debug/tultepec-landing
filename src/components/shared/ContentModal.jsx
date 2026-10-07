@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ContentModal.css";
 
 // Modal genérico de contenido: pantalla completa con un título y lo que se
@@ -8,6 +9,7 @@ import "./ContentModal.css";
 // llegar" y "Calendario de fiestas" solo se muestren al hacer clic, en vez
 // de estar siempre desplegados en la página.
 export default function ContentModal({ open, onClose, eyebrow, title, children }) {
+  const { t } = useLanguage();
   const dialogRef = useRef(null);
 
   useScrollLock(open);
@@ -40,7 +42,7 @@ export default function ContentModal({ open, onClose, eyebrow, title, children }
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <button className="content-modal__close" onClick={onClose} aria-label="Cerrar">
+        <button className="content-modal__close" onClick={onClose} aria-label={t("common.cerrar")}>
           <X size={18} strokeWidth={2} />
         </button>
 

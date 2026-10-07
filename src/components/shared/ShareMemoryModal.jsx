@@ -4,6 +4,7 @@ import { submitMemory } from "../../lib/submitMemory.js";
 import { RELATIONSHIP_OPTIONS } from "../../data/relationships.js";
 import Turnstile from "./Turnstile.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ShareMemoryModal.css";
 
 const MIN_LENGTH = 20;
@@ -20,6 +21,7 @@ const initialForm = {
 };
 
 export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
+  const { t, pick } = useLanguage();
   const [form, setForm] = useState(initialForm);
   const [turnstileToken, setTurnstileToken] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
@@ -64,13 +66,13 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
 
     if (form.memory_text.trim().length < MIN_LENGTH) {
       setStatus("error");
-      setErrorMessage(`Cuéntanos un poco más: al menos ${MIN_LENGTH} caracteres.`);
+      setErrorMessage(t("shareMemoryModal.errorTooShort", { n: MIN_LENGTH }));
       return;
     }
 
     if (TURNSTILE_ENABLED && !turnstileToken) {
       setStatus("error");
-      setErrorMessage("Completa la verificación de seguridad antes de enviar.");
+      setErrorMessage(t("shareMemoryModal.errorTurnstile"));
       return;
     }
 
@@ -89,7 +91,7 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
 
     if (error) {
       setStatus("error");
-      setErrorMessage("No se pudo guardar tu memoria. Intenta de nuevo en unos minutos.");
+      setErrorMessage(t("shareMemoryModal.errorSubmit"));
       return;
     }
 
@@ -106,75 +108,69 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <button className="memory-modal__close" onClick={handleClose} aria-label="Cerrar">
+        <button className="memory-modal__close" onClick={handleClose} aria-label={t("common.cerrar")}>
           <X size={18} strokeWidth={2} />
         </button>
 
         {status === "success" ? (
           <div className="memory-modal__success">
-            <h3>Gracias por compartir tu memoria</h3>
-            <p>
-              La recibimos y pasará por una breve revisión antes de sumarse al archivo del pueblo.
-              Apreciamos que hayas dedicado un momento a contarla.
-            </p>
+            <h3>{t("shareMemoryModal.successTitle")}</h3>
+            <p>{t("shareMemoryModal.successText")}</p>
             <button className="btn btn--primary" onClick={handleClose}>
-              Cerrar
+              {t("common.cerrar")}
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
-            <span className="eyebrow">Comparte tu memoria</span>
-            <h3 id="memory-modal-title">Tu historia también es parte de Tultepec</h3>
-            <p className="memory-modal__intro">
-              Cuéntanos un recuerdo, una anécdota o algo que quieras que se sepa sobre el pueblo del
-              fuego. Antes de publicarse, cada memoria pasa por una revisión.
-            </p>
+            <span className="eyebrow">{t("shareMemoryModal.eyebrow")}</span>
+            <h3 id="memory-modal-title">{t("shareMemoryModal.title")}</h3>
+            <p className="memory-modal__intro">{t("shareMemoryModal.intro")}</p>
 
             <label className="memory-modal__field">
-              <span>Tu nombre (opcional)</span>
+              <span>{t("shareMemoryModal.nameLabel")}</span>
               <input
                 type="text"
                 value={form.display_name}
                 onChange={handleChange("display_name")}
-                placeholder="Déjalo en blanco para compartir de forma anónima"
+                placeholder={t("shareMemoryModal.namePlaceholder")}
                 maxLength={80}
               />
             </label>
 
             <label className="memory-modal__field">
-              <span>¿Cuál es tu relación con Tultepec?</span>
+              <span>{t("shareMemoryModal.relationshipLabel")}</span>
               <select value={form.relationship} onChange={handleChange("relationship")}>
                 {RELATIONSHIP_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
-                    {opt.label}
+                    {pick(opt.label)}
                   </option>
                 ))}
               </select>
             </label>
 
             <label className="memory-modal__field">
-              <span>Tu memoria</span>
+              <span>{t("shareMemoryModal.memoryLabel")}</span>
               <textarea
                 value={form.memory_text}
                 onChange={handleChange("memory_text")}
-                placeholder="Por ejemplo: lo que se siente ver un castillo encendido por primera vez, una historia de tu familia, un aprendizaje del taller..."
+                placeholder={t("shareMemoryModal.memoryPlaceholder")}
                 rows={5}
                 maxLength={MAX_LENGTH}
                 required
               />
               <span className={`memory-modal__counter ${isTooShort ? "memory-modal__counter--warn" : ""}`}>
-                {isTooShort ? `Mínimo ${MIN_LENGTH} caracteres · ` : ""}
-                {remaining} caracteres restantes
+                {isTooShort ? t("shareMemoryModal.minChars", { n: MIN_LENGTH }) : ""}
+                {t("commentModal.charsRemaining", { n: remaining })}
               </span>
             </label>
 
             <label className="memory-modal__field">
-              <span>Correo (opcional, no se hace público)</span>
+              <span>{t("shareMemoryModal.emailLabel")}</span>
               <input
                 type="email"
                 value={form.contact_email}
                 onChange={handleChange("contact_email")}
-                placeholder="Solo por si queremos contactarte sobre tu memoria"
+                placeholder={t("shareMemoryModal.emailPlaceholder")}
               />
             </label>
 
@@ -196,10 +192,9 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
             <label className="memory-modal__checkbox">
               <input type="checkbox" checked={form.consent_public} onChange={handleChange("consent_public")} />
               <span>
-                Autorizo que esta memoria pueda mostrarse públicamente en este archivo (de forma
-                anónima si no dejo mi nombre). Consulta nuestro{" "}
+                {t("shareMemoryModal.consentPre")}{" "}
                 <button type="button" className="memory-modal__privacy-link" onClick={onOpenPrivacy}>
-                  aviso de privacidad
+                  {t("shareMemoryModal.consentLink")}
                 </button>
                 .
               </span>
@@ -215,10 +210,10 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
 
             <div className="memory-modal__actions">
               <button type="button" className="btn btn--ghost btn--on-light" onClick={handleClose}>
-                Cancelar
+                {t("commentModal.cancelar")}
               </button>
               <button type="submit" className="btn btn--primary" disabled={status === "submitting"}>
-                {status === "submitting" ? "Enviando…" : "Enviar mi memoria"}
+                {status === "submitting" ? t("shareMemoryModal.enviando") : t("shareMemoryModal.enviarMemoria")}
               </button>
             </div>
           </form>

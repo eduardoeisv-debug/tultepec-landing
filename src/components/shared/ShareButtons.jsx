@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link2, Check } from "lucide-react";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ShareButtons.css";
 
 const SITE_URL = "https://tultepec-landing.vercel.app/";
-const SHARE_TEXT = "Tultepec, el pueblo que le puso nombre al fuego — conoce su historia:";
 
 const WhatsAppIcon = (
   <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -18,6 +18,7 @@ const FacebookIcon = (
 );
 
 export default function ShareButtons() {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -31,19 +32,20 @@ export default function ShareButtons() {
     }
   };
 
-  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${SHARE_TEXT} ${SITE_URL}`)}`;
+  const shareText = t("shareButtons.shareText");
+  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(`${shareText} ${SITE_URL}`)}`;
   const facebookHref = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SITE_URL)}`;
 
   return (
     <div className="share-buttons">
-      <span className="share-buttons__label">Comparte esta página</span>
+      <span className="share-buttons__label">{t("shareButtons.label")}</span>
       <div className="share-buttons__row">
         <a
           className="share-buttons__btn share-buttons__btn--whatsapp"
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Compartir por WhatsApp"
+          aria-label={t("shareButtons.whatsapp")}
         >
           {WhatsAppIcon}
         </a>
@@ -52,7 +54,7 @@ export default function ShareButtons() {
           href={facebookHref}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Compartir en Facebook"
+          aria-label={t("shareButtons.facebook")}
         >
           {FacebookIcon}
         </a>
@@ -60,12 +62,12 @@ export default function ShareButtons() {
           type="button"
           className="share-buttons__btn share-buttons__btn--copy"
           onClick={handleCopy}
-          aria-label="Copiar enlace"
+          aria-label={t("shareButtons.copyLink")}
         >
           {copied ? <Check size={18} strokeWidth={2} /> : <Link2 size={18} strokeWidth={1.8} />}
         </button>
       </div>
-      {copied && <span className="share-buttons__copied">¡Enlace copiado!</span>}
+      {copied && <span className="share-buttons__copied">{t("shareButtons.copied")}</span>}
     </div>
   );
 }

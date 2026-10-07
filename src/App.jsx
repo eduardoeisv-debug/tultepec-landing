@@ -9,6 +9,7 @@ import BooksModal from "./components/shared/BooksModal.jsx";
 import PrivacyModal from "./components/shared/PrivacyModal.jsx";
 import ClickFireworks from "./components/shared/ClickFireworks.jsx";
 import useHashScrollFix from "./hooks/useHashScrollFix.js";
+import { useLanguage } from "./i18n/LanguageContext.jsx";
 
 const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal.jsx"));
 
@@ -17,9 +18,10 @@ const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal
 // de celular lenta deja la pantalla literalmente en blanco mientras
 // descarga -- esto le da al menos un fondo y un indicador de carga.
 function ModalLoading() {
+  const { t } = useLanguage();
   return (
     <div className="modal-loading__backdrop">
-      <span className="modal-loading__spinner" aria-label="Cargando…" />
+      <span className="modal-loading__spinner" aria-label={t("app.cargando")} />
     </div>
   );
 }

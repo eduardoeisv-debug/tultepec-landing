@@ -1,44 +1,44 @@
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Footer.css";
 
 export default function Footer({ onOpenPrivacy }) {
+  const { t, language } = useLanguage();
+  const isEn = language === "en";
+
   return (
     <footer className="footer">
       <div className="container footer__grid">
         <div>
-          <span className="footer__brand">Tultepec · Pueblo Pirotécnico</span>
-          <p className="footer__tagline">Un archivo hecho para honrar la memoria de un pueblo.</p>
+          <span className="footer__brand">Tultepec · {t("header.subtitle")}</span>
+          <p className="footer__tagline">{t("footer.tagline")}</p>
           <p className="footer__thanks">
-            Un agradecimiento especial a{" "}
-            <strong>la Profesora Juana Antonieta Zuñiga Urban</strong> y al{" "}
-            <strong>Profesor Fernando Manuel Torices Ramírez</strong>, por compartir con
-            generosidad su conocimiento y sus recuerdos — el verdadero corazón de este archivo.
+            {isEn ? "A special thanks to " : "Un agradecimiento especial a "}
+            <strong>{t("footer.thanksName1")}</strong>{" "}
+            {isEn ? "and " : "y al "}
+            <strong>{t("footer.thanksName2")}</strong>
+            {isEn
+              ? ", for generously sharing their knowledge and memories — the true heart of this archive."
+              : ", por compartir con generosidad su conocimiento y sus recuerdos — el verdadero corazón de este archivo."}
           </p>
         </div>
 
         <div className="footer__meta">
-          <p>
-            Proyecto cultural independiente, hecho como pieza de portafolio. No representa a
-            ninguna institución de gobierno, gremio pirotécnico ni organizador oficial de la Feria
-            Nacional de la Pirotecnia.
-          </p>
-          <p>
-            Datos históricos generales (fiesta de San Juan de Dios, origen de la Feria Nacional de
-            la Pirotecnia) tomados de fuentes públicas de divulgación histórica y turística.
-          </p>
+          <p>{t("footer.disclaimer")}</p>
+          <p>{t("footer.sources")}</p>
         </div>
       </div>
       <div className="container footer__signature">
         <span className="footer__signature-seal">
-          <img src="/images/brand/ea-seal.jpg" alt="Sello EA — Dos mentes, una visión. Creamos el futuro." />
+          <img src="/images/brand/ea-seal.jpg" alt={t("footer.sealAlt")} />
         </span>
         <span className="footer__signature-text">
-          Hecho por <strong>EA</strong>
+          {t("footer.madeBy")} <strong>EA</strong>
         </span>
       </div>
       <div className="container footer__bottom">
-        <span>© {new Date().getFullYear()} Tultepec · Pueblo Pirotécnico — proyecto de portafolio.</span>
+        <span>© {new Date().getFullYear()} {t("footer.copyright")}</span>
         <button type="button" className="footer__privacy-link" onClick={onOpenPrivacy}>
-          Aviso de privacidad
+          {t("footer.privacyLink")}
         </button>
       </div>
     </footer>

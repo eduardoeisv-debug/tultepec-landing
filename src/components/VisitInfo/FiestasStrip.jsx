@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import fiestas from "../../data/fiestas.js";
+import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./FiestasStrip.css";
 
 const firstWithEvents = fiestas.find((m) => m.eventos.length > 0);
@@ -8,6 +9,7 @@ const firstWithEvents = fiestas.find((m) => m.eventos.length > 0);
 // meses con fiestas se ven resaltados en dorado. Al tocar un mes se
 // muestra su lista de eventos debajo. Datos en src/data/fiestas.js.
 export default function FiestasStrip() {
+  const { t, pick } = useLanguage();
   const [selectedMonth, setSelectedMonth] = useState(firstWithEvents ? firstWithEvents.mes : 1);
   const active = fiestas.find((m) => m.mes === selectedMonth);
 
@@ -39,7 +41,7 @@ export default function FiestasStrip() {
   return (
     <div className="fiestas-strip">
       <div className="fiestas-strip__months-wrap">
-        <div className="fiestas-strip__months" role="tablist" aria-label="Meses del año" ref={trackRef}>
+        <div className="fiestas-strip__months" role="tablist" aria-label={t("fiestasStrip.mesesAriaLabel")} ref={trackRef}>
           {fiestas.map((m) => {
             const hasEvents = m.eventos.length > 0;
             const isSelected = m.mes === selectedMonth;
@@ -55,7 +57,7 @@ export default function FiestasStrip() {
                 }`}
                 onClick={() => setSelectedMonth(m.mes)}
               >
-                {m.mesNombre}
+                {pick(m.mesNombre)}
               </button>
             );
           })}
@@ -65,15 +67,15 @@ export default function FiestasStrip() {
       <div className="fiestas-strip__events" role="tabpanel">
         {active.eventos.length === 0 ? (
           <p className="fiestas-strip__empty">
-            Aún no hay eventos confirmados para {active.mesNombre.toLowerCase()}.
+            {t("fiestasStrip.sinEventos", { mes: pick(active.mesNombre).toLowerCase() })}
           </p>
         ) : (
           <ul className="fiestas-strip__list">
             {active.eventos.map((ev) => (
-              <li className="fiestas-strip__event" key={ev.nombre}>
-                <span className="fiestas-strip__event-name">{ev.nombre}</span>
-                {ev.fecha && <span className="fiestas-strip__event-date">{ev.fecha}</span>}
-                {ev.descripcion && <span className="fiestas-strip__event-desc">{ev.descripcion}</span>}
+              <li className="fiestas-strip__event" key={ev.nombre.es}>
+                <span className="fiestas-strip__event-name">{pick(ev.nombre)}</span>
+                {ev.fecha && <span className="fiestas-strip__event-date">{pick(ev.fecha)}</span>}
+                {ev.descripcion && <span className="fiestas-strip__event-desc">{pick(ev.descripcion)}</span>}
               </li>
             ))}
           </ul>
