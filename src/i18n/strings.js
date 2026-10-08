@@ -90,6 +90,10 @@ export const STRINGS = {
     en: "There are no published voices yet. Be the first to share yours.",
   },
   "testimonials.comparteTuMemoria": { es: "Comparte tu memoria", en: "Share your memory" },
+  "testimonials.notaIdioma": {
+    es: "Estas voces se muestran en el idioma en que fueron escritas (mayormente español).",
+    en: "These voices are shown in the language they were written in (mostly Spanish).",
+  },
   "testimonials.prev": { es: "Testimonio anterior", en: "Previous testimonial" },
   "testimonials.next": { es: "Testimonio siguiente", en: "Next testimonial" },
   "testimonials.verTestimonio": { es: "Ver testimonio {n}", en: "View testimonial {n}" },
@@ -140,7 +144,10 @@ export const STRINGS = {
   "memoriesModal.tabs.voces": { es: "Voces", en: "Voices" },
   "memoriesModal.tabs.comparte": { es: "Comparte", en: "Share" },
   "memoriesModal.filtroAriaLabel": { es: "Filtrar por libro", en: "Filter by book" },
-  "memoriesModal.notaIdioma": { es: "Textos originales en español.", en: "Original texts in Spanish." },
+  "memoriesModal.notaIdioma": {
+    es: "Fragmentos tomados de libros publicados en español.",
+    en: "Fragments translated from books originally published in Spanish.",
+  },
   "memoriesModal.creditoAutorizacion": {
     es: "Textos publicados con autorización de sus autores.",
     en: "Texts published with their authors' permission.",

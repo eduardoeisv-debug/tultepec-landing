@@ -14,7 +14,7 @@ const QuoteMark = (
 );
 
 export default function Testimonials({ onShareClick, embedded = false }) {
-  const { t, pick } = useLanguage();
+  const { t, pick, language } = useLanguage();
   const ref = useReveal();
   const Wrapper = embedded ? "div" : "section";
   const [status, setStatus] = useState("loading"); // loading | ready | empty | error
@@ -74,6 +74,7 @@ export default function Testimonials({ onShareClick, embedded = false }) {
           <span className="eyebrow eyebrow--light">{t("testimonials.eyebrow")}</span>
           <h2 className="testimonials__title">{t("testimonials.title")}</h2>
           <p className="testimonials__subtitle">{t("testimonials.subtitle")}</p>
+          {language === "en" && <p className="testimonials__note">{t("testimonials.notaIdioma")}</p>}
         </div>
 
         {status === "loading" && <p className="testimonials__status">{t("testimonials.loading")}</p>}

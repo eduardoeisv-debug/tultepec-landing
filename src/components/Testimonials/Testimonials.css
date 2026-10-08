@@ -23,6 +23,13 @@
   font-size: 1.02rem;
 }
 
+.testimonials__note {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: rgba(251, 241, 226, 0.5);
+}
+
 .testimonials__status {
   text-align: center;
   color: rgba(251, 241, 226, 0.7);

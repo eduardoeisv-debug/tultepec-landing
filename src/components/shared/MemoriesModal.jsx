@@ -161,8 +161,8 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
                   const isOpen = Boolean(expanded[m.id]);
                   return (
                     <article className="memoria-card" key={m.id}>
-                      {m.titulo && <h4>{m.titulo}</h4>}
-                      <p className={`memoria-card__texto ${isOpen ? "is-expanded" : ""}`}>{m.texto}</p>
+                      {m.titulo && <h4>{pick(m.titulo)}</h4>}
+                      <p className={`memoria-card__texto ${isOpen ? "is-expanded" : ""}`}>{pick(m.texto)}</p>
                       <button
                         type="button"
                         className="memoria-card__more"
