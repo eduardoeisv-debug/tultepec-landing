@@ -14,7 +14,7 @@ import useScrollLock from "../../hooks/useScrollLock.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Hero.css";
 
-export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
+export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
   const { t } = useLanguage();
   const [playing, setPlaying] = useState(false);
   const [ended, setEnded] = useState(false);
@@ -24,6 +24,7 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
   const [memoriesOpen, setMemoriesOpen] = useState(false);
   const [galeriaOpen, setGaleriaOpen] = useState(false);
   const historyTriggerRef = useRef(null);
+  const memoriesTriggerRef = useRef(null);
   const galeriaTriggerRef = useRef(null);
   const videoRef = useRef(null);
   const mobileVideoRef = useRef(null);
@@ -79,6 +80,14 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
     }
   }, []);
 
+  // Mismo soporte de enlace directo para las pestañas de "Memorias de mi
+  // pueblo" (MemoriesModal lee el hash para elegir la pestaña inicial).
+  useEffect(() => {
+    if (window.location.hash === "#memorias" || window.location.hash === "#voces" || window.location.hash === "#comparte-memoria") {
+      setMemoriesOpen(true);
+    }
+  }, []);
+
   // Reutilizado por la indicación de scroll al final del hero -- ya no hay
   // ninguna tarjeta que lleve directo a "visita" (se quitó "Visítanos").
   const scrollToVisita = () => {
@@ -100,6 +109,7 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
       label: t("hero.card.memories.title"),
       caption: t("hero.card.memories.caption"),
       onClick: () => setMemoriesOpen(true),
+      ref: memoriesTriggerRef,
     },
     {
       key: "books",
@@ -238,7 +248,12 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
       </button>
 
       <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} triggerRef={historyTriggerRef} />
-      <MemoriesModal open={memoriesOpen} onClose={() => setMemoriesOpen(false)} onShareClick={onShareClick} />
+      <MemoriesModal
+        open={memoriesOpen}
+        onClose={() => setMemoriesOpen(false)}
+        triggerRef={memoriesTriggerRef}
+        onOpenPrivacy={onOpenPrivacy}
+      />
       <GaleriaOverlay open={galeriaOpen} onClose={() => setGaleriaOpen(false)} triggerRef={galeriaTriggerRef} />
 
       {mobileVideoOpen && (

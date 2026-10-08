@@ -135,6 +135,16 @@ export const STRINGS = {
 
   "memoriesModal.eyebrow": { es: "Memorias de mi pueblo", en: "Memories of my town" },
   "memoriesModal.title": { es: "Lo que cuentan quienes lo viven", en: "What those who live it have to say" },
+  "memoriesModal.tabs.ariaLabel": { es: "Secciones de Memorias de mi pueblo", en: "Memories of my town sections" },
+  "memoriesModal.tabs.memorias": { es: "Memorias", en: "Memories" },
+  "memoriesModal.tabs.voces": { es: "Voces", en: "Voices" },
+  "memoriesModal.tabs.comparte": { es: "Comparte", en: "Share" },
+  "memoriesModal.filtroAriaLabel": { es: "Filtrar por libro", en: "Filter by book" },
+  "memoriesModal.notaIdioma": { es: "Textos originales en español.", en: "Original texts in Spanish." },
+  "memoriesModal.creditoAutorizacion": {
+    es: "Textos publicados con autorización de sus autores.",
+    en: "Texts published with their authors' permission.",
+  },
 
   "relatos.title": { es: "Memorias de mi Pueblo", en: "Memories of my Town" },
   "relatos.tabs.ariaLabel": { es: "Secciones de Relatos Escritos", en: "Written Accounts sections" },
@@ -260,6 +270,7 @@ export const STRINGS = {
   "shareMemoryModal.consentLink": { es: "aviso de privacidad", en: "privacy notice" },
   "shareMemoryModal.enviando": { es: "Enviando…", en: "Sending…" },
   "shareMemoryModal.enviarMemoria": { es: "Enviar mi memoria", en: "Send my memory" },
+  "shareMemoryModal.enviarOtra": { es: "Enviar otra memoria", en: "Share another memory" },
 
   "privacyModal.eyebrow": { es: "Aviso de privacidad", en: "Privacy notice" },
   "privacyModal.title": { es: "Cómo tratamos tus datos", en: "How we handle your data" },

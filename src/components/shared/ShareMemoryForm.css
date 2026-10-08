@@ -1,0 +1,190 @@
+/* Estilos del formulario de "Comparte tu memoria" en sí (sin el fondo ni
+   el marco del modal). Por defecto usa el tema oscuro/glass -- pensado
+   para vivir dentro de la pestaña "Comparte tu memoria" de MemoriesModal,
+   igual que el resto de esa ventana. `.share-memory-form--light` es el
+   único ajuste de aspecto para el modal independiente (ShareMemoryModal),
+   que sigue viviendo sobre un fondo claro -- la lógica del formulario es
+   idéntica en los dos casos, ver ShareMemoryForm.jsx. */
+
+.share-memory-form h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-top: 0.5rem;
+  color: var(--color-paper);
+}
+
+.share-memory-form__intro {
+  margin-top: 0.75rem;
+  color: rgba(251, 241, 226, 0.72);
+  font-size: 0.95rem;
+}
+
+.share-memory-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-paper);
+}
+
+.share-memory-form__field input,
+.share-memory-form__field select,
+.share-memory-form__field textarea {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.98rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(251, 241, 226, 0.25);
+  background: rgba(251, 241, 226, 0.06);
+  color: var(--color-paper);
+  resize: vertical;
+}
+
+.share-memory-form__field input::placeholder,
+.share-memory-form__field textarea::placeholder {
+  color: rgba(251, 241, 226, 0.4);
+}
+
+.share-memory-form__field select option {
+  color: var(--text-primary);
+}
+
+.share-memory-form__field input:focus,
+.share-memory-form__field select:focus,
+.share-memory-form__field textarea:focus {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 1px;
+}
+
+.share-memory-form__counter {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: rgba(251, 241, 226, 0.6);
+  align-self: flex-end;
+}
+
+.share-memory-form__counter--warn {
+  color: #ff8a8a;
+}
+
+.share-memory-form__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.3rem;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(251, 241, 226, 0.72);
+}
+
+.share-memory-form__checkbox input {
+  margin-top: 0.2rem;
+}
+
+.share-memory-form__error {
+  margin-top: 1rem;
+  color: #ff8a8a;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.share-memory-form__privacy-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--color-gold-light);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.share-memory-form__honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  left: -9999px;
+}
+
+.share-memory-form__turnstile {
+  margin-top: 1.3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.share-memory-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.6rem;
+}
+
+.share-memory-form__success h3 {
+  margin-top: 0;
+}
+
+.share-memory-form__success p {
+  margin-top: 0.75rem;
+  color: rgba(251, 241, 226, 0.72);
+}
+
+.share-memory-form__success .btn {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 520px) {
+  .share-memory-form__actions {
+    flex-direction: column-reverse;
+  }
+
+  .share-memory-form__actions .btn {
+    width: 100%;
+  }
+}
+
+/* Variante clara, solo para el modal independiente (ShareMemoryModal). */
+.share-memory-form--light h3,
+.share-memory-form--light .share-memory-form__field {
+  color: var(--text-primary);
+}
+
+.share-memory-form--light .share-memory-form__intro,
+.share-memory-form--light .share-memory-form__counter,
+.share-memory-form--light .share-memory-form__checkbox,
+.share-memory-form--light .share-memory-form__success p {
+  color: var(--text-muted);
+}
+
+.share-memory-form--light .share-memory-form__field input,
+.share-memory-form--light .share-memory-form__field select,
+.share-memory-form--light .share-memory-form__field textarea {
+  border-color: rgba(42, 28, 18, 0.2);
+  background: #fff;
+  color: var(--text-primary);
+}
+
+.share-memory-form--light .share-memory-form__field input::placeholder,
+.share-memory-form--light .share-memory-form__field textarea::placeholder {
+  color: rgba(42, 28, 18, 0.4);
+}
+
+.share-memory-form--light .share-memory-form__field input:focus,
+.share-memory-form--light .share-memory-form__field select:focus,
+.share-memory-form--light .share-memory-form__field textarea:focus {
+  outline-color: var(--color-terracotta);
+}
+
+.share-memory-form--light .share-memory-form__privacy-link {
+  color: var(--color-terracotta);
+}
+
+.share-memory-form--light .share-memory-form__counter--warn,
+.share-memory-form--light .share-memory-form__error {
+  color: var(--color-fire-red);
+}

@@ -5,6 +5,10 @@
 }
 
 .testimonials--embedded {
+  /* Dentro de MemoriesModal, el fondo propio (degradado night-800/900)
+     dejaba una caja rectangular visible sobre el degradado morado del
+     panel -- se quita para que se funda con el overlay que lo contiene. */
+  background: none;
   padding: var(--space-lg) var(--space-md);
   border-radius: var(--radius-lg);
 }

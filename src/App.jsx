@@ -35,6 +35,11 @@ export default function App() {
   useHashScrollFix();
 
   const openPrivacy = () => setPrivacyModalOpen(true);
+  // "Comparte tu memoria" ahora vive como pestaña dentro de MemoriesModal
+  // (ver Hero.jsx). ShareMemoryModal y este estado se dejan montados pero
+  // sin ningún botón que los abra, por si se necesita un acceso directo
+  // en otro lugar más adelante -- openShare() sigue funcionando si algo
+  // vuelve a llamarlo.
   const openShare = () => setShareModalOpen(true);
 
   return (
@@ -42,7 +47,7 @@ export default function App() {
       <ClickFireworks />
       <Header />
       <main>
-        <Hero onOpenBooks={() => setBooksModalOpen(true)} onShareClick={openShare} booksTriggerRef={booksTriggerRef} />
+        <Hero onOpenBooks={() => setBooksModalOpen(true)} onOpenPrivacy={openPrivacy} booksTriggerRef={booksTriggerRef} />
         <VisitInfo />
         <FinalCTA />
       </main>
