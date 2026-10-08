@@ -6,6 +6,8 @@ import TownSilhouette from "../shared/TownSilhouette.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import GaleriaOverlay from "../shared/GaleriaOverlay.jsx";
 import { GaleriaCardIcon } from "../shared/GaleriaIcons.jsx";
+import { preloadGaleriaImages } from "../../hooks/useGaleriaImages.js";
+import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
 import HistoryModal from "../shared/HistoryModal.jsx";
 import MemoriesModal from "../shared/MemoriesModal.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
@@ -26,6 +28,25 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
   const mobileVideoRef = useRef(null);
 
   useScrollLock(mobileVideoOpen);
+
+  // Precarga en segundo plano las fotos/videos de la galería un momento
+  // después de que el hero ya cargó -- así, para cuando alguien realmente
+  // toque la tarjeta "Imágenes y videos", la caché casi siempre ya está
+  // lista y el overlay abre con las fotos puestas en vez de en blanco.
+  // requestIdleCallback (si existe) espera a que el navegador esté libre;
+  // el setTimeout es el respaldo en Safari, que no lo implementa.
+  useEffect(() => {
+    const run = () => {
+      preloadGaleriaImages();
+      preloadGaleriaVideos();
+    };
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(run, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = setTimeout(run, 2000);
+    return () => clearTimeout(id);
+  }, []);
 
   // Compartido por el botón de reinicio de esquina y el de "Ver de nuevo"
   // del overlay de fin, en ambos reproductores (escritorio y móvil).

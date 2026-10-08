@@ -3,14 +3,16 @@ import fiestas from "../../data/fiestas.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./FiestasStrip.css";
 
-const firstWithEvents = fiestas.find((m) => m.eventos.length > 0);
+const currentMonth = new Date().getMonth() + 1;
 
 // Franja horizontal de los 12 meses (con scroll-snap en celular); los
 // meses con fiestas se ven resaltados en dorado. Al tocar un mes se
 // muestra su lista de eventos debajo. Datos en src/data/fiestas.js.
+// Abre de entrada en el mes en curso (tenga o no eventos confirmados),
+// no en el primer mes con eventos del arreglo.
 export default function FiestasStrip() {
   const { t, pick } = useLanguage();
-  const [selectedMonth, setSelectedMonth] = useState(firstWithEvents ? firstWithEvents.mes : 1);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const active = fiestas.find((m) => m.mes === selectedMonth);
 
   const trackRef = useRef(null);

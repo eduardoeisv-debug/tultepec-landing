@@ -29,10 +29,25 @@
 }
 
 .segmented-tabs__tab {
+  /* flex: 1 1 0 (no "auto") a propósito: todas las pestañas reparten el
+     ancho del contenedor por igual sin importar cuánto texto tenga cada
+     una. El indicador deslizante se calcula asumiendo ancho igual entre
+     pestañas (100% / cantidad) -- con ancho "auto" (por contenido), una
+     pestaña más larga como "Quiénes somos" terminaba más ancha que el
+     indicador, y la píldora dorada no cubría bien ni el texto ni el
+     ícono. */
+  flex: 1 1 0;
+  /* Sin esto, el mínimo de flexbox para un ítem es "auto" (el ancho de
+     su contenido), no 0 -- con white-space:nowrap eso bloquea el reparto
+     igualitario de flex-basis:0 de arriba, y cada pestaña terminaba con
+     el ancho de su propio texto en vez de un ancho igual entre todas
+     (la causa real de que la píldora no cubriera bien ni el texto). */
+  min-width: 0;
   position: relative;
   z-index: 1;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 1.2rem;
   border: none;
@@ -48,6 +63,14 @@
 
 .segmented-tabs__tab.is-active {
   color: var(--color-night-900);
+}
+
+.segmented-tabs__tab svg {
+  /* Sin esto, el SVG se encoge a 0 de ancho: es un hijo flex más dentro
+     del botón (icono + texto + contador), y el flex-shrink por defecto
+     (1) deja que ceda espacio junto con el texto cuando la pestaña va
+     justa de ancho. */
+  flex-shrink: 0;
 }
 
 .segmented-tabs__count {

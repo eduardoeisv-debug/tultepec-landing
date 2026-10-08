@@ -285,6 +285,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
             <button
               type="button"
               className="galeria-lightbox__close"
+              onMouseDown={(e) => e.stopPropagation()}
               onClick={() => setLightboxIndex(null)}
               aria-label={t("common.cerrar")}
             >
@@ -295,6 +296,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
               <button
                 type="button"
                 className="galeria-lightbox__nav galeria-lightbox__nav--prev"
+                onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.stopPropagation();
                   setLightboxIndex((i) => (i - 1 + filteredPhotos.length) % filteredPhotos.length);
@@ -323,6 +325,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
               <button
                 type="button"
                 className="galeria-lightbox__nav galeria-lightbox__nav--next"
+                onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.stopPropagation();
                   setLightboxIndex((i) => (i + 1) % filteredPhotos.length);

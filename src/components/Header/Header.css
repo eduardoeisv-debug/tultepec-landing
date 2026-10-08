@@ -20,20 +20,12 @@
 .site-header__brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.05rem, 0.85rem + 1vw, 1.35rem);
   color: var(--color-paper);
   text-decoration: none;
   min-width: 0;
-}
-
-.site-header__torito {
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  color: var(--color-gold-light);
 }
 
 .site-header__brand-text {
@@ -55,11 +47,6 @@
   .site-header__inner {
     padding-top: 0.6rem;
     padding-bottom: 0.6rem;
-  }
-
-  .site-header__torito {
-    width: 24px;
-    height: 24px;
   }
 }
 

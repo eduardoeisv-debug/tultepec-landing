@@ -184,18 +184,38 @@ export default function HeroFireworks() {
       rafId = null;
     };
 
+    const isOverlayLocked = () => document.body.style.overflow === "hidden";
+
     const onVisibility = () => {
       if (document.hidden) stop();
-      else start();
+      else if (!isOverlayLocked()) start();
     };
     document.addEventListener("visibilitychange", onVisibility);
 
-    start();
+    // Cualquiera de los overlays a pantalla completa del sitio (galería,
+    // relatos, libros, privacidad...) queda dibujado ENCIMA del hero, no
+    // en vez de él -- el hero nunca se desmonta, solo queda tapado. Sin
+    // este freno, el canvas (con su shadowBlur, lo más caro de dibujar
+    // aquí) seguía animando sin parar detrás del overlay, sin que se
+    // viera, justo mientras el visitante además está esperando a que
+    // cargue el contenido de ese overlay -- un desperdicio de CPU en el
+    // peor momento posible. Todos los overlays bloquean el scroll del
+    // body poniendo overflow:hidden (ver useScrollLock.js y los que lo
+    // hacen a mano); un MutationObserver sobre ese estilo evita acoplar
+    // este componente a la lista de qué overlays existen.
+    const overlayObserver = new MutationObserver(() => {
+      if (isOverlayLocked()) stop();
+      else if (!document.hidden) start();
+    });
+    overlayObserver.observe(document.body, { attributes: true, attributeFilter: ["style"] });
+
+    if (!isOverlayLocked()) start();
 
     return () => {
       stop();
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
+      overlayObserver.disconnect();
     };
   }, []);
 
