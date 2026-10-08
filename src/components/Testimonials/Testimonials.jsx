@@ -14,7 +14,7 @@ const QuoteMark = (
 );
 
 export default function Testimonials({ onShareClick, embedded = false }) {
-  const { t } = useLanguage();
+  const { t, pick } = useLanguage();
   const ref = useReveal();
   const Wrapper = embedded ? "div" : "section";
   const [status, setStatus] = useState("loading"); // loading | ready | empty | error
@@ -105,7 +105,7 @@ export default function Testimonials({ onShareClick, embedded = false }) {
               </blockquote>
               <div className="testimonials__attribution">
                 <span className="testimonials__name">{current.name}</span>
-                <span className="testimonials__role">{current.role}</span>
+                <span className="testimonials__role">{pick(current.role)}</span>
               </div>
             </div>
 

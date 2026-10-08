@@ -117,7 +117,7 @@ function MemoryRow({ memory, onUpdate }) {
       <div className="moderation-card__details">
         <span>
           <strong>{memory.display_name || "Anónimo"}</strong> ·{" "}
-          {RELATIONSHIP_DISPLAY_LABELS[memory.relationship] || memory.relationship}
+          {RELATIONSHIP_DISPLAY_LABELS[memory.relationship]?.es || memory.relationship}
         </span>
         {memory.contact_email && <span>Correo: {memory.contact_email}</span>}
         <span>{memory.consent_public ? "Autorizó mostrarse públicamente" : "No autorizó mostrarse públicamente"}</span>
