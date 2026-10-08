@@ -23,6 +23,7 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [memoriesOpen, setMemoriesOpen] = useState(false);
   const [galeriaOpen, setGaleriaOpen] = useState(false);
+  const historyTriggerRef = useRef(null);
   const galeriaTriggerRef = useRef(null);
   const videoRef = useRef(null);
   const mobileVideoRef = useRef(null);
@@ -91,6 +92,7 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
       label: t("hero.card.history.title"),
       caption: t("hero.card.history.caption"),
       onClick: () => setHistoryOpen(true),
+      ref: historyTriggerRef,
     },
     {
       key: "memories",
@@ -235,7 +237,7 @@ export default function Hero({ onOpenBooks, onShareClick, booksTriggerRef }) {
         </svg>
       </button>
 
-      <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} />
+      <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} triggerRef={historyTriggerRef} />
       <MemoriesModal open={memoriesOpen} onClose={() => setMemoriesOpen(false)} onShareClick={onShareClick} />
       <GaleriaOverlay open={galeriaOpen} onClose={() => setGaleriaOpen(false)} triggerRef={galeriaTriggerRef} />
 

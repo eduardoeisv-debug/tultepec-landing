@@ -1,7 +1,14 @@
+/* Infografía de "Explora la historia", pensada para vivir dentro del
+   overlay nocturno de HistoryModal: todo el contenido (cifras, cita,
+   línea de tiempo, por qué importa, qué vas a encontrar, preguntas
+   frecuentes) usa el mismo lenguaje glass/azul noche, no tarjetas
+   blancas sueltas sobre un fondo oscuro. */
+
 .history-infographic {
   display: flex;
   flex-direction: column;
-  gap: 2.75rem;
+  gap: 2.4rem;
+  color: var(--color-paper);
 }
 
 .hi-block {
@@ -10,11 +17,10 @@
 }
 
 .hi-block--dark {
-  background: var(--color-night-900);
-  color: var(--color-paper);
+  background: rgba(8, 10, 26, 0.35);
+  border: 1px solid rgba(251, 241, 226, 0.1);
   border-radius: var(--radius-lg);
   padding: 2rem 1.75rem;
-  margin: 0 -0.5rem;
 }
 
 .hi-block__head {
@@ -41,180 +47,194 @@
   background: currentColor;
 }
 
-.hi-eyebrow--gold {
-  color: var(--color-terracotta);
-}
-
 .hi-eyebrow--light {
   color: var(--color-gold-light);
 }
 
 .hi-block__head h3 {
+  font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.4vw, 1.65rem);
   margin-top: 0.5rem;
-}
-
-.hi-block--dark .hi-block__head h3 {
   color: var(--color-paper);
 }
 
-/* 1. Cifras */
-.hi-stats {
+/* Cifras clave */
+.hi-cifras {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.9rem;
 }
 
-.hi-stat {
+.hi-cifra {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.4rem;
-  background: #fff;
+  gap: 0.35rem;
+  background: rgba(251, 241, 226, 0.06);
+  border: 1px solid rgba(251, 241, 226, 0.14);
   border-radius: var(--radius-md);
-  padding: 1.1rem 1rem;
-  border-top: 3px solid var(--hi-tone, var(--color-gold));
-  box-shadow: var(--shadow-soft);
+  padding: 1rem 1.1rem;
+  border-top: 3px solid var(--color-gold-light);
 }
 
-.hi-stat--terracotta {
-  --hi-tone: var(--color-terracotta);
+.hi-cifra__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--color-gold-light);
 }
 
-.hi-stat--fire {
-  --hi-tone: var(--color-fire-red);
+.hi-cifra__label {
+  font-size: 0.8rem;
+  color: rgba(251, 241, 226, 0.72);
+  line-height: 1.35;
 }
 
-.hi-stat--gold {
-  --hi-tone: var(--color-gold);
+/* Cita */
+.hi-cita {
+  margin: 0;
+  padding: 0 1.5rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  line-height: 1.5;
+  color: var(--color-paper);
 }
 
-.hi-stat__icon {
+/* Línea de tiempo -- en celular, columna única con línea e íconos a la
+   izquierda; en pantallas más anchas, rejilla de varias columnas (cada
+   tarjeta lleva su propio ícono arriba, ya no depende de una línea
+   compartida -- más fácil de leer con tarjetas de alturas distintas). */
+.historia-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  list-style: none;
+  padding-left: 2.6rem;
+}
+
+.historia-timeline::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 17px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(227, 171, 61, 0.4) 0,
+    rgba(227, 171, 61, 0.4) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.historia-timeline__item {
+  position: relative;
+}
+
+.historia-timeline__node {
+  position: absolute;
+  top: 0.2rem;
+  left: -2.6rem;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  color: var(--hi-tone, var(--color-gold));
-  background: color-mix(in srgb, var(--hi-tone, var(--color-gold)) 16%, transparent);
+  color: var(--color-night-950);
+  background: var(--hi-tone, var(--color-gold-light));
+  box-shadow: 0 0 0 4px rgba(24, 10, 56, 0.9);
 }
 
-.hi-stat__value {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.3rem;
-  color: var(--color-ink);
+.historia-timeline__item--gold {
+  --hi-tone: var(--color-gold-light);
 }
 
-.hi-stat__label {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.35;
-}
-
-/* 2. Línea de tiempo */
-.hi-timeline {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
-  list-style: none;
-}
-
-.hi-timeline::before {
-  content: "";
-  position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 50%;
-  width: 2px;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(193, 89, 47, 0.35) 0,
-    rgba(193, 89, 47, 0.35) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-  transform: translateX(-50%);
-}
-
-.hi-timeline__item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: start;
-  gap: var(--space-md);
-}
-
-.hi-timeline__node {
-  grid-column: 2;
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  margin-top: 0.3rem;
-  border-radius: 50%;
-  color: #fff;
-  background: var(--hi-tone, var(--color-gold));
-  box-shadow: 0 0 0 4px var(--color-paper);
-}
-
-.hi-timeline__item--gold {
-  --hi-tone: var(--color-gold);
-}
-
-.hi-timeline__item--terracotta {
+.historia-timeline__item--terracotta {
   --hi-tone: var(--color-terracotta);
 }
 
-.hi-timeline__item--fire {
+.historia-timeline__item--fire {
   --hi-tone: var(--color-fire-red);
 }
 
-.hi-timeline__item--night {
-  --hi-tone: var(--color-night-700);
+.historia-timeline__item--night {
+  --hi-tone: #ff2d8a;
 }
 
-.hi-timeline__card {
-  grid-column: 1;
-  background: #fff;
+.historia-timeline__card {
+  background: rgba(251, 241, 226, 0.06);
+  border: 1px solid rgba(251, 241, 226, 0.14);
   border-radius: var(--radius-md);
   padding: 1.1rem 1.3rem;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(42, 28, 18, 0.08);
+  backdrop-filter: blur(2px);
 }
 
-.hi-timeline__item--right .hi-timeline__card {
-  grid-column: 3;
-}
-
-.hi-timeline__year {
+.historia-timeline__era {
   display: inline-block;
   font-weight: 700;
   font-size: 0.72rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--hi-tone, var(--color-fire-red));
+  color: var(--hi-tone, var(--color-gold-light));
   margin-bottom: 0.35rem;
 }
 
-.hi-timeline__card h4 {
+.historia-timeline__card h4 {
   font-family: var(--font-display);
   font-size: 1.05rem;
+  color: var(--color-paper);
   margin-bottom: 0.4rem;
 }
 
-.hi-timeline__card p {
-  color: var(--text-muted);
+.historia-timeline__card p {
+  color: rgba(251, 241, 226, 0.8);
   font-size: 0.9rem;
   line-height: 1.55;
 }
 
-/* 3. Por qué importa */
+.historia-timeline__detail {
+  margin-top: 0.5rem;
+}
+
+.historia-timeline__more {
+  margin-top: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--color-gold-light);
+  cursor: pointer;
+}
+
+.historia-timeline__more:hover {
+  text-decoration: underline;
+}
+
+.historia-timeline__more:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+.hi-cierre {
+  margin: 1.6rem 0 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  color: var(--color-gold-light);
+  line-height: 1.5;
+}
+
+/* Por qué importa */
 .hi-why {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -223,7 +243,8 @@
 
 .hi-why__card {
   position: relative;
-  background: var(--color-night-800);
+  background: rgba(251, 241, 226, 0.05);
+  border: 1px solid rgba(251, 241, 226, 0.12);
   border-radius: var(--radius-md);
   padding: 1.3rem 1.2rem;
   overflow: hidden;
@@ -254,6 +275,7 @@
 }
 
 .hi-why__card h4 {
+  font-family: var(--font-display);
   font-size: 1rem;
   color: var(--color-gold-light);
   margin-bottom: 0.5rem;
@@ -265,7 +287,7 @@
   line-height: 1.55;
 }
 
-/* 4. Qué vas a encontrar */
+/* Qué vas a encontrar */
 .hi-benefits {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -273,11 +295,10 @@
 }
 
 .hi-benefit {
-  background: #fff;
+  background: rgba(251, 241, 226, 0.06);
+  border: 1px solid rgba(251, 241, 226, 0.14);
   border-radius: var(--radius-md);
   padding: 1.2rem 1.1rem;
-  border: 1px solid rgba(42, 28, 18, 0.08);
-  box-shadow: var(--shadow-soft);
 }
 
 .hi-benefit__icon {
@@ -288,22 +309,24 @@
   height: 34px;
   border-radius: 50%;
   margin-bottom: 0.7rem;
-  color: var(--color-terracotta);
-  background: rgba(193, 89, 47, 0.12);
+  color: var(--color-gold-light);
+  background: rgba(227, 171, 61, 0.18);
 }
 
 .hi-benefit h4 {
+  font-family: var(--font-display);
   font-size: 0.95rem;
+  color: var(--color-paper);
   margin-bottom: 0.4rem;
 }
 
 .hi-benefit p {
-  color: var(--text-muted);
+  color: rgba(251, 241, 226, 0.75);
   font-size: 0.85rem;
   line-height: 1.5;
 }
 
-/* 5. Preguntas frecuentes */
+/* Preguntas frecuentes */
 .hi-faq {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -325,44 +348,71 @@
   height: 28px;
   border-radius: 50%;
   margin-top: 0.1rem;
-  color: var(--color-gold);
-  background: rgba(227, 171, 61, 0.15);
+  color: var(--color-gold-light);
+  background: rgba(227, 171, 61, 0.18);
 }
 
 .hi-faq__item h4 {
+  font-family: var(--font-display);
   font-size: 0.95rem;
+  color: var(--color-paper);
   margin-bottom: 0.3rem;
 }
 
 .hi-faq__item p {
-  color: var(--text-muted);
+  color: rgba(251, 241, 226, 0.75);
   font-size: 0.86rem;
   line-height: 1.55;
 }
 
-@media (max-width: 760px) {
-  .hi-stats {
+/* Desktop: la línea de tiempo pasa de columna única con línea a una
+   rejilla de 2 columnas -- cada tarjeta lleva su propio ícono arriba a
+   la izquierda en vez de depender de una línea compartida. */
+@media (min-width: 760px) {
+  .historia-timeline {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.1rem 1.3rem;
+    padding-left: 0;
   }
 
-  .hi-timeline::before {
-    left: 17px;
+  .historia-timeline::before {
+    display: none;
   }
 
-  .hi-timeline__item,
-  .hi-timeline__item--right {
-    grid-template-columns: auto 1fr;
+  .historia-timeline__item {
+    display: flex;
+    flex-direction: column;
   }
 
-  .hi-timeline__node {
-    grid-column: 1;
-    width: 30px;
-    height: 30px;
+  .historia-timeline__node {
+    position: static;
+    margin-bottom: 0.7rem;
   }
 
-  .hi-timeline__card,
-  .hi-timeline__item--right .hi-timeline__card {
-    grid-column: 2;
+  /* `flex: 1` (no `height: 100%`) para que la tarjeta llene el alto de
+     su fila en la rejilla sin el problema clásico de los porcentajes de
+     alto: con `height: 100%` aquí, la tarjeta reclamaba el alto total
+     del `<li>` por encima del ícono (que ya ocupa su propio espacio),
+     así que al abrir "Leer más" en una tarjeta vecina más alta, las
+     tarjetas cortas se quedaban con un hueco vacío debajo en vez de
+     estirarse de verdad. */
+  .historia-timeline__card {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .historia-timeline {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 759px) {
+  .hi-cifras {
+    grid-template-columns: repeat(1, 1fr);
   }
 
   .hi-why {

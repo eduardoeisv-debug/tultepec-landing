@@ -169,10 +169,10 @@ export const STRINGS = {
   "booksModal.dotsAriaLabel": { es: "Elegir tomo", en: "Choose volume" },
   "booksModal.verTomo": { es: "Ver tomo {tomo}", en: "View volume {tomo}" },
 
-  "hi.stats.eyebrow": { es: "De un vistazo", en: "At a glance" },
-  "hi.stats.title": { es: "Una tradición que se mide en generaciones", en: "A tradition measured in generations" },
   "hi.timeline.eyebrow": { es: "Momentos y tradiciones", en: "Moments and traditions" },
   "hi.timeline.title": { es: "La línea de tiempo del oficio", en: "A timeline of the craft" },
+  "hi.timeline.leerMas": { es: "Leer más", en: "Read more" },
+  "hi.timeline.leerMenos": { es: "Leer menos", en: "Read less" },
   "hi.why.eyebrow": { es: "Por qué esta historia importa", en: "Why this history matters" },
   "hi.why.title": { es: "Entre el orgullo y el riesgo de olvidar", en: "Between pride and the risk of forgetting" },
   "hi.benefits.eyebrow": { es: "Lo que vas a encontrar", en: "What you'll find" },
