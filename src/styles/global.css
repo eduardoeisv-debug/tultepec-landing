@@ -10,6 +10,26 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Foco visible de respaldo: cubre cualquier elemento interactivo que no
+   tenga ya su propio estilo de :focus-visible más específico (la
+   mayoría de los botones de las tarjetas sí lo tienen, con el mismo
+   dorado). El anillo (outline + offset) se nota por forma, no solo por
+   color -- para quien no distingue bien el dorado del fondo. La
+   variante --on-light usa terracota, con mejor contraste sobre fondos
+   claros (el modal de privacidad, el formulario independiente). */
+:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.btn--on-light:focus-visible,
+.share-memory-form--light :focus-visible,
+.privacy-modal :focus-visible,
+.comment-modal :focus-visible {
+  outline-color: var(--color-terracotta);
+}
+
 body {
   margin: 0;
   background: var(--bg-page);

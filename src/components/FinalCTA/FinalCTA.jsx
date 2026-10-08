@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { MessageCircle } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import ShareButtons from "../shared/ShareButtons.jsx";
@@ -12,6 +12,7 @@ export default function FinalCTA() {
   const { t } = useLanguage();
   const ref = useReveal();
   const [commentOpen, setCommentOpen] = useState(false);
+  const commentTriggerRef = useRef(null);
 
   return (
     <section className="final-cta" ref={ref}>
@@ -23,7 +24,7 @@ export default function FinalCTA() {
           <p className="final-cta__engage-text">{t("finalCta.engageText")}</p>
           <div className="final-cta__engage-actions">
             <LikeButton />
-            <button type="button" className="comment-button" onClick={() => setCommentOpen(true)}>
+            <button type="button" className="comment-button" ref={commentTriggerRef} onClick={() => setCommentOpen(true)}>
               <span className="comment-button__icon">
                 <MessageCircle size={18} strokeWidth={1.8} />
               </span>
@@ -37,7 +38,7 @@ export default function FinalCTA() {
         </div>
       </div>
 
-      <CommentModal open={commentOpen} onClose={() => setCommentOpen(false)} />
+      <CommentModal open={commentOpen} onClose={() => setCommentOpen(false)} triggerRef={commentTriggerRef} />
     </section>
   );
 }

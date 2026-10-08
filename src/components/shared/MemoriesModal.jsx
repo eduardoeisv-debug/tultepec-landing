@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { X, BookOpen, MessageSquareText, PenLine } from "lucide-react";
 import { LIBRO_FILTROS, MEMORIAS } from "../../data/memorias.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
+import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import OverlayPapelPicado from "./OverlayPapelPicado.jsx";
 import SegmentedTabs from "./SegmentedTabs.jsx";
 import Testimonials from "../Testimonials/Testimonials.jsx";
@@ -34,8 +36,21 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
   const [closing, setClosing] = useState(false);
   const [libroFiltro, setLibroFiltro] = useState("tomo-1");
   const [expanded, setExpanded] = useState({});
+  const [filtroIndex, setFiltroIndex] = useState(0);
+  const [fragmentoIndex, setFragmentoIndex] = useState(0);
   const dialogRef = useRef(null);
   const bodyRef = useRef(null);
+  const { register: registerFiltro, onKeyDown: filtroKeyDown } = useArrowNavigation({
+    count: LIBRO_FILTROS.length,
+    orientation: "horizontal",
+  });
+  const fragmentos = MEMORIAS.filter((m) => m.libro === libroFiltro);
+  const { register: registerFragmento, onKeyDown: fragmentoKeyDown } = useArrowNavigation({
+    count: fragmentos.length,
+    orientation: "both",
+  });
+
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (!open) return;
@@ -100,8 +115,13 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
 
   const toggleExpanded = (id) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
 
-  const fragmentos = MEMORIAS.filter((m) => m.libro === libroFiltro);
   const libroLabel = (id) => LIBRO_FILTROS.find((f) => f.id === id);
+
+  const changeFiltro = (index) => {
+    setFiltroIndex(index);
+    setLibroFiltro(LIBRO_FILTROS[index].id);
+    setFragmentoIndex(0);
+  };
 
   return (
     <div className={`memories-overlay__backdrop ${closing ? "is-closing" : ""}`} onMouseDown={requestClose}>
@@ -142,22 +162,29 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
             <div role="tabpanel" id="memories-panel-memorias" aria-labelledby="memories-tab-memorias">
               {language === "en" && <p className="memories-overlay__note">{t("memoriesModal.notaIdioma")}</p>}
 
-              <div className="memorias-filtros" role="group" aria-label={t("memoriesModal.filtroAriaLabel")}>
-                {LIBRO_FILTROS.map((f) => (
+              <div
+                className="memorias-filtros"
+                role="group"
+                aria-label={t("memoriesModal.filtroAriaLabel")}
+                onKeyDown={filtroKeyDown(filtroIndex, changeFiltro)}
+              >
+                {LIBRO_FILTROS.map((f, i) => (
                   <button
                     key={f.id}
                     type="button"
+                    ref={registerFiltro(i)}
+                    tabIndex={filtroIndex === i ? 0 : -1}
                     className={`memorias-filtro ${libroFiltro === f.id ? "is-active" : ""}`}
                     aria-pressed={libroFiltro === f.id}
-                    onClick={() => setLibroFiltro(f.id)}
+                    onClick={() => changeFiltro(i)}
                   >
                     {pick(f.label)}
                   </button>
                 ))}
               </div>
 
-              <div className="memorias-grid">
-                {fragmentos.map((m) => {
+              <div className="memorias-grid" onKeyDown={fragmentoKeyDown(fragmentoIndex, setFragmentoIndex)}>
+                {fragmentos.map((m, i) => {
                   const isOpen = Boolean(expanded[m.id]);
                   return (
                     <article className="memoria-card" key={m.id}>
@@ -165,6 +192,8 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
                       <p className={`memoria-card__texto ${isOpen ? "is-expanded" : ""}`}>{pick(m.texto)}</p>
                       <button
                         type="button"
+                        ref={registerFragmento(i)}
+                        tabIndex={fragmentoIndex === i ? 0 : -1}
                         className="memoria-card__more"
                         onClick={() => toggleExpanded(m.id)}
                         aria-expanded={isOpen}

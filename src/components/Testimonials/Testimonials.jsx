@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fetchVoices } from "../../lib/testimonialsClient.js";
 import useReveal from "../../hooks/useReveal.js";
+import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Testimonials.css";
 
@@ -66,6 +67,10 @@ export default function Testimonials({ onShareClick, embedded = false }) {
   };
 
   const current = items[active];
+  const { register: registerDot, onKeyDown: dotKeyDown } = useArrowNavigation({
+    count: items.length,
+    orientation: "horizontal",
+  });
 
   return (
     <Wrapper className={`testimonials ${embedded ? "testimonials--embedded" : ""}`} id={embedded ? undefined : "voces"} ref={ref}>
@@ -89,7 +94,30 @@ export default function Testimonials({ onShareClick, embedded = false }) {
         )}
 
         {status === "ready" && current && (
-          <div className="testimonials__carousel reveal" onMouseEnter={clearTimer} onMouseLeave={() => startTimer(items.length)}>
+          <div
+            className="testimonials__carousel reveal"
+            onMouseEnter={clearTimer}
+            onMouseLeave={() => startTimer(items.length)}
+            onKeyDown={(e) => {
+              // Flechas en cualquier punto del carrusel (no solo en los
+              // puntos) avanzan/retroceden sin robarle el foco a lo que
+              // ya lo tenía -- por ejemplo, si el foco está en el botón
+              // "siguiente", una flecha no debería saltarlo a un punto.
+              if (e.key === "ArrowRight") {
+                e.preventDefault();
+                goTo(active + 1);
+              } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                goTo(active - 1);
+              } else if (e.key === "Home") {
+                e.preventDefault();
+                goTo(0);
+              } else if (e.key === "End") {
+                e.preventDefault();
+                goTo(items.length - 1);
+              }
+            }}
+          >
             <button
               type="button"
               className="testimonials__nav testimonials__nav--prev"
@@ -122,11 +150,13 @@ export default function Testimonials({ onShareClick, embedded = false }) {
         )}
 
         {status === "ready" && items.length > 1 && (
-          <div className="testimonials__dots">
+          <div className="testimonials__dots" onKeyDown={dotKeyDown(active, goTo)}>
             {items.map((item, i) => (
               <button
                 key={item.id}
                 type="button"
+                ref={registerDot(i)}
+                tabIndex={active === i ? 0 : -1}
                 className={`testimonials__dot ${i === active ? "testimonials__dot--active" : ""}`}
                 onClick={() => goTo(i)}
                 aria-label={t("testimonials.verTestimonio", { n: i + 1 })}

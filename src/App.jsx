@@ -35,10 +35,19 @@ export default function App() {
   const [booksModalOpen, setBooksModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const booksTriggerRef = useRef(null);
+  const privacyTriggerRef = useRef(null);
 
   useHashScrollFix();
 
-  const openPrivacy = () => setPrivacyModalOpen(true);
+  // El aviso de privacidad se abre desde dos sitios distintos (el pie y
+  // el enlace dentro del formulario "Comparte tu memoria", este último
+  // anidado en otro modal) -- en vez de pasar una ref por cada posible
+  // origen, se guarda cuál era el elemento con foco justo antes de abrir
+  // (que es el botón que se acaba de pulsar) para devolvérselo al cerrar.
+  const openPrivacy = () => {
+    privacyTriggerRef.current = document.activeElement;
+    setPrivacyModalOpen(true);
+  };
   // "Comparte tu memoria" ahora vive como pestaña dentro de MemoriesModal
   // (ver Hero.jsx). ShareMemoryModal y este estado se dejan montados pero
   // sin ningún botón que los abra, por si se necesita un acceso directo
@@ -67,7 +76,7 @@ export default function App() {
 
       {privacyModalOpen && (
         <Suspense fallback={<ModalLoading />}>
-          <PrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} />
+          <PrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} triggerRef={privacyTriggerRef} />
         </Suspense>
       )}
 

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import ShareMemoryForm from "./ShareMemoryForm.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ShareMemoryModal.css";
 
@@ -18,6 +19,7 @@ export default function ShareMemoryModal({ open, onClose, onOpenPrivacy }) {
   const dialogRef = useRef(null);
 
   useScrollLock(open);
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (!open) return undefined;

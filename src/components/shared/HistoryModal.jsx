@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
 import OverlayPapelPicado from "./OverlayPapelPicado.jsx";
 import HistoryInfographic from "./HistoryInfographic.jsx";
 import "./HistoryModal.css";
@@ -20,6 +21,8 @@ export default function HistoryModal({ open, onClose, triggerRef }) {
   const { t } = useLanguage();
   const [closing, setClosing] = useState(false);
   const dialogRef = useRef(null);
+
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (open) setClosing(false);

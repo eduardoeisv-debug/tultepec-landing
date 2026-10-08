@@ -3,6 +3,7 @@ import { History, Flame, Church, PartyPopper, Hammer, Landmark, Sparkles, Shield
 import { CITA, HITOS, FAQS, CIERRE } from "../../data/historia.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useReveal from "../../hooks/useReveal.js";
+import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import "./HistoryInfographic.css";
 
 const TIMELINE_ICONS = [History, Flame, Church, PartyPopper, Hammer, Landmark, Sparkles, ShieldCheck];
@@ -17,8 +18,16 @@ export default function HistoryInfographic() {
   const { t, pick } = useLanguage();
   const revealRef = useReveal();
   const [expanded, setExpanded] = useState({});
+  const [hitoIndex, setHitoIndex] = useState(0);
+  const [faqIndex, setFaqIndex] = useState(0);
 
   const toggleExpanded = (key) => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  // Los hitos y las preguntas frecuentes se pueden recorrer con flechas
+  // para leerlos sin mouse; Enter/Espacio en un hito con "Leer más" lo
+  // abre o cierra igual que el botón.
+  const { register: registerHito, onKeyDown: hitoKeyDown } = useArrowNavigation({ count: HITOS.length, orientation: "both" });
+  const { register: registerFaq, onKeyDown: faqKeyDown } = useArrowNavigation({ count: FAQS.length, orientation: "both" });
 
   return (
     <div className="history-infographic" ref={revealRef}>
@@ -28,13 +37,25 @@ export default function HistoryInfographic() {
           <span className="hi-eyebrow hi-eyebrow--light">{t("hi.timeline.eyebrow")}</span>
           <h3>{t("hi.timeline.title")}</h3>
         </div>
-        <ol className="historia-timeline">
+        <ol className="historia-timeline" onKeyDown={hitoKeyDown(hitoIndex, setHitoIndex)}>
           {HITOS.map((item, i) => {
             const Icon = TIMELINE_ICONS[i % TIMELINE_ICONS.length];
             const tone = TIMELINE_TONES[i % TIMELINE_TONES.length];
             const isOpen = Boolean(expanded[item.titulo.es]);
             return (
-              <li className={`historia-timeline__item historia-timeline__item--${tone} reveal`} key={item.titulo.es}>
+              <li
+                className={`historia-timeline__item historia-timeline__item--${tone} reveal`}
+                key={item.titulo.es}
+                ref={registerHito(i)}
+                tabIndex={hitoIndex === i ? 0 : -1}
+                onFocus={() => setHitoIndex(i)}
+                onKeyDown={(e) => {
+                  if ((e.key === "Enter" || e.key === " ") && item.detalle) {
+                    e.preventDefault();
+                    toggleExpanded(item.titulo.es);
+                  }
+                }}
+              >
                 <span className="historia-timeline__node">
                   <Icon size={17} strokeWidth={1.7} />
                 </span>
@@ -47,6 +68,7 @@ export default function HistoryInfographic() {
                       {isOpen && <p className="historia-timeline__detail">{pick(item.detalle)}</p>}
                       <button
                         type="button"
+                        tabIndex={-1}
                         className="historia-timeline__more"
                         onClick={() => toggleExpanded(item.titulo.es)}
                         aria-expanded={isOpen}
@@ -77,9 +99,15 @@ export default function HistoryInfographic() {
           <span className="hi-eyebrow hi-eyebrow--light">{t("hi.faq.eyebrow")}</span>
           <h3>{t("hi.faq.title")}</h3>
         </div>
-        <div className="hi-faq reveal">
-          {FAQS.map((item) => (
-            <div className="hi-faq__item" key={item.pregunta.es}>
+        <div className="hi-faq reveal" onKeyDown={faqKeyDown(faqIndex, setFaqIndex)}>
+          {FAQS.map((item, i) => (
+            <div
+              className="hi-faq__item"
+              key={item.pregunta.es}
+              ref={registerFaq(i)}
+              tabIndex={faqIndex === i ? 0 : -1}
+              onFocus={() => setFaqIndex(i)}
+            >
               <span className="hi-faq__icon">
                 <HelpCircle size={16} strokeWidth={1.8} />
               </span>

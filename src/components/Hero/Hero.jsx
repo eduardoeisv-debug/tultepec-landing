@@ -11,6 +11,7 @@ import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
 import HistoryModal from "../shared/HistoryModal.jsx";
 import MemoriesModal from "../shared/MemoriesModal.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Hero.css";
 
@@ -28,8 +29,13 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
   const galeriaTriggerRef = useRef(null);
   const videoRef = useRef(null);
   const mobileVideoRef = useRef(null);
+  const posterTriggerRef = useRef(null);
+  const mobileVideoTriggerRef = useRef(null);
+  const mobileVideoModalRef = useRef(null);
+  const mobileCloseRef = useRef(null);
 
   useScrollLock(mobileVideoOpen);
+  useFocusTrap(mobileVideoModalRef, mobileVideoOpen);
 
   // Precarga en segundo plano las fotos/videos de la galería un momento
   // después de que el hero ya cargó -- así, para cuando alguien realmente
@@ -66,10 +72,49 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
     setEndedState(false);
   };
 
+  // Cerrar en los dos reproductores desmonta el <video> (el condicional
+  // playing/mobileVideoOpen dejan de renderizarlo), así que no hace
+  // falta pausar ni resetear currentTime a mano -- la próxima vez que se
+  // abra es un elemento <video> nuevo, ya en el segundo 0. Lo que sí hay
+  // que hacer a mano es devolver el foco al botón que lo abrió.
+  const closeDesktopVideo = () => {
+    setPlaying(false);
+    setEnded(false);
+    posterTriggerRef.current?.focus();
+  };
+
   const closeMobileVideo = () => {
     setMobileVideoOpen(false);
     setMobileEnded(false);
+    mobileVideoTriggerRef.current?.focus();
   };
+
+  // Escape cierra el video en computadora mientras se está reproduciendo
+  // (terminado o no) -- el móvil usa su propio modal con backdrop, que
+  // ya maneja Escape por separado más abajo.
+  useEffect(() => {
+    if (!playing) return undefined;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closeDesktopVideo();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing]);
+
+  // El modal del video en móvil no tenía ningún manejo de teclado propio
+  // (ni Escape) -- el foco inicial va al botón de cerrar, que es lo
+  // primero interactivo y además siempre visible, terminado el video o no.
+  useEffect(() => {
+    if (!mobileVideoOpen) return undefined;
+    mobileCloseRef.current?.focus();
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closeMobileVideo();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mobileVideoOpen]);
 
   // Soporta enlaces directos a la galería: si la página se carga con
   // #galeria/imagenes o #galeria/videos en la URL, la abre directamente
@@ -143,6 +188,7 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
           <button
             type="button"
             className="hero__title-video-trigger"
+            ref={mobileVideoTriggerRef}
             onClick={() => {
               setMobileEnded(false);
               setMobileVideoOpen(true);
@@ -186,15 +232,26 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
                   onPlay={() => setEnded(false)}
                 />
                 {!ended && (
-                  <button
-                    type="button"
-                    className="hero__video-restart"
-                    onClick={() => restartVideo(videoRef, setEnded)}
-                    aria-label={t("video.restart")}
-                    title={t("video.restart")}
-                  >
-                    <RotateCcw size={18} strokeWidth={2} />
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      className="hero__video-close hero__video-close--desktop"
+                      onClick={closeDesktopVideo}
+                      aria-label={t("common.cerrar")}
+                      title={t("common.cerrar")}
+                    >
+                      <X size={18} strokeWidth={2} />
+                    </button>
+                    <button
+                      type="button"
+                      className="hero__video-restart"
+                      onClick={() => restartVideo(videoRef, setEnded)}
+                      aria-label={t("video.restart")}
+                      title={t("video.restart")}
+                    >
+                      <RotateCcw size={18} strokeWidth={2} />
+                    </button>
+                  </>
                 )}
                 {ended && (
                   <div className="hero__video-ended-overlay">
@@ -208,6 +265,9 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
                       </span>
                       <span className="hero__video-ended-label">{t("video.watchAgain")}</span>
                     </button>
+                    <button type="button" className="hero__video-ended-close" onClick={closeDesktopVideo}>
+                      {t("common.cerrar")}
+                    </button>
                     <p className="hero__video-ended-sub">{t("video.endedSub")}</p>
                   </div>
                 )}
@@ -216,6 +276,7 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
               <button
                 type="button"
                 className="hero__video-poster"
+                ref={posterTriggerRef}
                 onClick={() => setPlaying(true)}
                 aria-label={t("hero.video.ariaLabel")}
               >
@@ -258,14 +319,23 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
 
       {mobileVideoOpen && (
         <div className="hero__mobile-video-backdrop" onMouseDown={closeMobileVideo}>
-          <div className="hero__mobile-video-modal" onMouseDown={(e) => e.stopPropagation()}>
+          <div
+            className="hero__mobile-video-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("hero.verVideo")}
+            tabIndex={-1}
+            ref={mobileVideoModalRef}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               className="hero__mobile-video-close"
+              ref={mobileCloseRef}
               onClick={closeMobileVideo}
               aria-label={t("common.cerrar")}
             >
-              <X size={18} strokeWidth={2} />
+              <X size={20} strokeWidth={2.2} />
             </button>
             <video
               ref={mobileVideoRef}
@@ -299,6 +369,9 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
                     <RotateCcw size={26} strokeWidth={2} />
                   </span>
                   <span className="hero__video-ended-label">{t("video.watchAgain")}</span>
+                </button>
+                <button type="button" className="hero__video-ended-close" onClick={closeMobileVideo}>
+                  {t("common.cerrar")}
                 </button>
                 <p className="hero__video-ended-sub">{t("video.endedSub")}</p>
               </div>

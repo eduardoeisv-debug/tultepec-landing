@@ -425,6 +425,47 @@
   background: var(--color-night-950);
 }
 
+/* Pantalla completa nativa (el botón de ampliar de los controles del
+   navegador, no un modal propio): sin esto, object-fit:cover seguía
+   aplicando dentro de :fullscreen y una pantalla ancha recortaba el
+   video vertical (9:16) por arriba y abajo en vez de mostrarlo
+   completo. En pantalla completa pasa a contain + fondo negro a los
+   lados (letterbox), ocupando toda la ventana. */
+/* Cada selector en su propia regla, NUNCA combinados con comas: un
+   navegador que no reconoce uno de estos pseudo-selectores con prefijo
+   (p.ej. Chromium con :-moz-full-screen) invalida la lista COMPLETA de
+   selectores separados por coma -- y de paso tira también :fullscreen,
+   el que sí necesita. Confirmado con Playwright: con todo junto en una
+   sola regla, getComputedStyle().objectFit se quedaba en "cover" pese a
+   que `el.matches(':fullscreen')` daba true; separado, sí aplica. */
+.hero__video-el:fullscreen {
+  width: 100vw;
+  height: 100dvh;
+  object-fit: contain;
+  background: #000;
+}
+
+.hero__video-el:-webkit-full-screen {
+  width: 100vw;
+  height: 100dvh;
+  object-fit: contain;
+  background: #000;
+}
+
+.hero__video-el:-moz-full-screen {
+  width: 100vw;
+  height: 100dvh;
+  object-fit: contain;
+  background: #000;
+}
+
+.hero__video-el:-ms-fullscreen {
+  width: 100vw;
+  height: 100dvh;
+  object-fit: contain;
+  background: #000;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero__video-ring {
     animation: none;
@@ -517,11 +558,18 @@
 
 .hero__mobile-video-close {
   position: absolute;
-  top: 0.7rem;
-  right: 0.7rem;
-  z-index: 1;
-  width: 34px;
-  height: 34px;
+  /* env(safe-area-inset-*) respeta el notch/Dynamic Island y las
+     esquinas redondeadas del celular -- sin esto, en esos equipos el
+     botón podía quedar parcialmente debajo del área del sistema. */
+  top: calc(0.7rem + env(safe-area-inset-top, 0px));
+  right: calc(0.7rem + env(safe-area-inset-right, 0px));
+  /* Por encima del overlay de "Ver de nuevo" (z-index 3) -- antes se
+     quedaba debajo (z-index 1) y el overlay lo tapaba por completo al
+     terminar el video, dejando sin forma de cerrar salvo volver a
+     reproducirlo. */
+  z-index: 5;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: none;
   background: rgba(10, 14, 36, 0.55);
@@ -576,6 +624,35 @@
 .hero__video-restart:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
+}
+
+/* Cerrar en escritorio: mismo tratamiento visual que reiniciar, del
+   otro lado para no competir por el mismo espacio. No hay botón
+   equivalente en celular porque ahí el cierre (X) del modal ya cumple
+   ese papel y siempre está visible. */
+.hero__video-close--desktop {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(251, 241, 226, 0.25);
+  background: rgba(10, 14, 36, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--color-paper);
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+
+.hero__video-close--desktop:hover {
+  background: rgba(10, 14, 36, 0.78);
+  border-color: rgba(227, 171, 61, 0.6);
+  transform: scale(1.06);
 }
 
 .hero__video-restart--mobile {
@@ -667,6 +744,29 @@
   color: rgba(251, 241, 226, 0.6);
   text-align: center;
   padding: 0 1.2rem;
+}
+
+/* Segundo botón, claro y aparte de "Ver de nuevo" -- antes, al terminar
+   el video, esta era la única salida: solo quedaba volver a
+   reproducirlo. Mínimo 44px de alto para un área táctil cómoda. */
+.hero__video-ended-close {
+  min-height: 44px;
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 241, 226, 0.35);
+  background: rgba(251, 241, 226, 0.08);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.hero__video-ended-close:hover {
+  background: rgba(251, 241, 226, 0.16);
+  border-color: var(--color-gold-light);
 }
 
 /* Indicación de scroll al final del hero, encima de la silueta (que mide

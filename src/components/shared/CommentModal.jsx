@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { submitComment } from "../../lib/submitComment.js";
 import Turnstile from "./Turnstile.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./CommentModal.css";
 
@@ -16,7 +17,7 @@ const initialForm = {
   website: "", // honeypot: campo trampa, invisible para personas
 };
 
-export default function CommentModal({ open, onClose }) {
+export default function CommentModal({ open, onClose, triggerRef }) {
   const { t } = useLanguage();
   const [form, setForm] = useState(initialForm);
   const [turnstileToken, setTurnstileToken] = useState(null);
@@ -25,12 +26,13 @@ export default function CommentModal({ open, onClose }) {
   const dialogRef = useRef(null);
 
   useScrollLock(open);
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (!open) return undefined;
 
     const onKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") handleClose();
     };
     document.addEventListener("keydown", onKeyDown);
     dialogRef.current?.querySelector("input, textarea")?.focus();
@@ -38,7 +40,8 @@ export default function CommentModal({ open, onClose }) {
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [open, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   if (!open) return null;
 
@@ -53,6 +56,7 @@ export default function CommentModal({ open, onClose }) {
     setErrorMessage("");
     setForm(initialForm);
     onClose();
+    triggerRef?.current?.focus();
   };
 
   const handleSubmit = async (e) => {

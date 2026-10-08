@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { LIBROS, WHATSAPP_NUMBER } from "../../data/libros.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
+import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import OverlayPapelPicado from "./OverlayPapelPicado.jsx";
 import SegmentedTabs from "./SegmentedTabs.jsx";
 import QuienesSomosTab from "./QuienesSomosTab.jsx";
@@ -38,6 +40,12 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
   const dialogRef = useRef(null);
   const trackRef = useRef(null);
   const cardRefs = useRef({});
+  const { register: registerDot, onKeyDown: dotKeyDown } = useArrowNavigation({
+    count: LIBROS.length,
+    orientation: "horizontal",
+  });
+
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (!open) return;
@@ -220,15 +228,28 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
               </div>
 
               {LIBROS.length > 1 && (
-                <div className="books-dots" role="group" aria-label={t("booksModal.dotsAriaLabel")}>
+                <div
+                  className="books-dots"
+                  role="group"
+                  aria-label={t("booksModal.dotsAriaLabel")}
+                  onKeyDown={dotKeyDown(activeIndex, (i) => {
+                    setActiveIndex(i);
+                    goToCard(i);
+                  })}
+                >
                   {LIBROS.map((libro, i) => (
                     <button
                       key={libro.id}
                       type="button"
+                      ref={registerDot(i)}
+                      tabIndex={activeIndex === i ? 0 : -1}
                       aria-current={activeIndex === i ? "true" : undefined}
                       aria-label={t("booksModal.verTomo", { tomo: libro.tomo })}
                       className={`books-dots__dot ${activeIndex === i ? "is-active" : ""}`}
-                      onClick={() => goToCard(i)}
+                      onClick={() => {
+                        setActiveIndex(i);
+                        goToCard(i);
+                      }}
                     />
                   ))}
                 </div>

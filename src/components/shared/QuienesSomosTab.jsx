@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Sparkles } from "lucide-react";
 import { CITA, HITOS, INTEGRANTES, CIERRE } from "../../data/grupo.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import "./QuienesSomosTab.css";
 
 // Pestaña "Quiénes somos" de la ventana "Relatos Escritos": la historia
@@ -11,6 +13,21 @@ import "./QuienesSomosTab.css";
 export default function QuienesSomosTab({ onGoToLibros }) {
   const { t, pick } = useLanguage();
   const hasContent = CITA || HITOS.length > 0 || INTEGRANTES.length > 0 || CIERRE;
+  const [hitoIndex, setHitoIndex] = useState(0);
+  const [memberIndex, setMemberIndex] = useState(0);
+
+  // Las tarjetas de la línea de tiempo y de integrantes no tienen nada
+  // que "activar" (no son botones), pero igual se pueden recorrer con
+  // flechas para poder leerlas sin usar el mouse -- se vuelven
+  // focusables (tabIndex en roving) aunque Enter/Espacio no hagan nada.
+  const { register: registerHito, onKeyDown: hitoKeyDown } = useArrowNavigation({
+    count: HITOS.length,
+    orientation: "both",
+  });
+  const { register: registerMember, onKeyDown: memberKeyDown } = useArrowNavigation({
+    count: INTEGRANTES.length,
+    orientation: "both",
+  });
 
   if (!hasContent) {
     return (
@@ -29,9 +46,15 @@ export default function QuienesSomosTab({ onGoToLibros }) {
       {HITOS.length > 0 && (
         <section className="quienes-somos__block">
           <h3>{t("relatos.historia.hitosTitulo")}</h3>
-          <ol className="qs-timeline">
+          <ol className="qs-timeline" onKeyDown={hitoKeyDown(hitoIndex, setHitoIndex)}>
             {HITOS.map((hito, i) => (
-              <li className={`qs-timeline__item ${i % 2 === 1 ? "qs-timeline__item--right" : ""}`} key={hito.etapa.es}>
+              <li
+                className={`qs-timeline__item ${i % 2 === 1 ? "qs-timeline__item--right" : ""}`}
+                key={hito.etapa.es}
+                ref={registerHito(i)}
+                tabIndex={hitoIndex === i ? 0 : -1}
+                onFocus={() => setHitoIndex(i)}
+              >
                 <span className="qs-timeline__node" aria-hidden="true">
                   <Sparkles size={15} strokeWidth={1.8} />
                 </span>
@@ -49,9 +72,15 @@ export default function QuienesSomosTab({ onGoToLibros }) {
       {INTEGRANTES.length > 0 && (
         <section className="quienes-somos__block">
           <h3>{t("relatos.historia.integrantesTitulo")}</h3>
-          <div className="qs-members">
-            {INTEGRANTES.map((persona) => (
-              <div className="qs-member" key={persona.nombre}>
+          <div className="qs-members" onKeyDown={memberKeyDown(memberIndex, setMemberIndex)}>
+            {INTEGRANTES.map((persona, i) => (
+              <div
+                className="qs-member"
+                key={persona.nombre}
+                ref={registerMember(i)}
+                tabIndex={memberIndex === i ? 0 : -1}
+                onFocus={() => setMemberIndex(i)}
+              >
                 {persona.foto ? (
                   <img className="qs-member__photo" src={persona.foto} alt="" loading="lazy" />
                 ) : (

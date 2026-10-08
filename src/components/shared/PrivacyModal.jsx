@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
 import contentEs from "../../content/aviso-de-privacidad.md?raw";
 import contentEn from "../../content/aviso-de-privacidad.en.md?raw";
 import "./PrivacyModal.css";
@@ -27,15 +28,17 @@ const markdownComponents = {
 // según el idioma activo (el mismo `language` de LanguageContext que usa
 // el resto del sitio) y lo renderiza con react-markdown. El texto en sí
 // no se toca aquí; para editarlo hay que editar esos archivos.
-export default function PrivacyModal({ open, onClose }) {
+export default function PrivacyModal({ open, onClose, triggerRef }) {
   const { t, language } = useLanguage();
   const dialogRef = useRef(null);
+
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (!open) return undefined;
 
     const onKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") handleClose();
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
@@ -45,7 +48,8 @@ export default function PrivacyModal({ open, onClose }) {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
-  }, [open, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   if (!open) return null;
 
@@ -54,8 +58,13 @@ export default function PrivacyModal({ open, onClose }) {
   // idioma sin que haga falta cerrar y reabrir nada.
   const content = language === "en" ? contentEn : contentEs;
 
+  const handleClose = () => {
+    onClose();
+    triggerRef?.current?.focus?.();
+  };
+
   return (
-    <div className="privacy-modal__backdrop" onMouseDown={onClose}>
+    <div className="privacy-modal__backdrop" onMouseDown={handleClose}>
       <div
         className="privacy-modal"
         role="dialog"
@@ -65,7 +74,7 @@ export default function PrivacyModal({ open, onClose }) {
         ref={dialogRef}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <button className="privacy-modal__close" onClick={onClose} aria-label={t("common.cerrar")}>
+        <button className="privacy-modal__close" onClick={handleClose} aria-label={t("common.cerrar")}>
           <X size={18} strokeWidth={2} />
         </button>
 

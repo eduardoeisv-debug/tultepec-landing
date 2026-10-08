@@ -1,33 +1,27 @@
-import { useRef } from "react";
+import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 
 // Control de pestañas tipo "segmented" (píldora dorada deslizante),
-// compartido por GaleriaOverlay (Imágenes/Videos) y RelatosModal (Quiénes
-// somos/Los libros) para que las dos ventanas se vean y se comporten
-// igual. `tabs` es [{ id, icon: Component, label, count? }]; `count`
-// (opcional) se muestra como "· N" junto al texto, igual que antes.
+// compartido por GaleriaOverlay (Imágenes/Videos), RelatosModal (Quiénes
+// somos/Los libros) y MemoriesModal (Memorias/Voces/Comparte) para que
+// todas las ventanas se vean y se comporten igual. `tabs` es
+// [{ id, icon: Component, label, count? }]; `count` (opcional) se
+// muestra como "· N" junto al texto.
+//
+// Flechas ←/→ cambian de pestaña, Inicio/Fin van a la primera/última
+// (useArrowNavigation, compartido con el resto de las tarjetas del
+// sitio).
 export default function SegmentedTabs({ tabs, activeId, onChange, ariaLabel, idPrefix }) {
-  const tabRefs = useRef({});
   const activeIndex = Math.max(0, tabs.findIndex((t) => t.id === activeId));
+  const { register, onKeyDown } = useArrowNavigation({ count: tabs.length, orientation: "horizontal" });
 
-  const goTo = (id) => {
-    onChange(id);
-    tabRefs.current[id]?.focus();
-  };
-
-  const onKeyDown = (e) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-    e.preventDefault();
-    const idx = tabs.findIndex((t) => t.id === activeId);
-    const nextIdx = e.key === "ArrowRight" ? (idx + 1) % tabs.length : (idx - 1 + tabs.length) % tabs.length;
-    goTo(tabs[nextIdx].id);
-  };
+  const goToIndex = (index) => onChange(tabs[index].id);
 
   return (
     <div
       className="segmented-tabs"
       role="tablist"
       aria-label={ariaLabel}
-      onKeyDown={onKeyDown}
+      onKeyDown={onKeyDown(activeIndex, goToIndex)}
       style={{ "--tab-count": tabs.length }}
     >
       <span
@@ -35,7 +29,7 @@ export default function SegmentedTabs({ tabs, activeId, onChange, ariaLabel, idP
         aria-hidden="true"
         style={{ transform: `translateX(${activeIndex * 100}%)` }}
       />
-      {tabs.map((tabItem) => (
+      {tabs.map((tabItem, i) => (
         <button
           key={tabItem.id}
           type="button"
@@ -44,9 +38,9 @@ export default function SegmentedTabs({ tabs, activeId, onChange, ariaLabel, idP
           aria-selected={activeId === tabItem.id}
           aria-controls={`${idPrefix}-panel-${tabItem.id}`}
           tabIndex={activeId === tabItem.id ? 0 : -1}
-          ref={(el) => (tabRefs.current[tabItem.id] = el)}
+          ref={register(i)}
           className={`segmented-tabs__tab ${activeId === tabItem.id ? "is-active" : ""}`}
-          onClick={() => goTo(tabItem.id)}
+          onClick={() => onChange(tabItem.id)}
         >
           <tabItem.icon width={18} height={18} />
           {tabItem.label}

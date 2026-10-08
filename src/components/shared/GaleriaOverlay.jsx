@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
+import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import useGaleriaImages from "../../hooks/useGaleriaImages.js";
 import useGaleriaVideos from "../../hooks/useGaleriaVideos.js";
 import { CHIPS } from "../../data/galeria.js";
@@ -32,13 +34,18 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [playingId, setPlayingId] = useState(null);
   const [closing, setClosing] = useState(false);
+  const [chipIndex, setChipIndex] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [videoIndex, setVideoIndex] = useState(0);
   const dialogRef = useRef(null);
   const touchStartX = useRef(null);
+  const lightboxCloseRef = useRef(null);
 
   const { status: imgStatus, photos } = useGaleriaImages(open);
   const { status: vidStatus, videos } = useGaleriaVideos(open);
 
   useScrollLock(open);
+  useFocusTrap(dialogRef, open);
 
   // Al abrir: toma la pestaña del hash si hay uno (#galeria/videos),
   // reinicia filtros/visor, y limpia cualquier cierre pendiente.
@@ -90,6 +97,26 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
     [photos, chip]
   );
 
+  // El filtro de chips cambia qué fotos hay -- si no se reinicia, el
+  // índice con roving tabindex podía quedar apuntando a una posición que
+  // ya no existe en la lista filtrada.
+  useEffect(() => {
+    setPhotoIndex(0);
+  }, [chip]);
+
+  const { register: registerChip, onKeyDown: chipKeyDown } = useArrowNavigation({
+    count: CHIPS.length,
+    orientation: "horizontal",
+  });
+  const { register: registerPhoto, onKeyDown: photoKeyDown, focusAt: focusPhotoAt } = useArrowNavigation({
+    count: filteredPhotos.length,
+    orientation: "both",
+  });
+  const { register: registerVideo, onKeyDown: videoKeyDown } = useArrowNavigation({
+    count: videos.length,
+    orientation: "both",
+  });
+
   useEffect(() => {
     if (!open) return undefined;
 
@@ -99,8 +126,10 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
         return;
       }
       if (lightboxIndex !== null) {
-        if (e.key === "ArrowRight") setLightboxIndex((i) => (i + 1) % filteredPhotos.length);
-        else if (e.key === "ArrowLeft") setLightboxIndex((i) => (i - 1 + filteredPhotos.length) % filteredPhotos.length);
+        if (e.key === "ArrowRight") goToLightbox((lightboxIndex + 1) % filteredPhotos.length);
+        else if (e.key === "ArrowLeft") goToLightbox((lightboxIndex - 1 + filteredPhotos.length) % filteredPhotos.length);
+        else if (e.key === "Home") goToLightbox(0);
+        else if (e.key === "End") goToLightbox(filteredPhotos.length - 1);
       }
     };
 
@@ -111,11 +140,35 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, lightboxIndex, filteredPhotos.length]);
 
+  // Mueve el foco al abrir el visor ampliado (al botón de cerrar) y lo
+  // devuelve a la miniatura correspondiente al cerrarlo -- sin esto, el
+  // foco se quedaba "flotando" en el botón que ya no está donde estaba
+  // (la cuadrícula se re-renderiza detrás del visor).
+  const lightboxWasOpen = useRef(false);
+  useEffect(() => {
+    const isLightboxOpen = lightboxIndex !== null;
+    if (isLightboxOpen && !lightboxWasOpen.current) {
+      lightboxCloseRef.current?.focus();
+    } else if (!isLightboxOpen && lightboxWasOpen.current) {
+      focusPhotoAt(photoIndex);
+    }
+    lightboxWasOpen.current = isLightboxOpen;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightboxIndex]);
+
   if (!open) return null;
 
   const goToTab = (nextTab) => {
     setTab(nextTab);
     setLightboxIndex(null);
+  };
+
+  // Mantiene photoIndex sincronizado con el índice del visor ampliado --
+  // así, si se cierra desde cualquier punto (flechas, swipe, botones),
+  // el foco vuelve a la miniatura que realmente se estaba viendo.
+  const goToLightbox = (index) => {
+    setLightboxIndex(index);
+    setPhotoIndex(index);
   };
 
   const onLightboxTouchStart = (e) => {
@@ -126,8 +179,8 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
     const delta = e.changedTouches[0].clientX - touchStartX.current;
     touchStartX.current = null;
     if (Math.abs(delta) < 40) return;
-    if (delta < 0) setLightboxIndex((i) => (i + 1) % filteredPhotos.length);
-    else setLightboxIndex((i) => (i - 1 + filteredPhotos.length) % filteredPhotos.length);
+    if (delta < 0) goToLightbox((lightboxIndex + 1) % filteredPhotos.length);
+    else goToLightbox((lightboxIndex - 1 + filteredPhotos.length) % filteredPhotos.length);
   };
 
   const activeLightboxPhoto = lightboxIndex !== null ? filteredPhotos[lightboxIndex] : null;
@@ -181,14 +234,27 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
         <div className="galeria-overlay__body">
           {tab === "imagenes" && (
             <div className="galeria-panel" role="tabpanel" id="galeria-panel-imagenes" aria-labelledby="galeria-tab-imagenes">
-              <div className="galeria-chips" role="group" aria-label={t("galeria.chips.ariaLabel")}>
-                {CHIPS.map((c) => (
+              <div
+                className="galeria-chips"
+                role="group"
+                aria-label={t("galeria.chips.ariaLabel")}
+                onKeyDown={chipKeyDown(chipIndex, (i) => {
+                  setChipIndex(i);
+                  setChip(CHIPS[i].id);
+                })}
+              >
+                {CHIPS.map((c, i) => (
                   <button
                     key={c.id}
                     type="button"
+                    ref={registerChip(i)}
+                    tabIndex={chipIndex === i ? 0 : -1}
                     className={`galeria-chip ${chip === c.id ? "is-active" : ""}`}
                     aria-pressed={chip === c.id}
-                    onClick={() => setChip(c.id)}
+                    onClick={() => {
+                      setChipIndex(i);
+                      setChip(c.id);
+                    }}
                   >
                     {pick(c.label)}
                   </button>
@@ -205,13 +271,15 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
               )}
 
               {imgStatus === "done" && filteredPhotos.length > 0 && (
-                <div className="galeria-grid">
+                <div className="galeria-grid" onKeyDown={photoKeyDown(photoIndex, setPhotoIndex)}>
                   {filteredPhotos.map((photo, i) => (
                     <button
                       key={photo.id}
                       type="button"
+                      ref={registerPhoto(i)}
+                      tabIndex={photoIndex === i ? 0 : -1}
                       className="galeria-thumb"
-                      onClick={() => setLightboxIndex(i)}
+                      onClick={() => goToLightbox(i)}
                       aria-label={t("galeria.verFoto", { n: i + 1, total: filteredPhotos.length })}
                     >
                       <img src={photo.src} alt="" loading="lazy" onLoad={(e) => e.currentTarget.classList.add("is-loaded")} />
@@ -234,8 +302,8 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
               )}
 
               {vidStatus === "done" && videos.length > 0 && (
-                <div className="galeria-video-grid">
-                  {videos.map((v) => {
+                <div className="galeria-video-grid" onKeyDown={videoKeyDown(videoIndex, setVideoIndex)}>
+                  {videos.map((v, i) => {
                     const title = v.meta?.titulo ? pick(v.meta.titulo) : pick(v.categoryLabel);
                     const desc = v.meta?.descripcion ? pick(v.meta.descripcion) : null;
                     return (
@@ -252,8 +320,13 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
                         ) : (
                           <button
                             type="button"
+                            ref={registerVideo(i)}
+                            tabIndex={videoIndex === i ? 0 : -1}
                             className="galeria-video-poster"
-                            onClick={() => setPlayingId(v.id)}
+                            onClick={() => {
+                              setVideoIndex(i);
+                              setPlayingId(v.id);
+                            }}
                             aria-label={t("galeria.reproducir", { titulo: title })}
                           >
                             <span className="galeria-video-play">
@@ -284,6 +357,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
           >
             <button
               type="button"
+              ref={lightboxCloseRef}
               className="galeria-lightbox__close"
               onMouseDown={(e) => e.stopPropagation()}
               onClick={() => setLightboxIndex(null)}
@@ -299,7 +373,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setLightboxIndex((i) => (i - 1 + filteredPhotos.length) % filteredPhotos.length);
+                  goToLightbox((lightboxIndex - 1 + filteredPhotos.length) % filteredPhotos.length);
                 }}
                 aria-label={t("galeria.fotoAnterior")}
               >
@@ -328,7 +402,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
                 onMouseDown={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setLightboxIndex((i) => (i + 1) % filteredPhotos.length);
+                  goToLightbox((lightboxIndex + 1) % filteredPhotos.length);
                 }}
                 aria-label={t("galeria.fotoSiguiente")}
               >
