@@ -35,6 +35,7 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
   const [libroFiltro, setLibroFiltro] = useState("todos");
   const [expanded, setExpanded] = useState({});
   const dialogRef = useRef(null);
+  const bodyRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
@@ -52,6 +53,16 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
       history.replaceState(null, "", newHash);
     }
   }, [tab, open, closing]);
+
+  // Al cambiar de pestaña (ya sea con el control de arriba o con el botón
+  // "Comparte tu memoria" al final de las otras dos), el cuerpo scrolleable
+  // se regresa al inicio -- si no, quien venía leyendo hasta abajo de
+  // "Voces" llegaba a la pestaña de "Comparte" a la mitad del formulario
+  // en vez de ver el título desde arriba.
+  useEffect(() => {
+    if (!open) return;
+    bodyRef.current?.scrollTo({ top: 0, behavior: "auto" });
+  }, [tab, open]);
 
   const finishClose = () => {
     history.replaceState(null, "", window.location.pathname + window.location.search);
@@ -126,7 +137,7 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
           ]}
         />
 
-        <div className="memories-overlay__body">
+        <div className="memories-overlay__body" ref={bodyRef}>
           {tab === "memorias" && (
             <div role="tabpanel" id="memories-panel-memorias" aria-labelledby="memories-tab-memorias">
               {language === "en" && <p className="memories-overlay__note">{t("memoriesModal.notaIdioma")}</p>}
