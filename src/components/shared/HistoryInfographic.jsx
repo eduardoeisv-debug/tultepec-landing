@@ -22,9 +22,6 @@ export default function HistoryInfographic() {
 
   return (
     <div className="history-infographic" ref={revealRef}>
-      {/* Cita */}
-      <blockquote className="hi-cita hi-cita--lead reveal">“{pick(CITA)}”</blockquote>
-
       {/* Línea de tiempo */}
       <section className="hi-block hi-block--timeline">
         <div className="hi-block__head">
@@ -64,6 +61,13 @@ export default function HistoryInfographic() {
             );
           })}
         </ol>
+
+        {/* Cita -- a modo de cierre emotivo de la línea de tiempo, no como
+            apertura: describe la fiesta de San Juan de Dios, uno de los
+            hitos de arriba, así que leída antes del recorrido se sentía
+            fuera de lugar. */}
+        <blockquote className="hi-cita reveal">“{pick(CITA)}”</blockquote>
+
         <p className="hi-cierre reveal">{pick(CIERRE)}</p>
       </section>
 

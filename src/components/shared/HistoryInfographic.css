@@ -60,24 +60,15 @@
 
 /* Cita */
 .hi-cita {
-  margin: 0;
+  max-width: 640px;
+  margin: 1.8rem auto 0;
   padding: 0 1.5rem;
   text-align: center;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
   line-height: 1.5;
   color: var(--color-paper);
-}
-
-/* Al quitar las cifras de arriba (Siglo XIX / 8 de marzo / Desde 1989),
-   la cita es ahora lo primero que se lee -- un poco más grande y con más
-   aire alrededor para que abra la infografía con su propio peso, en vez
-   de verse como un texto suelto que perdió lo que tenía encima. */
-.hi-cita--lead {
-  max-width: 640px;
-  margin: 0 auto;
-  font-size: clamp(1.3rem, 3vw, 1.7rem);
 }
 
 /* Línea de tiempo -- en celular, columna única con línea e íconos a la
