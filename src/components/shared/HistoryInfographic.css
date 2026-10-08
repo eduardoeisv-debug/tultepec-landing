@@ -234,98 +234,6 @@
   line-height: 1.5;
 }
 
-/* Por qué importa */
-.hi-why {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.hi-why__card {
-  position: relative;
-  background: rgba(251, 241, 226, 0.05);
-  border: 1px solid rgba(251, 241, 226, 0.12);
-  border-radius: var(--radius-md);
-  padding: 1.3rem 1.2rem;
-  overflow: hidden;
-}
-
-.hi-why__card--terracotta {
-  --hi-tone: var(--color-terracotta);
-}
-
-.hi-why__card--fire {
-  --hi-tone: var(--color-fire-red);
-}
-
-.hi-why__card--gold {
-  --hi-tone: var(--color-gold);
-}
-
-.hi-why__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  margin-bottom: 0.8rem;
-  color: var(--hi-tone, var(--color-gold-light));
-  background: color-mix(in srgb, var(--hi-tone, var(--color-gold-light)) 22%, transparent);
-}
-
-.hi-why__card h4 {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  color: var(--color-gold-light);
-  margin-bottom: 0.5rem;
-}
-
-.hi-why__card p {
-  color: rgba(251, 241, 226, 0.82);
-  font-size: 0.88rem;
-  line-height: 1.55;
-}
-
-/* Qué vas a encontrar */
-.hi-benefits {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-}
-
-.hi-benefit {
-  background: rgba(251, 241, 226, 0.06);
-  border: 1px solid rgba(251, 241, 226, 0.14);
-  border-radius: var(--radius-md);
-  padding: 1.2rem 1.1rem;
-}
-
-.hi-benefit__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  margin-bottom: 0.7rem;
-  color: var(--color-gold-light);
-  background: rgba(227, 171, 61, 0.18);
-}
-
-.hi-benefit h4 {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  color: var(--color-paper);
-  margin-bottom: 0.4rem;
-}
-
-.hi-benefit p {
-  color: rgba(251, 241, 226, 0.75);
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-
 /* Preguntas frecuentes */
 .hi-faq {
   display: grid;
@@ -413,14 +321,6 @@
 @media (max-width: 759px) {
   .hi-cifras {
     grid-template-columns: repeat(1, 1fr);
-  }
-
-  .hi-why {
-    grid-template-columns: 1fr;
-  }
-
-  .hi-benefits {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .hi-faq {

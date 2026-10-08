@@ -173,10 +173,6 @@ export const STRINGS = {
   "hi.timeline.title": { es: "La línea de tiempo del oficio", en: "A timeline of the craft" },
   "hi.timeline.leerMas": { es: "Leer más", en: "Read more" },
   "hi.timeline.leerMenos": { es: "Leer menos", en: "Read less" },
-  "hi.why.eyebrow": { es: "Por qué esta historia importa", en: "Why this history matters" },
-  "hi.why.title": { es: "Entre el orgullo y el riesgo de olvidar", en: "Between pride and the risk of forgetting" },
-  "hi.benefits.eyebrow": { es: "Lo que vas a encontrar", en: "What you'll find" },
-  "hi.benefits.title": { es: "Un álbum de memorias, no un folleto", en: "An album of memories, not a brochure" },
   "hi.faq.eyebrow": { es: "Preguntas frecuentes", en: "Frequently asked questions" },
   "hi.faq.title": { es: "Para entender mejor la tradición", en: "To better understand the tradition" },
 

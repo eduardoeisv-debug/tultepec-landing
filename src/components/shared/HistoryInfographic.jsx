@@ -1,24 +1,6 @@
 import { useState } from "react";
-import {
-  History,
-  Flame,
-  Church,
-  PartyPopper,
-  Hammer,
-  Landmark,
-  Sparkles,
-  ShieldCheck,
-  Mic,
-  HeartCrack,
-  MessageSquareText,
-  Clock,
-  Users,
-  HelpCircle,
-  Plus,
-  Minus,
-} from "lucide-react";
+import { History, Flame, Church, PartyPopper, Hammer, Landmark, Sparkles, ShieldCheck, HelpCircle, Plus, Minus } from "lucide-react";
 import { CIFRAS, CITA, HITOS, FAQS, CIERRE } from "../../data/historia.js";
-import { tensionPoints, benefits } from "../../data/content.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useReveal from "../../hooks/useReveal.js";
 import "./HistoryInfographic.css";
@@ -26,16 +8,11 @@ import "./HistoryInfographic.css";
 const TIMELINE_ICONS = [History, Flame, Church, PartyPopper, Hammer, Landmark, Sparkles, ShieldCheck];
 const TIMELINE_TONES = ["gold", "terracotta", "fire", "night", "gold", "terracotta", "fire", "night"];
 
-const WHY_ICONS = [Mic, HeartCrack, ShieldCheck];
-const WHY_TONES = ["terracotta", "fire", "gold"];
-
-const BENEFIT_ICONS = [MessageSquareText, Clock, Flame, Users];
-
-// Infografía de "Explora la historia": cifras y cita tomadas del
-// documento del pueblo, línea de tiempo con "Leer más" para los hitos más
-// largos, por qué esta historia importa, qué vas a encontrar y preguntas
-// frecuentes (también del documento). Pensada para vivir dentro del
-// overlay nocturno de HistoryModal, no como página suelta.
+// Infografía de "Explora la historia": todo el contenido (cifras, cita,
+// línea de tiempo con "Leer más" para los hitos más largos, cierre y
+// preguntas frecuentes) viene únicamente de Documentos/Historia.docx, ver
+// src/data/historia.js. Pensada para vivir dentro del overlay nocturno de
+// HistoryModal, no como página suelta.
 export default function HistoryInfographic() {
   const { t, pick } = useLanguage();
   const revealRef = useReveal();
@@ -100,53 +77,8 @@ export default function HistoryInfographic() {
         <p className="hi-cierre reveal">{pick(CIERRE)}</p>
       </section>
 
-      {/* Por qué esta historia importa */}
-      <section className="hi-block hi-block--dark">
-        <div className="hi-block__head">
-          <span className="hi-eyebrow hi-eyebrow--light">{t("hi.why.eyebrow")}</span>
-          <h3>{t("hi.why.title")}</h3>
-        </div>
-        <div className="hi-why reveal">
-          {tensionPoints.map((point, i) => {
-            const Icon = WHY_ICONS[i % WHY_ICONS.length];
-            const tone = WHY_TONES[i % WHY_TONES.length];
-            return (
-              <article className={`hi-why__card hi-why__card--${tone}`} key={point.title.es}>
-                <span className="hi-why__icon">
-                  <Icon size={20} strokeWidth={1.8} />
-                </span>
-                <h4>{pick(point.title)}</h4>
-                <p>{pick(point.text)}</p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Qué vas a encontrar */}
-      <section className="hi-block">
-        <div className="hi-block__head">
-          <span className="hi-eyebrow hi-eyebrow--light">{t("hi.benefits.eyebrow")}</span>
-          <h3>{t("hi.benefits.title")}</h3>
-        </div>
-        <div className="hi-benefits reveal">
-          {benefits.map((b, i) => {
-            const Icon = BENEFIT_ICONS[i % BENEFIT_ICONS.length];
-            return (
-              <article className="hi-benefit" key={b.title.es}>
-                <span className="hi-benefit__icon">
-                  <Icon size={18} strokeWidth={1.8} />
-                </span>
-                <h4>{pick(b.title)}</h4>
-                <p>{pick(b.text)}</p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
       {/* Preguntas frecuentes */}
-      <section className="hi-block">
+      <section className="hi-block hi-block--dark">
         <div className="hi-block__head">
           <span className="hi-eyebrow hi-eyebrow--light">{t("hi.faq.eyebrow")}</span>
           <h3>{t("hi.faq.title")}</h3>
