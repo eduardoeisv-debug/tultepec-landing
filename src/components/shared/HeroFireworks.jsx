@@ -4,8 +4,8 @@ import "./HeroFireworks.css";
 // Colores de las ráfagas: dorado, rosa mexicano, turquesa y blanco cálido.
 const COLORS = ["#f3cd7a", "#e3ab3d", "#ff2d8a", "#2fd3c8", "#fbf1e2"];
 
-const MIN_BURST_MS = 550;
-const MAX_BURST_MS = 1150;
+const MIN_BURST_MS = 700;
+const MAX_BURST_MS = 1400;
 const GRAVITY = 0.025;
 const DRAG = 0.985;
 
@@ -47,10 +47,11 @@ export default function HeroFireworks() {
 
     const spawnBurst = () => {
       const isSmall = width < 640;
-      // Rango pedido: 120-180 partículas por ráfaga en desktop; en celular
-      // se reduce para no afectar el rendimiento, pero sigue siendo una
-      // explosión grande y notoria (no la versión sutil de antes).
-      const particleCount = isSmall ? 90 : 150;
+      // Reducido de 90/150 a 65/110 (y las ráfagas ahora salen más
+      // espaciadas, ver MIN/MAX_BURST_MS) para bajar el costo promedio de
+      // dibujo por cuadro sin perder que siga leyéndose como una
+      // explosión real, no un efecto sutil de chispitas.
+      const particleCount = isSmall ? 65 : 110;
 
       // En escritorio (grid de 2 columnas) el texto ocupa toda la mitad
       // izquierda -- no es un "costado angosto" que se pueda esquivar con
@@ -105,7 +106,7 @@ export default function HeroFireworks() {
       }
 
       // Tope de seguridad por si varias ráfagas se acumulan.
-      const maxParticles = isSmall ? 320 : 560;
+      const maxParticles = isSmall ? 220 : 400;
       if (particles.length > maxParticles) {
         particles = particles.slice(particles.length - maxParticles);
       }
@@ -160,7 +161,7 @@ export default function HeroFireworks() {
           // muchas así superpuestas se ven como una mancha borrosa
           // residual flotando después de que la explosión ya se apagó.
           ctx.shadowColor = p.color;
-          ctx.shadowBlur = p.size * 2 * life;
+          ctx.shadowBlur = p.size * 1.6 * life;
         }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -185,12 +186,33 @@ export default function HeroFireworks() {
     };
 
     const isOverlayLocked = () => document.body.style.overflow === "hidden";
+    let heroInView = true;
+
+    const maybeStart = () => {
+      if (!document.hidden && !isOverlayLocked() && heroInView) start();
+    };
 
     const onVisibility = () => {
       if (document.hidden) stop();
-      else if (!isOverlayLocked()) start();
+      else maybeStart();
     };
     document.addEventListener("visibilitychange", onVisibility);
+
+    // La animación es lo más caro que dibuja el hero (shadowBlur en cada
+    // partícula); sin esto seguía corriendo en segundo plano aunque el
+    // visitante ya hubiera bajado hasta el pie de página y el canvas
+    // llevara rato fuera de pantalla -- el motivo real de que la
+    // navegación se sintiera lenta después de los primeros segundos, no
+    // tanto la cantidad de partículas en sí.
+    const sectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        heroInView = entry.isIntersecting;
+        if (heroInView) maybeStart();
+        else stop();
+      },
+      { threshold: 0 }
+    );
+    sectionObserver.observe(canvas);
 
     // Cualquiera de los overlays a pantalla completa del sitio (galería,
     // relatos, libros, privacidad...) queda dibujado ENCIMA del hero, no
@@ -205,17 +227,18 @@ export default function HeroFireworks() {
     // este componente a la lista de qué overlays existen.
     const overlayObserver = new MutationObserver(() => {
       if (isOverlayLocked()) stop();
-      else if (!document.hidden) start();
+      else maybeStart();
     });
     overlayObserver.observe(document.body, { attributes: true, attributeFilter: ["style"] });
 
-    if (!isOverlayLocked()) start();
+    maybeStart();
 
     return () => {
       stop();
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
       overlayObserver.disconnect();
+      sectionObserver.disconnect();
     };
   }, []);
 
