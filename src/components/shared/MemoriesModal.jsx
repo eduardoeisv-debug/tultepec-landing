@@ -32,7 +32,7 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
   const { t, pick, language } = useLanguage();
   const [tab, setTab] = useState("memorias");
   const [closing, setClosing] = useState(false);
-  const [libroFiltro, setLibroFiltro] = useState("todos");
+  const [libroFiltro, setLibroFiltro] = useState("tomo-1");
   const [expanded, setExpanded] = useState({});
   const dialogRef = useRef(null);
   const bodyRef = useRef(null);
@@ -100,7 +100,7 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
 
   const toggleExpanded = (id) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
 
-  const fragmentos = libroFiltro === "todos" ? MEMORIAS : MEMORIAS.filter((m) => m.libro === libroFiltro);
+  const fragmentos = MEMORIAS.filter((m) => m.libro === libroFiltro);
   const libroLabel = (id) => LIBRO_FILTROS.find((f) => f.id === id);
 
   return (

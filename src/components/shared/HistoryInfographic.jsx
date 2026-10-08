@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { History, Flame, Church, PartyPopper, Hammer, Landmark, Sparkles, ShieldCheck, HelpCircle, Plus, Minus } from "lucide-react";
-import { CIFRAS, CITA, HITOS, FAQS, CIERRE } from "../../data/historia.js";
+import { CITA, HITOS, FAQS, CIERRE } from "../../data/historia.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useReveal from "../../hooks/useReveal.js";
 import "./HistoryInfographic.css";
@@ -22,18 +22,8 @@ export default function HistoryInfographic() {
 
   return (
     <div className="history-infographic" ref={revealRef}>
-      {/* Cifras clave */}
-      <div className="hi-cifras reveal">
-        {CIFRAS.map((c) => (
-          <div className="hi-cifra" key={c.value.es}>
-            <span className="hi-cifra__value">{pick(c.value)}</span>
-            <span className="hi-cifra__label">{pick(c.label)}</span>
-          </div>
-        ))}
-      </div>
-
       {/* Cita */}
-      <blockquote className="hi-cita reveal">“{pick(CITA)}”</blockquote>
+      <blockquote className="hi-cita hi-cita--lead reveal">“{pick(CITA)}”</blockquote>
 
       {/* Línea de tiempo */}
       <section className="hi-block hi-block--timeline">

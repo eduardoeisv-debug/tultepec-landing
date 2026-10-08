@@ -12,11 +12,10 @@
 // TODO para que alguien que domine inglés lo revise antes de publicarlo,
 // igual que se hizo con src/data/historia.js.
 
-// Chips del filtro de la pestaña 1 ("Todos" + un chip por tomo). `id`
+// Chips del filtro de la pestaña 1, uno por tomo (sin "Todos"). `id`
 // coincide con el `libro` de cada fragmento de abajo y con el `id` de
 // src/data/libros.js (tomo-1/2/3), para poder cruzar datos si hace falta.
 export const LIBRO_FILTROS = [
-  { id: "todos", label: { es: "Todos", en: "All" } },
   { id: "tomo-1", label: { es: "Libro I", en: "Book I" } },
   { id: "tomo-2", label: { es: "Libro II", en: "Book II" } },
   { id: "tomo-3", label: { es: "Libro III", en: "Book III" } },

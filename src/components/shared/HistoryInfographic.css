@@ -58,38 +58,6 @@
   color: var(--color-paper);
 }
 
-/* Cifras clave */
-.hi-cifras {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.9rem;
-}
-
-.hi-cifra {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
-  background: rgba(251, 241, 226, 0.06);
-  border: 1px solid rgba(251, 241, 226, 0.14);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.1rem;
-  border-top: 3px solid var(--color-gold-light);
-}
-
-.hi-cifra__value {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--color-gold-light);
-}
-
-.hi-cifra__label {
-  font-size: 0.8rem;
-  color: rgba(251, 241, 226, 0.72);
-  line-height: 1.35;
-}
-
 /* Cita */
 .hi-cita {
   margin: 0;
@@ -100,6 +68,16 @@
   font-size: clamp(1.15rem, 2.4vw, 1.45rem);
   line-height: 1.5;
   color: var(--color-paper);
+}
+
+/* Al quitar las cifras de arriba (Siglo XIX / 8 de marzo / Desde 1989),
+   la cita es ahora lo primero que se lee -- un poco más grande y con más
+   aire alrededor para que abra la infografía con su propio peso, en vez
+   de verse como un texto suelto que perdió lo que tenía encima. */
+.hi-cita--lead {
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
 }
 
 /* Línea de tiempo -- en celular, columna única con línea e íconos a la
@@ -319,10 +297,6 @@
 }
 
 @media (max-width: 759px) {
-  .hi-cifras {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
   .hi-faq {
     grid-template-columns: 1fr;
   }
