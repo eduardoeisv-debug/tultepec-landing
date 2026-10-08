@@ -38,6 +38,7 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
   const [closing, setClosing] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const dialogRef = useRef(null);
+  const bodyRef = useRef(null);
   const trackRef = useRef(null);
   const cardRefs = useRef({});
   const { register: registerDot, onKeyDown: dotKeyDown } = useArrowNavigation({
@@ -53,6 +54,14 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
     setClosing(false);
     setActiveIndex(0);
   }, [open]);
+
+  // Al cambiar de pestaña con clic, el foco se queda en el botón de la
+  // pestaña, no en el cuerpo -- ahí las flechas ya no mueven el
+  // contenido. Se regresa el foco al cuerpo scrolleable cada vez.
+  useEffect(() => {
+    if (!open) return;
+    bodyRef.current?.focus();
+  }, [tab, open]);
 
   // Mantiene el hash sincronizado con la pestaña activa, igual que
   // GaleriaOverlay, para poder compartir el enlace directo a una pestaña.
@@ -87,7 +96,10 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
-    dialogRef.current?.focus();
+    // Foco inicial al cuerpo scrolleable, no al panel (que no tiene
+    // scroll propio) -- así las flechas mueven el contenido de entrada,
+    // sin depender de arrastrar la barra de scroll con el mouse.
+    bodyRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
@@ -178,7 +190,7 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
           ]}
         />
 
-        <div className="relatos-overlay__body">
+        <div className="relatos-overlay__body" tabIndex={-1} ref={bodyRef}>
           {tab === "historia" && (
             <div role="tabpanel" id="relatos-panel-historia" aria-labelledby="relatos-tab-historia">
               <QuienesSomosTab onGoToLibros={() => setTab("libros")} />

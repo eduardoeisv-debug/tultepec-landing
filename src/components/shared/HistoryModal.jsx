@@ -21,6 +21,7 @@ export default function HistoryModal({ open, onClose, triggerRef }) {
   const { t } = useLanguage();
   const [closing, setClosing] = useState(false);
   const dialogRef = useRef(null);
+  const bodyRef = useRef(null);
 
   useFocusTrap(dialogRef, open);
 
@@ -50,7 +51,13 @@ export default function HistoryModal({ open, onClose, triggerRef }) {
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
-    dialogRef.current?.focus();
+    // El foco inicial va al cuerpo scrolleable, no al panel entero: el
+    // panel (dialogRef) no tiene scroll propio, solo lo tiene
+    // .history-overlay__body -- si el foco se queda en el panel, las
+    // flechas no mueven nada y solo queda la barra de scroll con el
+    // mouse. Un elemento enfocado con overflow:auto sí responde a las
+    // flechas de forma nativa, sin necesitar JS propio para esto.
+    bodyRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
@@ -83,7 +90,7 @@ export default function HistoryModal({ open, onClose, triggerRef }) {
           <h2 id="history-overlay-title">{t("historyModal.title")}</h2>
         </header>
 
-        <div className="history-overlay__body">
+        <div className="history-overlay__body" tabIndex={-1} ref={bodyRef}>
           <HistoryInfographic />
         </div>
       </div>

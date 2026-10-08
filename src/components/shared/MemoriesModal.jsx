@@ -73,10 +73,13 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
   // "Comparte tu memoria" al final de las otras dos), el cuerpo scrolleable
   // se regresa al inicio -- si no, quien venía leyendo hasta abajo de
   // "Voces" llegaba a la pestaña de "Comparte" a la mitad del formulario
-  // en vez de ver el título desde arriba.
+  // en vez de ver el título desde arriba. También recupera el foco: tras
+  // cambiar de pestaña con clic, el foco se queda en el botón de la
+  // pestaña (no en el cuerpo), y ahí las flechas ya no mueven nada.
   useEffect(() => {
     if (!open) return;
     bodyRef.current?.scrollTo({ top: 0, behavior: "auto" });
+    bodyRef.current?.focus();
   }, [tab, open]);
 
   const finishClose = () => {
@@ -102,7 +105,9 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
-    dialogRef.current?.focus();
+    // Foco inicial al cuerpo scrolleable, no al panel (sin scroll
+    // propio) -- así las flechas mueven el contenido desde que se abre.
+    bodyRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
@@ -157,7 +162,7 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
           ]}
         />
 
-        <div className="memories-overlay__body" ref={bodyRef}>
+        <div className="memories-overlay__body" tabIndex={-1} ref={bodyRef}>
           {tab === "memorias" && (
             <div role="tabpanel" id="memories-panel-memorias" aria-labelledby="memories-tab-memorias">
               {language === "en" && <p className="memories-overlay__note">{t("memoriesModal.notaIdioma")}</p>}

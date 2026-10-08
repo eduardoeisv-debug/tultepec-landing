@@ -38,6 +38,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [videoIndex, setVideoIndex] = useState(0);
   const dialogRef = useRef(null);
+  const bodyRef = useRef(null);
   const touchStartX = useRef(null);
   const lightboxCloseRef = useRef(null);
 
@@ -72,6 +73,14 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
   useEffect(() => {
     setPlayingId(null);
   }, [tab]);
+
+  // Al cambiar de pestaña con clic, el foco se queda en el botón de la
+  // pestaña, no en el cuerpo -- ahí las flechas ya no mueven la
+  // cuadrícula. Se regresa el foco al cuerpo scrolleable cada vez.
+  useEffect(() => {
+    if (!open) return;
+    bodyRef.current?.focus();
+  }, [tab, open]);
 
   const finishClose = () => {
     history.replaceState(null, "", window.location.pathname + window.location.search);
@@ -134,7 +143,12 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
     };
 
     document.addEventListener("keydown", onKeyDown);
-    if (lightboxIndex === null) dialogRef.current?.focus();
+    // Foco inicial al cuerpo scrolleable (no al panel, que no tiene
+    // scroll propio) -- así las flechas mueven la cuadrícula de entrada.
+    // Si justo se cerró el visor ampliado, el efecto de abajo
+    // (lightboxWasOpen) corrige el foco a la miniatura exacta justo
+    // después, en el mismo ciclo.
+    if (lightboxIndex === null) bodyRef.current?.focus();
 
     return () => document.removeEventListener("keydown", onKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,7 +245,7 @@ export default function GaleriaOverlay({ open, onClose, triggerRef }) {
           ]}
         />
 
-        <div className="galeria-overlay__body">
+        <div className="galeria-overlay__body" tabIndex={-1} ref={bodyRef}>
           {tab === "imagenes" && (
             <div className="galeria-panel" role="tabpanel" id="galeria-panel-imagenes" aria-labelledby="galeria-tab-imagenes">
               <div
