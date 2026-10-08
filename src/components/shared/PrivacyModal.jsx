@@ -1,21 +1,34 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import contentEs from "../../content/aviso-de-privacidad.md?raw";
+import contentEn from "../../content/aviso-de-privacidad.en.md?raw";
 import "./PrivacyModal.css";
 
-function withEmailLink(text) {
-  const [before, after] = text.split("{email}");
-  return (
-    <>
-      {before}
-      <a href="mailto:eduardoeisv@gmail.com">eduardoeisv@gmail.com</a>
-      {after}
-    </>
-  );
-}
+// Envuelve cada tabla (la de la sección 3) en un contenedor con scroll
+// horizontal propio -- a lo ancho de celular la tabla de 3 columnas no
+// cabe, y sin esto se saldría del modal en vez de solo desplazarse.
+const markdownComponents = {
+  table: ({ node, ...props }) => (
+    <div className="privacy-modal__table-wrap">
+      <table {...props} />
+    </div>
+  ),
+  // El id lo necesita aria-labelledby del diálogo -- debe apuntar al
+  // título real (el "# Aviso de privacidad" del markdown), no a todo el
+  // cuerpo del modal.
+  h1: ({ node, ...props }) => <h1 id="privacy-modal-title" {...props} />,
+};
 
+// El aviso de privacidad vive en dos archivos Markdown (src/content/
+// aviso-de-privacidad.md y .en.md) -- este modal solo elige cuál mostrar
+// según el idioma activo (el mismo `language` de LanguageContext que usa
+// el resto del sitio) y lo renderiza con react-markdown. El texto en sí
+// no se toca aquí; para editarlo hay que editar esos archivos.
 export default function PrivacyModal({ open, onClose }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const dialogRef = useRef(null);
 
   useEffect(() => {
@@ -36,6 +49,11 @@ export default function PrivacyModal({ open, onClose }) {
 
   if (!open) return null;
 
+  // `language` ya es reactivo: si cambia mientras el modal está abierto,
+  // este componente se vuelve a renderizar con el markdown del otro
+  // idioma sin que haga falta cerrar y reabrir nada.
+  const content = language === "en" ? contentEn : contentEs;
+
   return (
     <div className="privacy-modal__backdrop" onMouseDown={onClose}>
       <div
@@ -51,37 +69,10 @@ export default function PrivacyModal({ open, onClose }) {
           <X size={18} strokeWidth={2} />
         </button>
 
-        <span className="eyebrow">{t("privacyModal.eyebrow")}</span>
-        <h3 id="privacy-modal-title">{t("privacyModal.title")}</h3>
-        <p className="privacy-modal__updated">{t("privacyModal.updated")}</p>
-
         <div className="privacy-modal__body">
-          <h4>{t("privacyModal.h1")}</h4>
-          <p>{withEmailLink(t("privacyModal.p1"))}</p>
-
-          <h4>{t("privacyModal.h2")}</h4>
-          <p>{t("privacyModal.p2")}</p>
-
-          <h4>{t("privacyModal.h3")}</h4>
-          <p>{t("privacyModal.p3")}</p>
-          <ul>
-            <li>{t("privacyModal.li1")}</li>
-            <li>{t("privacyModal.li2")}</li>
-            <li>{t("privacyModal.li3")}</li>
-          </ul>
-          <p>{t("privacyModal.p4")}</p>
-
-          <h4>{t("privacyModal.h5")}</h4>
-          <p>{t("privacyModal.p5")}</p>
-
-          <h4>{t("privacyModal.h6")}</h4>
-          <p>{t("privacyModal.p6")}</p>
-
-          <h4>{t("privacyModal.h7")}</h4>
-          <p>{withEmailLink(t("privacyModal.p7"))}</p>
-
-          <h4>{t("privacyModal.h8")}</h4>
-          <p>{t("privacyModal.p8")}</p>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {content}
+          </ReactMarkdown>
         </div>
       </div>
     </div>

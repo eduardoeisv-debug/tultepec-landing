@@ -6,12 +6,16 @@ import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import RelatosModal from "./components/shared/RelatosModal.jsx";
-import PrivacyModal from "./components/shared/PrivacyModal.jsx";
 import ClickFireworks from "./components/shared/ClickFireworks.jsx";
 import useHashScrollFix from "./hooks/useHashScrollFix.js";
 import { useLanguage } from "./i18n/LanguageContext.jsx";
 
 const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal.jsx"));
+// El aviso de privacidad tira de react-markdown (y su cadena de
+// remark/unified) solo para renderizar dos archivos .md -- son ~50kB
+// gzip que la mayoría de quienes visitan el sitio nunca necesitan, así
+// que también se carga bajo demanda en vez de ir en el bundle principal.
+const PrivacyModal = lazy(() => import("./components/shared/PrivacyModal.jsx"));
 
 // El formulario de "Comparte tu memoria" se carga bajo demanda (lazy) para
 // no engordar el bundle principal. Sin un fallback visible, una conexión
@@ -54,11 +58,16 @@ export default function App() {
       <Footer onOpenPrivacy={openPrivacy} />
 
       <RelatosModal open={booksModalOpen} onClose={() => setBooksModalOpen(false)} triggerRef={booksTriggerRef} />
-      <PrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} />
 
       {shareModalOpen && (
         <Suspense fallback={<ModalLoading />}>
           <ShareMemoryModal open={shareModalOpen} onClose={() => setShareModalOpen(false)} onOpenPrivacy={openPrivacy} />
+        </Suspense>
+      )}
+
+      {privacyModalOpen && (
+        <Suspense fallback={<ModalLoading />}>
+          <PrivacyModal open={privacyModalOpen} onClose={() => setPrivacyModalOpen(false)} />
         </Suspense>
       )}
 

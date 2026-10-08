@@ -279,61 +279,6 @@ export const STRINGS = {
   "shareMemoryModal.enviarMemoria": { es: "Enviar mi memoria", en: "Send my memory" },
   "shareMemoryModal.enviarOtra": { es: "Enviar otra memoria", en: "Share another memory" },
 
-  "privacyModal.eyebrow": { es: "Aviso de privacidad", en: "Privacy notice" },
-  "privacyModal.title": { es: "Cómo tratamos tus datos", en: "How we handle your data" },
-  "privacyModal.updated": { es: "Última actualización: septiembre de 2026.", en: "Last updated: September 2026." },
-  "privacyModal.h1": { es: "¿Quién es responsable de tus datos?", en: "Who is responsible for your data?" },
-  "privacyModal.p1": {
-    es: 'Este sitio es un proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno ni organización oficial. Los responsables del tratamiento de los datos recabados a través de este sitio son Addair del Rosario Torices Vargas y Eduardo Israel Sánchez Villaseñor, y pueden ser contactados en {email}.',
-    en: "This site is an independent cultural project, made as a portfolio piece. It does not represent any government institution or official organization. Those responsible for processing the data collected through this site are Addair del Rosario Torices Vargas and Eduardo Israel Sánchez Villaseñor, who can be reached at {email}.",
-  },
-  "privacyModal.h2": { es: "¿De dónde viene el contenido histórico?", en: "Where does the historical content come from?" },
-  "privacyModal.p2": {
-    es: "La historia, las memorias familiares y los testimonios que dan vida a este archivo provienen del conocimiento y los recuerdos compartidos por la Profesora Juana Antonieta Zuñiga Urban y el Profesor Fernando Manuel Torices Ramírez, a quienes pertenece esa historia. Addair del Rosario Torices Vargas y Eduardo Israel Sánchez Villaseñor son responsables únicamente de la creación, operación de este sitio web y del tratamiento de los datos personales descrito en este aviso.",
-    en: "The history, family memories, and testimonials that give life to this archive come from the knowledge and memories shared by Professor Juana Antonieta Zuñiga Urban and Professor Fernando Manuel Torices Ramírez, to whom that history belongs. Addair del Rosario Torices Vargas and Eduardo Israel Sánchez Villaseñor are responsible only for the creation and operation of this website and for the handling of personal data described in this notice.",
-  },
-  "privacyModal.h3": { es: "¿Qué datos recabamos y para qué?", en: "What data do we collect, and why?" },
-  "privacyModal.p3": {
-    es: 'Al usar la función "Comparte tu memoria" puedes proporcionar, de forma voluntaria:',
-    en: 'By using the "Share your memory" feature, you may voluntarily provide:',
-  },
-  "privacyModal.li1": {
-    es: "Tu nombre (opcional; puedes dejarlo en blanco y compartir de forma anónima).",
-    en: "Your name (optional; you can leave it blank and share anonymously).",
-  },
-  "privacyModal.li2": {
-    es: "Tu relación con Tultepec y el texto de tu memoria.",
-    en: "Your connection to Tultepec and the text of your memory.",
-  },
-  "privacyModal.li3": {
-    es: "Tu correo electrónico (opcional, solo para contactarte sobre tu envío; nunca se muestra públicamente).",
-    en: "Your email address (optional, only to contact you about your submission; never shown publicly).",
-  },
-  "privacyModal.p4": {
-    es: "Estos datos se usan únicamente para revisar tu memoria antes de decidir si se publica en el archivo del sitio, y para contactarte si dejaste tu correo y es necesario. No se venden ni se comparten con terceros con fines comerciales.",
-    en: "This data is used only to review your memory before deciding whether to publish it in the site's archive, and to contact you if you left your email and it's necessary. It is never sold or shared with third parties for commercial purposes.",
-  },
-  "privacyModal.h5": { es: "Verificación anti-spam y analítica", en: "Anti-spam verification and analytics" },
-  "privacyModal.p5": {
-    es: "Para evitar envíos automatizados (bots), este formulario usa Cloudflare Turnstile, que procesa información técnica del navegador (no datos personales identificables) para verificar que quien envía es una persona. Este sitio también puede usar analítica web agregada y anónima para entender cuántas personas lo visitan, sin identificarte individualmente.",
-    en: "To prevent automated (bot) submissions, this form uses Cloudflare Turnstile, which processes technical browser information (not personally identifiable data) to verify that a human is submitting it. This site may also use aggregated, anonymous web analytics to understand how many people visit it, without identifying you individually.",
-  },
-  "privacyModal.h6": { es: "¿Dónde se almacenan tus datos?", en: "Where is your data stored?" },
-  "privacyModal.p6": {
-    es: "Las memorias enviadas se guardan en una base de datos gestionada por Supabase. El acceso está restringido y cada envío pasa por una revisión manual antes de poder mostrarse públicamente.",
-    en: "Submitted memories are stored in a database managed by Supabase. Access is restricted, and every submission goes through a manual review before it can be shown publicly.",
-  },
-  "privacyModal.h7": { es: "Tus derechos (ARCO)", en: "Your rights (ARCO)" },
-  "privacyModal.p7": {
-    es: "Puedes solicitar en cualquier momento el Acceso, Rectificación, Cancelación u Oposición al tratamiento de los datos que nos hayas compartido, incluyendo pedir que se elimine una memoria ya enviada. Para ejercer cualquiera de estos derechos, escribe a {email}.",
-    en: "You can request Access, Rectification, Cancellation, or Opposition (ARCO) to the processing of the data you've shared with us at any time, including asking for a submitted memory to be deleted. To exercise any of these rights, write to {email}.",
-  },
-  "privacyModal.h8": { es: "Cambios a este aviso", en: "Changes to this notice" },
-  "privacyModal.p8": {
-    es: "Este aviso puede actualizarse conforme el sitio evolucione. La fecha de la versión vigente siempre aparece al inicio de este texto.",
-    en: "This notice may be updated as the site evolves. The date of the current version always appears at the top of this text.",
-  },
-
   "galeria.title": { es: "Galería", en: "Gallery" },
   "galeria.subtitle": {
     es: "Fotos y videos de las tradiciones del pueblo",

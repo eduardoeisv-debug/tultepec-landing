@@ -24,17 +24,6 @@
   outline: none;
 }
 
-.privacy-modal h3 {
-  font-size: 1.5rem;
-  margin-top: 0.5rem;
-}
-
-.privacy-modal__updated {
-  margin-top: 0.4rem;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
-
 .privacy-modal__close {
   position: absolute;
   top: 1rem;
@@ -56,30 +45,73 @@
   background: rgba(42, 28, 18, 0.16);
 }
 
+/* El contenido completo viene del markdown (src/content/aviso-de-
+   privacidad[.en].md): el h1 hace de título, el primer párrafo en
+   negritas de subtítulo y el siguiente en cursiva de fecha -- mismas
+   tipografías que el resto del sitio, sin reinventar un estilo nuevo. */
 .privacy-modal__body {
-  margin-top: 1.4rem;
   font-size: 0.92rem;
   line-height: 1.65;
   color: var(--text-muted);
 }
 
-.privacy-modal__body h4 {
+.privacy-modal__body h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin: 0 0 0.3rem;
+}
+
+.privacy-modal__body h2 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.02rem;
   color: var(--text-primary);
-  margin-top: 1.4rem;
+  margin-top: 1.6rem;
   margin-bottom: 0.4rem;
 }
 
-.privacy-modal__body h4:first-child {
+.privacy-modal__body p {
+  margin: 0.6rem 0;
+}
+
+/* Primer párrafo del markdown ("**Cómo tratamos tus datos
+   personales**"): un solo <strong> como único hijo -- subtítulo. */
+.privacy-modal__body > p:first-of-type {
+  font-weight: 600;
+  color: var(--text-primary);
   margin-top: 0;
 }
 
-.privacy-modal__body ul {
+/* Segundo párrafo ("*Última actualización...*"): un solo <em>. */
+.privacy-modal__body p:has(> em:only-child) {
+  font-size: 0.78rem;
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+.privacy-modal__body strong {
+  color: var(--text-primary);
+}
+
+.privacy-modal__body hr {
+  border: none;
+  border-top: 1px solid rgba(42, 28, 18, 0.12);
+  margin: 1.4rem 0;
+}
+
+.privacy-modal__body ul,
+.privacy-modal__body ol {
   margin: 0.4rem 0 0.8rem;
   padding-left: 1.2rem;
+}
+
+.privacy-modal__body ul {
   list-style: disc;
+}
+
+.privacy-modal__body ol {
+  list-style: decimal;
 }
 
 .privacy-modal__body li {
@@ -89,6 +121,44 @@
 .privacy-modal__body a {
   color: var(--color-terracotta);
   font-weight: 600;
+}
+
+/* Tabla de la sección 3 -- en celular no cabe a lo ancho, así que el
+   contenedor scrollea horizontal en vez de desbordar el modal. */
+.privacy-modal__table-wrap {
+  margin: 0.8rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(42, 28, 18, 0.12);
+  border-radius: var(--radius-md);
+}
+
+.privacy-modal__body table {
+  width: 100%;
+  min-width: 460px;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.privacy-modal__body th,
+.privacy-modal__body td {
+  padding: 0.55rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(42, 28, 18, 0.1);
+  vertical-align: top;
+}
+
+.privacy-modal__body thead th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(42, 28, 18, 0.04);
+  white-space: nowrap;
+}
+
+.privacy-modal__body tbody tr:last-child th,
+.privacy-modal__body tbody tr:last-child td {
+  border-bottom: none;
 }
 
 @media (max-width: 520px) {
