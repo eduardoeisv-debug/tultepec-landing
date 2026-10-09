@@ -35,3 +35,13 @@ dist-ssr
 
 # Supabase CLI local cache
 supabase/.temp
+
+# Generado por scripts/build-memorias.mjs a partir de
+# Documentos/Memorias_Libros.docx en cada build/dev (ver "prebuild"/
+# "predev" en package.json) -- no se commitea, siempre se regenera.
+src/data/memorias.json
+
+# Archivos temporales de Word (se crean mientras un .docx está abierto),
+# nunca se deben commitear.
+Documentos/~$*
+Documentos/~WRL*.tmp

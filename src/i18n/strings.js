@@ -144,9 +144,10 @@ export const STRINGS = {
   "memoriesModal.tabs.voces": { es: "Voces", en: "Voices" },
   "memoriesModal.tabs.comparte": { es: "Comparte", en: "Share" },
   "memoriesModal.filtroAriaLabel": { es: "Filtrar por libro", en: "Filter by book" },
+  "memoriesModal.libroBtn": { es: "Libro {n}", en: "Book {n}" },
   "memoriesModal.notaIdioma": {
-    es: "Fragmentos tomados de libros publicados en español.",
-    en: "Fragments translated from books originally published in Spanish.",
+    es: "Textos originales en español.",
+    en: "Original texts in Spanish.",
   },
   "memoriesModal.creditoAutorizacion": {
     es: "Textos publicados con autorización de sus autores.",

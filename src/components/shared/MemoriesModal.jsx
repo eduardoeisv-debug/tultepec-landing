@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { X, BookOpen, MessageSquareText, PenLine } from "lucide-react";
-import { LIBRO_FILTROS, MEMORIAS } from "../../data/memorias.js";
+import MEMORIAS from "../../data/memorias.json";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
@@ -12,6 +12,16 @@ import "./SegmentedTabs.css";
 import "./MemoriesModal.css";
 
 const CLOSE_ANIM_MS = 220;
+
+// src/data/memorias.json lo genera scripts/build-memorias.mjs a partir de
+// Documentos/Memorias_Libros.docx (ver "prebuild"/"predev" en
+// package.json) -- siempre son exactamente 3 libros con 2 memorias cada
+// uno, validado por el propio script al compilar.
+const LIBROS = [1, 2, 3];
+
+// Un fragmento "largo" se recorta a un resumen con "Leer más"; uno corto
+// se muestra completo de entrada, sin botón (no tendría nada que hacer).
+const LONG_FRAGMENT_THRESHOLD = 350;
 
 function prefersReducedMotion() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -31,24 +41,19 @@ function tabFromHash() {
 // (ShareMemoryForm.jsx). Mismo lenguaje visual y mismo componente de
 // pestañas (SegmentedTabs) que RelatosModal/GaleriaOverlay.
 export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy }) {
-  const { t, pick, language } = useLanguage();
+  const { t, language } = useLanguage();
   const [tab, setTab] = useState("memorias");
   const [closing, setClosing] = useState(false);
-  const [libroFiltro, setLibroFiltro] = useState("tomo-1");
+  const [libroFiltro, setLibroFiltro] = useState(1);
   const [expanded, setExpanded] = useState({});
   const [filtroIndex, setFiltroIndex] = useState(0);
-  const [fragmentoIndex, setFragmentoIndex] = useState(0);
   const dialogRef = useRef(null);
   const bodyRef = useRef(null);
   const { register: registerFiltro, onKeyDown: filtroKeyDown } = useArrowNavigation({
-    count: LIBRO_FILTROS.length,
+    count: LIBROS.length,
     orientation: "horizontal",
   });
-  const fragmentos = MEMORIAS.filter((m) => m.libro === libroFiltro);
-  const { register: registerFragmento, onKeyDown: fragmentoKeyDown } = useArrowNavigation({
-    count: fragmentos.length,
-    orientation: "both",
-  });
+  const memoriasDelLibro = MEMORIAS.filter((m) => m.libro === libroFiltro);
 
   useFocusTrap(dialogRef, open);
 
@@ -118,14 +123,13 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
 
   if (!open) return null;
 
-  const toggleExpanded = (id) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
-
-  const libroLabel = (id) => LIBRO_FILTROS.find((f) => f.id === id);
+  // Clave por memoria + índice de fragmento: cada fragmento expande o
+  // contrae por separado (una memoria puede tener más de uno largo).
+  const toggleExpanded = (key) => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const changeFiltro = (index) => {
     setFiltroIndex(index);
-    setLibroFiltro(LIBRO_FILTROS[index].id);
-    setFragmentoIndex(0);
+    setLibroFiltro(LIBROS[index]);
   };
 
   return (
@@ -173,45 +177,55 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
                 aria-label={t("memoriesModal.filtroAriaLabel")}
                 onKeyDown={filtroKeyDown(filtroIndex, changeFiltro)}
               >
-                {LIBRO_FILTROS.map((f, i) => (
+                {LIBROS.map((n, i) => (
                   <button
-                    key={f.id}
+                    key={n}
                     type="button"
                     ref={registerFiltro(i)}
                     tabIndex={filtroIndex === i ? 0 : -1}
-                    className={`memorias-filtro ${libroFiltro === f.id ? "is-active" : ""}`}
-                    aria-pressed={libroFiltro === f.id}
+                    className={`memorias-filtro ${libroFiltro === n ? "is-active" : ""}`}
+                    aria-pressed={libroFiltro === n}
                     onClick={() => changeFiltro(i)}
                   >
-                    {pick(f.label)}
+                    {t("memoriesModal.libroBtn", { n })}
                   </button>
                 ))}
               </div>
 
-              <div className="memorias-grid" onKeyDown={fragmentoKeyDown(fragmentoIndex, setFragmentoIndex)}>
-                {fragmentos.map((m, i) => {
-                  const isOpen = Boolean(expanded[m.id]);
-                  return (
-                    <article className="memoria-card" key={m.id}>
-                      {m.titulo && <h4>{pick(m.titulo)}</h4>}
-                      <p className={`memoria-card__texto ${isOpen ? "is-expanded" : ""}`}>{pick(m.texto)}</p>
-                      <button
-                        type="button"
-                        ref={registerFragmento(i)}
-                        tabIndex={fragmentoIndex === i ? 0 : -1}
-                        className="memoria-card__more"
-                        onClick={() => toggleExpanded(m.id)}
-                        aria-expanded={isOpen}
-                      >
-                        {isOpen ? t("hi.timeline.leerMenos") : t("hi.timeline.leerMas")}
-                      </button>
-                      <footer className="memoria-card__meta">
-                        <span className="memoria-card__autor">{m.autor}</span>
-                        <span className="memoria-card__libro">{pick(libroLabel(m.libro)?.label)}</span>
-                      </footer>
-                    </article>
-                  );
-                })}
+              <div className="memorias-grid">
+                {memoriasDelLibro.map((m) => (
+                  <article className="memoria-card" key={m.id}>
+                    <span className="memoria-card__etiqueta">{m.etiqueta}</span>
+                    <h3 className="memoria-card__titulo">{m.titulo}</h3>
+                    {m.subtitulo && <p className="memoria-card__subtitulo">{m.subtitulo}</p>}
+                    <p className="memoria-card__autor">
+                      {m.autor}
+                      {m.autorNota && <span className="memoria-card__autor-nota"> · {m.autorNota}</span>}
+                    </p>
+
+                    {m.fragmentos.map((f, i) => {
+                      const key = `${m.id}-${i}`;
+                      const isLong = f.texto.length > LONG_FRAGMENT_THRESHOLD;
+                      const isOpen = Boolean(expanded[key]);
+                      return (
+                        <div className="memoria-card__fragmento" key={key}>
+                          {f.subtitulo && <h4 className="memoria-card__frag-subtitulo">{f.subtitulo}</h4>}
+                          <p className={`memoria-card__texto ${isLong && !isOpen ? "is-clamped" : ""}`}>{f.texto}</p>
+                          {isLong && (
+                            <button
+                              type="button"
+                              className="memoria-card__more"
+                              onClick={() => toggleExpanded(key)}
+                              aria-expanded={isOpen}
+                            >
+                              {isOpen ? t("hi.timeline.leerMenos") : t("hi.timeline.leerMas")}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </article>
+                ))}
               </div>
 
               <p className="memories-overlay__credit">{t("memoriesModal.creditoAutorizacion")}</p>
