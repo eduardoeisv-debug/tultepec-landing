@@ -18,6 +18,7 @@ const CLOSE_ANIM_MS = 220;
 // package.json) -- siempre son exactamente 3 libros con 2 memorias cada
 // uno, validado por el propio script al compilar.
 const LIBROS = [1, 2, 3];
+const LIBRO_ROMANO = { 1: "I", 2: "II", 3: "III" };
 
 // Un fragmento "largo" se recorta a un resumen con "Leer más"; uno corto
 // se muestra completo de entrada, sin botón (no tendría nada que hacer).
@@ -187,7 +188,7 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
                     aria-pressed={libroFiltro === n}
                     onClick={() => changeFiltro(i)}
                   >
-                    {t("memoriesModal.libroBtn", { n })}
+                    {t("memoriesModal.libroBtn", { n: LIBRO_ROMANO[n] })}
                   </button>
                 ))}
               </div>
