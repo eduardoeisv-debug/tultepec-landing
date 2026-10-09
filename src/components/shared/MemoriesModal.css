@@ -239,17 +239,21 @@
   padding: 1.4rem 1.5rem;
 }
 
-.memoria-card__etiqueta {
-  align-self: flex-start;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-night-950);
-  background: rgba(227, 171, 61, 0.7);
-  padding: 0.15rem 0.6rem;
-  border-radius: 999px;
+.memoria-card__meta-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
   margin-bottom: 0.7rem;
+}
+
+.memoria-card__genero,
+.memoria-card__fragmentos-label {
+  font-size: 0.78rem;
+  color: rgba(251, 241, 226, 0.5);
+}
+
+.memoria-card__fragmentos-label {
+  font-weight: 600;
 }
 
 .memoria-card__titulo {

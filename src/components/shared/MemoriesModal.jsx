@@ -195,7 +195,10 @@ export default function MemoriesModal({ open, onClose, triggerRef, onOpenPrivacy
               <div className="memorias-grid">
                 {memoriasDelLibro.map((m) => (
                   <article className="memoria-card" key={m.id}>
-                    <span className="memoria-card__etiqueta">{m.etiqueta}</span>
+                    <div className="memoria-card__meta-top">
+                      <span className="memoria-card__genero">{m.genero}</span>
+                      <span className="memoria-card__fragmentos-label">Fragmentos:</span>
+                    </div>
                     <h3 className="memoria-card__titulo">{m.titulo}</h3>
                     {m.subtitulo && <p className="memoria-card__subtitulo">{m.subtitulo}</p>}
                     <p className="memoria-card__autor">
