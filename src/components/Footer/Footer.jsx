@@ -24,7 +24,6 @@ export default function Footer({ onOpenPrivacy }) {
 
         <div className="footer__meta">
           <p>{t("footer.disclaimer")}</p>
-          <p>{t("footer.sources")}</p>
         </div>
       </div>
       <div className="container footer__signature">

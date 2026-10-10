@@ -51,10 +51,6 @@ export const STRINGS = {
     es: "Proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno, gremio pirotécnico ni organizador oficial de la Feria Nacional de la Pirotecnia.",
     en: "Independent cultural project, made as a portfolio piece. It does not represent any government institution, pyrotechnic guild, or official organizer of the Feria Nacional de la Pirotecnia.",
   },
-  "footer.sources": {
-    es: "Datos históricos generales (fiesta de San Juan de Dios, origen de la Feria Nacional de la Pirotecnia) tomados de fuentes públicas de divulgación histórica y turística.",
-    en: "General historical data (the San Juan de Dios feast day, the origin of the Feria Nacional de la Pirotecnia) drawn from public historical and tourism sources.",
-  },
   "footer.sealAlt": {
     es: "Sello EA — Dos mentes, una visión. Creamos el futuro.",
     en: "EA Seal — Two minds, one vision. We create the future.",
