@@ -11,7 +11,7 @@ const currentMonth = new Date().getMonth() + 1;
 // muestra su lista de eventos debajo. Datos en src/data/fiestas.js.
 // Abre de entrada en el mes en curso (tenga o no eventos confirmados),
 // no en el primer mes con eventos del arreglo.
-export default function FiestasStrip() {
+export default function FiestasStrip({ children }) {
   const { t, pick } = useLanguage();
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const active = fiestas.find((m) => m.mes === selectedMonth);
@@ -25,6 +25,17 @@ export default function FiestasStrip() {
   });
 
   const selectMonth = (index) => setSelectedMonth(fiestas[index].mes);
+
+  // Un clic en cualquier parte del marco (fuera de los botones de mes,
+  // que ya enfocan por su cuenta al hacer clic) manda el foco al mes
+  // activo, así las flechas quedan listas de inmediato sin tener que
+  // acertarle al botón exacto. Llegar aquí con Tab ya funcionaba antes:
+  // el botón del mes activo es el único con tabIndex 0 del grupo
+  // (roving tabindex), así que el foco natural ya cae ahí.
+  const handleFrameClick = (e) => {
+    if (e.target.closest(".fiestas-strip__month")) return;
+    monthRefs.current[selectedIndex]?.focus();
+  };
 
   useEffect(() => {
     // Centra el mes seleccionado (al cargar, al hacer clic o al navegar
@@ -55,54 +66,57 @@ export default function FiestasStrip() {
   }, [selectedMonth]);
 
   return (
-    <div className="fiestas-strip">
-      <div className="fiestas-strip__months-wrap">
-        <div
-          className="fiestas-strip__months"
-          role="tablist"
-          aria-label={t("fiestasStrip.mesesAriaLabel")}
-          ref={trackRef}
-          onKeyDown={monthKeyDown(selectedIndex, selectMonth)}
-        >
-          {fiestas.map((m, i) => {
-            const hasEvents = m.eventos.length > 0;
-            const isSelected = m.mes === selectedMonth;
-            return (
-              <button
-                key={m.mes}
-                type="button"
-                role="tab"
-                aria-selected={isSelected}
-                tabIndex={isSelected ? 0 : -1}
-                ref={registerMonth(i)}
-                className={`fiestas-strip__month${hasEvents ? " has-events" : ""}${
-                  isSelected ? " is-selected" : ""
-                }`}
-                onClick={() => selectMonth(i)}
-              >
-                {pick(m.mesNombre)}
-              </button>
-            );
-          })}
+    <div className="visit-info__calendar-frame" onClick={handleFrameClick}>
+      {children}
+      <div className="fiestas-strip">
+        <div className="fiestas-strip__months-wrap">
+          <div
+            className="fiestas-strip__months"
+            role="tablist"
+            aria-label={t("fiestasStrip.mesesAriaLabel")}
+            ref={trackRef}
+            onKeyDown={monthKeyDown(selectedIndex, selectMonth)}
+          >
+            {fiestas.map((m, i) => {
+              const hasEvents = m.eventos.length > 0;
+              const isSelected = m.mes === selectedMonth;
+              return (
+                <button
+                  key={m.mes}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  tabIndex={isSelected ? 0 : -1}
+                  ref={registerMonth(i)}
+                  className={`fiestas-strip__month${hasEvents ? " has-events" : ""}${
+                    isSelected ? " is-selected" : ""
+                  }`}
+                  onClick={() => selectMonth(i)}
+                >
+                  {pick(m.mesNombre)}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      <div className="fiestas-strip__events" role="tabpanel">
-        {active.eventos.length === 0 ? (
-          <p className="fiestas-strip__empty">
-            {t("fiestasStrip.sinEventos", { mes: pick(active.mesNombre).toLowerCase() })}
-          </p>
-        ) : (
-          <ul className="fiestas-strip__list">
-            {active.eventos.map((ev) => (
-              <li className="fiestas-strip__event" key={ev.nombre.es}>
-                <span className="fiestas-strip__event-name">{pick(ev.nombre)}</span>
-                {ev.fecha && <span className="fiestas-strip__event-date">{pick(ev.fecha)}</span>}
-                {ev.descripcion && <span className="fiestas-strip__event-desc">{pick(ev.descripcion)}</span>}
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="fiestas-strip__events" role="tabpanel">
+          {active.eventos.length === 0 ? (
+            <p className="fiestas-strip__empty">
+              {t("fiestasStrip.sinEventos", { mes: pick(active.mesNombre).toLowerCase() })}
+            </p>
+          ) : (
+            <ul className="fiestas-strip__list">
+              {active.eventos.map((ev) => (
+                <li className="fiestas-strip__event" key={ev.nombre.es}>
+                  <span className="fiestas-strip__event-name">{pick(ev.nombre)}</span>
+                  {ev.fecha && <span className="fiestas-strip__event-date">{pick(ev.fecha)}</span>}
+                  {ev.descripcion && <span className="fiestas-strip__event-desc">{pick(ev.descripcion)}</span>}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );
