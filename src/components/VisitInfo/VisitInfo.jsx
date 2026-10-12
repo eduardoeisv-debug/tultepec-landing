@@ -25,13 +25,15 @@ export default function VisitInfo() {
         </div>
 
         <div className="visit-info__block">
-          <div className="visit-info__block-head">
-            <span className="visit-info__block-icon" aria-hidden="true">
-              <CalendarDays size={20} strokeWidth={1.8} />
-            </span>
-            <h3>{t("visitInfo.monthsSubtitle")}</h3>
+          <div className="visit-info__calendar-frame">
+            <div className="visit-info__block-head">
+              <span className="visit-info__block-icon" aria-hidden="true">
+                <CalendarDays size={20} strokeWidth={1.8} />
+              </span>
+              <h3>{t("visitInfo.monthsSubtitle")}</h3>
+            </div>
+            <FiestasStrip />
           </div>
-          <FiestasStrip />
         </div>
 
         <div className="visit-info__block">

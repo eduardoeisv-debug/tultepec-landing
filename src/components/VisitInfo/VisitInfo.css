@@ -93,3 +93,23 @@
   background: rgba(193, 89, 47, 0.18);
   color: var(--color-terracotta);
 }
+
+/* Enmarca el calendario (meses + eventos) como una tarjeta propia, para
+   que se distinga del resto de la sección en vez de flotar suelto sobre
+   el fondo. */
+.visit-info__calendar-frame {
+  padding: 1.4rem 1.5rem 1.6rem;
+  border: 1px solid rgba(251, 241, 226, 0.14);
+  border-radius: var(--radius-md);
+  background: rgba(251, 241, 226, 0.04);
+}
+
+.visit-info__calendar-frame .visit-info__block-head {
+  margin-bottom: var(--space-sm);
+}
+
+@media (max-width: 640px) {
+  .visit-info__calendar-frame {
+    padding: 1.1rem 1.1rem 1.3rem;
+  }
+}
