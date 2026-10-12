@@ -15,18 +15,13 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 240px;
-  /* Continúa el mismo degradado con el que termina el hero (ver
-     Hero.css): dorado -> ember -> magenta -> morado -> azul noche, para
-     que la transición sea continua y no un corte. */
-  background: linear-gradient(
-    180deg,
-    #e3ab3d 0%,
-    #c1592f 24%,
-    #7a2166 48%,
-    #3a1368 74%,
-    var(--color-night-900) 100%
-  );
+  height: 140px;
+  /* Continúa el degradado con el que termina la sección "Bienvenida"
+     (ver Bienvenida.css): morado oscuro -> azul noche, para que la
+     transición sea continua y no un corte. Antes repetía todo el tramo
+     dorado->ember->magenta->morado del hero, porque esta sección venía
+     justo después de él; ahora Bienvenida ya hizo ese tramo completo. */
+  background: linear-gradient(180deg, #3a1368 0%, var(--color-night-900) 100%);
   pointer-events: none;
 }
 

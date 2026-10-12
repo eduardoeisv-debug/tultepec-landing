@@ -10,15 +10,18 @@ export const STRINGS = {
 
   "header.subtitle": { es: "Estado de México", en: "State of Mexico" },
 
+  "hero.bienvenidosEyebrow": { es: "Bienvenidos a Tultepec", en: "Welcome to Tultepec" },
   "hero.title.line1": { es: "Tultepec Capital de la", en: "Tultepec Capital of" },
   "hero.title.line2": { es: "Pirotecnia", en: "Fireworks" },
   "hero.subtitle": {
-    es: "Lugar donde el fuego se convierte en arte: entre papel, carrizo, madera, hilo y pólvora se crean espectaculares castillos, toros monumentales, luces de bengala, cohetes y muchos productos más.",
-    en: "A place where fire becomes art: with paper, reed, wood, thread and gunpowder, artisans create spectacular castillos, monumental toros, sparklers, firecrackers and many other products.",
+    es: "Este es un espacio para guardar y compartir las memorias de nuestro pueblo: su historia, su gente, sus fiestas y el oficio que convierte el fuego en arte.",
+    en: "This is a space to keep and share the memories of our town: its history, its people, its festivities, and the craft that turns fire into art.",
   },
   "hero.verVideo": { es: "Ver video", en: "Watch video" },
-  "hero.dalePlay": { es: "Dale play", en: "Press play" },
+  "hero.verBienvenida": { es: "Ver bienvenida", en: "Watch welcome" },
+  "hero.videoCaption": { es: "Un recorrido por el pueblo en 1:28", en: "A tour of the town in 1:28" },
   "hero.scrollCue": { es: "¿Cuándo vienes?", en: "When are you coming?" },
+  "hero.scrollCueHistoria": { es: "Conoce nuestra historia", en: "Discover our history" },
 
   "hero.card.history.title": { es: "Explora la historia", en: "Explore the history" },
   "hero.card.history.caption": { es: "Momentos y tradiciones", en: "Moments and traditions" },
@@ -96,6 +99,33 @@ export const STRINGS = {
   "testimonials.next": { es: "Testimonio siguiente", en: "Next testimonial" },
   "testimonials.verTestimonio": { es: "Ver testimonio {n}", en: "View testimonial {n}" },
 
+  "bienvenida.eyebrow": { es: "Mensaje de bienvenida", en: "Welcome message" },
+  "bienvenida.title": { es: "Una casa para nuestras memorias", en: "A home for our memories" },
+  "bienvenida.subtitle": {
+    es: "Por qué existe esta página, contado por quienes la hacemos.",
+    en: "Why this page exists, told by those who made it.",
+  },
+  "bienvenida.carta.p1": {
+    es: "Tultepec es conocido por su pirotecnia, pero detrás de cada castillo y cada torito hay familias, recuerdos y tradiciones que han pasado de generación en generación.",
+    en: "Tultepec is known for its fireworks, but behind every castillo and every torito there are families, memories and traditions passed down from generation to generation.",
+  },
+  "bienvenida.carta.p2": {
+    es: "Creamos este sitio para que esas memorias no se pierdan. Aquí encontrarás relatos de nuestra gente, la historia del pueblo, las fiestas que celebramos a lo largo del año y las imágenes que lo cuentan mejor que cualquier palabra.",
+    en: "We created this site so those memories don't get lost. Here you'll find stories from our people, the town's history, the festivities we celebrate throughout the year, and the images that tell it better than any words.",
+  },
+  "bienvenida.carta.p3": {
+    es: "Si eres de aquí, esperamos que te reconozcas en estas páginas. Si nos visitas por primera vez, bienvenido: esta también es tu casa.",
+    en: "If you're from here, we hope you recognize yourself in these pages. If this is your first visit, welcome: this is your home too.",
+  },
+  "bienvenida.firma.despedida": { es: "Con cariño,", en: "With love," },
+  "bienvenida.firma.nombres": { es: "[Sus nombres]", en: "[Their names]" },
+  "bienvenida.cta.pregunta": {
+    es: "¿Tienes una historia o una foto de Tultepec?",
+    en: "Do you have a story or a photo of Tultepec?",
+  },
+  "bienvenida.cta.compartir": { es: "Comparte tu historia", en: "Share your story" },
+  "bienvenida.cta.leeMemorias": { es: "Lee las memorias del pueblo", en: "Read the town's memories" },
+
   "visitInfo.eyebrow": { es: "Planea tu visita", en: "Plan your visit" },
   "visitInfo.title": { es: "¿Cuándo vienes y cómo llegas?", en: "When should you come, and how do you get here?" },
   "visitInfo.calendarLabel": { es: "Calendario de eventos", en: "Events calendar" },
@@ -116,8 +146,8 @@ export const STRINGS = {
 
   "fiestasStrip.mesesAriaLabel": { es: "Meses del año", en: "Months of the year" },
   "fiestasStrip.sinEventos": {
-    es: "Aún no hay eventos confirmados para {mes}.",
-    en: "There are no confirmed events for {mes} yet.",
+    es: "Este mes puedes visitar los talleres y el mercado de cohetes.",
+    en: "This month you can visit the workshops and the fireworks market.",
   },
 
   "shareButtons.label": { es: "Comparte esta página", en: "Share this page" },

@@ -8,22 +8,38 @@
 // cuando está vacía, así que nunca se muestra texto de relleno en la UI.
 //
 // TODO (datos pendientes de confirmar con el pueblo, no inventar):
+// - Niño Jesús de las Palomitas: día exacto de enero y descripción del
+//   festejo local.
+// - Día de la Virgen de la Candelaria: descripción del festejo local.
 // - Semana Santa: fecha exacta del año (es movible; aquí solo se indica
 //   que cae en marzo o abril). La descripción es genérica (celebración
 //   religiosa nacional) -- falta el detalle de cómo se festeja en
 //   Tultepec específicamente.
 // - Natividad de María (8 de septiembre): descripción del festejo local.
-// - Día de Muertos (1-2 de noviembre, fecha nacional): descripción del
+// - Día de Muertos y recorrido de farolitos (1 de noviembre): descripción
+//   del festejo local.
+// - Santa Cecilia (22 de noviembre): descripción del festejo local.
+// - Navidad, procesión y tapetes (24 de diciembre): descripción del
 //   festejo local.
-// - Santa Cecilia: fecha exacta y descripción -- no hay dato alguno aún.
-// - Navidad (25 de diciembre, fecha nacional): descripción del festejo
-//   local.
-// - Enero, febrero, abril, mayo, junio, julio, agosto y octubre: sin
-//   ningún evento confirmado todavía.
+// - Abril, mayo, junio, julio, agosto y octubre: sin ningún evento
+//   confirmado todavía.
 
 const fiestas = [
-  { mes: 1, mesNombre: { es: "Enero", en: "January" }, eventos: [] },
-  { mes: 2, mesNombre: { es: "Febrero", en: "February" }, eventos: [] },
+  {
+    mes: 1,
+    mesNombre: { es: "Enero", en: "January" },
+    eventos: [{ nombre: { es: "Niño Jesús de las Palomitas", en: "Niño Jesús de las Palomitas" } }],
+  },
+  {
+    mes: 2,
+    mesNombre: { es: "Febrero", en: "February" },
+    eventos: [
+      {
+        nombre: { es: "Día de la Virgen de la Candelaria", en: "Feast of Our Lady of Candelaria" },
+        fecha: { es: "2 de febrero", en: "February 2" },
+      },
+    ],
+  },
   {
     mes: 3,
     mesNombre: { es: "Marzo", en: "March" },
@@ -67,10 +83,13 @@ const fiestas = [
     mesNombre: { es: "Noviembre", en: "November" },
     eventos: [
       {
-        nombre: { es: "Día de Muertos", en: "Day of the Dead" },
-        fecha: { es: "1 y 2 de noviembre (fecha nacional)", en: "November 1-2 (national date)" },
+        nombre: { es: "Día de Muertos y recorrido de farolitos", en: "Day of the Dead and lantern procession" },
+        fecha: { es: "1 de noviembre", en: "November 1" },
       },
-      { nombre: { es: "Santa Cecilia", en: "Santa Cecilia" } },
+      {
+        nombre: { es: "Santa Cecilia", en: "Santa Cecilia" },
+        fecha: { es: "22 de noviembre", en: "November 22" },
+      },
     ],
   },
   {
@@ -78,8 +97,8 @@ const fiestas = [
     mesNombre: { es: "Diciembre", en: "December" },
     eventos: [
       {
-        nombre: { es: "Navidad", en: "Christmas" },
-        fecha: { es: "25 de diciembre (fecha nacional)", en: "December 25 (national date)" },
+        nombre: { es: "Navidad, procesión y tapetes", en: "Christmas, procession and tapetes" },
+        fecha: { es: "24 de diciembre", en: "December 24" },
       },
     ],
   },

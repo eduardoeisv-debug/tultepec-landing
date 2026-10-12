@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, RotateCcw, Landmark } from "lucide-react";
+import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, RotateCcw, Landmark, Sparkles } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
-import TownSilhouette from "../shared/TownSilhouette.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
+import ScrollCue from "../shared/ScrollCue.jsx";
 import GaleriaOverlay from "../shared/GaleriaOverlay.jsx";
 import { GaleriaCardIcon } from "../shared/GaleriaIcons.jsx";
 import { preloadGaleriaImages } from "../../hooks/useGaleriaImages.js";
@@ -119,28 +119,25 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mobileVideoOpen]);
 
-  // Soporta enlaces directos a la galería: si la página se carga con
-  // #galeria/imagenes o #galeria/videos en la URL, la abre directamente
-  // (GaleriaOverlay lee el hash para elegir la pestaña inicial).
+  // Soporta enlaces directos a la galería (#galeria/imagenes,
+  // #galeria/videos) y a las pestañas de "Memorias de mi pueblo"
+  // (#memorias, #voces, #comparte-memoria) -- cada overlay lee el hash
+  // para elegir su pestaña inicial. Se revisa el hash tanto al montar
+  // (enlace directo a la página) como en cada "hashchange" posterior: la
+  // carta de bienvenida enlaza a "#comparte-memoria"/"#memorias" con
+  // anclas normales, y como ninguna de esas rutas tiene un elemento real
+  // con ese id en la página, solo cambian el hash (sin saltar a ningún
+  // lado) -- este listener es lo que realmente abre el modal en ese caso.
   useEffect(() => {
-    if (window.location.hash.startsWith("#galeria/")) {
-      setGaleriaOpen(true);
-    }
+    const syncFromHash = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith("#galeria/")) setGaleriaOpen(true);
+      if (hash === "#memorias" || hash === "#voces" || hash === "#comparte-memoria") setMemoriesOpen(true);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
-
-  // Mismo soporte de enlace directo para las pestañas de "Memorias de mi
-  // pueblo" (MemoriesModal lee el hash para elegir la pestaña inicial).
-  useEffect(() => {
-    if (window.location.hash === "#memorias" || window.location.hash === "#voces" || window.location.hash === "#comparte-memoria") {
-      setMemoriesOpen(true);
-    }
-  }, []);
-
-  // Reutilizado por la indicación de scroll al final del hero -- ya no hay
-  // ninguna tarjeta que lleve directo a "visita" (se quitó "Visítanos").
-  const scrollToVisita = () => {
-    document.getElementById("visita")?.scrollIntoView({ block: "start" });
-  };
 
   const listItems = [
     {
@@ -190,9 +187,12 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
       <HeroFireworks />
       <SparkField />
       <HeroPapelPicado />
-      <TownSilhouette />
       <div className="container hero__grid">
         <div className="hero__copy">
+          <p className="hero__welcome-line hero__enter hero__enter--1">
+            <Sparkles size={20} strokeWidth={1.8} aria-hidden="true" />
+            {t("hero.bienvenidosEyebrow")}
+          </p>
           <h1 className="hero__title hero__enter hero__enter--1">
             {t("hero.title.line1")} <span>{t("hero.title.line2")}</span>
           </h1>
@@ -299,25 +299,20 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
                 <span className="hero__video-play" aria-hidden="true">
                   <Play size={26} strokeWidth={0} fill="currentColor" />
                 </span>
-                <span className="hero__video-label">{t("hero.dalePlay")}</span>
+                <span className="hero__video-label-group">
+                  <span className="hero__video-label">{t("hero.verBienvenida")}</span>
+                  <span className="hero__video-caption">{t("hero.videoCaption")}</span>
+                </span>
               </button>
             )}
           </div>
         </div>
       </div>
 
-      <button type="button" className="hero__scroll-cue" onClick={scrollToVisita}>
-        <span className="hero__scroll-cue-label">{t("hero.scrollCue")}</span>
-        <svg
-          className="hero__scroll-cue-arrow"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path d="M12 4 L12 18 M6 12 L12 18 L18 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+      <ScrollCue
+        label={t("hero.scrollCueHistoria")}
+        onClick={() => document.getElementById("bienvenida")?.scrollIntoView({ block: "start" })}
+      />
 
       <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} triggerRef={historyTriggerRef} />
       <MemoriesModal

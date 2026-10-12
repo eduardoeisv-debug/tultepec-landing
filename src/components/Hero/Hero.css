@@ -16,7 +16,11 @@
       #e3ab3d 100%
     );
   color: var(--text-inverse);
-  padding: calc(var(--space-xl) + 1rem) 0 clamp(140px, 20vw, 210px);
+  /* La silueta del pueblo que antes vivía aquí (y pedía un padding-bottom
+     grande para no encimarse) ahora cierra la sección "Bienvenida" (ver
+     Bienvenida.css) -- este padding solo necesita dejarle aire al
+     ScrollCue de abajo. */
+  padding: calc(var(--space-xl) + 1rem) 0 var(--space-xl);
   overflow: hidden;
 }
 
@@ -111,6 +115,23 @@
 
 .eyebrow--light {
   color: var(--color-gold-light);
+}
+
+/* "Bienvenidos a Tultepec", arriba del título -- mismo dorado que el
+   title span, con un destello chico a la izquierda en vez de la rayita
+   de .eyebrow (que ya se usa en otras secciones con otro significado). */
+.hero__welcome-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-gold-light);
+}
+
+.hero__welcome-line svg {
+  flex-shrink: 0;
 }
 
 .hero__title {
@@ -398,25 +419,41 @@
     inset 0 -4px 8px rgba(154, 69, 35, 0.35);
 }
 
-.hero__video-label {
+/* Pastilla oscura semitransparente para que el texto se lea sobre
+   cualquier zona de la foto, en vez de mezclarse con ella -- ahora con
+   dos líneas (título + "Un recorrido por el pueblo en 1:28"), antes solo
+   llevaba una. */
+.hero__video-label-group {
   position: absolute;
   top: calc(44% + 62px);
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  white-space: nowrap;
+  background: rgba(10, 10, 30, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0.4rem 0.9rem 0.5rem;
+  border-radius: 16px;
+}
+
+.hero__video-label {
   font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-paper);
-  white-space: nowrap;
-  /* Pastilla oscura semitransparente para que el texto se lea sobre
-     cualquier zona de la foto, en vez de mezclarse con ella. */
-  background: rgba(10, 10, 30, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
+}
+
+.hero__video-caption {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(251, 241, 226, 0.75);
 }
 
 .hero__video-el {
@@ -771,78 +808,6 @@
   border-color: var(--color-gold-light);
 }
 
-/* Indicación de scroll al final del hero, encima de la silueta (que mide
-   clamp(90px, 16vw, 170px) de alto, pegada a bottom:0) -- el offset de
-   abajo deja ese alto más un margen, para nunca encimarse con la silueta
-   en ninguna pantalla. */
-.hero__scroll-cue {
-  /* En flujo normal (no absolute) a propósito: así siempre aparece
-     después de las tarjetas/video sin importar cuál sea más alto en
-     cada ancho (p.ej. a 768px el video stackeado debajo de las tarjetas
-     es más alto que ellas) -- nunca puede quedar encima de ningún
-     contenido. El padding-bottom del .hero ya reserva espacio para la
-     silueta debajo de este punto, así que tampoco se le encima a ella. */
-  position: relative;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  width: fit-content;
-  margin: clamp(1.8rem, 4vw, 2.6rem) auto 0;
-  background: none;
-  border: none;
-  padding: 0.4rem 0.9rem;
-  border-radius: 12px;
-  color: rgba(251, 241, 226, 0.85);
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.82rem;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  transition: color 0.2s var(--ease-out);
-}
-
-.hero__scroll-cue:hover,
-.hero__scroll-cue:focus-visible {
-  color: var(--color-gold-light);
-}
-
-.hero__scroll-cue:focus-visible {
-  outline: 2px solid var(--color-gold-light);
-  outline-offset: 2px;
-}
-
-.hero__scroll-cue-arrow {
-  width: 20px;
-  height: 20px;
-  color: var(--color-gold-light);
-  animation: hero-scroll-cue-bounce 1.8s ease-in-out infinite;
-}
-
-@keyframes hero-scroll-cue-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(5px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__scroll-cue-arrow {
-    animation: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .hero__scroll-cue {
-    font-size: 0.74rem;
-  }
-
-  .hero__scroll-cue-arrow {
-    width: 17px;
-    height: 17px;
-  }
-}
+/* La indicación de scroll al final del hero ahora es el componente
+   compartido <ScrollCue> (ver ScrollCue.jsx/.css) -- también usado al
+   final de la carta de bienvenida. */

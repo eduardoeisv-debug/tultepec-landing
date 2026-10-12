@@ -102,9 +102,7 @@ export default function FiestasStrip({ children }) {
 
         <div className="fiestas-strip__events" role="tabpanel">
           {active.eventos.length === 0 ? (
-            <p className="fiestas-strip__empty">
-              {t("fiestasStrip.sinEventos", { mes: pick(active.mesNombre).toLowerCase() })}
-            </p>
+            <p className="fiestas-strip__empty">{t("fiestasStrip.sinEventos")}</p>
           ) : (
             <ul className="fiestas-strip__list">
               {active.eventos.map((ev) => (

@@ -2,6 +2,7 @@ import { lazy, Suspense, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header/Header.jsx";
 import Hero from "./components/Hero/Hero.jsx";
+import Bienvenida from "./components/Bienvenida/Bienvenida.jsx";
 import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import Footer from "./components/Footer/Footer.jsx";
@@ -61,6 +62,7 @@ export default function App() {
       <Header />
       <main>
         <Hero onOpenBooks={() => setBooksModalOpen(true)} onOpenPrivacy={openPrivacy} booksTriggerRef={booksTriggerRef} />
+        <Bienvenida />
         <VisitInfo />
         <FinalCTA />
       </main>

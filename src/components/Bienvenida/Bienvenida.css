@@ -1,0 +1,140 @@
+/* Sigue el degradado del hero exactamente donde lo deja (termina en
+   dorado #e3ab3d, ver --hero-ember/--hero-magenta/--hero-purple en
+   Hero.css -- se repiten los mismos valores literales aquí porque esas
+   custom properties están declaradas en .hero, que no es un ancestro de
+   esta sección) y lo lleva hasta el morado oscuro, sin tocar el dorado
+   de nuevo -- la franja de night-900 queda para VisitInfo (ver el ajuste
+   en VisitInfo.css). La silueta del pueblo cierra la sección, igual que
+   antes cerraba el hero. */
+.bienvenida {
+  position: relative;
+  background: linear-gradient(180deg, #e3ab3d 0%, #c1592f 35%, #7a2166 72%, #3a1368 100%);
+  color: var(--color-paper);
+  padding: var(--space-xl) 0 clamp(140px, 20vw, 210px);
+  overflow: hidden;
+}
+
+.bienvenida__inner {
+  position: relative;
+  z-index: 4;
+}
+
+.bienvenida__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.bienvenida__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  /* Alinea el título con el borde de arriba de la carta (que lleva su
+     propio remate picado encima del padding del cuerpo). */
+  padding-top: 0.4rem;
+}
+
+.bienvenida__copy h2 {
+  font-size: var(--fs-h2);
+  color: var(--color-paper);
+}
+
+.bienvenida__subtitle {
+  max-width: 28em;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(251, 241, 226, 0.82);
+}
+
+.bienvenida-carta {
+  position: relative;
+  border-radius: 6px 6px var(--radius-lg) var(--radius-lg);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-deep);
+  overflow: hidden;
+}
+
+.bienvenida-carta__edge {
+  display: block;
+  width: 100%;
+  height: 20px;
+  fill: #ff2d8a;
+}
+
+.bienvenida-carta__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: 1.8rem 2.4rem 2.2rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.bienvenida-carta__firma {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-top: 0.3rem;
+}
+
+.bienvenida-carta__despedida {
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--color-ink-soft);
+}
+
+.bienvenida-carta__nombres {
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--color-fire-red-dark);
+}
+
+.bienvenida-carta__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.3rem;
+  margin-top: 0.6rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid rgba(42, 28, 18, 0.15);
+  font-family: var(--font-body);
+}
+
+.bienvenida-carta__pregunta {
+  flex: 1 1 100%;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-ink-soft);
+}
+
+.bienvenida-carta__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-fire-red-dark);
+  text-decoration: none;
+}
+
+.bienvenida-carta__link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 860px) {
+  .bienvenida__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+  }
+}
+
+@media (max-width: 640px) {
+  .bienvenida-carta__body {
+    padding: 1.4rem 1.5rem 1.8rem;
+    font-size: 1.05rem;
+  }
+}
