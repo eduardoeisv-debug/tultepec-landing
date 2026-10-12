@@ -120,8 +120,8 @@ export const STRINGS = {
   "bienvenida.firma.despedida": { es: "Con cariño,", en: "With love," },
   "bienvenida.firma.nombres": { es: "[Sus nombres]", en: "[Their names]" },
   "bienvenida.cta.pregunta": {
-    es: "¿Tienes una historia o una foto de Tultepec?",
-    en: "Do you have a story or a photo of Tultepec?",
+    es: "¿Tienes una historia de Tultepec?",
+    en: "Do you have a story about Tultepec?",
   },
   "bienvenida.cta.compartir": { es: "Comparte tu historia", en: "Share your story" },
   "bienvenida.cta.leeMemorias": { es: "Lee las memorias del pueblo", en: "Read the town's memories" },
