@@ -162,9 +162,11 @@
 }
 
 .hero__card-item {
-  /* Exactamente 4 tarjetas -> 1 columna en móvil (el título no cabe en
-     una sola línea a 2 por fila por debajo de 640px, ver el breakpoint
-     de abajo) y 2x2 fijo desde tablet hasta escritorio. */
+  /* 1 columna en móvil (el título no cabe en una sola línea a 2 por fila
+     por debajo de 640px, ver el breakpoint de abajo) y 2 por fila desde
+     tablet hasta escritorio -- con un número impar de tarjetas, la
+     última fila queda con una sola tarjeta centrada (justify-content:
+     center en .hero__cards), no pegada a la izquierda. */
   flex: 1 1 100%;
   min-width: 0;
   display: flex;

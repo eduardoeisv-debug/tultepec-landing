@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, RotateCcw } from "lucide-react";
+import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, RotateCcw, Landmark } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import TownSilhouette from "../shared/TownSilhouette.jsx";
@@ -10,6 +10,7 @@ import { preloadGaleriaImages } from "../../hooks/useGaleriaImages.js";
 import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
 import HistoryModal from "../shared/HistoryModal.jsx";
 import MemoriesModal from "../shared/MemoriesModal.jsx";
+import MuseosModal from "../shared/MuseosModal.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
@@ -24,9 +25,11 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [memoriesOpen, setMemoriesOpen] = useState(false);
   const [galeriaOpen, setGaleriaOpen] = useState(false);
+  const [museosOpen, setMuseosOpen] = useState(false);
   const historyTriggerRef = useRef(null);
   const memoriesTriggerRef = useRef(null);
   const galeriaTriggerRef = useRef(null);
+  const museosTriggerRef = useRef(null);
   const videoRef = useRef(null);
   const mobileVideoRef = useRef(null);
   const posterTriggerRef = useRef(null);
@@ -172,6 +175,14 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
       onClick: () => setGaleriaOpen(true),
       ref: galeriaTriggerRef,
     },
+    {
+      key: "museos",
+      Icon: Landmark,
+      label: t("hero.card.museos.title"),
+      caption: t("hero.card.museos.caption"),
+      onClick: () => setMuseosOpen(true),
+      ref: museosTriggerRef,
+    },
   ];
 
   return (
@@ -316,6 +327,7 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
         onOpenPrivacy={onOpenPrivacy}
       />
       <GaleriaOverlay open={galeriaOpen} onClose={() => setGaleriaOpen(false)} triggerRef={galeriaTriggerRef} />
+      <MuseosModal open={museosOpen} onClose={() => setMuseosOpen(false)} triggerRef={museosTriggerRef} />
 
       {mobileVideoOpen && (
         <div className="hero__mobile-video-backdrop" onMouseDown={closeMobileVideo}>

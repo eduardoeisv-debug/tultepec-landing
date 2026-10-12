@@ -28,6 +28,8 @@ export const STRINGS = {
   "hero.card.books.caption": { es: "3 libros publicados", en: "3 published books" },
   "hero.card.galeria.title": { es: "Imágenes y videos", en: "Photos and videos" },
   "hero.card.galeria.caption": { es: "Galería del pueblo", en: "Gallery of the town" },
+  "hero.card.museos.title": { es: "Museos", en: "Museums" },
+  "hero.card.museos.caption": { es: "Próximamente", en: "Coming soon" },
   "hero.video.ariaLabel": {
     es: "Reproducir video de bienvenida a Tultepec",
     en: "Play Tultepec welcome video",
@@ -133,6 +135,17 @@ export const STRINGS = {
 
   "historyModal.eyebrow": { es: "Explora la historia", en: "Explore the history" },
   "historyModal.title": { es: "La historia de Tultepec", en: "The history of Tultepec" },
+
+  "museosModal.eyebrow": { es: "Museos", en: "Museums" },
+  "museosModal.title": { es: "Los museos de Tultepec", en: "Tultepec's museums" },
+  "museosModal.enConstruccion": {
+    es: "Este módulo está en construcción.",
+    en: "This section is under construction.",
+  },
+  "museosModal.enConstruccionSub": {
+    es: "Muy pronto podrás conocer aquí la historia de los museos de Tultepec y explorar cada uno por separado.",
+    en: "Soon you'll be able to learn the history of Tultepec's museums here and explore each one individually.",
+  },
 
   "memoriesModal.eyebrow": { es: "Memorias de mi pueblo", en: "Memories of my town" },
   "memoriesModal.title": { es: "Lo que cuentan quienes lo viven", en: "What those who live it have to say" },
