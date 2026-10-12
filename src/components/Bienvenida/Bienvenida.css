@@ -111,18 +111,26 @@
   color: var(--color-ink-soft);
 }
 
+/* Botón secundario (contorno) en vez de texto suelto -- como simple
+   enlace de color, sin borde ni forma de pastilla, no se leía como una
+   opción accionable junto al botón sólido de "Comparte tu historia". */
 .bienvenida-carta__link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+  padding: 0 1.3rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-fire-red-dark);
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--color-fire-red-dark);
   text-decoration: none;
+  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
 }
 
 .bienvenida-carta__link:hover {
-  text-decoration: underline;
+  background: var(--color-fire-red-dark);
+  color: var(--color-paper);
 }
 
 @media (max-width: 860px) {
