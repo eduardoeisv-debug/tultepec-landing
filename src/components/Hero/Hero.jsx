@@ -128,11 +128,27 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
   // anclas normales, y como ninguna de esas rutas tiene un elemento real
   // con ese id en la página, solo cambian el hash (sin saltar a ningún
   // lado) -- este listener es lo que realmente abre el modal en ese caso.
+  //
+  // El ref que se enfoca al cerrar (memoriesTriggerRef) normalmente
+  // apunta fijo a la tarjeta "Memorias de mi pueblo" del hero (ver
+  // ref={item.ref} más abajo) -- pero si el modal se abrió por hash desde
+  // otro lado de la página (como estos enlaces de la carta), enfocar esa
+  // tarjeta de vuelta hace que el navegador salte hasta el hero para
+  // mostrarla, aunque quien abrió el modal esté mucho más abajo. Por eso
+  // aquí se sobreescribe el ref con el elemento que de verdad tenía el
+  // foco (el enlace recién clicado) justo antes de abrir -- mismo truco
+  // que ya usa openPrivacy en App.jsx para el mismo problema.
   useEffect(() => {
     const syncFromHash = () => {
       const hash = window.location.hash;
-      if (hash.startsWith("#galeria/")) setGaleriaOpen(true);
-      if (hash === "#memorias" || hash === "#voces" || hash === "#comparte-memoria") setMemoriesOpen(true);
+      if (hash.startsWith("#galeria/")) {
+        galeriaTriggerRef.current = document.activeElement;
+        setGaleriaOpen(true);
+      }
+      if (hash === "#memorias" || hash === "#voces" || hash === "#comparte-memoria") {
+        memoriesTriggerRef.current = document.activeElement;
+        setMemoriesOpen(true);
+      }
     };
     syncFromHash();
     window.addEventListener("hashchange", syncFromHash);
