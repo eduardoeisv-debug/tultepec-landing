@@ -26,6 +26,7 @@ export default function VisitInfo() {
 
         <div className="visit-info__block">
           <FiestasStrip>
+            <span className="visit-info__calendar-label">{t("visitInfo.calendarLabel")}</span>
             <div className="visit-info__block-head">
               <span className="visit-info__block-icon" aria-hidden="true">
                 <CalendarDays size={20} strokeWidth={1.8} />

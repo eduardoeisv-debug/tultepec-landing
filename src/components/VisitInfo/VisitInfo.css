@@ -108,6 +108,22 @@
   margin-bottom: var(--space-sm);
 }
 
+/* Etiqueta pequeña arriba de "¿En qué mes hay eventos?" -- deja claro
+   de un vistazo que todo el marco es el calendario de eventos, sin
+   repetir el mismo tratamiento que el eyebrow de arriba del todo
+   (.eyebrow, con la rayita y en terracota): aquí va en dorado, para
+   emparejar con el ícono del calendario. */
+.visit-info__calendar-label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
 @media (max-width: 640px) {
   .visit-info__calendar-frame {
     padding: 1.1rem 1.1rem 1.3rem;

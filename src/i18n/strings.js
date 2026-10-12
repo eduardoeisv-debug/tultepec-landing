@@ -96,6 +96,7 @@ export const STRINGS = {
 
   "visitInfo.eyebrow": { es: "Planea tu visita", en: "Plan your visit" },
   "visitInfo.title": { es: "¿Cuándo vienes y cómo llegas?", en: "When should you come, and how do you get here?" },
+  "visitInfo.calendarLabel": { es: "Calendario de eventos", en: "Events calendar" },
   "visitInfo.monthsSubtitle": { es: "¿En qué mes hay eventos?", en: "Which month has events?" },
 
   "comoLlegar.intro": {
