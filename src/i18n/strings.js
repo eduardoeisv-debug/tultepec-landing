@@ -101,6 +101,7 @@ export const STRINGS = {
   "testimonials.verTestimonio": { es: "Ver testimonio {n}", en: "View testimonial {n}" },
 
   "bienvenida.eyebrow": { es: "Mensaje de bienvenida", en: "Welcome message" },
+  "bienvenida.nota.titulo": { es: "Una carta para ti", en: "A letter for you" },
   "bienvenida.title": { es: "Una casa para nuestras memorias", en: "A home for our memories" },
   "bienvenida.subtitle": {
     es: "Por qué existe esta página, contado por quienes la hacemos.",
@@ -129,7 +130,7 @@ export const STRINGS = {
   },
   "bienvenida.cta.compartir": { es: "Comparte tu historia", en: "Share your story" },
   "bienvenida.cta.leeMemorias": { es: "Lee las memorias del pueblo", en: "Read the town's memories" },
-  "bienvenida.leerNota": { es: "Toca para leer", en: "Tap to read" },
+  "bienvenida.leerNota": { es: "Toca para leerla", en: "Tap to read it" },
   "bienvenida.ocultarNota": { es: "Toca para ocultar", en: "Tap to hide" },
 
   "visitInfo.eyebrow": { es: "Planea tu visita", en: "Plan your visit" },

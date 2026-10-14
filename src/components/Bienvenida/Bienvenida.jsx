@@ -37,14 +37,40 @@ function CartaEdge() {
 export default function Bienvenida() {
   const { t } = useLanguage();
   const [abierta, setAbierta] = useState(false);
+  const [resaltar, setResaltar] = useState(false);
   const seccionRef = useRef(null);
+  // Espejo de `abierta` legible dentro del observer sin tener que
+  // reconstruirlo cada vez que cambia (su efecto solo se monta una vez).
+  const abiertaRef = useRef(false);
+  // Para no repetir la animación de aviso ni siquiera si la sección
+  // vuelve a entrar en pantalla más tarde en la misma visita.
+  const yaAvisadoRef = useRef(false);
+
+  useEffect(() => {
+    abiertaRef.current = abierta;
+  }, [abierta]);
 
   useEffect(() => {
     const el = seccionRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return undefined;
+    const reduceMotion =
+      typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const observador = new IntersectionObserver(
       ([entrada]) => {
-        if (!entrada.isIntersecting) setAbierta(false);
+        if (!entrada.isIntersecting) {
+          setAbierta(false);
+          return;
+        }
+        // Primera vez que la nota entra en pantalla: un aviso breve (ícono
+        // + brillo del borde), una sola vez por visita, y solo si todavía
+        // está cerrada -- si ya la abrieron no hace falta llamar la
+        // atención hacia algo que ya vieron.
+        if (!reduceMotion && !yaAvisadoRef.current && !abiertaRef.current) {
+          yaAvisadoRef.current = true;
+          setResaltar(true);
+          setTimeout(() => setResaltar(false), 1200);
+        }
       },
       { threshold: 0 }
     );
@@ -57,8 +83,11 @@ export default function Bienvenida() {
       <div className="container bienvenida__inner">
         <button
           type="button"
-          className={`bienvenida__nota${abierta ? " is-abierta" : ""}`}
-          onClick={() => setAbierta((a) => !a)}
+          className={`bienvenida__nota${abierta ? " is-abierta" : ""}${resaltar ? " is-resaltada" : ""}`}
+          onClick={() => {
+            setResaltar(false);
+            setAbierta((a) => !a);
+          }}
           aria-expanded={abierta}
           aria-controls="bienvenida-contenido"
         >
@@ -72,7 +101,7 @@ export default function Bienvenida() {
             </span>
             <span className="bienvenida__nota-texto">
               <span className="bienvenida__nota-titulo" id="bienvenida-nota-titulo">
-                {t("bienvenida.eyebrow")}
+                {t("bienvenida.nota.titulo")}
               </span>
               <span className="bienvenida__nota-hint">{t(abierta ? "bienvenida.ocultarNota" : "bienvenida.leerNota")}</span>
             </span>
