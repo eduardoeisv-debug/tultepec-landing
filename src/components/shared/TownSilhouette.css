@@ -2,11 +2,18 @@
   --town-fill: #1a0f2e;
   --town-window: #f3cd7a;
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
   bottom: 0;
+  transform: translateX(-50%);
   z-index: 3;
-  width: 100%;
-  height: clamp(90px, 16vw, 170px);
+  /* Antes width:100% (todo el ancho de la sección, de punta a punta) con
+     altura topada bajo -- en pantallas anchas, preserveAspectRatio="...
+     slice" (ver TownSilhouette.jsx) escala la silueta según el ancho
+     para cubrir esa franja tan corta, y el recorte se come justo lo de
+     arriba (cúpula, cruz, ruedas del castillo). Topar el ancho al mismo
+     máximo que el resto del contenido mantiene la proporción dentro de
+     lo que el "slice" puede cubrir sin recortar nada importante. */
+  width: min(100%, var(--max-width));
+  height: clamp(90px, 16vw, 185px);
   display: block;
 }
