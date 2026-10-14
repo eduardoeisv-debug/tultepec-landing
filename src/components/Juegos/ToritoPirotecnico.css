@@ -45,12 +45,44 @@
 }
 
 /* ---------- datos ---------- */
+.torito__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-sm);
+}
+
 .torito__datos {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: var(--space-xs) var(--space-sm);
   margin: 0;
+}
+
+/* Mismo tratamiento que el botón "Reiniciar" del memorama (.mem__boton):
+   contorno, no relleno sólido -- siempre visible en la barra de datos
+   para reiniciar en cualquier momento, sin esperar a perder o ganar. */
+.torito__reiniciar {
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1.5px solid var(--tr-linea);
+  background: transparent;
+  color: var(--tr-texto);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.torito__reiniciar:hover {
+  border-color: var(--tr-acento);
+}
+
+.torito__reiniciar:focus-visible {
+  outline: 3px solid var(--tr-texto);
+  outline-offset: 3px;
 }
 
 .torito__dato {

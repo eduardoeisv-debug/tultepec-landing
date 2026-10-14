@@ -364,6 +364,7 @@ export const STRINGS = {
   "juegos.torito.vidas": { es: "Vidas", en: "Lives" },
   "juegos.torito.nivel": { es: "Nivel", en: "Level" },
   "juegos.torito.mejor": { es: "Mejor", en: "Best" },
+  "juegos.torito.reiniciar": { es: "Reiniciar", en: "Restart" },
   "juegos.torito.vidasAriaLabel": { es: "{n} vidas", en: "{n} lives" },
   "juegos.torito.idleTitulo": { es: "¿Listo para correr?", en: "Ready to run?" },
   "juegos.torito.idleTexto": {

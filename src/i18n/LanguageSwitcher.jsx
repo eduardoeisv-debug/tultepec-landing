@@ -1,4 +1,5 @@
 import { useLanguage } from "./LanguageContext.jsx";
+import { playLangSwitchSound } from "../lib/langSwitchSound.js";
 import "./LanguageSwitcher.css";
 
 // Botón ES/EN del encabezado. Cambia todo el sitio al vuelo (sin recargar
@@ -9,6 +10,13 @@ import "./LanguageSwitcher.css";
 export default function LanguageSwitcher() {
   const { language, setLanguage, t } = useLanguage();
   const etiqueta = t("languageSwitcher.ariaLabel");
+
+  // Solo suena cuando de verdad cambia -- tocar el idioma ya activo no
+  // hace nada, así que tampoco debería sonar.
+  const cambiarIdioma = (nuevo) => {
+    if (nuevo !== language) playLangSwitchSound();
+    setLanguage(nuevo);
+  };
 
   return (
     <div className="lang-switch-wrap">
@@ -32,7 +40,7 @@ export default function LanguageSwitcher() {
         <button
           type="button"
           className={`lang-switch__option${language === "es" ? " is-active" : ""}`}
-          onClick={() => setLanguage("es")}
+          onClick={() => cambiarIdioma("es")}
           aria-pressed={language === "es"}
           lang="es"
           title={etiqueta}
@@ -43,7 +51,7 @@ export default function LanguageSwitcher() {
         <button
           type="button"
           className={`lang-switch__option${language === "en" ? " is-active" : ""}`}
-          onClick={() => setLanguage("en")}
+          onClick={() => cambiarIdioma("en")}
           aria-pressed={language === "en"}
           lang="en"
           title={etiqueta}

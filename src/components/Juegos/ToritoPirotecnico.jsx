@@ -60,30 +60,37 @@ export default function ToritoPirotecnico() {
         <p className="torito__texto">{t("juegos.torito.texto")}</p>
       </header>
 
-      <dl className="torito__datos">
-        <div className="torito__dato">
-          <dt>{t("juegos.torito.puntos")}</dt>
-          <dd>{puntos}</dd>
-        </div>
-        <div className="torito__dato">
-          <dt>{t("juegos.torito.vidas")}</dt>
-          <dd aria-label={t("juegos.torito.vidasAriaLabel", { n: vidas })}>
-            {[0, 1, 2].map((i) => (
-              <span key={i} className={`torito__vida${i < vidas ? "" : " is-perdida"}`} />
-            ))}
-          </dd>
-        </div>
-        <div className="torito__dato">
-          <dt>{t("juegos.torito.nivel")}</dt>
-          <dd>
-            {nivel}/{niveles}
-          </dd>
-        </div>
-        <div className="torito__dato">
-          <dt>{t("juegos.torito.mejor")}</dt>
-          <dd>{mejor || "—"}</dd>
-        </div>
-      </dl>
+      <div className="torito__barra">
+        <dl className="torito__datos">
+          <div className="torito__dato">
+            <dt>{t("juegos.torito.puntos")}</dt>
+            <dd>{puntos}</dd>
+          </div>
+          <div className="torito__dato">
+            <dt>{t("juegos.torito.vidas")}</dt>
+            <dd aria-label={t("juegos.torito.vidasAriaLabel", { n: vidas })}>
+              {[0, 1, 2].map((i) => (
+                <span key={i} className={`torito__vida${i < vidas ? "" : " is-perdida"}`} />
+              ))}
+            </dd>
+          </div>
+          <div className="torito__dato">
+            <dt>{t("juegos.torito.nivel")}</dt>
+            <dd>
+              {nivel}/{niveles}
+            </dd>
+          </div>
+          <div className="torito__dato">
+            <dt>{t("juegos.torito.mejor")}</dt>
+            <dd>{mejor || "—"}</dd>
+          </div>
+        </dl>
+        {status !== "idle" && (
+          <button type="button" className="torito__reiniciar" onClick={jugar}>
+            {t("juegos.torito.reiniciar")}
+          </button>
+        )}
+      </div>
 
       <div className="torito__mapa">
         <canvas
