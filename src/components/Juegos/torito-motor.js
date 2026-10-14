@@ -7,8 +7,18 @@
 // status: idle | ready | playing | paused | dying | clear | over | won
 
 import { COLS, FILAS, NIVELES, nuevoMundo, reiniciarPosiciones, dirigir, avanzar, posicion } from './torito-logica.js';
+import { playSparkSound, playPowerUpSound } from '../../lib/toritoSound.js';
 
 const CLAVE_MEJOR = 'tultepec:torito-mejor';
+// Nombres reales de calles de Tultepec (16 de Septiembre, Hidalgo y
+// Benito Juárez), uno por cada pasillo horizontal totalmente abierto del
+// mapa (filas 3, 7 y 11 de torito-logica.js) -- se dibujan como letreros
+// tenues de fondo, sin inventar nombres.
+const CALLES = [
+  { fila: 3, nombre: '16 de Septiembre' },
+  { fila: 7, nombre: 'Hidalgo' },
+  { fila: 11, nombre: 'Benito Juárez' },
+];
 const TAU = Math.PI * 2;
 const DIRS = { izq: [-1, 0], der: [1, 0], arr: [0, -1], aba: [0, 1] };
 const TECLAS = {
@@ -63,6 +73,7 @@ export function createTorito(canvas, opciones = {}) {
   let oy = 0;
   let muros = null;
   let murosOro = null;
+  let fuenteTexto = 'sans-serif';
 
   let m = nuevoMundo(1);
   let status = 'idle';
@@ -157,7 +168,10 @@ export function createTorito(canvas, opciones = {}) {
 
   function procesarEventos() {
     for (const ev of m.eventos.splice(0)) {
-      if (ev.tipo === 'castillo') chispazo(px(ev.c), py(ev.r), 30, ['#ffb627', '#ffe45e', '#ffffff']);
+      if (ev.tipo === 'castillo') {
+        chispazo(px(ev.c), py(ev.r), 30, ['#ffb627', '#ffe45e', '#ffffff']);
+        playPowerUpSound();
+      } else if (ev.tipo === 'chispa') playSparkSound();
       else if (ev.tipo === 'come') chispazo(px(ev.x), py(ev.y), 22, [COLOR_ENEMIGO[ev.id], '#ffffff', '#ffe45e']);
       else if (ev.tipo === 'muerte') chispazo(px(ev.x), py(ev.y), 18, ['#ff5a36', '#8b5a3c', '#ffb627']);
     }
@@ -289,12 +303,31 @@ export function createTorito(canvas, opciones = {}) {
     cell = Math.floor(Math.min(w / COLS, h / FILAS));
     ox = (w - cell * COLS) / 2;
     oy = (h - cell * FILAS) / 2;
+    // Misma tipografía del cuerpo del sitio (Work Sans) para los letreros
+    // de calle -- se lee del canvas en vez de repetir el nombre a mano,
+    // así sigue cualquier cambio futuro de fuente del sitio.
+    fuenteTexto = getComputedStyle(canvas).fontFamily || 'sans-serif';
     muros = hacerMuros('#6b57c9', '#120b33');
     murosOro = hacerMuros('#ffb627', '#3b2300');
     dibujar();
   }
 
   // ---------- dibujo ----------
+  // Letreros de calle tenues, de fondo: se dibujan antes que las chispas
+  // (que quedan encima) para que no compitan con el juego.
+  function dibujarCalles() {
+    if (!cell) return;
+    ctx.save();
+    ctx.font = `${Math.max(8, cell * 0.22)}px ${fuenteTexto}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(244, 238, 252, 0.22)';
+    for (const calle of CALLES) {
+      ctx.fillText(calle.nombre.toUpperCase(), px(COLS / 2 - 0.5), py(calle.fila));
+    }
+    ctx.restore();
+  }
+
   function dibujarChispas() {
     for (let r = 0; r < FILAS; r++) {
       for (let c = 0; c < COLS; c++) {
@@ -464,6 +497,7 @@ export function createTorito(canvas, opciones = {}) {
     ctx.clearRect(0, 0, w, h);
     const oro = status === 'clear' && Math.floor(tEstado * 4) % 2 === 0 && !reduce;
     ctx.drawImage(oro ? murosOro : muros, 0, 0, w, h);
+    dibujarCalles();
     dibujarChispas();
     for (const e of m.enemigos) dibujarCohete(e);
     if (status === 'dying') {
