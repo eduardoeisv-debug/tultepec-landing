@@ -129,6 +129,8 @@ export const STRINGS = {
   },
   "bienvenida.cta.compartir": { es: "Comparte tu historia", en: "Share your story" },
   "bienvenida.cta.leeMemorias": { es: "Lee las memorias del pueblo", en: "Read the town's memories" },
+  "bienvenida.leerNota": { es: "Toca para leer", en: "Tap to read" },
+  "bienvenida.ocultarNota": { es: "Toca para ocultar", en: "Tap to hide" },
 
   "visitInfo.eyebrow": { es: "Planea tu visita", en: "Plan your visit" },
   "visitInfo.title": { es: "¿Cuándo vienes y cómo llegas?", en: "When should you come, and how do you get here?" },

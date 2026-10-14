@@ -19,11 +19,126 @@
   z-index: 4;
 }
 
+/* Nota compacta (cerrada por defecto): mismo papel crema + remate picado
+   que la carta, para que de un vistazo se note que es una carta sin
+   tener que desplegarla. Botón real (no solo una tarjeta decorativa) para
+   que Enter/Espacio también la abran. */
+.bienvenida__nota {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  border-radius: 6px 6px var(--radius-lg) var(--radius-lg);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-deep);
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.bienvenida__nota:hover {
+  transform: translateY(-2px);
+}
+
+.bienvenida__nota:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 3px;
+}
+
+.bienvenida__nota-cuerpo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 1.3rem;
+}
+
+.bienvenida__nota-icono {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(154, 69, 35, 0.12);
+  color: var(--color-fire-red-dark);
+}
+
+.bienvenida__nota-icono svg {
+  width: 22px;
+  height: 22px;
+}
+
+.bienvenida__nota-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.bienvenida__nota-titulo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+}
+
+.bienvenida__nota-hint {
+  font-size: 0.82rem;
+  color: var(--color-ink-soft);
+}
+
+.bienvenida__nota-chevron {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--color-ink-soft);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.bienvenida__nota.is-abierta .bienvenida__nota-chevron {
+  transform: rotate(180deg);
+}
+
+/* Técnica de grid-template-rows 0fr/1fr: anima la altura de un bloque de
+   alto desconocido sin medirlo en JS. El contenido sigue en el DOM
+   mientras está cerrado (inert lo saca del foco y de lectores de
+   pantalla, ver Bienvenida.jsx), solo queda recortado visualmente. */
+.bienvenida__acordeon {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s var(--ease-out);
+}
+
+.bienvenida__acordeon.is-abierta {
+  grid-template-rows: 1fr;
+}
+
+.bienvenida__acordeon-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bienvenida__acordeon {
+    transition: none;
+  }
+
+  .bienvenida__nota-chevron {
+    transition: none;
+  }
+}
+
 .bienvenida__grid {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: var(--space-lg);
   align-items: start;
+  margin-top: var(--space-md);
 }
 
 .bienvenida__copy {
