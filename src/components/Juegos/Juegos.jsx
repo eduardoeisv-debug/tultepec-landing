@@ -22,29 +22,31 @@ export default function Juegos() {
   return (
     <section className="juegos" id="juegos">
       <div className="container juegos__inner reveal" ref={ref}>
-        <div className="section-head">
-          <span className="eyebrow eyebrow--light">{t("juegos.eyebrow")}</span>
-          <h2>{t("juegos.title")}</h2>
-        </div>
+        <div className="juegos__frame">
+          <div className="section-head">
+            <span className="eyebrow eyebrow--light">{t("juegos.eyebrow")}</span>
+            <h2>{t("juegos.title")}</h2>
+          </div>
 
-        <SegmentedTabs
-          idPrefix="juegos"
-          ariaLabel={t("juegos.tabsAriaLabel")}
-          activeId={activeTab}
-          onChange={setActiveTab}
-          tabs={[
-            { id: "torito", icon: Gamepad2, label: t("juegos.tabs.torito") },
-            { id: "memorama", icon: Grid3x3, label: t("juegos.tabs.memorama") },
-          ]}
-        />
+          <SegmentedTabs
+            idPrefix="juegos"
+            ariaLabel={t("juegos.tabsAriaLabel")}
+            activeId={activeTab}
+            onChange={setActiveTab}
+            tabs={[
+              { id: "torito", icon: Gamepad2, label: t("juegos.tabs.torito") },
+              { id: "memorama", icon: Grid3x3, label: t("juegos.tabs.memorama") },
+            ]}
+          />
 
-        <div
-          className="juegos__stage"
-          role="tabpanel"
-          id={`juegos-panel-${activeTab}`}
-          aria-labelledby={`juegos-tab-${activeTab}`}
-        >
-          {activeTab === "torito" ? <ToritoPirotecnico /> : <MemoramaTultepec />}
+          <div
+            className="juegos__stage"
+            role="tabpanel"
+            id={`juegos-panel-${activeTab}`}
+            aria-labelledby={`juegos-tab-${activeTab}`}
+          >
+            {activeTab === "torito" ? <ToritoPirotecnico /> : <MemoramaTultepec />}
+          </div>
         </div>
       </div>
     </section>

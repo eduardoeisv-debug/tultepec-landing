@@ -14,6 +14,22 @@
   z-index: 4;
 }
 
+/* Enmarca todo el bloque de juegos (título, pestañas y el juego activo)
+   como una tarjeta propia, igual que .visit-info__calendar-frame -- para
+   que se distinga del fondo de la sección en vez de flotar suelto. */
+.juegos__frame {
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  border: 1px solid rgba(251, 241, 226, 0.14);
+  border-radius: var(--radius-lg);
+  background: rgba(251, 241, 226, 0.04);
+}
+
+@media (max-width: 640px) {
+  .juegos__frame {
+    padding: var(--space-md) var(--space-sm) var(--space-lg);
+  }
+}
+
 .juegos .section-head {
   text-align: center;
   margin-left: auto;
