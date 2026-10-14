@@ -486,14 +486,26 @@ export function createTorito(canvas, opciones = {}) {
     return status === 'ready' || status === 'playing';
   }
 
+  // Más amplio que jugando(): también cubre los estados de fin de ronda
+  // (muerte, nivel completo, se acabó la mecha, ganaste) -- en esos
+  // momentos la persona sigue viendo el tablero y suele seguir
+  // presionando flechas por costumbre aunque ya no muevan al torito. Sin
+  // absorber esas teclas aquí, al no haber jugando() el navegador recupera
+  // su scroll nativo de flechas y la página salta lejos del tablero justo
+  // cuando acaba de perder. En idle/paused si se dejan pasar: ahí sí tiene
+  // sentido que las flechas sigan haciendo scroll normal de la página.
+  function enPantalla() {
+    return status !== 'idle' && status !== 'paused';
+  }
+
   function alTeclear(e) {
     const nombre = TECLAS[e.key];
-    if (!nombre || !jugando()) return;
+    if (!nombre || !enPantalla()) return;
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     const t = e.target;
     if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
     e.preventDefault();
-    setDir(nombre);
+    if (jugando()) setDir(nombre);
   }
 
   function alBajar(e) {

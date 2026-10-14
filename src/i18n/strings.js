@@ -118,7 +118,10 @@ export const STRINGS = {
     en: "If you're from here, we hope you recognize yourself in these pages. If this is your first visit, welcome: this is your home too.",
   },
   "bienvenida.firma.despedida": { es: "Con cariño,", en: "With love," },
-  "bienvenida.firma.nombres": { es: "[Sus nombres]", en: "[Their names]" },
+  "bienvenida.firma.nombres": {
+    es: "Eduardo Israel Sánchez Villaseñor",
+    en: "Eduardo Israel Sánchez Villaseñor",
+  },
   "bienvenida.cta.pregunta": {
     es: "¿Tienes una historia de Tultepec?",
     en: "Do you have a story about Tultepec?",

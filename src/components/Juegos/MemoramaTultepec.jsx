@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ICONOS } from "./memorama-iconos.js";
 import { nuevoJuego, voltear, ocultarFallo, formatoTiempo, esMejor } from "./memorama-motor.js";
+import { playCardFlipSound } from "../../lib/cardSound.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./MemoramaTultepec.css";
 
@@ -73,6 +74,12 @@ export default function MemoramaTultepec() {
   }, [juego.terminado, juego.intentos]);
 
   function alVoltear(i) {
+    // Mismas condiciones que voltear() en memorama-motor.js -- solo suena
+    // cuando el volteo de verdad va a ocurrir, no en cada clic (p.ej. una
+    // carta ya abierta o emparejada, o el tablero bloqueado entre intentos).
+    const carta = juego.cartas[i];
+    if (!carta || juego.bloqueado || juego.terminado || carta.abierta || carta.par) return;
+    playCardFlipSound();
     if (!corriendo && !juego.terminado) setCorriendo(true);
     setJuego((previo) => voltear(previo, i));
   }
