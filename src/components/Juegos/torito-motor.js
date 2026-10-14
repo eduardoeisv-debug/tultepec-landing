@@ -313,15 +313,18 @@ export function createTorito(canvas, opciones = {}) {
   }
 
   // ---------- dibujo ----------
-  // Letreros de calle tenues, de fondo: se dibujan antes que las chispas
-  // (que quedan encima) para que no compitan con el juego.
+  // Letreros de calle: se dibujan después de las chispas (para que los
+  // puntitos del camino no corten las letras) pero antes de los cohetes,
+  // el torito y las partículas, que van encima por ser lo que se mueve.
   function dibujarCalles() {
     if (!cell) return;
     ctx.save();
-    ctx.font = `${Math.max(8, cell * 0.22)}px ${fuenteTexto}`;
+    ctx.font = `600 ${Math.max(11, cell * 0.34)}px ${fuenteTexto}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(244, 238, 252, 0.22)';
+    ctx.fillStyle = 'rgba(255, 246, 224, 0.5)';
+    ctx.shadowColor = 'rgba(8, 3, 28, 0.9)';
+    ctx.shadowBlur = 3;
     for (const calle of CALLES) {
       ctx.fillText(calle.nombre.toUpperCase(), px(COLS / 2 - 0.5), py(calle.fila));
     }
@@ -497,8 +500,8 @@ export function createTorito(canvas, opciones = {}) {
     ctx.clearRect(0, 0, w, h);
     const oro = status === 'clear' && Math.floor(tEstado * 4) % 2 === 0 && !reduce;
     ctx.drawImage(oro ? murosOro : muros, 0, 0, w, h);
-    dibujarCalles();
     dibujarChispas();
+    dibujarCalles();
     for (const e of m.enemigos) dibujarCohete(e);
     if (status === 'dying') {
       const t = Math.min(1, tEstado / SECS_MUERTE);
