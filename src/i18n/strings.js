@@ -9,6 +9,7 @@ export const STRINGS = {
   "memoryEntryCard.anonimo": { es: "Anónimo", en: "Anonymous" },
 
   "header.subtitle": { es: "Estado de México", en: "State of Mexico" },
+  "languageSwitcher.ariaLabel": { es: "Cambiar idioma", en: "Change language" },
 
   "hero.bienvenidosEyebrow": { es: "Bienvenidos a Tultepec", en: "Welcome to Tultepec" },
   "hero.title.line1": { es: "Tultepec Capital de la", en: "Tultepec Capital of" },

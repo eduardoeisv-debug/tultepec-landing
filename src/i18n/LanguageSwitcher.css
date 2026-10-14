@@ -1,3 +1,15 @@
+.lang-switch-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.lang-switch__globe {
+  flex-shrink: 0;
+  color: var(--color-gold-light);
+}
+
 /* "Ranura" hundida (sombra interior) para que la píldora activa se vea
    de verdad elevada encima, no solo pintada de otro color -- mismo
    recurso que ya usan los botones dorados del hero (hero__video-play,
@@ -22,17 +34,21 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 0.3rem 0.65rem;
+  padding: 0.3rem 0.7rem;
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.78rem;
   letter-spacing: 0.03em;
-  color: rgba(251, 241, 226, 0.6);
-  transition: color 0.2s var(--ease-out), transform 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+  /* Antes rgba(...,0.6): ya pasaba 4.5:1 de contraste por los pelos, pero
+     se sentía "casi desactivado" -- más opaco para que de un vistazo se
+     note que también es una opción tocable, no solo relleno. */
+  color: rgba(251, 241, 226, 0.84);
+  transition: color 0.2s var(--ease-out), background 0.2s var(--ease-out), transform 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
 }
 
 .lang-switch__option:hover:not(.is-active) {
   color: var(--color-gold-light);
+  background: rgba(251, 241, 226, 0.1);
 }
 
 .lang-switch__option.is-active {
@@ -57,17 +73,41 @@
   outline-offset: 2px;
 }
 
+/* "ES"/"EN" en pantallas angostas, "Español"/"English" desde 640px --
+   dos spans y se oculta el que no toca con CSS, nada de JS ni hooks de
+   ancho para algo que una media query ya resuelve. */
+.lang-switch__full {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .lang-switch__short {
+    display: none;
+  }
+
+  .lang-switch__full {
+    display: inline;
+  }
+
+  .lang-switch__option {
+    padding: 0.3rem 0.9rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lang-switch__option {
     transition: none;
   }
 }
 
+/* Objetivo táctil de 44px en celular (antes 30px) -- el globo usa
+   align-items:center en el header así que esto no desborda la fila,
+   solo la hace un poco más alta. */
 @media (max-width: 640px) {
   .lang-switch__option {
-    min-width: 34px;
-    min-height: 30px;
-    font-size: 0.72rem;
-    padding: 0.25rem 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 0.78rem;
+    padding: 0.3rem 0.7rem;
   }
 }
