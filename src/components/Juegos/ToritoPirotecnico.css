@@ -1,0 +1,290 @@
+/* Laberinto del torito para la landing de Tultepec.
+   Colores y tipografía tomados de variables.css (dorado, noche, terracota)
+   en vez de hex propios, para que combine con el resto del sitio -- los
+   colores que se dibujan dentro del <canvas> (torito-motor.js) no
+   cambian, solo el marco/HUD de alrededor. */
+
+.torito {
+  --tr-cielo-alto: var(--color-night-950);
+  --tr-cielo-bajo: var(--color-night-700);
+  --tr-horizonte: var(--color-terracotta-dark);
+  --tr-acento: var(--color-gold-light);
+  --tr-texto: var(--color-paper);
+  --tr-suave: rgba(251, 241, 226, 0.75);
+  --tr-linea: rgba(251, 241, 226, 0.18);
+  --tr-tinta: var(--color-night-900);
+  --tr-vida: var(--color-terracotta-dark);
+
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  display: grid;
+  gap: var(--space-sm);
+  color: var(--tr-texto);
+  font-family: var(--font-body);
+}
+
+.torito__cabecera {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.torito__titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 6vw, 2.4rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.torito__texto {
+  margin: 0;
+  max-width: 52ch;
+  line-height: 1.5;
+  color: var(--tr-suave);
+}
+
+/* ---------- datos ---------- */
+.torito__datos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-xs) var(--space-sm);
+  margin: 0;
+}
+
+.torito__dato {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.torito__dato dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tr-suave);
+}
+
+.torito__dato dd {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 1.6rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.torito__vida {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--tr-vida);
+  box-shadow: inset -3px -3px 0 rgba(0, 0, 0, 0.25), 0 0 0 2px var(--tr-linea);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.torito__vida.is-perdida {
+  opacity: 0.2;
+  transform: scale(0.7);
+}
+
+/* ---------- mapa ---------- */
+.torito__mapa {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--tr-linea);
+  background:
+    radial-gradient(1.5px 1.5px at 12% 10%, rgba(255, 255, 255, 0.55) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 84% 16%, rgba(255, 255, 255, 0.45) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 40% 94%, rgba(255, 255, 255, 0.4) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 92% 82%, rgba(255, 255, 255, 0.5) 50%, transparent 52%),
+    radial-gradient(120% 55% at 50% 108%, var(--tr-horizonte), transparent 70%),
+    linear-gradient(180deg, var(--tr-cielo-alto) 0%, var(--tr-cielo-bajo) 100%);
+}
+
+.torito__lienzo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.torito__velo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  text-align: center;
+  background: rgba(8, 5, 28, 0.78);
+}
+
+.torito__velo--suave {
+  background: transparent;
+  pointer-events: none;
+}
+
+.torito__velo-titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  line-height: 1.15;
+  color: var(--tr-acento);
+  text-wrap: balance;
+}
+
+.torito__velo-texto {
+  margin: 0;
+  max-width: 34ch;
+  line-height: 1.45;
+  color: var(--tr-texto);
+}
+
+.torito__pildora {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(8, 5, 28, 0.82);
+  border: 1.5px solid var(--tr-acento);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--tr-acento);
+  animation: torito-entra 0.3s ease-out both;
+}
+
+@keyframes torito-entra {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.torito__boton {
+  min-height: 44px;
+  padding: 10px 24px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--tr-acento);
+  color: var(--tr-tinta);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.torito__boton:hover {
+  filter: brightness(1.08);
+}
+
+.torito__boton:active {
+  transform: translateY(1px);
+}
+
+.torito__boton:focus-visible,
+.torito__flecha:focus-visible {
+  outline: 3px solid var(--tr-texto);
+  outline-offset: 3px;
+}
+
+/* ---------- flechas (solo en pantallas táctiles) ---------- */
+.torito__flechas {
+  display: none;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(2, 52px);
+  gap: 6px;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+@media (pointer: coarse) {
+  .torito__flechas {
+    display: grid;
+  }
+}
+
+.torito__flecha {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1.5px solid var(--tr-linea);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--tr-texto);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.torito__flecha:active {
+  background: rgba(255, 182, 39, 0.25);
+  border-color: var(--tr-acento);
+}
+
+.torito__flecha svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.torito__flecha--arr {
+  grid-column: 2;
+  grid-row: 1;
+}
+.torito__flecha--izq {
+  grid-column: 1;
+  grid-row: 2;
+}
+.torito__flecha--aba {
+  grid-column: 2;
+  grid-row: 2;
+}
+.torito__flecha--der {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.torito__ayuda {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--tr-suave);
+}
+
+.torito__ayuda--tactil {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .torito__ayuda--teclado {
+    display: none;
+  }
+  .torito__ayuda--tactil {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .torito__pildora {
+    animation: none;
+  }
+  .torito__vida {
+    transition: none;
+  }
+}

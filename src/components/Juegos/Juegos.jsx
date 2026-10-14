@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Rocket, Grid3x3 } from "lucide-react";
+import { Gamepad2, Grid3x3 } from "lucide-react";
 import SegmentedTabs from "../shared/SegmentedTabs.jsx";
-import FuegosArtificiales from "./FuegosArtificiales.jsx";
+import ToritoPirotecnico from "./ToritoPirotecnico.jsx";
 import MemoramaTultepec from "./MemoramaTultepec.jsx";
 import useReveal from "../../hooks/useReveal.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
@@ -17,7 +17,7 @@ import "./Juegos.css";
 export default function Juegos() {
   const { t } = useLanguage();
   const ref = useReveal();
-  const [activeTab, setActiveTab] = useState("fuegos");
+  const [activeTab, setActiveTab] = useState("torito");
 
   return (
     <section className="juegos" id="juegos">
@@ -33,7 +33,7 @@ export default function Juegos() {
           activeId={activeTab}
           onChange={setActiveTab}
           tabs={[
-            { id: "fuegos", icon: Rocket, label: t("juegos.tabs.fuegos") },
+            { id: "torito", icon: Gamepad2, label: t("juegos.tabs.torito") },
             { id: "memorama", icon: Grid3x3, label: t("juegos.tabs.memorama") },
           ]}
         />
@@ -44,7 +44,7 @@ export default function Juegos() {
           id={`juegos-panel-${activeTab}`}
           aria-labelledby={`juegos-tab-${activeTab}`}
         >
-          {activeTab === "fuegos" ? <FuegosArtificiales /> : <MemoramaTultepec />}
+          {activeTab === "torito" ? <ToritoPirotecnico /> : <MemoramaTultepec />}
         </div>
       </div>
     </section>

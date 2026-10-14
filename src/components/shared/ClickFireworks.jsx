@@ -22,8 +22,8 @@ const FLASH_MS = 230;
 const REDUCED_FLASH_MS = 300;
 
 // [data-no-fireworks]: para elementos que ya disparan su propia animación
-// al tocarlos (el castillo de FuegosArtificiales.jsx) -- sin esto, cada
-// toque lanzaría dos cohetes: el del sitio y el del minijuego.
+// al tocarlos (el mapa de ToritoPirotecnico.jsx) -- sin esto, cada toque
+// lanzaría dos cohetes: el del sitio y el del minijuego.
 const INTERACTIVE_SELECTOR =
   'a, button, input, textarea, select, video, [role="button"], [contenteditable], [data-no-fireworks]';
 

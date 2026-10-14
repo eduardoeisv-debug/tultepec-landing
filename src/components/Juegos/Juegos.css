@@ -31,6 +31,15 @@
 .juegos__stage {
   display: flex;
   justify-content: center;
+  /* El memorama (tablero 4x4) es más alto que el laberinto del torito --
+     sin un mínimo, cambiar de pestaña encoge/estira la sección de golpe. */
+  min-height: 820px;
+}
+
+@media (max-width: 640px) {
+  .juegos__stage {
+    min-height: 700px;
+  }
 }
 
 /* Fallback de <Suspense> mientras carga el chunk diferido (ver
