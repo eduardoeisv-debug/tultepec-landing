@@ -1,0 +1,245 @@
+/* Memorama pirotécnico para la landing de Tultepec.
+   Colores y tipografía tomados de variables.css (dorado, noche) en vez
+   de hex propios, para que combine con el resto del sitio. */
+
+.mem {
+  --mm-panel: var(--color-night-800);
+  --mm-linea: rgba(251, 241, 226, 0.18);
+  --mm-dorso: var(--color-night-700);
+  --mm-acento: var(--color-gold-light);
+  --mm-texto: var(--color-paper);
+  --mm-suave: rgba(251, 241, 226, 0.75);
+  --mm-tinta: var(--color-night-900);
+
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  display: grid;
+  gap: var(--space-sm);
+  color: var(--mm-texto);
+  font-family: var(--font-body);
+}
+
+.mem__cabecera {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.mem__titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 6vw, 2.4rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.mem__texto {
+  margin: 0;
+  max-width: 52ch;
+  line-height: 1.5;
+  color: var(--mm-suave);
+}
+
+/* ---------- datos ---------- */
+.mem__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-sm);
+}
+
+.mem__datos {
+  display: flex;
+  gap: var(--space-sm);
+  margin: 0;
+}
+
+.mem__dato {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mem__dato dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mm-suave);
+}
+
+.mem__dato dd {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mem__boton {
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1.5px solid var(--mm-linea);
+  background: transparent;
+  color: var(--mm-texto);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mem__boton:hover {
+  border-color: var(--mm-acento);
+}
+
+.mem__boton--fuerte {
+  border-color: var(--mm-acento);
+  background: var(--mm-acento);
+  color: var(--mm-tinta);
+}
+
+.mem__boton:focus-visible,
+.mem__carta:focus-visible {
+  outline: 3px solid var(--mm-texto);
+  outline-offset: 3px;
+}
+
+/* ---------- tablero ---------- */
+.mem__tablero {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  border: 1px solid var(--mm-linea);
+  border-radius: var(--radius-md);
+  background: var(--mm-panel);
+}
+
+.mem__carta {
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.mem__escena {
+  display: block;
+  width: 100%;
+  height: 100%;
+  perspective: 700px;
+}
+
+.mem__giro {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.45s ease;
+}
+
+.mem__carta.is-abierta .mem__giro {
+  transform: rotateY(180deg);
+}
+
+.mem__dorso,
+.mem__frente {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Dorso: rejilla de carrizo, como la estructura del castillo */
+.mem__dorso {
+  background:
+    radial-gradient(circle at 50% 50%, var(--mm-acento) 0 3px, transparent 4px),
+    repeating-linear-gradient(45deg, rgba(227, 171, 61, 0.22) 0 2px, transparent 2px 12px),
+    repeating-linear-gradient(-45deg, rgba(227, 171, 61, 0.22) 0 2px, transparent 2px 12px),
+    var(--mm-dorso);
+  border: 2px solid var(--mm-linea);
+}
+
+.mem__frente {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 4px;
+  background: var(--cara, #ffe27a);
+  color: var(--mm-tinta);
+}
+
+.mem__dibujo {
+  display: block;
+  width: 64%;
+  aspect-ratio: 1;
+}
+
+.mem__dibujo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mem__nombre {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.mem__carta.is-par .mem__frente {
+  box-shadow: 0 0 0 3px var(--mm-acento), 0 0 14px rgba(227, 171, 61, 0.5);
+  animation: mem-brinca 0.4s ease-out;
+}
+
+@keyframes mem-brinca {
+  0% {
+    transform: rotateY(180deg) scale(1);
+  }
+  50% {
+    transform: rotateY(180deg) scale(1.08);
+  }
+  100% {
+    transform: rotateY(180deg) scale(1);
+  }
+}
+
+/* ---------- final ---------- */
+.mem__fin {
+  display: grid;
+  gap: var(--space-xs);
+  justify-items: start;
+  padding: var(--space-sm);
+  border: 1.5px solid var(--mm-acento);
+  border-radius: 12px;
+  background: var(--mm-panel);
+}
+
+.mem__fin-titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--mm-acento);
+}
+
+.mem__fin-texto {
+  margin: 0;
+  line-height: 1.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mem__giro {
+    transition: none;
+  }
+  .mem__carta.is-par .mem__frente {
+    animation: none;
+  }
+}

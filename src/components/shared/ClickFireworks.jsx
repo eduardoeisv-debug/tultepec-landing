@@ -21,7 +21,11 @@ const ROCKET_MS = 250;
 const FLASH_MS = 230;
 const REDUCED_FLASH_MS = 300;
 
-const INTERACTIVE_SELECTOR = 'a, button, input, textarea, select, video, [role="button"], [contenteditable]';
+// [data-no-fireworks]: para elementos que ya disparan su propia animación
+// al tocarlos (el castillo de FuegosArtificiales.jsx) -- sin esto, cada
+// toque lanzaría dos cohetes: el del sitio y el del minijuego.
+const INTERACTIVE_SELECTOR =
+  'a, button, input, textarea, select, video, [role="button"], [contenteditable], [data-no-fireworks]';
 
 function pickTwoColors() {
   const a = COLORS[Math.floor(Math.random() * COLORS.length)];

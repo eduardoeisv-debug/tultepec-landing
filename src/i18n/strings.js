@@ -344,4 +344,47 @@ export const STRINGS = {
   "galeria.fotoAnterior": { es: "Foto anterior", en: "Previous photo" },
   "galeria.fotoSiguiente": { es: "Foto siguiente", en: "Next photo" },
   "galeria.reproducir": { es: "Reproducir video: {titulo}", en: "Play video: {titulo}" },
+
+  "juegos.eyebrow": { es: "¿Te quedas un ratito?", en: "Staying a little longer?" },
+  "juegos.title": { es: "Un ratito de juego", en: "A little play time" },
+  "juegos.tabsAriaLabel": { es: "Minijuegos de Tultepec", en: "Tultepec mini-games" },
+  "juegos.tabs.fuegos": { es: "Castillo pirotécnico", en: "Firework castillo" },
+  "juegos.tabs.memorama": { es: "Memorama", en: "Memory game" },
+
+  "juegos.fuegos.titulo": { es: "Prende el castillo", en: "Light up the castillo" },
+  "juegos.fuegos.texto": {
+    es: "Toca el cielo y los cohetes salen del castillo. Con 10 cohetes se enciende el gran final.",
+    en: "Tap the sky and rockets launch from the castillo. Light 10 to set off the grand finale.",
+  },
+  "juegos.fuegos.cieloAriaLabel": {
+    es: "Cielo nocturno con un castillo pirotécnico. Toca para lanzar cohetes.",
+    en: "Night sky with a firework castillo. Tap to launch rockets.",
+  },
+  "juegos.fuegos.mensajeFinal": { es: "¡Viva Tultepec!", en: "Long live Tultepec!" },
+  "juegos.fuegos.boton": { es: "Lanzar cohete", en: "Launch rocket" },
+
+  "juegos.memorama.titulo": { es: "Memorama pirotécnico", en: "Firework memory game" },
+  "juegos.memorama.texto": {
+    es: "Encuentra las 8 parejas de la fiesta pirotécnica de Tultepec. Gana quien necesita menos intentos.",
+    en: "Find the 8 pairs from Tultepec's firework festival. Fewer attempts wins.",
+  },
+  "juegos.memorama.intentos": { es: "Intentos", en: "Attempts" },
+  "juegos.memorama.tiempo": { es: "Tiempo", en: "Time" },
+  "juegos.memorama.mejor": { es: "Mejor", en: "Best" },
+  "juegos.memorama.reiniciar": { es: "Reiniciar", en: "Restart" },
+  "juegos.memorama.jugarOtraVez": { es: "Jugar otra vez", en: "Play again" },
+  "juegos.memorama.cartasAriaLabel": { es: "Cartas del memorama", en: "Memory game cards" },
+  "juegos.memorama.cartaBocaAbajo": { es: "Carta {n}, boca abajo", en: "Card {n}, face down" },
+  "juegos.memorama.finTitulo": { es: "¡Completaste el memorama!", en: "You completed the memory game!" },
+  "juegos.memorama.finTexto": { es: "{intentos} intentos en {tiempo}.", en: "{intentos} attempts in {tiempo}." },
+  "juegos.memorama.esMejorMarca": { es: " Es tu mejor marca.", en: " That's your best score." },
+
+  "juegos.memorama.carta.cohete": { es: "Cohete", en: "Rocket" },
+  "juegos.memorama.carta.castillo": { es: "Castillo", en: "Castillo" },
+  "juegos.memorama.carta.torito": { es: "Torito", en: "Torito" },
+  "juegos.memorama.carta.rueda": { es: "Rueda", en: "Wheel" },
+  "juegos.memorama.carta.volcan": { es: "Volcán", en: "Volcano" },
+  "juegos.memorama.carta.bengala": { es: "Bengala", en: "Sparkler" },
+  "juegos.memorama.carta.papel": { es: "Papel picado", en: "Papel picado" },
+  "juegos.memorama.carta.parroquia": { es: "Parroquia", en: "Parish church" },
 };

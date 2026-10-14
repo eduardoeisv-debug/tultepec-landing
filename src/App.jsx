@@ -5,11 +5,19 @@ import Hero from "./components/Hero/Hero.jsx";
 import Bienvenida from "./components/Bienvenida/Bienvenida.jsx";
 import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
+import JuegosLoading from "./components/Juegos/JuegosLoading.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import RelatosModal from "./components/shared/RelatosModal.jsx";
 import ClickFireworks from "./components/shared/ClickFireworks.jsx";
 import useHashScrollFix from "./hooks/useHashScrollFix.js";
 import { useLanguage } from "./i18n/LanguageContext.jsx";
+
+// Los dos minijuegos (canvas de cohetes + memorama) no son parte del
+// recorrido principal, así que la sección entera se carga bajo demanda en
+// vez de ir en el bundle inicial. El fallback (JuegosLoading) reserva la
+// altura aproximada de la sección para que el contenido de abajo
+// (FinalCTA) no brinque cuando el chunk termine de cargar.
+const Juegos = lazy(() => import("./components/Juegos/Juegos.jsx"));
 
 const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal.jsx"));
 // El aviso de privacidad tira de react-markdown (y su cadena de
@@ -64,6 +72,9 @@ export default function App() {
         <Hero onOpenBooks={() => setBooksModalOpen(true)} onOpenPrivacy={openPrivacy} booksTriggerRef={booksTriggerRef} />
         <Bienvenida />
         <VisitInfo />
+        <Suspense fallback={<JuegosLoading />}>
+          <Juegos />
+        </Suspense>
         <FinalCTA />
       </main>
       <Footer onOpenPrivacy={openPrivacy} />

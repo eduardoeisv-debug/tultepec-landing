@@ -1,0 +1,47 @@
+/* Igual que FinalCTA.css: viene después de VisitInfo, que ya termina en
+   este mismo tono -- no hace falta degradado propio de transición. */
+.juegos {
+  position: relative;
+  background: var(--color-night-900);
+  color: var(--color-paper);
+  padding: var(--space-xl) 0;
+}
+
+.juegos__inner {
+  /* Por encima del canvas de fuegos al clic (z-index: 3, fijo a toda la
+     página), igual que el resto de las secciones. */
+  position: relative;
+  z-index: 4;
+}
+
+.juegos .section-head {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.juegos .segmented-tabs {
+  /* Solo 2 pestañas -- sin tope de ancho, .segmented-tabs (display:flex,
+     sin width propio) se estira al ancho completo de .container (hasta
+     1180px) y la píldora queda absurdamente ancha en vez de compacta. */
+  max-width: 420px;
+  margin: 0 auto var(--space-lg);
+}
+
+.juegos__stage {
+  display: flex;
+  justify-content: center;
+}
+
+/* Fallback de <Suspense> mientras carga el chunk diferido (ver
+   JuegosLoading.jsx) -- altura aproximada de la sección ya cargada, para
+   que FinalCTA no brinque cuando el chunk termine de llegar. */
+.juegos-loading {
+  min-height: 880px;
+}
+
+@media (max-width: 640px) {
+  .juegos-loading {
+    min-height: 760px;
+  }
+}

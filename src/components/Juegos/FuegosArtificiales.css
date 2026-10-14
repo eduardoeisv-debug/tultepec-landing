@@ -1,0 +1,174 @@
+/* Castillo pirotécnico para la landing de Tultepec.
+   Colores y tipografía tomados de variables.css (dorado, noche, terracota)
+   en vez de hex propios, para que combine con el resto del sitio. */
+
+.fuegos {
+  --fz-cielo-alto: var(--color-night-950);
+  --fz-cielo-bajo: var(--color-night-700);
+  --fz-horizonte: var(--color-terracotta-dark);
+  --fz-acento: var(--color-gold-light);
+  --fz-texto: var(--color-paper);
+  --fz-suave: rgba(251, 241, 226, 0.75);
+  --fz-linea: rgba(251, 241, 226, 0.18);
+  --fz-tinta: var(--color-night-900);
+
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  display: grid;
+  gap: var(--space-sm);
+  color: var(--fz-texto);
+  font-family: var(--font-body);
+}
+
+.fuegos__cabecera {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.fuegos__titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 6vw, 2.4rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.fuegos__texto {
+  margin: 0;
+  max-width: 52ch;
+  line-height: 1.5;
+  color: var(--fz-suave);
+}
+
+.fuegos__cielo {
+  position: relative;
+  height: clamp(320px, 62vh, 480px);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--fz-linea);
+  background:
+    radial-gradient(1.5px 1.5px at 12% 16%, rgba(255, 255, 255, 0.75) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 28% 38%, rgba(255, 255, 255, 0.55) 50%, transparent 52%),
+    radial-gradient(2px 2px at 46% 12%, rgba(255, 255, 255, 0.7) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 63% 30%, rgba(255, 255, 255, 0.5) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 78% 14%, rgba(255, 255, 255, 0.75) 50%, transparent 52%),
+    radial-gradient(2px 2px at 90% 36%, rgba(255, 255, 255, 0.55) 50%, transparent 52%),
+    radial-gradient(1.5px 1.5px at 6% 52%, rgba(255, 255, 255, 0.45) 50%, transparent 52%),
+    radial-gradient(120% 55% at 50% 108%, var(--fz-horizonte), transparent 70%),
+    linear-gradient(180deg, var(--fz-cielo-alto) 0%, var(--fz-cielo-bajo) 100%);
+}
+
+.fuegos__lienzo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fuegos__final {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 18%;
+  margin: 0;
+  text-align: center;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 8vw, 3.2rem);
+  color: var(--fz-acento);
+  text-shadow: 0 0 24px rgba(227, 171, 61, 0.55), 0 2px 0 var(--fz-tinta);
+  animation: fuegos-entra 0.5s ease-out both;
+}
+
+@keyframes fuegos-entra {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fuegos__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-sm);
+}
+
+.fuegos__progreso {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.fuegos__mechas {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fuegos__mecha {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--fz-linea);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.fuegos__mecha.is-on {
+  background: var(--fz-acento);
+  box-shadow: 0 0 8px rgba(227, 171, 61, 0.7);
+}
+
+.fuegos__cuenta {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+  color: var(--fz-suave);
+}
+
+.fuegos__boton {
+  min-height: 44px;
+  padding: 10px 22px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--fz-acento);
+  color: var(--fz-tinta);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fuegos__boton:hover {
+  filter: brightness(1.08);
+}
+
+.fuegos__boton:active {
+  transform: translateY(1px);
+}
+
+.fuegos__boton:focus-visible,
+.fuegos__lienzo:focus-visible {
+  outline: 3px solid var(--fz-texto);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fuegos__final {
+    animation: none;
+  }
+  .fuegos__mecha {
+    transition: none;
+  }
+}
