@@ -22,7 +22,7 @@ export const STRINGS = {
   "hero.verBienvenida": { es: "Ver bienvenida", en: "Watch welcome" },
   "hero.videoCaption": { es: "Un recorrido por el pueblo en 1:28", en: "A tour of the town in 1:28" },
   "hero.scrollCue": { es: "¿Cuándo vienes?", en: "When are you coming?" },
-  "hero.scrollCueHistoria": { es: "Conoce nuestra historia", en: "Discover our history" },
+  "hero.scrollCueHistoria": { es: "Lee nuestro mensaje", en: "Read our message" },
 
   "hero.card.history.title": { es: "Explora la historia", en: "Explore the history" },
   "hero.card.history.caption": { es: "Momentos y tradiciones", en: "Moments and traditions" },
