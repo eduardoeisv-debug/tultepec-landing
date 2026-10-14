@@ -195,6 +195,10 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
       caption: t("hero.card.museos.caption"),
       onClick: () => setMuseosOpen(true),
       ref: museosTriggerRef,
+      // Módulo en construcción (ver MuseosModal) -- la tarjeta se ve
+      // sombreada/pendiente en vez de lista como las demás, aunque sigue
+      // siendo clicable (abre el aviso explicándolo).
+      pendiente: true,
     },
   ];
 
@@ -230,7 +234,12 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
           <ul className="hero__cards hero__enter hero__enter--3">
             {listItems.map((item) => (
               <li className="hero__card-item" key={item.key}>
-                <button type="button" className="hero__card" onClick={item.onClick} ref={item.ref}>
+                <button
+                  type="button"
+                  className={`hero__card${item.pendiente ? " hero__card--pendiente" : ""}`}
+                  onClick={item.onClick}
+                  ref={item.ref}
+                >
                   <span className="hero__card-icon" aria-hidden="true">
                     <item.Icon size={26} strokeWidth={1.7} />
                   </span>

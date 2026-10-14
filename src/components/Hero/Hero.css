@@ -226,6 +226,30 @@
   box-shadow: 0 14px 28px -14px rgba(227, 171, 61, 0.55);
 }
 
+/* Módulo en construcción (Museos, ver MuseosModal) -- sombreada en vez de
+   lista como las demás tarjetas, mismo borde punteado que ya usa el
+   aviso "en construcción" dentro del modal, para que la sensación de
+   "todavía no" sea consistente entre la tarjeta y lo que abre. Sigue
+   siendo clicable (el modal explica por qué). */
+.hero__card--pendiente {
+  opacity: 0.68;
+  border-style: dashed;
+}
+
+.hero__card--pendiente:hover,
+.hero__card--pendiente:focus-visible {
+  transform: none;
+  opacity: 0.85;
+  background: rgba(251, 241, 226, 0.06);
+  border-color: rgba(251, 241, 226, 0.3);
+  box-shadow: none;
+}
+
+.hero__card--pendiente .hero__card-icon {
+  background: rgba(251, 241, 226, 0.08);
+  color: rgba(251, 241, 226, 0.55);
+}
+
 .hero__card-icon {
   display: inline-flex;
   align-items: center;
