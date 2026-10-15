@@ -34,7 +34,21 @@ export default function Juegos() {
             activeId={activeTab}
             onChange={setActiveTab}
             tabs={[
-              { id: "torito", icon: Gamepad2, label: t("juegos.tabs.torito") },
+              {
+                id: "torito",
+                icon: Gamepad2,
+                // "Laberinto del torito" no cabe junto a "Memorama" en una
+                // píldora de ancho igual en celular (se desbordaba) -- igual
+                // que ES/EN del selector de idioma, dos spans y CSS decide
+                // cuál mostrar según el ancho (segmented-tabs__label-* en
+                // SegmentedTabs.css).
+                label: (
+                  <>
+                    <span className="segmented-tabs__label-corta">{t("juegos.tabs.toritoCorto")}</span>
+                    <span className="segmented-tabs__label-larga">{t("juegos.tabs.torito")}</span>
+                  </>
+                ),
+              },
               { id: "memorama", icon: Grid3x3, label: t("juegos.tabs.memorama") },
             ]}
           />

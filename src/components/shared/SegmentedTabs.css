@@ -79,6 +79,27 @@
   font-size: 0.82rem;
 }
 
+/* Para pestañas cuya etiqueta puede pasarse como dos spans (uno corto,
+   uno largo) en vez de un string -- mismo recurso que ES/EN del selector
+   de idioma: con flex:1 1 0 todas las pestañas reparten el ancho por
+   igual sin importar su texto, así que una etiqueta larga junto a una
+   corta ("Laberinto del torito" junto a "Memorama") se queda sin espacio
+   en celular. Por defecto se asume que no hay dos spans (ambas clases
+   sin estilo) -- esta regla solo entra en juego si una pestaña las usa. */
+.segmented-tabs__label-larga {
+  display: none;
+}
+
+@media (min-width: 480px) {
+  .segmented-tabs__label-corta {
+    display: none;
+  }
+
+  .segmented-tabs__label-larga {
+    display: inline;
+  }
+}
+
 .segmented-tabs__tab:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 3px;

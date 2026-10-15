@@ -356,6 +356,7 @@ export const STRINGS = {
   "juegos.title": { es: "Un ratito de juego", en: "A little play time" },
   "juegos.tabsAriaLabel": { es: "Minijuegos de Tultepec", en: "Tultepec mini-games" },
   "juegos.tabs.torito": { es: "Laberinto del torito", en: "Torito maze" },
+  "juegos.tabs.toritoCorto": { es: "Torito", en: "Maze" },
   "juegos.tabs.memorama": { es: "Memorama", en: "Memory game" },
 
   "juegos.torito.titulo": { es: "Ayuda al torito", en: "Help the torito" },
