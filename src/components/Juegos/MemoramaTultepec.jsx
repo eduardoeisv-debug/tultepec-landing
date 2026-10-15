@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { ICONOS } from "./memorama-iconos.js";
 import { nuevoJuego, voltear, ocultarFallo, formatoTiempo, esMejor } from "./memorama-motor.js";
 import { playCardFlipSound } from "../../lib/cardSound.js";
+import { playVictorySound } from "../../lib/victorySound.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./MemoramaTultepec.css";
 
@@ -65,6 +66,7 @@ export default function MemoramaTultepec() {
   useEffect(() => {
     if (!juego.terminado) return;
     setCorriendo(false);
+    playVictorySound();
     const marca = { intentos: juego.intentos, segundos: segundosRef.current };
     if (esMejor(marca, leerMejor())) {
       guardarMejor(marca);

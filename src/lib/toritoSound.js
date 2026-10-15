@@ -37,6 +37,28 @@ export function playSparkSound() {
   }
 }
 
+export function playDeathSound() {
+  const audioCtx = getContext();
+  if (!audioCtx) return;
+  try {
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(300, now);
+    osc.frequency.exponentialRampToValueAtTime(55, now + 0.45);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.52);
+  } catch {
+    /* Web Audio no disponible o bloqueado -- el juego sigue sin sonido. */
+  }
+}
+
 export function playPowerUpSound() {
   const audioCtx = getContext();
   if (!audioCtx) return;

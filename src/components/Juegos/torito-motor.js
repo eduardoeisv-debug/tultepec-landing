@@ -7,7 +7,8 @@
 // status: idle | ready | playing | paused | dying | clear | over | won
 
 import { COLS, FILAS, NIVELES, nuevoMundo, reiniciarPosiciones, dirigir, avanzar, posicion } from './torito-logica.js';
-import { playSparkSound, playPowerUpSound } from '../../lib/toritoSound.js';
+import { playSparkSound, playPowerUpSound, playDeathSound } from '../../lib/toritoSound.js';
+import { playVictorySound } from '../../lib/victorySound.js';
 
 const CLAVE_MEJOR = 'tultepec:torito-mejor';
 // Nombres reales de calles de Tultepec (16 de Septiembre, Hidalgo y
@@ -127,6 +128,8 @@ export function createTorito(canvas, opciones = {}) {
     tEstado = 0;
     proximaFiesta = 0;
     canvas.style.touchAction = nuevo === 'ready' || nuevo === 'playing' ? 'none' : 'pan-y';
+    if (nuevo === 'dying') playDeathSound();
+    else if (nuevo === 'clear' || nuevo === 'won') playVictorySound();
     emitir();
     if (activo()) arrancar();
     else dibujar();
