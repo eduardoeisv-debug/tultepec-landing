@@ -26,14 +26,14 @@
 // inventado.
 export const CONTACTOS = [
   {
-    nombre: "Fernando Manuel Torices Ramírez",
-    rol: { es: "Profesor", en: "Teacher" },
-    numero: "5215531251510",
+    nombre: "Juana Antonieta Zúñiga Urbán",
+    rol: { es: "Profra.", en: "Teacher" },
+    numero: null, // TODO: reemplazar cuando se confirme
   },
   {
-    nombre: "Juana Antonieta Zúñiga Urbán",
-    rol: { es: "Profesora", en: "Teacher" },
-    numero: null, // TODO: reemplazar cuando se confirme
+    nombre: "Fernando Manuel Torices Ramírez",
+    rol: { es: "Profr.", en: "Teacher" },
+    numero: "5215531251510",
   },
 ];
 

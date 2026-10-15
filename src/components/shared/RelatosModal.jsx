@@ -157,9 +157,9 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
     return `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
   };
 
-  // Primer nombre de pila, para que quepa como texto del botón -- el
-  // nombre completo y el rol van en el aria-label.
-  const primerNombre = (nombre) => nombre.split(" ")[0];
+  // Rol abreviado + primer nombre de pila, para que quepa como texto del
+  // botón ("Profra. Juana") -- el nombre completo va en el aria-label.
+  const etiquetaContacto = (contacto) => `${pick(contacto.rol)} ${contacto.nombre.split(" ")[0]}`;
 
   return (
     <div className={`relatos-overlay__backdrop ${closing ? "is-closing" : ""}`} onMouseDown={requestClose}>
@@ -246,7 +246,7 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
                               aria-label={t("booksModal.preguntarA", { nombre: contacto.nombre })}
                             >
                               <span className="book-card__whatsapp-icon">{WhatsAppIcon}</span>
-                              {primerNombre(contacto.nombre)}
+                              {etiquetaContacto(contacto)}
                             </a>
                           ) : (
                             <span
@@ -255,7 +255,7 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
                               title={`${contacto.nombre} — ${t("booksModal.numeroPendiente")}`}
                             >
                               <span className="book-card__whatsapp-icon">{WhatsAppIcon}</span>
-                              {primerNombre(contacto.nombre)}
+                              {etiquetaContacto(contacto)}
                             </span>
                           )
                         )}
