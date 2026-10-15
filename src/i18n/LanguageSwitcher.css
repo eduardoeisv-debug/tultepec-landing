@@ -27,6 +27,7 @@
 
 .lang-switch__option {
   all: unset;
+  box-sizing: border-box;
   cursor: pointer;
   min-width: 38px;
   min-height: 32px;
