@@ -2,11 +2,9 @@
 // Documentos/Historia.docx (el documento que compartió el pueblo). No se
 // añadió ningún dato, fecha o nombre que no esté en ese texto; solo se
 // corrigieron ortografía/mayúsculas y se unieron frases sueltas en
-// párrafos legibles. Donde el documento da dos cifras distintas para un
-// mismo dato (la altura de un castillo: "más de 20 m" en un párrafo y
-// "de 5 a 20 o 25 m" en las preguntas frecuentes), se usó la cifra más
-// detallada (la de las preguntas frecuentes) y se dejó la otra como parte
-// del texto ampliado ("Leer más") del mismo hito.
+// párrafos legibles. El hito "Símbolo: Los castillos" de la línea de
+// tiempo se quitó porque repetía, casi palabra por palabra, la pregunta
+// frecuente "¿Qué es un castillo pirotécnico?" de más abajo.
 //
 // Los campos `en` se generaron a partir del texto en español ya aprobado
 // y llevan TODO: revisar traducción -- falta que alguien que domine el
@@ -80,18 +78,6 @@ export const HITOS = [
     texto: {
       es: "Detrás de cada feria hay meses de trabajo bullicioso en los talleres instalados en la zona conocida como la Saucera, donde cada producto se elabora con paciencia y cuidado.",
       en: "Behind every fair are months of bustling work in the workshops set up in the area known as la Saucera, where every product is made with patience and care." /* TODO: revisar traducción */,
-    },
-  },
-  {
-    etapa: { es: "Símbolo", en: "Symbol" },
-    titulo: { es: "Los castillos", en: "The castillos" },
-    texto: {
-      es: "Estructuras que se yerguen desde los 5 hasta los 20 o 25 metros de altura, formadas por cubos de cinta de madera y ruedas de vara de garambullo y cintas de carrizo, decoradas con papel de colores.",
-      en: "Structures rising from 5 to 20 or 25 meters tall, made of wooden-strip cubes and wheels of garambullo branches and carrizo ribbons, decorated with colored paper." /* TODO: revisar traducción */,
-    },
-    detalle: {
-      es: "Cubos hechos de cinta de madera y largas extensiones de lazos las sostienen erguidas, adornadas con ruedas de diferentes dimensiones hechas de varas de garambullo y cintas de carrizo decoradas con papel de colores, con ejes para girar y un sinfín de cohetes de luz que, al encenderse, crean la fantasía visual de figuras llenas de luz y colorido. Es el arte emblemático de Tultepec.",
-      en: "Wooden-strip cubes and long rope extensions hold them upright, decorated with wheels of different sizes made of garambullo branches and carrizo ribbons decorated with colored paper, with axles to spin and countless light fireworks that, once lit, create the visual fantasy of figures full of light and color. It is Tultepec's emblematic art." /* TODO: revisar traducción */,
     },
   },
   {
