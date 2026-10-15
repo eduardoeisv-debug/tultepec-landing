@@ -4,7 +4,7 @@ import Header from "./components/Header/Header.jsx";
 import Hero from "./components/Hero/Hero.jsx";
 import Bienvenida from "./components/Bienvenida/Bienvenida.jsx";
 import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
-import Marquesina from "./components/shared/Marquesina.jsx";
+import FuegoTexto from "./components/shared/FuegoTexto.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import JuegosLoading from "./components/Juegos/JuegosLoading.jsx";
 import Footer from "./components/Footer/Footer.jsx";
@@ -73,7 +73,7 @@ export default function App() {
         <Hero onOpenBooks={() => setBooksModalOpen(true)} onOpenPrivacy={openPrivacy} booksTriggerRef={booksTriggerRef} />
         <Bienvenida />
         <VisitInfo />
-        <Marquesina />
+        <FuegoTexto />
         <Suspense fallback={<JuegosLoading />}>
           <Juegos />
         </Suspense>

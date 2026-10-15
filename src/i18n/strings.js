@@ -450,8 +450,8 @@ export const STRINGS = {
   "juegos.sopa.finTitulo": { es: "¡Completaste la sopa!", en: "You solved the puzzle!" },
   "juegos.sopa.finTexto": { es: "Eres un experto pirotécnico.", en: "You're a true fireworks expert." },
 
-  "marquesina.texto": {
-    es: "Tultepec · Capital de la Pirotecnia · Arte que ilumina el cielo",
+  "fuegoTexto.texto": {
+    es: "Tultepec · Capital de Pirotecnia · Arte que ilumina el cielo",
     en: "Tultepec · Capital of Fireworks · Art that lights up the sky",
   },
 };
