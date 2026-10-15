@@ -37,11 +37,34 @@
 }
 
 .juegos .segmented-tabs {
-  /* Solo 2 pestañas -- sin tope de ancho, .segmented-tabs (display:flex,
+  /* Solo 3 pestañas -- sin tope de ancho, .segmented-tabs (display:flex,
      sin width propio) se estira al ancho completo de .container (hasta
      1180px) y la píldora queda absurdamente ancha en vez de compacta. */
-  max-width: 420px;
+  max-width: 720px;
   margin: 0 auto var(--space-lg);
+}
+
+/* Con 3 pestañas de ancho igual, "Laberinto del torito" no cabe hasta
+   que hay ~760px de pantalla (la regla genérica de SegmentedTabs.css
+   cambia a la etiqueta larga desde 480px, pensada para 2 pestañas). Estas
+   reglas, más específicas, la retrasan: etiquetas cortas por debajo de
+   760px y largas desde ahí. */
+.juegos .segmented-tabs__label-corta {
+  display: inline;
+}
+
+.juegos .segmented-tabs__label-larga {
+  display: none;
+}
+
+@media (min-width: 760px) {
+  .juegos .segmented-tabs__label-corta {
+    display: none;
+  }
+
+  .juegos .segmented-tabs__label-larga {
+    display: inline;
+  }
 }
 
 .juegos__stage {

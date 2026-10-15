@@ -4,6 +4,7 @@ import Header from "./components/Header/Header.jsx";
 import Hero from "./components/Hero/Hero.jsx";
 import Bienvenida from "./components/Bienvenida/Bienvenida.jsx";
 import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
+import Marquesina from "./components/shared/Marquesina.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import JuegosLoading from "./components/Juegos/JuegosLoading.jsx";
 import Footer from "./components/Footer/Footer.jsx";
@@ -12,7 +13,7 @@ import ClickFireworks from "./components/shared/ClickFireworks.jsx";
 import useHashScrollFix from "./hooks/useHashScrollFix.js";
 import { useLanguage } from "./i18n/LanguageContext.jsx";
 
-// Los dos minijuegos (canvas de cohetes + memorama) no son parte del
+// Los tres minijuegos (canvas de cohetes + memorama + sopa de letras) no son parte del
 // recorrido principal, así que la sección entera se carga bajo demanda en
 // vez de ir en el bundle inicial. El fallback (JuegosLoading) reserva la
 // altura aproximada de la sección para que el contenido de abajo
@@ -72,6 +73,7 @@ export default function App() {
         <Hero onOpenBooks={() => setBooksModalOpen(true)} onOpenPrivacy={openPrivacy} booksTriggerRef={booksTriggerRef} />
         <Bienvenida />
         <VisitInfo />
+        <Marquesina />
         <Suspense fallback={<JuegosLoading />}>
           <Juegos />
         </Suspense>

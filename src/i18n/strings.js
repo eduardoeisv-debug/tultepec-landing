@@ -358,6 +358,9 @@ export const STRINGS = {
   "juegos.tabs.torito": { es: "Laberinto del torito", en: "Torito maze" },
   "juegos.tabs.toritoCorto": { es: "Torito", en: "Maze" },
   "juegos.tabs.memorama": { es: "Memorama", en: "Memory game" },
+  "juegos.tabs.memoramaCorto": { es: "Cartas", en: "Cards" },
+  "juegos.tabs.sopa": { es: "Sopa de letras", en: "Word search" },
+  "juegos.tabs.sopaCorto": { es: "Sopa", en: "Words" },
 
   "juegos.torito.titulo": { es: "Ayuda al torito", en: "Help the torito" },
   "juegos.torito.texto": {
@@ -431,4 +434,23 @@ export const STRINGS = {
   "juegos.memorama.carta.bengala": { es: "Bengala", en: "Sparkler" },
   "juegos.memorama.carta.papel": { es: "Papel picado", en: "Papel picado" },
   "juegos.memorama.carta.parroquia": { es: "Parroquia", en: "Parish church" },
+
+  "juegos.sopa.titulo": { es: "Sopa de letras", en: "Word search" },
+  "juegos.sopa.texto": {
+    es: "Encuentra las 10 palabras de Tultepec. Toca la primera y la última letra de cada una; pueden estar en horizontal, vertical, diagonal o al revés.",
+    en: "Find the 10 words from Tultepec. Tap the first and last letter of each one; they can run horizontally, vertically, diagonally or backwards.",
+  },
+  "juegos.sopa.encontradas": { es: "Encontradas", en: "Found" },
+  "juegos.sopa.reiniciar": { es: "Nueva sopa", en: "New puzzle" },
+  "juegos.sopa.jugarOtraVez": { es: "Jugar otra vez", en: "Play again" },
+  "juegos.sopa.tableroAriaLabel": { es: "Tablero de la sopa de letras", en: "Word search board" },
+  "juegos.sopa.celdaAriaLabel": { es: "Letra {letra}, fila {fila}, columna {columna}", en: "Letter {letra}, row {fila}, column {columna}" },
+  "juegos.sopa.palabrasAriaLabel": { es: "Palabras por encontrar", en: "Words to find" },
+  "juegos.sopa.finTitulo": { es: "¡Completaste la sopa!", en: "You solved the puzzle!" },
+  "juegos.sopa.finTexto": { es: "Eres un experto pirotécnico.", en: "You're a true fireworks expert." },
+
+  "marquesina.texto": {
+    es: "Tultepec · Capital de la Pirotecnia · Arte que ilumina el cielo",
+    en: "Tultepec · Capital of Fireworks · Art that lights up the sky",
+  },
 };
