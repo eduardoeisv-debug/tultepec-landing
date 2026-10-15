@@ -222,10 +222,11 @@ export const STRINGS = {
     es: "Tres publicaciones ya disponibles para quien quiera llevarse la memoria del pueblo más allá de esta página.",
     en: "Three publications already available for anyone who wants to take the town's memory beyond this page.",
   },
-  "booksModal.whatsapp": { es: "Preguntar por WhatsApp", en: "Ask via WhatsApp" },
+  "booksModal.preguntarA": { es: "Preguntar a {nombre} por WhatsApp", en: "Ask {nombre} via WhatsApp" },
+  "booksModal.numeroPendiente": { es: "Número por confirmar", en: "Number pending confirmation" },
   "booksModal.note": {
-    es: "Número de contacto por WhatsApp pendiente de confirmar.",
-    en: "WhatsApp contact number still pending confirmation.",
+    es: "El número de WhatsApp de la profesora Juana Antonieta está pendiente de confirmar; mientras tanto, puedes escribirle al profesor Fernando.",
+    en: "Juana Antonieta's WhatsApp number is still pending confirmation; in the meantime, you can message Fernando.",
   },
   "booksModal.portadaAlt": {
     es: "Portada de Memorias de mi Pueblo, tomo {tomo}",

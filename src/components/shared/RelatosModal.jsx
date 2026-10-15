@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { LIBROS, WHATSAPP_NUMBER } from "../../data/libros.js";
+import { LIBROS, CONTACTOS } from "../../data/libros.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
@@ -148,14 +148,18 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
     });
   };
 
-  const waLink = (libro) => {
+  const waLink = (libro, numero) => {
     const tomoLabel = language === "en" ? `volume ${libro.tomo}` : `tomo ${libro.tomo}`;
     const message =
       language === "en"
         ? `Hi, I'm interested in the book ${pick(libro.titulo)}, ${tomoLabel}.`
         : `Hola, me interesa el libro ${pick(libro.titulo)}, ${tomoLabel}.`;
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
   };
+
+  // Primer nombre de pila, para que quepa como texto del botón -- el
+  // nombre completo y el rol van en el aria-label.
+  const primerNombre = (nombre) => nombre.split(" ")[0];
 
   return (
     <div className={`relatos-overlay__backdrop ${closing ? "is-closing" : ""}`} onMouseDown={requestClose}>
@@ -230,10 +234,32 @@ export default function RelatosModal({ open, onClose, triggerRef }) {
                       {libro.descripcion && <p className="book-card__description">{pick(libro.descripcion)}</p>}
                       {libro.precio && <span className="book-card__price">{libro.precio}</span>}
 
-                      <a className="book-card__whatsapp" href={waLink(libro)} target="_blank" rel="noopener noreferrer">
-                        <span className="book-card__whatsapp-icon">{WhatsAppIcon}</span>
-                        {t("booksModal.whatsapp")}
-                      </a>
+                      <div className="book-card__contactos">
+                        {CONTACTOS.map((contacto) =>
+                          contacto.numero ? (
+                            <a
+                              key={contacto.nombre}
+                              className="book-card__whatsapp"
+                              href={waLink(libro, contacto.numero)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={t("booksModal.preguntarA", { nombre: contacto.nombre })}
+                            >
+                              <span className="book-card__whatsapp-icon">{WhatsAppIcon}</span>
+                              {primerNombre(contacto.nombre)}
+                            </a>
+                          ) : (
+                            <span
+                              key={contacto.nombre}
+                              className="book-card__whatsapp book-card__whatsapp--pendiente"
+                              title={`${contacto.nombre} — ${t("booksModal.numeroPendiente")}`}
+                            >
+                              <span className="book-card__whatsapp-icon">{WhatsAppIcon}</span>
+                              {primerNombre(contacto.nombre)}
+                            </span>
+                          )
+                        )}
+                      </div>
                     </div>
                   </article>
                 ))}

@@ -7,7 +7,7 @@
 //
 // TODO (pendiente de confirmar, no inventar):
 // - Autor/es, descripción breve y precio de cada tomo.
-// - WHATSAPP_NUMBER: reemplazar con el número real de contacto.
+// - Número de WhatsApp de Juana Antonieta Zúñiga Urbán (CONTACTOS más abajo).
 // - libro-3.jpeg se fotografió con un ligero ángulo/rotación, lo que deja
 //   una cuña oscura de fondo visible en las esquinas superiores que un
 //   recorte rectangular simple no puede quitar sin cortar la portada real.
@@ -17,9 +17,25 @@
 //   portadas es arte original de la ilustración (lunas, siluetas), no
 //   fondo de foto.
 
-// Formato internacional, solo dígitos (sin "+", espacios ni guiones).
-// Ejemplo real: "5215512345678" (52 = México, 1 = celular, resto el número).
-export const WHATSAPP_NUMBER = "5210000000000"; // TODO: reemplazar con el número real
+// Dos personas del grupo "Memorias de mi Pueblo" atienden las preguntas
+// sobre los libros por WhatsApp. `numero` en formato internacional, solo
+// dígitos (sin "+", espacios ni guiones): 52 = México, 1 = celular,
+// resto el número -- ejemplo real: "5215512345678". Mientras no se
+// confirme el número de alguien, se deja en null (no inventar) y
+// RelatosModal.jsx muestra su nombre sin enlace, en vez de un número
+// inventado.
+export const CONTACTOS = [
+  {
+    nombre: "Fernando Manuel Torices Ramírez",
+    rol: { es: "Profesor", en: "Teacher" },
+    numero: "5215531251510",
+  },
+  {
+    nombre: "Juana Antonieta Zúñiga Urbán",
+    rol: { es: "Profesora", en: "Teacher" },
+    numero: null, // TODO: reemplazar cuando se confirme
+  },
+];
 
 export const LIBROS = [
   {

@@ -293,8 +293,17 @@
   font-size: 0.98rem;
 }
 
-.book-card__whatsapp {
+/* Dos contactos por libro (CONTACTOS en libros.js) -- flex-wrap para que
+   en una tarjeta angosta el segundo botón baje a su propia línea en vez
+   de encimarse. */
+.book-card__contactos {
   margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.book-card__whatsapp {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -316,6 +325,17 @@
 .book-card__whatsapp:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
+}
+
+/* Contacto sin número confirmado todavía: mismo tamaño/forma que el
+   botón real para que la fila no brinque cuando se complete el dato,
+   pero sin verde ni sombra -- de un vistazo se nota que no es
+   accionable (no es un <a>, tampoco lleva href). */
+.book-card__whatsapp--pendiente {
+  background: rgba(251, 241, 226, 0.08);
+  color: rgba(251, 241, 226, 0.55);
+  box-shadow: none;
+  cursor: default;
 }
 
 .book-card__whatsapp-icon {
