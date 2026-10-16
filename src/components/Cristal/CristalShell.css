@@ -1,0 +1,69 @@
+/* Paleta propia de Menú Cristal -- los tonos de cristal (fondos
+   translúcidos, línea divisoria) no tienen ningún token cercano en
+   variables.css porque son específicos de este vidrio esmerilado; el
+   resto (dorado, rosa, turquesa, noche) si reutiliza los tokens del
+   proyecto directamente en cada archivo en vez de redefinirlos aquí. */
+.cristal-root {
+  --cristal-glass: rgba(12, 12, 34, 0.72);
+  --cristal-glass2: rgba(40, 36, 80, 0.72);
+  --cristal-glass-movil: rgba(14, 14, 38, 0.97);
+  --cristal-soft: #c9c6e4;
+  --cristal-line: rgba(246, 238, 226, 0.22);
+
+  position: relative;
+  min-height: 100vh;
+  color: var(--color-paper);
+  background:
+    radial-gradient(900px 520px at 78% 78%, rgba(227, 171, 61, 0.45), transparent 65%),
+    radial-gradient(800px 560px at 55% 62%, rgba(255, 45, 138, 0.3), transparent 70%),
+    radial-gradient(700px 500px at 25% 30%, rgba(43, 196, 180, 0.18), transparent 70%),
+    linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+  background-attachment: fixed;
+}
+
+.cristal-root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.08) 1.4px, transparent 1.8px) 0 0 / 46px 46px,
+    radial-gradient(rgba(255, 214, 120, 0.12) 2px, transparent 2.6px) 23px 23px / 92px 92px;
+}
+
+.cristal-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.cristal-stage {
+  position: relative;
+  min-width: 0;
+  padding: 0 max(20px, 3vw) 3rem;
+}
+
+/* Sin sangrado a los lados (nada de márgenes negativos): a 390px el
+   110%/-5% interno de HeroPapelPicado.css ya se acerca al borde del
+   viewport, y un margen negativo aquí encima lo empujaba a desbordar
+   la página por 1px -- mejor quedarse dentro del padding del stage
+   que arriesgar scroll horizontal. */
+.cristal-stage__papel {
+  position: relative;
+}
+
+@media (max-width: 700px) {
+  .cristal-shell {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+  .cristal-stage {
+    padding: 0 0.7rem 2.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cristal-root {
+    background-attachment: scroll;
+  }
+}

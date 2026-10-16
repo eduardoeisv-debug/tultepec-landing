@@ -18,7 +18,7 @@ import "../../shared/GaleriaOverlay.css";
 // como una capa propia encima de todo (con su propio atrapa-foco y
 // Escape), porque sigue siendo una ventana que se abre y se cierra,
 // nada más que ya no está anidada dentro de OTRA ventana modal.
-export default function GaleriaView({ titleRef }) {
+export default function GaleriaView() {
   const { t, pick } = useLanguage();
   const [tab, setTab] = useState("imagenes");
   const [chip, setChip] = useState("todas");
@@ -116,13 +116,8 @@ export default function GaleriaView({ titleRef }) {
   const activeLightboxPhoto = lightboxIndex !== null ? filteredPhotos[lightboxIndex] : null;
 
   return (
-    <div className="panel-view">
-      <header className="panel-view__head">
-        <h1 className="panel-view__titulo" id="galeria-title" tabIndex={-1} ref={titleRef}>
-          {t("galeria.title")}
-        </h1>
-        <p>{t("galeria.subtitle")}</p>
-      </header>
+    <div className="panel-view panel-view--anidada">
+      <p className="panel-view__subtitulo-anidado">{t("galeria.subtitle")}</p>
 
       <SegmentedTabs
         idPrefix="galeria"

@@ -11,13 +11,24 @@ function leerRuta() {
 
   const partes = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
   const [itemId, hijoId] = partes;
+
+  // "#/inicio" es un alias explícito del hash vacío (el prompt de
+  // Menú Cristal lo pide en su lista de rutas) -- misma vista, mismo
+  // itemId null.
+  if (itemId === "inicio") return { itemId: null, hijoId: null };
+  // El aviso de privacidad no vive en MENU (no es una fila del menú,
+  // es el botón de escudo de la columna) pero sí es una ruta real.
+  if (itemId === "privacidad") return { itemId: "privacidad", hijoId: null };
+
   const item = MENU.find((i) => i.id === itemId);
   if (!item) return { itemId: null, hijoId: null };
 
   if (item.hijos) {
     const hijo = item.hijos.find((h) => h.id === hijoId);
-    if (!hijo) return { itemId: null, hijoId: null };
-    return { itemId, hijoId };
+    // "#/pirotecnia" a secas (o un hijo que ya no existe) no es un
+    // enlace roto -- se queda en el grupo y abre su primera pestaña,
+    // igual que si se hubiera hecho clic en la fila del menú.
+    return { itemId, hijoId: hijo ? hijoId : item.hijos[0].id };
   }
   // Item directo (sin hijos): un hijoId en la URL no debería existir,
   // pero si alguien lo escribe a mano no es razón para mandarlo a

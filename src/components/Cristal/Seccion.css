@@ -1,0 +1,92 @@
+.cristal-sec {
+  max-width: 820px;
+  margin: 3.2rem auto 0;
+  padding-bottom: 1rem;
+}
+
+.cristal-sec__pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
+.cristal-sec__titulo {
+  margin: 0.4rem 0 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  color: var(--color-paper);
+}
+
+.cristal-sec__titulo:focus-visible,
+.cristal-sec__titulo:focus {
+  outline: none;
+}
+
+.cristal-sec__proximamente {
+  color: var(--cristal-soft, rgba(251, 241, 226, 0.7));
+  max-width: 60ch;
+}
+
+.cristal-sec__cargando {
+  min-height: 30vh;
+}
+
+.cristal-sec__cta {
+  margin: 3rem 0 0;
+}
+
+@media (max-width: 700px) {
+  .cristal-sec {
+    margin-top: 2rem;
+  }
+}
+
+/* El aviso de privacidad (PrivacidadContenido.jsx) reutiliza
+   PrivacyModal.css tal cual, pero ese CSS asume el modal claro de
+   siempre (fondo crema, texto oscuro) -- aquí vive sobre el fondo
+   oscuro de Menú Cristal, así que se reemplazan sus colores de texto
+   por los claros del resto de esta columna sin tocar PrivacyModal.css
+   (que el modal de verdad sigue usando donde sea que quede). Selector
+   compuesto (.privacy-modal__body.privacy-modal__body--pagina, no solo
+   el modificador) a propósito: con la misma especificidad que
+   .privacy-modal__body, cuál de las dos gana depende del orden en que
+   Vite concatene los CSS -- esto lo deja fuera de duda. */
+.privacy-modal__body.privacy-modal__body--pagina {
+  color: rgba(251, 241, 226, 0.82);
+}
+
+.privacy-modal__body.privacy-modal__body--pagina h2,
+.privacy-modal__body.privacy-modal__body--pagina strong,
+.privacy-modal__body.privacy-modal__body--pagina > p:first-of-type {
+  color: var(--color-paper);
+}
+
+.privacy-modal__body.privacy-modal__body--pagina p:has(> em:only-child) {
+  color: rgba(251, 241, 226, 0.6);
+}
+
+.privacy-modal__body.privacy-modal__body--pagina hr {
+  border-top-color: var(--cristal-line, rgba(251, 241, 226, 0.22));
+}
+
+.privacy-modal__body.privacy-modal__body--pagina a {
+  color: var(--color-gold-light);
+}
+
+.privacy-modal__body.privacy-modal__body--pagina .privacy-modal__table-wrap {
+  border-color: var(--cristal-line, rgba(251, 241, 226, 0.22));
+}
+
+.privacy-modal__body.privacy-modal__body--pagina th,
+.privacy-modal__body.privacy-modal__body--pagina td {
+  border-bottom-color: rgba(251, 241, 226, 0.14);
+  color: inherit;
+}
+
+.privacy-modal__body.privacy-modal__body--pagina thead th {
+  color: var(--color-paper);
+  background: rgba(251, 241, 226, 0.06);
+}

@@ -10,8 +10,9 @@
 
 .footer__grid {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 1.1fr;
   gap: var(--space-lg);
+  align-items: start;
   padding-bottom: var(--space-md);
   border-bottom: 1px solid rgba(251, 241, 226, 0.12);
 }
@@ -28,52 +29,62 @@
   font-size: 0.9rem;
 }
 
+.footer__disclaimer {
+  margin-top: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(251, 241, 226, 0.55);
+}
+
+/* Tarjeta del agradecimiento especial -- arriba a la derecha en
+   escritorio, debajo del nombre/aviso en celular (ver el breakpoint
+   más abajo). */
+.footer__agradecimiento-card {
+  padding: 1.1rem 1.3rem;
+  border: 1px solid rgba(251, 241, 226, 0.14);
+  border-radius: 16px;
+  background: var(--color-footer-card-bg);
+}
+
 .footer__thanks {
-  margin-top: 1.3rem;
-  padding-left: 1rem;
-  border-left: 2px solid rgba(227, 171, 61, 0.4);
+  margin: 0;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--color-gold-light);
-  max-width: 34ch;
 }
 
 .footer__thanks strong {
   color: var(--color-paper);
+  font-style: normal;
 }
 
-.footer__meta p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin-bottom: 0.7rem;
-}
-
+/* Barra inferior en tres partes: logo+"Hecho por EA" a la izquierda,
+   © al centro, aviso de privacidad a la derecha. */
 .footer__bottom {
   padding-top: var(--space-md);
-  font-size: 0.9rem;
-  color: rgba(251, 241, 226, 0.5);
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  gap: 0.6rem;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+  color: rgba(251, 241, 226, 0.5);
 }
 
 .footer__signature {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.7rem;
-  padding-top: var(--space-md);
-  text-align: center;
+  gap: 0.6rem;
+  flex: 1 1 0;
 }
 
 .footer__signature-seal {
   display: block;
-  width: 96px;
-  height: 96px;
-  border-radius: 20px;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(243, 205, 122, 0.55);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
@@ -88,7 +99,7 @@
 }
 
 .footer__signature-text {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: rgba(251, 241, 226, 0.55);
 }
 
@@ -97,7 +108,14 @@
   font-weight: 700;
 }
 
+.footer__copyright {
+  flex: 1 1 0;
+  text-align: center;
+}
+
 .footer__privacy-link {
+  flex: 1 1 0;
+  text-align: right;
   background: none;
   border: none;
   padding: 0;
@@ -106,7 +124,6 @@
   color: var(--color-gold-light);
   text-decoration: underline;
   text-underline-offset: 2px;
-  transition: color 0.2s var(--ease-out);
 }
 
 .footer__privacy-link:hover {
@@ -121,5 +138,18 @@
 @media (max-width: 720px) {
   .footer__grid {
     grid-template-columns: 1fr;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer__signature,
+  .footer__copyright,
+  .footer__privacy-link {
+    flex: none;
+    text-align: center;
+    justify-content: center;
   }
 }

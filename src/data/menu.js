@@ -88,15 +88,15 @@ const MENU = [
     ],
   },
   {
+    // Sin hijos a propósito en Menú Cristal: el prompt pide "Juegos...
+    // sin subopciones" en la columna -- el selector entre los 3 juegos
+    // vive DENTRO de la vista (JuegosSeccion.jsx), no como flyout.
     id: "juegos",
     label: "menu.item.juegos",
     icon: Gamepad2,
     degradado: ["var(--color-gold-light)", "var(--color-pink)"],
-    hijos: [
-      { id: "torito", label: "menu.opcion.torito", soon: false },
-      { id: "memorama", label: "menu.opcion.memorama", soon: false },
-      { id: "sopa", label: "menu.opcion.sopa", soon: false },
-    ],
+    hijos: null,
+    soon: false,
   },
   {
     id: "agradecimientos",

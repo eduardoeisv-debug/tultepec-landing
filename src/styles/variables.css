@@ -22,6 +22,9 @@
      lo bastante cercanos a estos dos para reutilizarlos. */
   --color-menu-row-bg: #171937;
   --color-menu-row-border: #2d3060;
+  /* Tarjeta de agradecimiento del pie (Footer.jsx): tampoco hay un
+     tono existente lo bastante cercano a este morado-noche. */
+  --color-footer-card-bg: #0f1030;
 
   /* Semantic */
   --bg-page: var(--color-paper);

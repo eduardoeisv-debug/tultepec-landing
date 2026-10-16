@@ -499,4 +499,23 @@ export const STRINGS = {
     es: "Esta es la versión 1.0 del sitio: ya reúne la historia del pueblo, la galería de imágenes, las memorias y relatos compartidos por la comunidad, el calendario de fiestas, cómo llegar y los primeros juegos. Seguirá creciendo con nuevas secciones.",
     en: "This is version 1.0 of the site: it already brings together the town's history, the image gallery, memories and stories shared by the community, the festival calendar, how to get here, and the first games. It will keep growing with new sections.",
   },
+
+  // Menú Cristal (src/components/Cristal/): columna fija + flyouts +
+  // vista de Inicio con accesos, pasos y novedades.
+  "cristal.marca.sub": { es: "Pueblo Pirotécnico", en: "Firework-Making Town" },
+  "cristal.inicio.bienvenidosA": { es: "Bienvenidos a", en: "Welcome to" },
+  "cristal.paso": { es: "Paso", en: "Step" },
+  "cristal.novedades.titulo": { es: "Últimas novedades", en: "Latest updates" },
+  "cristal.novedades.memoriasSub": { es: "Tomo I", en: "Volume I" },
+  "cristal.novedades.galeriaSub": { es: "Fotos y videos", en: "Photos and videos" },
+  "cristal.novedades.calendarioSub": { es: "Próximos eventos", en: "Upcoming events" },
+  "cristal.novedades.juegosSub": { es: "3 juegos", en: "3 games" },
+  "cristal.novedades.agradecimientosSub": { es: "Gracias", en: "Thank you" },
+  "cristal.tiles.calendarioSub": { es: "Feria Nacional", en: "National Fair" },
+  "cristal.tiles.memoriasSub": { es: "Recuerdos", en: "Memories" },
+  "cristal.seccion.proximamente": {
+    es: "Esta sección se está preparando. Vuelve pronto para verla.",
+    en: "This section is being prepared. Check back soon.",
+  },
+  "cristal.privacidad.titulo": { es: "Aviso de privacidad", en: "Privacy notice" },
 };

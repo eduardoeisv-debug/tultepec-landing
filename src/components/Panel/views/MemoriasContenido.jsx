@@ -19,7 +19,7 @@ const LONG_FRAGMENT_THRESHOLD = 350;
 // "Comparte tu historia" -- con el mismo contenido, solo cambia qué
 // pestaña arranca abierta (`initialTab`), igual que antes cambiaba
 // según el hash (#memorias / #voces / #comparte-memoria).
-export default function MemoriasContenido({ initialTab = "memorias", titleRef, onOpenPrivacy }) {
+export default function MemoriasContenido({ initialTab = "memorias", onOpenPrivacy }) {
   const { t, language } = useLanguage();
   const [tab, setTab] = useState(initialTab);
   const [libroFiltro, setLibroFiltro] = useState(1);
@@ -48,14 +48,7 @@ export default function MemoriasContenido({ initialTab = "memorias", titleRef, o
   };
 
   return (
-    <div className="panel-view">
-      <header className="panel-view__head">
-        <span className="eyebrow eyebrow--light">{t("memoriesModal.eyebrow")}</span>
-        <h1 className="panel-view__titulo" tabIndex={-1} ref={titleRef}>
-          {t("memoriesModal.title")}
-        </h1>
-      </header>
-
+    <div className="panel-view panel-view--anidada">
       <SegmentedTabs
         idPrefix="memories"
         ariaLabel={t("memoriesModal.tabs.ariaLabel")}

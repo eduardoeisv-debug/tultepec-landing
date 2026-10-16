@@ -19,7 +19,7 @@ const WhatsAppIcon = (
 // sin la ventana modal alrededor. Arranca en "Los libros" (es lo que
 // pide "Memorias > Relatos escritos" en el menú), pero "Quiénes somos"
 // se queda a un clic, igual que antes.
-export default function RelatosView({ titleRef }) {
+export default function RelatosView() {
   const { t, pick, language } = useLanguage();
   const [tab, setTab] = useState("libros");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -74,14 +74,7 @@ export default function RelatosView({ titleRef }) {
   const etiquetaContacto = (contacto) => `${pick(contacto.rol)} ${contacto.nombre.split(" ")[0]}`;
 
   return (
-    <div className="panel-view">
-      <header className="panel-view__head">
-        <span className="eyebrow eyebrow--light">{t("hero.card.books.title")}</span>
-        <h1 className="panel-view__titulo" tabIndex={-1} ref={titleRef}>
-          {t("relatos.title")}
-        </h1>
-      </header>
-
+    <div className="panel-view panel-view--anidada">
       <SegmentedTabs
         idPrefix="relatos"
         ariaLabel={t("relatos.tabs.ariaLabel")}
