@@ -43,6 +43,13 @@
   font-weight: 500;
 }
 
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
 @media (max-width: 640px) {
   .site-header__inner {
     padding-top: 0.6rem;

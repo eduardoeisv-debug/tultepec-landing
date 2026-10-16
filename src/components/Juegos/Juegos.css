@@ -5,6 +5,9 @@
   background: var(--color-night-900);
   color: var(--color-paper);
   padding: var(--space-xl) 0;
+  /* Para que el menú "Explora" del encabezado fijo pueda enlazar aquí
+     sin que la franja de arriba quede tapada. */
+  scroll-margin-top: 80px;
 }
 
 .juegos__inner {

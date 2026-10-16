@@ -9,6 +9,10 @@
   color: var(--color-paper);
   text-align: center;
   padding: var(--space-xl) 0;
+  /* Para que el menú "Explora" del encabezado fijo pueda enlazar aquí
+     ("Me gusta, comenta y comparte" del cajón móvil) sin que la franja
+     de arriba quede tapada. */
+  scroll-margin-top: 80px;
 }
 
 .final-cta__content {

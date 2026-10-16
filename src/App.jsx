@@ -1,10 +1,11 @@
-import { lazy, Suspense, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header/Header.jsx";
 import Hero from "./components/Hero/Hero.jsx";
 import Bienvenida from "./components/Bienvenida/Bienvenida.jsx";
 import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
 import FuegoTexto from "./components/shared/FuegoTexto.jsx";
+import ExploraTultepec from "./components/ExploraTultepec/ExploraTultepec.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
 import JuegosLoading from "./components/Juegos/JuegosLoading.jsx";
 import Footer from "./components/Footer/Footer.jsx";
@@ -49,6 +50,24 @@ export default function App() {
 
   useHashScrollFix();
 
+  // El menú "Explora" enlaza a "Relatos escritos" con "#relatos-escritos"
+  // (src/data/menu.js) -- RelatosModal.jsx ya usa "#relatos/historia" y
+  // "#relatos/libros" para su propia pestaña interna una vez abierto,
+  // así que aquí se usa un hash distinto para abrirlo desde cero, igual
+  // que Hero.jsx ya hace con "#galeria/...", "#memorias", etc.
+  useEffect(() => {
+    const syncFromHash = () => {
+      if (window.location.hash === "#relatos-escritos") {
+        booksTriggerRef.current = document.activeElement;
+        setBooksModalOpen(true);
+      }
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // El aviso de privacidad se abre desde dos sitios distintos (el pie y
   // el enlace dentro del formulario "Comparte tu memoria", este último
   // anidado en otro modal) -- en vez de pasar una ref por cada posible
@@ -74,6 +93,7 @@ export default function App() {
         <Bienvenida />
         <VisitInfo />
         <FuegoTexto />
+        <ExploraTultepec />
         <Suspense fallback={<JuegosLoading />}>
           <Juegos />
         </Suspense>

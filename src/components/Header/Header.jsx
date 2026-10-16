@@ -1,5 +1,6 @@
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import LanguageSwitcher from "../../i18n/LanguageSwitcher.jsx";
+import ExploraMenu from "./ExploraMenu.jsx";
 import "./Header.css";
 
 export default function Header() {
@@ -14,7 +15,10 @@ export default function Header() {
             <span className="site-header__subtitle">· {t("header.subtitle")}</span>
           </span>
         </a>
-        <LanguageSwitcher />
+        <div className="site-header__actions">
+          <ExploraMenu />
+          <LanguageSwitcher />
+        </div>
       </div>
     </header>
   );

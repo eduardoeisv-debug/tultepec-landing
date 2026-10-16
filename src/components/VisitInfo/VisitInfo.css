@@ -7,6 +7,9 @@
      generaba un hueco grande antes de "La memoria del pueblo sigue
      encendida". */
   padding: var(--space-xl) 0 var(--space-lg);
+  /* Para que el menú "Explora" del encabezado fijo pueda enlazar aquí
+     sin que la franja de arriba quede tapada. */
+  scroll-margin-top: 80px;
 }
 
 .visit-info::before {

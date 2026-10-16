@@ -15,7 +15,7 @@ export default function FinalCTA() {
   const commentTriggerRef = useRef(null);
 
   return (
-    <section className="final-cta" ref={ref}>
+    <section className="final-cta" id="interactua" ref={ref}>
       <SparkField count={14} />
       <div className="container final-cta__content reveal">
         <h2>{t("finalCta.title")}</h2>

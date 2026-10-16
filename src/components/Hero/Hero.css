@@ -22,6 +22,10 @@
      ScrollCue de abajo. */
   padding: calc(var(--space-xl) + 1rem) 0 var(--space-xl);
   overflow: hidden;
+  /* Para que el menú "Explora" del encabezado fijo pueda enlazar aquí
+     ("Inicio" del cajón móvil) sin que la franja de arriba quede
+     tapada. */
+  scroll-margin-top: 80px;
 }
 
 .hero::before {
@@ -180,6 +184,49 @@
   justify-content: center;
   align-items: stretch;
   gap: 0.65rem;
+}
+
+/* Tres atajos, uno por grupo del menú "Explora" (src/data/menu.js):
+   bajan hasta la sección "Explora Tultepec" y abren ese grupo (el
+   ancla coincide con el id del grupo ahí, ver ExploraTultepec.jsx). */
+.hero__atajos {
+  margin-top: var(--space-sm);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.hero__atajo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 36px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 241, 226, 0.3);
+  color: var(--color-paper);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.15s var(--ease-out), color 0.15s var(--ease-out), transform 0.15s var(--ease-out);
+}
+
+.hero__atajo:hover {
+  border-color: var(--color-gold-light);
+  color: var(--color-gold-light);
+  transform: translateY(-1px);
+}
+
+.hero__atajo:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__atajo {
+    transition: none;
+  }
 }
 
 .hero__card-item {

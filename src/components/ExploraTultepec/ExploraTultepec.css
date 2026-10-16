@@ -1,0 +1,122 @@
+/* Espejo en la página del menú "Explora" del encabezado -- mismo tono
+   noche que Juegos/FinalCTA, sin degradado propio de transición porque
+   FuegoTexto ya resuelve el salto de color entre secciones vecinas. */
+.explora-tultepec {
+  position: relative;
+  background: var(--color-night-900);
+  color: var(--color-paper);
+  padding: var(--space-xl) 0;
+  /* El encabezado fijo no debe tapar el título al llegar por un ancla
+     (atajos del hero, menú del encabezado). */
+  scroll-margin-top: 80px;
+}
+
+.explora-tultepec__inner {
+  position: relative;
+  z-index: 4;
+}
+
+.explora-tultepec .section-head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.explora-tultepec__subtitle {
+  margin-top: var(--space-xs);
+  color: rgba(251, 241, 226, 0.75);
+}
+
+.explora-tultepec__grid {
+  margin-top: var(--space-lg);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.explora-tultepec__grupo {
+  border: 1px solid rgba(251, 241, 226, 0.14);
+  border-radius: var(--radius-md);
+  background: rgba(251, 241, 226, 0.04);
+  overflow: hidden;
+  /* El encabezado fijo no debe tapar el grupo al llegar por su propio
+     atajo del hero (#explora-conoce, #explora-vive, #explora-planea). */
+  scroll-margin-top: 90px;
+}
+
+.explora-tultepec__cabecera {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 1rem 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-paper);
+}
+
+.explora-tultepec__cabecera--fija {
+  cursor: default;
+  border-bottom: 1px solid rgba(251, 241, 226, 0.14);
+}
+
+.explora-tultepec__cabecera:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: -2px;
+}
+
+.explora-tultepec__flecha {
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.explora-tultepec__flecha.is-abierta {
+  transform: rotate(180deg);
+}
+
+/* Mismo truco de grid-template-rows 0fr/1fr que la nota de Bienvenida
+   (ver Bienvenida.css) -- anima la altura de un bloque de alto
+   desconocido sin medirlo en JS. En escritorio `expandido` siempre es
+   true (ver ExploraTultepec.jsx), así que esta misma regla ya deja el
+   contenido abierto sin necesitar un camino de CSS aparte. */
+.explora-tultepec__contenido {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
+}
+
+.explora-tultepec__contenido.is-abierta {
+  grid-template-rows: 1fr;
+}
+
+.explora-tultepec__contenido-inner {
+  overflow: hidden;
+  min-height: 0;
+  padding: 0 1.2rem 1.2rem;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 900px) {
+  .explora-tultepec__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .explora-tultepec__contenido-inner {
+    padding-top: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explora-tultepec__contenido {
+    transition: none;
+  }
+  .explora-tultepec__flecha {
+    transition: none;
+  }
+}

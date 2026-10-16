@@ -16,6 +16,7 @@
   --color-gold-light: #f3cd7a;
   --color-fire-red: #d7263d;
   --color-fire-red-dark: #a81b2d;
+  --color-pink: #ff2d8a;
 
   /* Semantic */
   --bg-page: var(--color-paper);

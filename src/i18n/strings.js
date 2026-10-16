@@ -454,4 +454,55 @@ export const STRINGS = {
     es: "Tultepec · Capital de Pirotecnia · Arte que ilumina el cielo",
     en: "Tultepec · Capital of Fireworks · Art that lights up the sky",
   },
+
+  // Menú "Explora" (botón del encabezado, panel de escritorio, cajón
+  // móvil y la sección espejo "Explora Tultepec") -- datos en
+  // src/data/menu.js, ver TODOs ahí para lo que falta confirmar.
+  "explora.boton": { es: "Explora", en: "Explore" },
+  "explora.botonAriaLabel": { es: "Abrir el menú Explora", en: "Open the Explore menu" },
+  "explora.botonCerrarAriaLabel": { es: "Cerrar el menú Explora", en: "Close the Explore menu" },
+  "explora.panelAriaLabel": { es: "Menú Explora", en: "Explore menu" },
+  "explora.drawer.titulo": { es: "Menú", en: "Menu" },
+  "explora.drawer.inicio": { es: "Inicio", en: "Home" },
+  "explora.drawer.interactuar": { es: "Me gusta, comenta y comparte", en: "Like, comment and share" },
+  "explora.proximamente": { es: "Próximamente", en: "Coming soon" },
+  "explora.grupoAriaLabel": { es: "Grupo {grupo}", en: "Group {grupo}" },
+
+  "explora.grupo.conoce": { es: "Conoce nuestra historia", en: "Discover our history" },
+  "explora.grupo.vive": { es: "Vive Tultepec", en: "Experience Tultepec" },
+  "explora.grupo.planea": { es: "Planea, juega…", en: "Plan, play…" },
+
+  "explora.categoria.pirotecnia": { es: "Pirotecnia", en: "Fireworks" },
+  "explora.categoria.memorias": { es: "Memorias", en: "Memories" },
+  "explora.categoria.eventos": { es: "Eventos", en: "Events" },
+  "explora.categoria.gastronomia": { es: "Gastronomía", en: "Food" },
+  "explora.categoria.visitanos": { es: "Visítanos", en: "Visit us" },
+  "explora.categoria.juegos": { es: "Juegos", en: "Games" },
+
+  "explora.opcion.historia": { es: "Historia", en: "History" },
+  "explora.opcion.galeria": { es: "Galería de imágenes", en: "Image gallery" },
+  "explora.opcion.videosTipo": { es: "Videos por tipo", en: "Videos by type" },
+  "explora.opcion.memoriasOficio": { es: "Memorias del oficio", en: "Memories of the craft" },
+  "explora.opcion.memoriasPueblo": { es: "Memorias de mi pueblo", en: "Memories of my town" },
+  "explora.opcion.relatos": { es: "Relatos escritos", en: "Written accounts" },
+  "explora.opcion.comparte": { es: "Comparte tu historia", en: "Share your story" },
+  "explora.opcion.calendario": { es: "Calendario por mes", en: "Calendar by month" },
+  "explora.opcion.fiestasAno": { es: "Fiestas del año", en: "Festivals of the year" },
+  "explora.opcion.fichaEvento": { es: "Ficha de cada evento", en: "Event details" },
+  "explora.opcion.platillos": { es: "Platillos típicos", en: "Local dishes" },
+  "explora.opcion.dondeProbarlos": { es: "Dónde probarlos", en: "Where to try them" },
+  "explora.opcion.comoLlegar": { es: "Cómo llegar", en: "How to get there" },
+  "explora.opcion.mapaRecorridos": { es: "Mapa y recorridos", en: "Map and routes" },
+  "explora.opcion.planeaVisita": { es: "Planea tu visita", en: "Plan your visit" },
+  "explora.opcion.torito": { es: "Laberinto del torito", en: "Torito maze" },
+  "explora.opcion.memorama": { es: "Memorama", en: "Memory game" },
+  "explora.opcion.sopa": { es: "Sopa de letras", en: "Word search" },
+
+  "explora.seccion.eyebrow": { es: "Explora", en: "Explore" },
+  "explora.seccion.title": { es: "Explora Tultepec", en: "Explore Tultepec" },
+  "explora.seccion.subtitle": {
+    es: "Todo lo que puedes descubrir, recorrer y jugar en un solo lugar.",
+    en: "Everything you can discover, explore and play, all in one place.",
+  },
+  "explora.atajoAriaLabel": { es: "Ir al grupo {grupo}", en: "Go to the {grupo} group" },
 };

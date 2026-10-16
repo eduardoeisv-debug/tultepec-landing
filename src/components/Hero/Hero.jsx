@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, RotateCcw, Landmark, Sparkles } from "lucide-react";
+import MENU from "../../data/menu.js";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
@@ -149,6 +150,13 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
         memoriesTriggerRef.current = document.activeElement;
         setMemoriesOpen(true);
       }
+      // "Historia" del menú "Explora" (src/data/menu.js) enlaza con
+      // "#historia" -- mismo mecanismo que arriba, no hay una sección
+      // real con ese id, así que el único efecto del enlace es este.
+      if (hash === "#historia") {
+        historyTriggerRef.current = document.activeElement;
+        setHistoryOpen(true);
+      }
     };
     syncFromHash();
     window.addEventListener("hashchange", syncFromHash);
@@ -250,6 +258,20 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
               </li>
             ))}
           </ul>
+
+          <nav className="hero__atajos hero__enter hero__enter--3" aria-label={t("explora.seccion.title")}>
+            {MENU.map((grupo) => (
+              <a
+                className="hero__atajo"
+                key={grupo.id}
+                href={`#explora-${grupo.id}`}
+                aria-label={t("explora.atajoAriaLabel", { grupo: t(grupo.label) })}
+              >
+                {t(grupo.label)}
+                <ChevronRight size={14} strokeWidth={2.4} aria-hidden="true" />
+              </a>
+            ))}
+          </nav>
         </div>
 
         <div className="hero__visual hero__visual--enter">
