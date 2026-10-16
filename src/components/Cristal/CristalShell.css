@@ -2,14 +2,22 @@
    translúcidos, línea divisoria) no tienen ningún token cercano en
    variables.css porque son específicos de este vidrio esmerilado; el
    resto (dorado, rosa, turquesa, noche) si reutiliza los tokens del
-   proyecto directamente en cada archivo en vez de redefinirlos aquí. */
-.cristal-root {
+   proyecto directamente en cada archivo en vez de redefinirlos aquí.
+   En :root (no en .cristal-root) a propósito: el flyout del menú
+   (ColumnaCristal.jsx) se monta con un portal a document.body, fuera
+   del árbol de .cristal-root -- ahí abajo no vería estas variables y
+   se quedaba sin fondo ni borde (texto transparente encima de lo que
+   hubiera detrás). Como custom properties de CSS, document.body SÍ
+   hereda de :root aunque el portal lo saque del árbol de React. */
+:root {
   --cristal-glass: rgba(12, 12, 34, 0.72);
   --cristal-glass2: rgba(40, 36, 80, 0.72);
   --cristal-glass-movil: rgba(14, 14, 38, 0.97);
   --cristal-soft: #c9c6e4;
   --cristal-line: rgba(246, 238, 226, 0.22);
+}
 
+.cristal-root {
   position: relative;
   min-height: 100vh;
   color: var(--color-paper);
@@ -39,6 +47,14 @@
 }
 
 .cristal-stage {
+  /* Fijo en la 2ª columna a propósito: cuando la columna se oculta en
+     celular (.cristal-col--oculta, display:none -- ver
+     ColumnaCristal.css), deja de contar para la colocación automática
+     de la rejilla, y sin esto el stage pasaba a ocupar la 1ª columna
+     (150px, el ancho de la columna) en vez de la que le toca -- el
+     contenido se veía apretado a la izquierda en vez de a lo ancho de
+     toda la pantalla. */
+  grid-column: 2;
   position: relative;
   min-width: 0;
   padding: 0 max(20px, 3vw) 3rem;
@@ -59,6 +75,23 @@
   }
   .cristal-stage {
     padding: 0 0.7rem 2.2rem;
+  }
+
+  /* Con la columna oculta (ColumnaCristal.css, .cristal-col--oculta),
+     la pista de 150px de la regla de arriba se queda ahí igual,
+     vacía -- grid-template-columns reserva el espacio exista o no un
+     elemento que lo ocupe. Una sola columna aquí deja que el
+     contenido use la pantalla entera de verdad. Declarada DESPUÉS de
+     la regla de arriba a propósito: misma especificidad (una sola
+     clase cada una), así que sin este orden la de arriba ganaba por
+     venir después en la hoja de estilos y el contenido se quedaba
+     apretado en los 150px de siempre. */
+  .cristal-shell--rail-oculto {
+    grid-template-columns: 1fr;
+  }
+
+  .cristal-shell--rail-oculto .cristal-stage {
+    grid-column: 1;
   }
 }
 

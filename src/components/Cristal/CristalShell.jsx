@@ -162,7 +162,7 @@ export default function CristalShell() {
 
   return (
     <div className="cristal-root">
-      <div className="cristal-shell">
+      <div className={`cristal-shell${ocultaRailMovil ? " cristal-shell--rail-oculto" : ""}`}>
         <ColumnaCristal
           ruta={ruta}
           onCompartir={onCompartir}

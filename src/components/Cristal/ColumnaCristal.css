@@ -334,6 +334,14 @@
     width: 100%;
     height: 100%;
     z-index: 60;
+    /* El 72% de opacidad del vidrio normal (--cristal-glass) tiene
+       sentido para un panel angosto que siempre convive al lado del
+       contenido -- a pantalla completa, encima de TODO lo que había
+       antes (no solo un fondo decorativo), se veía la sección
+       anterior transparentándose detrás del menú, como si no hubiera
+       cambiado de pantalla de verdad. Mismo tono casi opaco que ya
+       usa el flyout en celular (--cristal-glass-movil). */
+    background: var(--cristal-glass-movil);
   }
 
   /* Dentro de la capa a pantalla completa no hay a dónde desplegar un
