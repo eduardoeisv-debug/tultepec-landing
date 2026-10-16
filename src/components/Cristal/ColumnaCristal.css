@@ -8,15 +8,8 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 3;
-  /* Sin overflow-y:auto a propósito -- un flyout (position:absolute;
-     left:100%) necesita que esta columna NO sea un contenedor con
-     scroll propio: overflow-y:auto hace que el navegador también
-     trate el eje X como "auto" (la regla CSS de overflow mixto), y
-     enfocar el primer botón del flyout (que queda fuera de los 300px
-     de la columna) termina desplazando TODA la columna hacia la
-     izquierda para "traerlo a la vista", tapando sus propias filas.
-     Las 10 filas del menú ya caben en un alto de pantalla normal sin
-     necesitar scroll aparte (igual que en la maqueta aprobada). */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .cristal-col__logo {
@@ -134,11 +127,18 @@
 /* Flyout de subopciones: a la derecha de la fila (escritorio), con
    una flechita apuntando a la fila que lo abrió. En celular se
    vuelve casi opaco (ver el breakpoint más abajo) para que se lea
-   bien sobre el contenido. */
+   bien sobre el contenido. `position: fixed` (no absolute) a
+   propósito -- Flyout.jsx lo monta con un portal a document.body y le
+   calcula left/top en línea a partir del rectángulo real de la fila
+   que lo abrió, en vez de depender de left:100% dentro de .cristal-col
+   (que SÍ necesita poder desplazarse verticalmente cuando las 10
+   filas no caben en la pantalla -- overflow-y:auto en esta columna, ver
+   ColumnaCristal.css -- y enfocar un botón del flyout anidado ahí
+   adentro desplazaba también el eje horizontal, tapando sus propias
+   filas). Con el portal, el flyout ya no vive dentro del contenedor
+   con scroll, así que ese desplazamiento no puede volver a pasar. */
 .cristal-col__flyout {
-  position: absolute;
-  left: 100%;
-  top: 0;
+  position: fixed;
   min-width: 230px;
   margin: 0;
   padding: 0;
@@ -146,7 +146,7 @@
   background: var(--cristal-glass);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  z-index: 4;
+  z-index: 50;
   box-shadow: var(--shadow-deep);
 }
 

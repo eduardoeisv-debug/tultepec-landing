@@ -1,26 +1,31 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Home, Shield, Share2, Check, ChevronRight } from "lucide-react";
 import MENU from "../../data/menu.js";
 import { rutaHash } from "../../hooks/useHashRoute.js";
-import useMediaQuery from "../../hooks/useMediaQuery.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ColumnaCristal.css";
-
-const BREAKPOINT = "(min-width: 701px)";
 
 // Columna izquierda fija de "Menú Cristal": marca, lista de filas
 // (Inicio + las 9 del menú) y la caja de herramientas (privacidad,
 // compartir, idioma) abajo. Un grupo con subopciones es un <button>
 // que abre un flyout a su derecha (una sola fila activa a la vez,
 // `grupoAbierto`) -- nunca navega por sí mismo, solo despliega; un
-// grupo sin subopciones es un <a> real, igual que Inicio.
+// grupo sin subopciones es un <a> real, igual que Inicio. La posición
+// del flyout se calcula a partir del rectángulo real de la fila (ver
+// Flyout más abajo), así que funciona igual en escritorio y celular
+// sin necesitar distinguir el ancho de pantalla aquí.
 export default function ColumnaCristal({ ruta, onCompartir }) {
   const { t } = useLanguage();
-  const esEscritorio = useMediaQuery(BREAKPOINT);
   const [grupoAbierto, setGrupoAbierto] = useState(null);
   const [copiado, setCopiado] = useState(false);
   const colRef = useRef(null);
+  // Un nodo de fila por cada grupo con hijos -- Flyout.jsx los usa para
+  // calcular dónde dibujarse (ver el comentario de .cristal-col__flyout
+  // en ColumnaCristal.css sobre por qué es un portal en vez de vivir
+  // dentro de esta columna).
+  const filaRefs = useRef({});
 
   const compartir = () => {
     onCompartir();
@@ -37,7 +42,10 @@ export default function ColumnaCristal({ ruta, onCompartir }) {
       if (e.key === "Escape") cerrarFlyout();
     };
     const onPointerDown = (e) => {
-      if (colRef.current && !colRef.current.contains(e.target)) cerrarFlyout();
+      // El flyout vive en un portal fuera de colRef (ver Flyout más
+      // abajo) -- un clic dentro de él también cuenta como "dentro".
+      const dentro = colRef.current?.contains(e.target) || e.target.closest(".cristal-col__flyout");
+      if (!dentro) cerrarFlyout();
     };
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("pointerdown", onPointerDown);
@@ -85,6 +93,9 @@ export default function ColumnaCristal({ ruta, onCompartir }) {
               {item.hijos ? (
                 <button
                   type="button"
+                  ref={(el) => {
+                    filaRefs.current[item.id] = el;
+                  }}
                   className="cristal-col__fila"
                   aria-expanded={abierto}
                   aria-haspopup="true"
@@ -119,8 +130,10 @@ export default function ColumnaCristal({ ruta, onCompartir }) {
                   item={item}
                   ruta={ruta}
                   abierto={abierto}
-                  esEscritorio={esEscritorio}
+                  filaRefs={filaRefs}
+                  colRef={colRef}
                   onElegir={cerrarFlyout}
+                  onCerrar={cerrarFlyout}
                 />
               )}
             </li>
@@ -166,19 +179,55 @@ function LanguageToggle() {
 // ColumnaCristal.css) para que se alcance a leer. Las flechas ↑/↓
 // navegan entre sus botones (useArrowNavigation, orientación vertical,
 // igual que el resto de listas del sitio).
-function Flyout({ item, ruta, abierto, onElegir }) {
+//
+// Con portal a document.body: .cristal-col tiene overflow-y:auto (las
+// 10 filas no siempre caben en una pantalla) y, dentro de un
+// contenedor con scroll, enfocar un elemento que por left:100% queda
+// fuera de sus 300/150px hace que el navegador desplace TODO el
+// contenedor para "traerlo a la vista" -- eso tapaba las propias
+// filas del menú. Fuera del contenedor (aquí, en el portal), ese
+// desplazamiento ya no puede pasar; la posición se calcula a mano a
+// partir del rectángulo real de la fila que lo abrió.
+function Flyout({ item, ruta, abierto, filaRefs, colRef, onElegir, onCerrar }) {
   const { t } = useLanguage();
   const { register, onKeyDown } = useArrowNavigation({ count: item.hijos.length, orientation: "vertical" });
   const primerBotonRef = useRef(null);
+  const [posicion, setPosicion] = useState(null);
 
   useEffect(() => {
-    if (abierto) primerBotonRef.current?.focus();
+    if (!abierto) {
+      setPosicion(null);
+      return undefined;
+    }
+    const fila = filaRefs.current[item.id];
+    if (!fila) return undefined;
+    const r = fila.getBoundingClientRect();
+    setPosicion({ left: r.right, top: r.top });
+    primerBotonRef.current?.focus({ preventScroll: true });
+
+    // Si la columna se desplaza (o la ventana cambia de tamaño)
+    // mientras el flyout está abierto, su posición fija ya no
+    // coincidiría con la fila -- más simple cerrarlo, igual que un
+    // clic fuera.
+    const col = colRef.current;
+    const onScrollOrResize = () => onCerrar();
+    col?.addEventListener("scroll", onScrollOrResize);
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      col?.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [abierto]);
 
-  if (!abierto) return null;
+  if (!abierto || !posicion) return null;
 
-  return (
-    <ul className="cristal-col__flyout" onKeyDown={onKeyDown(0, () => {})}>
+  return createPortal(
+    <ul
+      className="cristal-col__flyout"
+      style={{ left: posicion.left, top: posicion.top }}
+      onKeyDown={onKeyDown(0, () => {})}
+    >
       {item.hijos.map((hijo, i) => {
         const hijoActivo = ruta.itemId === item.id && ruta.hijoId === hijo.id;
         return (
@@ -199,6 +248,7 @@ function Flyout({ item, ruta, abierto, onElegir }) {
           </li>
         );
       })}
-    </ul>
+    </ul>,
+    document.body
   );
 }
