@@ -7,6 +7,12 @@
   height: 54px;
   overflow: hidden;
   opacity: 1;
+  /* Puramente decorativo (aria-hidden ya lo dice) -- sin esto, su caja
+     absoluta puede quedar encima de contenido real que empiece justo
+     debajo (como el botón "Menú" de Seccion.css en Menú Cristal,
+     cuando el margen de arriba no alcanza a despejarla del todo) y le
+     roba el clic/toque sin que se note visualmente por qué. */
+  pointer-events: none;
 }
 
 .hero-papel-picado__svg {

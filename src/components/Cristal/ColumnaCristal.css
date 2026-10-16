@@ -1,7 +1,15 @@
 .cristal-col {
   position: sticky;
   top: 0;
+  /* 100vh a secas puede incluir la barra del navegador en celular
+     (sobre todo al voltear a horizontal), dejando la columna más alta
+     de lo que en verdad se ve y con una porción -- normalmente el
+     selector de idioma, al final -- fuera del alto real disponible.
+     100dvh (alto dinámico) sí se ajusta a lo que el navegador muestra
+     de verdad; se deja 100vh antes como respaldo para navegadores que
+     no reconocen dvh, que entonces se quedan con ese valor. */
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--cristal-glass);
@@ -307,6 +315,40 @@
     height: 28px;
     padding: 0 0.5rem;
     font-size: 0.7rem;
+  }
+
+  /* Dentro de una sección (no Inicio), la columna se oculta del todo
+     -- el contenido usa toda la pantalla, nada apretado ni "voltea el
+     teléfono y no baja el menú". */
+  .cristal-col--oculta {
+    display: none;
+  }
+
+  /* El botón "Menú" de Seccion.jsx la trae de vuelta como una capa a
+     pantalla completa (no solo los 150px de siempre: aquí es lo único
+     que se ve, con sitio de sobra para leer las 10 filas y lo que se
+     despliegue). */
+  .cristal-col--overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 60;
+  }
+
+  /* Dentro de la capa a pantalla completa no hay a dónde desplegar un
+     panel a la derecha (la columna ya ocupa todo el ancho) -- el
+     flyout se abre en línea, empujando el resto de filas hacia abajo. */
+  .cristal-col__flyout--en-linea {
+    position: static;
+    margin: 0.3rem 0 0.3rem 1.2rem;
+    background: var(--cristal-glass2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .cristal-col__flyout--en-linea::before {
+    display: none;
   }
 }
 

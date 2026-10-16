@@ -1,12 +1,16 @@
-import { lazy, useCallback, useEffect, useRef } from "react";
+import { lazy, useCallback, useEffect, useRef, useState } from "react";
 import MENU from "../../data/menu.js";
 import useHashRoute from "../../hooks/useHashRoute.js";
+import useMediaQuery from "../../hooks/useMediaQuery.js";
+import useScrollLock from "../../hooks/useScrollLock.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import ColumnaCristal from "./ColumnaCristal.jsx";
 import Seccion from "./Seccion.jsx";
 import InicioCristal from "./InicioCristal.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import "./CristalShell.css";
+
+const BREAKPOINT = "(min-width: 701px)";
 
 const HistoriaView = lazy(() => import("../Panel/views/HistoriaView.jsx"));
 const GaleriaView = lazy(() => import("../Panel/views/GaleriaView.jsx"));
@@ -53,6 +57,32 @@ export default function CristalShell() {
   const ruta = useHashRoute();
   const { t } = useLanguage();
   const stageRef = useRef(null);
+  const esEscritorio = useMediaQuery(BREAKPOINT);
+  // En celular, al entrar a una sección (no en Inicio) la columna se
+  // oculta por completo y el contenido usa toda la pantalla -- ya no
+  // se ve apretada junto a la columna ni al voltear el teléfono. Un
+  // botón "Menú" en Seccion.jsx (onAbrirMenu) la trae de vuelta como
+  // una capa a pantalla completa (igual que antes hacía el menú
+  // plegable de Barra Fija); elegir cualquier opción ahí la vuelve a
+  // cerrar.
+  const [menuAbiertoMovil, setMenuAbiertoMovil] = useState(false);
+  const ocultaRailMovil = !esEscritorio && Boolean(ruta.itemId) && !menuAbiertoMovil;
+  const overlayRailMovil = !esEscritorio && Boolean(ruta.itemId) && menuAbiertoMovil;
+
+  useEffect(() => {
+    setMenuAbiertoMovil(false);
+  }, [ruta.itemId, ruta.hijoId]);
+
+  useScrollLock(overlayRailMovil);
+
+  useEffect(() => {
+    if (!overlayRailMovil) return undefined;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setMenuAbiertoMovil(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [overlayRailMovil]);
 
   const esPrimeraVezRef = useRef(true);
   const titleRef = useCallback((nodo) => {
@@ -77,6 +107,8 @@ export default function CristalShell() {
     }
   };
 
+  const onAbrirMenu = () => setMenuAbiertoMovil(true);
+
   let contenido;
   let tituloDocumento;
   if (ruta.itemId === "privacidad") {
@@ -87,6 +119,7 @@ export default function CristalShell() {
         titulo={t("cristal.privacidad.titulo")}
         Vista={PrivacidadContenido}
         titleRef={titleRef}
+        onAbrirMenu={onAbrirMenu}
       />
     );
   } else if (!ruta.itemId) {
@@ -105,6 +138,7 @@ export default function CristalShell() {
         Vista={REGISTRO[clave]}
         titleRef={titleRef}
         onOpenPrivacy={onOpenPrivacy}
+        onAbrirMenu={onAbrirMenu}
       />
     ) : (
       <InicioCristal titleRef={titleRef} />
@@ -129,8 +163,14 @@ export default function CristalShell() {
   return (
     <div className="cristal-root">
       <div className="cristal-shell">
-        <ColumnaCristal ruta={ruta} onCompartir={onCompartir} />
-        <main className="cristal-stage" ref={stageRef}>
+        <ColumnaCristal
+          ruta={ruta}
+          onCompartir={onCompartir}
+          oculta={ocultaRailMovil}
+          overlay={overlayRailMovil}
+          onSeleccionar={() => setMenuAbiertoMovil(false)}
+        />
+        <main className="cristal-stage" ref={stageRef} inert={overlayRailMovil || undefined}>
           <div className="cristal-stage__papel">
             <HeroPapelPicado />
           </div>

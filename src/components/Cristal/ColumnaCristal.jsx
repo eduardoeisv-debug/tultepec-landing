@@ -16,7 +16,15 @@ import "./ColumnaCristal.css";
 // del flyout se calcula a partir del rectángulo real de la fila (ver
 // Flyout más abajo), así que funciona igual en escritorio y celular
 // sin necesitar distinguir el ancho de pantalla aquí.
-export default function ColumnaCristal({ ruta, onCompartir }) {
+//
+// `oculta`/`overlay` (CristalShell.jsx): en celular, al entrar a una
+// sección la columna se oculta por completo (`oculta`) para que el
+// contenido use toda la pantalla; el botón "Menú" de Seccion.jsx la
+// trae de vuelta como una capa a pantalla completa (`overlay`) -- ahí
+// los flyouts ya no tienen a dónde desplegarse a la derecha (la
+// columna ocupa todo el ancho), así que se abren en línea, empujando
+// el resto de filas hacia abajo, en vez de como panel flotante.
+export default function ColumnaCristal({ ruta, onCompartir, oculta = false, overlay = false, onSeleccionar }) {
   const { t } = useLanguage();
   const [grupoAbierto, setGrupoAbierto] = useState(null);
   const [copiado, setCopiado] = useState(false);
@@ -62,9 +70,16 @@ export default function ColumnaCristal({ ruta, onCompartir }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ruta.itemId, ruta.hijoId]);
 
+  const alSeleccionar = () => {
+    cerrarFlyout();
+    onSeleccionar?.();
+  };
+
+  const claseColumna = `cristal-col${oculta ? " cristal-col--oculta" : ""}${overlay ? " cristal-col--overlay" : ""}`;
+
   return (
-    <nav ref={colRef} className="cristal-col" aria-label={t("menu.ariaLabel")}>
-      <a className="cristal-col__logo" href={rutaHash(null)}>
+    <nav ref={colRef} className={claseColumna} aria-label={t("menu.ariaLabel")} inert={oculta || undefined}>
+      <a className="cristal-col__logo" href={rutaHash(null)} onClick={alSeleccionar}>
         <h1>Tultepec</h1>
         <p>{t("cristal.marca.sub")}</p>
       </a>
@@ -75,6 +90,7 @@ export default function ColumnaCristal({ ruta, onCompartir }) {
             className="cristal-col__fila"
             href={rutaHash(null)}
             aria-current={!ruta.itemId ? "page" : undefined}
+            onClick={alSeleccionar}
           >
             <span className="cristal-col__texto">{t("menu.inicio")}</span>
             <span className="cristal-col__icono" aria-hidden="true">
@@ -114,6 +130,7 @@ export default function ColumnaCristal({ ruta, onCompartir }) {
                   className={`cristal-col__fila${item.soon ? " is-proximamente" : ""}`}
                   href={rutaHash(item.id)}
                   aria-current={activo ? "page" : undefined}
+                  onClick={alSeleccionar}
                 >
                   <span className="cristal-col__texto">
                     {t(item.label)}
@@ -130,9 +147,10 @@ export default function ColumnaCristal({ ruta, onCompartir }) {
                   item={item}
                   ruta={ruta}
                   abierto={abierto}
+                  inline={overlay}
                   filaRefs={filaRefs}
                   colRef={colRef}
-                  onElegir={cerrarFlyout}
+                  onElegir={alSeleccionar}
                   onCerrar={cerrarFlyout}
                 />
               )}
@@ -188,14 +206,19 @@ function LanguageToggle() {
 // filas del menú. Fuera del contenedor (aquí, en el portal), ese
 // desplazamiento ya no puede pasar; la posición se calcula a mano a
 // partir del rectángulo real de la fila que lo abrió.
-function Flyout({ item, ruta, abierto, filaRefs, colRef, onElegir, onCerrar }) {
+function Flyout({ item, ruta, abierto, inline, filaRefs, colRef, onElegir, onCerrar }) {
   const { t } = useLanguage();
   const { register, onKeyDown } = useArrowNavigation({ count: item.hijos.length, orientation: "vertical" });
   const primerBotonRef = useRef(null);
   const [posicion, setPosicion] = useState(null);
 
+  // En modo overlay (celular, columna a pantalla completa) no hay a
+  // dónde desplegar un panel a la derecha -- se abre en línea, sin
+  // necesitar medir ni portal. Fuera de ahí (escritorio o la columna
+  // angosta de Inicio en celular) sigue siendo el panel flotante de
+  // siempre, calculado a partir del rectángulo de la fila.
   useEffect(() => {
-    if (!abierto) {
+    if (inline || !abierto) {
       setPosicion(null);
       return undefined;
     }
@@ -218,14 +241,19 @@ function Flyout({ item, ruta, abierto, filaRefs, colRef, onElegir, onCerrar }) {
       window.removeEventListener("resize", onScrollOrResize);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [abierto]);
+  }, [abierto, inline]);
 
-  if (!abierto || !posicion) return null;
+  useEffect(() => {
+    if (inline && abierto) primerBotonRef.current?.focus({ preventScroll: true });
+  }, [abierto, inline]);
 
-  return createPortal(
+  if (!abierto) return null;
+  if (!inline && !posicion) return null;
+
+  const lista = (
     <ul
-      className="cristal-col__flyout"
-      style={{ left: posicion.left, top: posicion.top }}
+      className={`cristal-col__flyout${inline ? " cristal-col__flyout--en-linea" : ""}`}
+      style={inline ? undefined : { left: posicion.left, top: posicion.top }}
       onKeyDown={onKeyDown(0, () => {})}
     >
       {item.hijos.map((hijo, i) => {
@@ -248,7 +276,8 @@ function Flyout({ item, ruta, abierto, filaRefs, colRef, onElegir, onCerrar }) {
           </li>
         );
       })}
-    </ul>,
-    document.body
+    </ul>
   );
+
+  return inline ? lista : createPortal(lista, document.body);
 }
