@@ -337,7 +337,16 @@
 }
 
 .galeria-lightbox {
-  position: absolute;
+  /* fixed, no absolute: esto ya no vive dentro de un modal propio
+     (position:fixed) que cubriera toda la pantalla -- es una vista
+     más del panel (GaleriaView.jsx dentro de Seccion.jsx, Menú
+     Cristal). Con absolute, inset:0 se posicionaba respecto al
+     ancestro posicionado más cercano (o, sin ninguno, el bloque de
+     contención inicial, que se desplaza CON la página) en vez de
+     respecto al viewport -- al abrir el visor más abajo de donde
+     cargó la página, aparecía fuera de pantalla, mucho más abajo de
+     lo visible. */
+  position: fixed;
   inset: 0;
   z-index: 6;
   background: rgba(5, 6, 18, 0.95);

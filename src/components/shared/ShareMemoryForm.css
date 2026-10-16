@@ -34,7 +34,9 @@
 .share-memory-form__field textarea {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 0.98rem;
+  /* 1rem exactos (16px) a propósito: por debajo de eso, Safari en
+     iPhone hace zoom automático al enfocar el campo. */
+  font-size: 1rem;
   padding: 0.7rem 0.9rem;
   border-radius: 10px;
   border: 1px solid rgba(251, 241, 226, 0.25);

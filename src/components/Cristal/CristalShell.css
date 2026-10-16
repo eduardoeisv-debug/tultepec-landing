@@ -20,6 +20,16 @@
 .cristal-root {
   position: relative;
   min-height: 100vh;
+  /* Respaldo final contra un desborde horizontal de unos 19px en
+     Inicio (768px y horizontal angosto) que no pude atar a un
+     elemento concreto: ningún nodo pintado excede el viewport (ni
+     siquiera el propio .cristal-inicio__novedades-grid, ya con
+     min-width:0), así que algo en el cálculo de tamaño intrínseco de
+     esa rejilla de 5 columnas empuja el scrollWidth del documento sin
+     que se note visualmente en ningún ancho probado. overflow-x:clip
+     (no hidden) porque no crea un contenedor de scroll propio y no
+     interfiere con el position:sticky de la columna. */
+  overflow-x: clip;
   color: var(--color-paper);
   background:
     radial-gradient(900px 520px at 78% 78%, rgba(227, 171, 61, 0.45), transparent 65%),

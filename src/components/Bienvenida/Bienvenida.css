@@ -308,4 +308,51 @@
     padding: 1.4rem 1.5rem 1.8rem;
     font-size: 1.05rem;
   }
+
+  /* En Inicio (Menú Cristal) la columna del menú se queda visible y
+     angosta junto al contenido incluso en celular -- el botón de la
+     nota tiene bastante menos ancho real que antes, y el título ("Una
+     carta para ti") terminaba partido en una palabra por línea. Icono
+     y flecha un poco más chicos para dejarle más aire al texto. */
+  .bienvenida__nota-cuerpo {
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .bienvenida__nota-icono {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bienvenida__nota-icono svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .bienvenida__nota-titulo {
+    font-size: 0.98rem;
+  }
+}
+
+/* Más abajo de 480px (celular con la columna del menú angosta
+   siempre visible al lado en Inicio, igual que arriba) el título
+   seguía partiéndose en una palabra por línea aunque el icono y la
+   flecha ya fueran más chicos -- a la pista de texto solo le quedaban
+   unos 56px reales. Se quita la pista ("Toca para leerla"/"Toca para
+   ocultar", es información secundaria) y se encoge más el relleno
+   para que el título tenga sitio de sobra para dos líneas limpias. */
+@media (max-width: 480px) {
+  .bienvenida__nota-cuerpo {
+    gap: 0.5rem;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .bienvenida__nota-hint {
+    display: none;
+  }
+
+  .bienvenida__nota-chevron {
+    width: 16px;
+    height: 16px;
+  }
 }

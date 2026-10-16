@@ -192,9 +192,17 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1.1rem;
+  min-width: 0;
+  width: 100%;
 }
 
 .cristal-inicio__novedades-grid a {
+  /* Un hijo de grid no se encoge por debajo de min-content por su
+     cuenta (min-width:auto por defecto, igual que en flex) aunque la
+     pista sea minmax(0,1fr) -- sin esto, una etiqueta larga como
+     "Memorias de mi pueblo" empujaba la rejilla entera más allá del
+     viewport en los anchos donde 5 columnas van justas (p.ej. 768px). */
+  min-width: 0;
   display: block;
   font-size: 0.78rem;
   color: var(--cristal-soft);

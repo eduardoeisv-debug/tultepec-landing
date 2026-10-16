@@ -422,14 +422,18 @@
   /* Carrusel horizontal con snap + puntos en vez de cuadrícula: las
      portadas se ven completas, una (o casi dos) a la vez, sin scroll
      horizontal de la página completa (el scroll queda contenido en
-     .books-grid). */
+     .books-grid). Sin margin negativo: se pensó para cuando esto vivía
+     dentro del modal (relatos-overlay__body, 1.2rem de relleno, que el
+     margen cancelaba para sangrar borde a borde) -- en Menú Cristal
+     (RelatosView.jsx dentro de Seccion.jsx) el relleno de alrededor es
+     otro y ya no coincide, así que el margen empujaba el carrusel más
+     allá del viewport en vez de solo hasta el borde del modal. */
   .books-grid {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 1rem;
-    padding: 0.2rem 10% 0.6rem;
-    margin: 0 -1.2rem;
+    padding: 0.2rem 6% 0.6rem;
     scrollbar-width: none;
   }
 
