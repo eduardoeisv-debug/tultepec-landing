@@ -15,7 +15,7 @@
 // si es directo. Sin hash (o uno que no coincide con nada de aquí) cae
 // en Inicio -- ver useHashRoute.js.
 
-import { Flame, BookOpen, Landmark, CalendarDays, Utensils, Music, MapPinned, Gamepad2, HeartHandshake } from "lucide-react";
+import { Flame, BookOpen, Landmark, CalendarDays, Utensils, Music, MapPinned, Gamepad2, HeartHandshake, Info } from "lucide-react";
 
 const MENU = [
   {
@@ -103,6 +103,14 @@ const MENU = [
     label: "menu.item.agradecimientos",
     icon: HeartHandshake,
     degradado: ["var(--color-pink)", "var(--color-gold)"],
+    hijos: null,
+    soon: false,
+  },
+  {
+    id: "acerca-de",
+    label: "menu.item.acercaDe",
+    icon: Info,
+    degradado: ["var(--color-gold)", "var(--color-night-700)"],
     hijos: null,
     soon: false,
   },

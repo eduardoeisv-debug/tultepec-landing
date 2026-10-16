@@ -24,6 +24,7 @@ const ToritoView = lazy(() => import("./views/ToritoView.jsx"));
 const MemoramaView = lazy(() => import("./views/MemoramaView.jsx"));
 const SopaView = lazy(() => import("./views/SopaView.jsx"));
 const AgradecimientosView = lazy(() => import("./views/AgradecimientosView.jsx"));
+const AcercaDeView = lazy(() => import("./views/AcercaDeView.jsx"));
 
 // Claves "item/hijo" o "item" (opciones directas, sin hijos). Lo que no
 // aparece aquí (Gastronomía, Música, "Videos por tipo", "Fiestas del
@@ -45,6 +46,7 @@ const REGISTRO = {
   "juegos/memorama": MemoramaView,
   "juegos/sopa": SopaView,
   agradecimientos: AgradecimientosView,
+  "acerca-de": AcercaDeView,
 };
 
 // A partir de la ruta ({itemId, hijoId}) saca la clave de REGISTRO, las

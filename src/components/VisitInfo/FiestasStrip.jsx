@@ -105,11 +105,14 @@ export default function FiestasStrip({ children }) {
             <p className="fiestas-strip__empty">{t("fiestasStrip.sinEventos")}</p>
           ) : (
             <ul className="fiestas-strip__list">
-              {active.eventos.map((ev) => (
+              {active.eventos.map((ev, i) => (
                 <li className="fiestas-strip__event" key={ev.nombre.es}>
-                  <span className="fiestas-strip__event-name">{pick(ev.nombre)}</span>
-                  {ev.fecha && <span className="fiestas-strip__event-date">{pick(ev.fecha)}</span>}
-                  {ev.descripcion && <span className="fiestas-strip__event-desc">{pick(ev.descripcion)}</span>}
+                  <span className="fiestas-strip__event-numero" aria-hidden="true">{i + 1}</span>
+                  <span className="fiestas-strip__event-cuerpo">
+                    <span className="fiestas-strip__event-name">{pick(ev.nombre)}</span>
+                    {ev.fecha && <span className="fiestas-strip__event-date">{pick(ev.fecha)}</span>}
+                    {ev.descripcion && <span className="fiestas-strip__event-desc">{pick(ev.descripcion)}</span>}
+                  </span>
                 </li>
               ))}
             </ul>

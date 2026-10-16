@@ -1,0 +1,16 @@
+.acerca-de__version {
+  display: inline-block;
+  margin: 0.6rem 0 1.4rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(227, 171, 61, 0.55);
+  color: var(--color-gold-light);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.acerca-de__parrafo + .acerca-de__parrafo {
+  margin-top: 1rem;
+}

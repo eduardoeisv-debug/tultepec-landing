@@ -466,6 +466,7 @@ export const STRINGS = {
   "menu.item.visitanos": { es: "Visítanos", en: "Visit us" },
   "menu.item.juegos": { es: "Juegos", en: "Games" },
   "menu.item.agradecimientos": { es: "Agradecimientos", en: "Acknowledgments" },
+  "menu.item.acercaDe": { es: "Acerca de", en: "About" },
 
   "menu.opcion.historia": { es: "Historia", en: "History" },
   "menu.opcion.galeria": { es: "Galería de imágenes", en: "Image gallery" },
@@ -486,4 +487,16 @@ export const STRINGS = {
 
   "agradecimientos.eyebrow": { es: "Con cariño", en: "With gratitude" },
   "agradecimientos.title": { es: "Agradecimientos", en: "Acknowledgments" },
+
+  "acercaDe.eyebrow": { es: "Sobre este sitio", en: "About this site" },
+  "acercaDe.title": { es: "Acerca de", en: "About" },
+  "acercaDe.version": { es: "Versión 1.0", en: "Version 1.0" },
+  "acercaDe.proposito": {
+    es: "Esta página nació para guardar y compartir la memoria de Tultepec: su historia, su gente, sus fiestas y el oficio que convierte el fuego en arte. Es un archivo vivo, pensado para que cualquiera -- de aquí o de lejos -- pueda conocer y ayudar a preservar esa herencia.",
+    en: "This page was created to keep and share the memory of Tultepec: its history, its people, its festivities, and the craft that turns fire into art. It's a living archive, meant so that anyone -- from here or from afar -- can get to know and help preserve that heritage.",
+  },
+  "acercaDe.alcance": {
+    es: "Esta es la versión 1.0 del sitio: ya reúne la historia del pueblo, la galería de imágenes, las memorias y relatos compartidos por la comunidad, el calendario de fiestas, cómo llegar y los primeros juegos. Seguirá creciendo con nuevas secciones.",
+    en: "This is version 1.0 of the site: it already brings together the town's history, the image gallery, memories and stories shared by the community, the festival calendar, how to get here, and the first games. It will keep growing with new sections.",
+  },
 };

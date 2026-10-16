@@ -124,12 +124,35 @@
 
 .fiestas-strip__event {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  align-items: flex-start;
+  gap: 0.8rem;
   padding: 0.9rem 1.1rem;
   border-radius: var(--radius-md);
   background: rgba(251, 241, 226, 0.06);
   border: 1px solid rgba(251, 241, 226, 0.14);
+}
+
+.fiestas-strip__event-numero {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-top: 0.1rem;
+  border-radius: 50%;
+  background: rgba(227, 171, 61, 0.16);
+  color: var(--color-gold-light);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.fiestas-strip__event-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
 }
 
 .fiestas-strip__event-name {
