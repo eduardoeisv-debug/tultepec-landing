@@ -3,6 +3,7 @@ import { Home, Shield, Share2, Check, ChevronRight, X } from "lucide-react";
 import MENU from "../../data/menu.js";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
+import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ColumnaCristal.css";
 
@@ -23,12 +24,28 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   });
   const [copiado, setCopiado] = useState(false);
   const colRef = useRef(null);
+  const cerrarRef = useRef(null);
 
   const compartir = () => {
     onCompartir();
     setCopiado(true);
     setTimeout(() => setCopiado(false), 2000);
   };
+
+  // Atrapa Tab/Shift+Tab dentro de la tarjeta mientras está montada
+  // (siempre "activa": CristalShell.jsx solo la monta mientras el menú
+  // está abierto) -- sin esto, Tab se escapaba hacia el contenido de
+  // la página de atrás, visible detrás del fondo oscurecido.
+  useFocusTrap(colRef, true);
+
+  // Autofoco al abrir: el botón de cerrar (useFocusTrap no mueve el
+  // foco por sí solo -- el logo de arriba queda antes en el DOM, pero
+  // es solo el enlace a Inicio, no el control que se espera recibir
+  // el foco al abrir un menú). Al cerrar, CristalShell.jsx devuelve el
+  // foco a la hamburguesa.
+  useEffect(() => {
+    cerrarRef.current?.focus();
+  }, []);
 
   // Clic fuera de la tarjeta del menú (sobre el fondo oscurecido) la
   // cierra -- Escape ya lo maneja CristalShell.jsx, que es quien monta
@@ -51,7 +68,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
             <h1>Tultepec</h1>
             <p>{t("cristal.marca.sub")}</p>
           </a>
-          <button type="button" className="cristal-col__cerrar" onClick={onCerrar} aria-label={t("menu.movil.cerrar")}>
+          <button type="button" ref={cerrarRef} className="cristal-col__cerrar" onClick={onCerrar} aria-label={t("menu.movil.cerrar")}>
             <X size={20} strokeWidth={2} />
           </button>
         </div>

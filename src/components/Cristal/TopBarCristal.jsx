@@ -9,11 +9,17 @@ import "./TopBarCristal.css";
 // para volver directo a Inicio sin tener que abrir el menú primero.
 // Reemplaza a la columna siempre visible de antes -- ver
 // CristalShell.jsx.
-export default function TopBarCristal({ enInicio, onAbrirMenu }) {
+export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
   const { t } = useLanguage();
   return (
     <header className="cristal-topbar">
-      <button type="button" className="cristal-topbar__boton" onClick={onAbrirMenu} aria-label={t("menu.movil.abrir")}>
+      <button
+        type="button"
+        ref={botonMenuRef}
+        className="cristal-topbar__boton"
+        onClick={onAbrirMenu}
+        aria-label={t("menu.movil.abrir")}
+      >
         <MenuIcon size={20} strokeWidth={2} aria-hidden="true" />
       </button>
 

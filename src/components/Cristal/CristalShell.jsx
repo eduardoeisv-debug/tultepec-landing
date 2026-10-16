@@ -55,7 +55,16 @@ export default function CristalShell() {
   const ruta = useHashRoute();
   const { t } = useLanguage();
   const stageRef = useRef(null);
+  const botonMenuRef = useRef(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
+
+  // Al cerrar el menú (Escape, clic fuera, X o elegir una opción), el
+  // foco vuelve a la hamburguesa que lo abrió -- si no, tras cerrar
+  // queda "perdido" en el <body> y hay que tabular desde cero.
+  const cerrarMenu = useCallback(() => {
+    setMenuAbierto(false);
+    botonMenuRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     setMenuAbierto(false);
@@ -66,11 +75,11 @@ export default function CristalShell() {
   useEffect(() => {
     if (!menuAbierto) return undefined;
     const onKeyDown = (e) => {
-      if (e.key === "Escape") setMenuAbierto(false);
+      if (e.key === "Escape") cerrarMenu();
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [menuAbierto]);
+  }, [menuAbierto, cerrarMenu]);
 
   const esPrimeraVezRef = useRef(true);
   const titleRef = useCallback((nodo) => {
@@ -135,10 +144,8 @@ export default function CristalShell() {
 
   return (
     <div className="cristal-root">
-      <TopBarCristal enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} />
-      {menuAbierto && (
-        <ColumnaCristal ruta={ruta} onCompartir={onCompartir} onCerrar={() => setMenuAbierto(false)} />
-      )}
+      <TopBarCristal enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} botonMenuRef={botonMenuRef} />
+      {menuAbierto && <ColumnaCristal ruta={ruta} onCompartir={onCompartir} onCerrar={cerrarMenu} />}
       <main className="cristal-stage" ref={stageRef}>
         <div className="cristal-stage__papel">
           <HeroPapelPicado />
