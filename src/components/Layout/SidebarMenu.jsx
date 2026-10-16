@@ -3,6 +3,7 @@ import { Menu as MenuIcon, ChevronDown } from "lucide-react";
 import MENU from "../../data/menu.js";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import useMediaQuery from "../../hooks/useMediaQuery.js";
+import useScrollLock from "../../hooks/useScrollLock.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./SidebarMenu.css";
 
@@ -43,9 +44,20 @@ export default function SidebarMenu({ ruta }) {
   };
 
   const colapsadoEnMovil = !esEscritorio && !abiertoMovil;
+  // En celular, mientras el menú está desplegado se vuelve una capa a
+  // pantalla completa (ver SidebarMenu.css) que tapa el resto de la
+  // página (Hero, carta de bienvenida, footer...) en vez de solo
+  // empujarlos hacia abajo -- así no hay que buscar la bienvenida
+  // scrolleando detrás de la lista de 9 opciones. Bloquea el scroll del
+  // fondo mientras tanto, igual que los demás overlays del sitio.
+  const abiertoEnMovil = !esEscritorio && abiertoMovil;
+  useScrollLock(abiertoEnMovil);
 
   return (
-    <nav className="sidebar-menu" aria-label={t("menu.ariaLabel")}>
+    <nav
+      className={`sidebar-menu${abiertoEnMovil ? " sidebar-menu--movil-abierto" : ""}`}
+      aria-label={t("menu.ariaLabel")}
+    >
       {esEscritorio ? (
         <div className="sidebar-menu__barra">
           <span>{t("menu.header.titulo")}</span>

@@ -102,9 +102,20 @@ export default function ContentPanel({ ruta, onOpenPrivacy }) {
   // que de verdad hace que "la página baje al panel de contenido" --
   // scrollIntoView corrige el scroll para cualquier lado que haga
   // falta, subir o bajar) y actualiza el título del documento. El foco
-  // lo maneja titleRef (arriba), no este efecto.
+  // lo maneja titleRef (arriba), no este efecto. Se salta la primera
+  // carga de la página (mismo guardia que titleRef): sin esto, el
+  // efecto corría también al montar por primera vez y el navegador ya
+  // empieza arriba del todo (ver el comentario de scrollRestoration en
+  // main.jsx) -- de hecho bajaba la página unos 120-150px de más,
+  // tapando el inicio del Hero (título, video, papel picado) detrás
+  // del header fijo.
+  const esPrimerScrollRef = useRef(true);
   useEffect(() => {
-    panelRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
+    if (esPrimerScrollRef.current) {
+      esPrimerScrollRef.current = false;
+    } else {
+      panelRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
+    }
     const base = "Tultepec · Estado de México";
     document.title = etiquetaOpcion ? `${etiquetaOpcion} · ${base}` : base;
     // eslint-disable-next-line react-hooks/exhaustive-deps

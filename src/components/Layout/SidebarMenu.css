@@ -233,6 +233,34 @@
   background: var(--color-pink);
 }
 
+/* Celular, menú desplegado: en vez de empujar el resto de la página
+   hacia abajo (Hero, carta de bienvenida, footer...), el menú se
+   vuelve una capa a pantalla completa debajo del header fijo -- el
+   resto queda tapado, no hay que scrollear una lista de 9 opciones
+   para volver a verlo. El botón "Menú" (que sigue siendo parte de
+   .sidebar-menu, ahora fijo) se queda pegado arriba de esta capa para
+   poder cerrarla sin buscarlo. Mismo alto de header que usa el menú
+   fijo de escritorio (ver Layout.css). */
+@media (max-width: 859px) {
+  .sidebar-menu--movil-abierto {
+    position: fixed;
+    top: calc(56px + 22px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 35;
+    overflow-y: auto;
+    background: var(--color-night-950);
+    padding: 0 var(--space-md) var(--space-md);
+  }
+
+  .sidebar-menu--movil-abierto .sidebar-menu__barra--boton {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sidebar-menu__acordeon,
   .sidebar-menu__submenu,

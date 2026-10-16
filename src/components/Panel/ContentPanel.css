@@ -5,7 +5,10 @@
   border: 1px solid var(--color-menu-row-border);
   box-shadow: var(--shadow-deep);
   overflow: hidden;
-  scroll-margin-top: 16px;
+  /* El header es sticky (~90px de alto, ver Header.css) -- sin este
+     margen, scrollIntoView (ContentPanel.jsx) deja el panel justo
+     debajo del borde del viewport, pero tapado por el header fijo. */
+  scroll-margin-top: 104px;
 }
 
 .panel__breadcrumbs {
