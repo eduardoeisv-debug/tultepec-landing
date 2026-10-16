@@ -1,16 +1,14 @@
 import { lazy, useCallback, useEffect, useRef, useState } from "react";
 import MENU from "../../data/menu.js";
 import useHashRoute from "../../hooks/useHashRoute.js";
-import useMediaQuery from "../../hooks/useMediaQuery.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import TopBarCristal from "./TopBarCristal.jsx";
 import ColumnaCristal from "./ColumnaCristal.jsx";
 import Seccion from "./Seccion.jsx";
 import InicioCristal from "./InicioCristal.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import "./CristalShell.css";
-
-const BREAKPOINT = "(min-width: 701px)";
 
 const HistoriaView = lazy(() => import("../Panel/views/HistoriaView.jsx"));
 const GaleriaView = lazy(() => import("../Panel/views/GaleriaView.jsx"));
@@ -47,42 +45,32 @@ const REGISTRO = {
 
 const SITE_URL = "https://tultepec-landing.vercel.app/";
 
-// Punto de entrada de "Menú Cristal": columna fija (ColumnaCristal.jsx)
-// + contenido de la ruta activa (InicioCristal, la vista de privacidad
-// o una Seccion genérica) a la derecha, igual que ContentPanel.jsx
-// hacía en el diseño anterior -- mismo manejo de foco/scroll/título de
-// documento, solo que ahora no hay encabezado fijo aparte que el
-// scroll tenga que esquivar.
+// Punto de entrada de "Menú Cristal": barra superior siempre visible
+// (TopBarCristal.jsx, hamburguesa + casita) + el contenido de la ruta
+// activa a todo el ancho -- el menú (ColumnaCristal.jsx) ya no es una
+// columna fija al lado, es una capa a pantalla completa que solo
+// existe en el DOM mientras está abierta, igual en escritorio que en
+// celular.
 export default function CristalShell() {
   const ruta = useHashRoute();
   const { t } = useLanguage();
   const stageRef = useRef(null);
-  const esEscritorio = useMediaQuery(BREAKPOINT);
-  // En celular, al entrar a una sección (no en Inicio) la columna se
-  // oculta por completo y el contenido usa toda la pantalla -- ya no
-  // se ve apretada junto a la columna ni al voltear el teléfono. Un
-  // botón "Menú" en Seccion.jsx (onAbrirMenu) la trae de vuelta como
-  // una capa a pantalla completa (igual que antes hacía el menú
-  // plegable de Barra Fija); elegir cualquier opción ahí la vuelve a
-  // cerrar.
-  const [menuAbiertoMovil, setMenuAbiertoMovil] = useState(false);
-  const ocultaRailMovil = !esEscritorio && Boolean(ruta.itemId) && !menuAbiertoMovil;
-  const overlayRailMovil = !esEscritorio && Boolean(ruta.itemId) && menuAbiertoMovil;
+  const [menuAbierto, setMenuAbierto] = useState(false);
 
   useEffect(() => {
-    setMenuAbiertoMovil(false);
+    setMenuAbierto(false);
   }, [ruta.itemId, ruta.hijoId]);
 
-  useScrollLock(overlayRailMovil);
+  useScrollLock(menuAbierto);
 
   useEffect(() => {
-    if (!overlayRailMovil) return undefined;
+    if (!menuAbierto) return undefined;
     const onKeyDown = (e) => {
-      if (e.key === "Escape") setMenuAbiertoMovil(false);
+      if (e.key === "Escape") setMenuAbierto(false);
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [overlayRailMovil]);
+  }, [menuAbierto]);
 
   const esPrimeraVezRef = useRef(true);
   const titleRef = useCallback((nodo) => {
@@ -107,20 +95,12 @@ export default function CristalShell() {
     }
   };
 
-  const onAbrirMenu = () => setMenuAbiertoMovil(true);
-
   let contenido;
   let tituloDocumento;
   if (ruta.itemId === "privacidad") {
     tituloDocumento = `${t("cristal.privacidad.titulo")} · Tultepec`;
     contenido = (
-      <Seccion
-        eyebrow="Tultepec"
-        titulo={t("cristal.privacidad.titulo")}
-        Vista={PrivacidadContenido}
-        titleRef={titleRef}
-        onAbrirMenu={onAbrirMenu}
-      />
+      <Seccion eyebrow="Tultepec" titulo={t("cristal.privacidad.titulo")} Vista={PrivacidadContenido} titleRef={titleRef} />
     );
   } else if (!ruta.itemId) {
     tituloDocumento = "Tultepec · Estado de México";
@@ -132,14 +112,7 @@ export default function CristalShell() {
     const etiqueta = hijo ? t(hijo.label) : item ? t(item.label) : "";
     tituloDocumento = item ? `${etiqueta} · Tultepec` : "Tultepec · Estado de México";
     contenido = item ? (
-      <Seccion
-        eyebrow={t(item.label)}
-        titulo={etiqueta}
-        Vista={REGISTRO[clave]}
-        titleRef={titleRef}
-        onOpenPrivacy={onOpenPrivacy}
-        onAbrirMenu={onAbrirMenu}
-      />
+      <Seccion eyebrow={t(item.label)} titulo={etiqueta} Vista={REGISTRO[clave]} titleRef={titleRef} onOpenPrivacy={onOpenPrivacy} />
     ) : (
       <InicioCristal titleRef={titleRef} />
     );
@@ -162,21 +135,16 @@ export default function CristalShell() {
 
   return (
     <div className="cristal-root">
-      <div className={`cristal-shell${ocultaRailMovil ? " cristal-shell--rail-oculto" : ""}`}>
-        <ColumnaCristal
-          ruta={ruta}
-          onCompartir={onCompartir}
-          oculta={ocultaRailMovil}
-          overlay={overlayRailMovil}
-          onSeleccionar={() => setMenuAbiertoMovil(false)}
-        />
-        <main className="cristal-stage" ref={stageRef} inert={overlayRailMovil || undefined}>
-          <div className="cristal-stage__papel">
-            <HeroPapelPicado />
-          </div>
-          {contenido}
-        </main>
-      </div>
+      <TopBarCristal enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} />
+      {menuAbierto && (
+        <ColumnaCristal ruta={ruta} onCompartir={onCompartir} onCerrar={() => setMenuAbierto(false)} />
+      )}
+      <main className="cristal-stage" ref={stageRef}>
+        <div className="cristal-stage__papel">
+          <HeroPapelPicado />
+        </div>
+        {contenido}
+      </main>
     </div>
   );
 }

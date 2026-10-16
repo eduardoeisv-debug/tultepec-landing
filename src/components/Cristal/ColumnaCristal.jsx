@@ -1,39 +1,28 @@
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { Home, Shield, Share2, Check, ChevronRight } from "lucide-react";
+import { Home, Shield, Share2, Check, ChevronRight, X } from "lucide-react";
 import MENU from "../../data/menu.js";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./ColumnaCristal.css";
 
-// Columna izquierda fija de "Menú Cristal": marca, lista de filas
-// (Inicio + las 9 del menú) y la caja de herramientas (privacidad,
-// compartir, idioma) abajo. Un grupo con subopciones es un <button>
-// que abre un flyout a su derecha (una sola fila activa a la vez,
-// `grupoAbierto`) -- nunca navega por sí mismo, solo despliega; un
-// grupo sin subopciones es un <a> real, igual que Inicio. La posición
-// del flyout se calcula a partir del rectángulo real de la fila (ver
-// Flyout más abajo), así que funciona igual en escritorio y celular
-// sin necesitar distinguir el ancho de pantalla aquí.
-//
-// `oculta`/`overlay` (CristalShell.jsx): en celular, al entrar a una
-// sección la columna se oculta por completo (`oculta`) para que el
-// contenido use toda la pantalla; el botón "Menú" de Seccion.jsx la
-// trae de vuelta como una capa a pantalla completa (`overlay`) -- ahí
-// los flyouts ya no tienen a dónde desplegarse a la derecha (la
-// columna ocupa todo el ancho), así que se abren en línea, empujando
-// el resto de filas hacia abajo, en vez de como panel flotante.
-export default function ColumnaCristal({ ruta, onCompartir, oculta = false, overlay = false, onSeleccionar }) {
+// Menú de "Menú Cristal": ya no es una columna siempre visible al lado
+// del contenido -- se abre como una capa a pantalla completa (en
+// escritorio y en celular por igual) desde el botón de hamburguesa de
+// TopBarCristal.jsx, y solo existe en el DOM mientras está abierta
+// (CristalShell.jsx la monta/desmonta con `{menuAbierto && <ColumnaCristal/>}`,
+// no con display:none). Un grupo con subopciones es un <button> que
+// despliega su lista EN LÍNEA debajo (empuja el resto de filas hacia
+// abajo) -- ya no hay columna angosta al lado del contenido para la
+// que tuviera sentido un panel flotante aparte.
+export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   const { t } = useLanguage();
-  const [grupoAbierto, setGrupoAbierto] = useState(null);
+  const [grupoAbierto, setGrupoAbierto] = useState(() => {
+    const item = MENU.find((i) => i.id === ruta.itemId);
+    return item?.hijos ? item.id : null;
+  });
   const [copiado, setCopiado] = useState(false);
   const colRef = useRef(null);
-  // Un nodo de fila por cada grupo con hijos -- Flyout.jsx los usa para
-  // calcular dónde dibujarse (ver el comentario de .cristal-col__flyout
-  // en ColumnaCristal.css sobre por qué es un portal en vez de vivir
-  // dentro de esta columna).
-  const filaRefs = useRef({});
 
   const compartir = () => {
     onCompartir();
@@ -41,140 +30,110 @@ export default function ColumnaCristal({ ruta, onCompartir, oculta = false, over
     setTimeout(() => setCopiado(false), 2000);
   };
 
-  const cerrarFlyout = () => setGrupoAbierto(null);
-
-  // Escape o un clic fuera de la columna cierran el flyout abierto.
+  // Clic fuera de la tarjeta del menú (sobre el fondo oscurecido) la
+  // cierra -- Escape ya lo maneja CristalShell.jsx, que es quien monta
+  // este componente.
   useEffect(() => {
-    if (!grupoAbierto) return undefined;
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") cerrarFlyout();
-    };
     const onPointerDown = (e) => {
-      // El flyout vive en un portal fuera de colRef (ver Flyout más
-      // abajo) -- un clic dentro de él también cuenta como "dentro".
-      const dentro = colRef.current?.contains(e.target) || e.target.closest(".cristal-col__flyout");
-      if (!dentro) cerrarFlyout();
+      if (colRef.current && !colRef.current.contains(e.target)) onCerrar();
     };
-    document.addEventListener("keydown", onKeyDown);
     document.addEventListener("pointerdown", onPointerDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("pointerdown", onPointerDown);
-    };
-  }, [grupoAbierto]);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [onCerrar]);
 
-  // Cambiar de ruta por cualquier otro medio (atrás/adelante, enlace
-  // directo) cierra cualquier flyout que hubiera quedado abierto.
-  useEffect(() => {
-    cerrarFlyout();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ruta.itemId, ruta.hijoId]);
-
-  const alSeleccionar = () => {
-    cerrarFlyout();
-    onSeleccionar?.();
-  };
-
-  const claseColumna = `cristal-col${oculta ? " cristal-col--oculta" : ""}${overlay ? " cristal-col--overlay" : ""}`;
+  const alSeleccionar = () => onCerrar();
 
   return (
-    <nav ref={colRef} className={claseColumna} aria-label={t("menu.ariaLabel")} inert={oculta || undefined}>
-      <a className="cristal-col__logo" href={rutaHash(null)} onClick={alSeleccionar}>
-        <h1>Tultepec</h1>
-        <p>{t("cristal.marca.sub")}</p>
-      </a>
-
-      <ul className="cristal-col__menu">
-        <li className="cristal-col__item">
-          <a
-            className="cristal-col__fila"
-            href={rutaHash(null)}
-            aria-current={!ruta.itemId ? "page" : undefined}
-            onClick={alSeleccionar}
-          >
-            <span className="cristal-col__texto">{t("menu.inicio")}</span>
-            <span className="cristal-col__icono" aria-hidden="true">
-              <Home size={14} strokeWidth={1.8} />
-            </span>
+    <div className="cristal-col__backdrop">
+      <nav ref={colRef} className="cristal-col" aria-label={t("menu.ariaLabel")}>
+        <div className="cristal-col__cabecera">
+          <a className="cristal-col__logo" href={rutaHash(null)} onClick={alSeleccionar}>
+            <h1>Tultepec</h1>
+            <p>{t("cristal.marca.sub")}</p>
           </a>
-        </li>
+          <button type="button" className="cristal-col__cerrar" onClick={onCerrar} aria-label={t("menu.movil.cerrar")}>
+            <X size={20} strokeWidth={2} />
+          </button>
+        </div>
 
-        {MENU.map((item) => {
-          const Icono = item.icon;
-          const activo = ruta.itemId === item.id;
-          const abierto = grupoAbierto === item.id;
+        <ul className="cristal-col__menu">
+          <li className="cristal-col__item">
+            <a
+              className="cristal-col__fila"
+              href={rutaHash(null)}
+              aria-current={!ruta.itemId ? "page" : undefined}
+              onClick={alSeleccionar}
+            >
+              <span className="cristal-col__texto">{t("menu.inicio")}</span>
+              <span className="cristal-col__icono" aria-hidden="true">
+                <Home size={14} strokeWidth={1.8} />
+              </span>
+            </a>
+          </li>
 
-          return (
-            <li className="cristal-col__item" key={item.id}>
-              {item.hijos ? (
-                <button
-                  type="button"
-                  ref={(el) => {
-                    filaRefs.current[item.id] = el;
-                  }}
-                  className="cristal-col__fila"
-                  aria-expanded={abierto}
-                  aria-haspopup="true"
-                  onClick={() => setGrupoAbierto((actual) => (actual === item.id ? null : item.id))}
-                >
-                  <span className="cristal-col__texto">
-                    {t(item.label)}
-                    <ChevronRight className={`cristal-col__flecha${abierto ? " is-abierta" : ""}`} size={14} strokeWidth={2} aria-hidden="true" />
-                  </span>
-                  <span className="cristal-col__icono" aria-hidden="true">
-                    <Icono size={14} strokeWidth={1.8} />
-                  </span>
-                </button>
-              ) : (
-                <a
-                  className={`cristal-col__fila${item.soon ? " is-proximamente" : ""}`}
-                  href={rutaHash(item.id)}
-                  aria-current={activo ? "page" : undefined}
-                  onClick={alSeleccionar}
-                >
-                  <span className="cristal-col__texto">
-                    {t(item.label)}
-                    {item.soon && <span className="cristal-col__badge">{t("menu.proximamente.badge")}</span>}
-                  </span>
-                  <span className="cristal-col__icono" aria-hidden="true">
-                    <Icono size={14} strokeWidth={1.8} />
-                  </span>
-                </a>
-              )}
+          {MENU.map((item) => {
+            const Icono = item.icon;
+            const activo = ruta.itemId === item.id;
+            const abierto = grupoAbierto === item.id;
 
-              {item.hijos && (
-                <Flyout
-                  item={item}
-                  ruta={ruta}
-                  abierto={abierto}
-                  inline={overlay}
-                  filaRefs={filaRefs}
-                  colRef={colRef}
-                  onElegir={alSeleccionar}
-                  onCerrar={cerrarFlyout}
-                />
-              )}
-            </li>
-          );
-        })}
-      </ul>
+            return (
+              <li className="cristal-col__item" key={item.id}>
+                {item.hijos ? (
+                  <button
+                    type="button"
+                    className="cristal-col__fila"
+                    aria-expanded={abierto}
+                    aria-haspopup="true"
+                    onClick={() => setGrupoAbierto((actual) => (actual === item.id ? null : item.id))}
+                  >
+                    <span className="cristal-col__texto">
+                      {t(item.label)}
+                      <ChevronRight className={`cristal-col__flecha${abierto ? " is-abierta" : ""}`} size={14} strokeWidth={2} aria-hidden="true" />
+                    </span>
+                    <span className="cristal-col__icono" aria-hidden="true">
+                      <Icono size={14} strokeWidth={1.8} />
+                    </span>
+                  </button>
+                ) : (
+                  <a
+                    className={`cristal-col__fila${item.soon ? " is-proximamente" : ""}`}
+                    href={rutaHash(item.id)}
+                    aria-current={activo ? "page" : undefined}
+                    onClick={alSeleccionar}
+                  >
+                    <span className="cristal-col__texto">
+                      {t(item.label)}
+                      {item.soon && <span className="cristal-col__badge">{t("menu.proximamente.badge")}</span>}
+                    </span>
+                    <span className="cristal-col__icono" aria-hidden="true">
+                      <Icono size={14} strokeWidth={1.8} />
+                    </span>
+                  </a>
+                )}
 
-      <div className="cristal-col__herramientas">
-        <a className="cristal-col__boton" href={rutaHash("privacidad")} aria-label={t("footer.privacyLink")} title={t("footer.privacyLink")}>
-          <Shield size={18} strokeWidth={1.8} />
-        </a>
-        <button
-          type="button"
-          className="cristal-col__boton"
-          onClick={compartir}
-          aria-label={copiado ? t("shareButtons.copied") : t("shareButtons.label")}
-          title={copiado ? t("shareButtons.copied") : t("shareButtons.label")}
-        >
-          {copiado ? <Check size={18} strokeWidth={2.2} /> : <Share2 size={18} strokeWidth={1.8} />}
-        </button>
-        <LanguageToggle />
-      </div>
-    </nav>
+                {item.hijos && <Flyout item={item} ruta={ruta} abierto={abierto} onElegir={alSeleccionar} />}
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="cristal-col__herramientas">
+          <a className="cristal-col__boton" href={rutaHash("privacidad")} onClick={alSeleccionar} aria-label={t("footer.privacyLink")} title={t("footer.privacyLink")}>
+            <Shield size={18} strokeWidth={1.8} />
+          </a>
+          <button
+            type="button"
+            className="cristal-col__boton"
+            onClick={compartir}
+            aria-label={copiado ? t("shareButtons.copied") : t("shareButtons.label")}
+            title={copiado ? t("shareButtons.copied") : t("shareButtons.label")}
+          >
+            {copiado ? <Check size={18} strokeWidth={2.2} /> : <Share2 size={18} strokeWidth={1.8} />}
+          </button>
+          <LanguageToggle />
+        </div>
+      </nav>
+    </div>
   );
 }
 
@@ -192,70 +151,25 @@ function LanguageToggle() {
   );
 }
 
-// Panel de subopciones: a la derecha de la fila en escritorio (flyout
-// clásico), casi opaco encima del contenido en celular (ver
-// ColumnaCristal.css) para que se alcance a leer. Las flechas ↑/↓
-// navegan entre sus botones (useArrowNavigation, orientación vertical,
-// igual que el resto de listas del sitio).
-//
-// Con portal a document.body: .cristal-col tiene overflow-y:auto (las
-// 10 filas no siempre caben en una pantalla) y, dentro de un
-// contenedor con scroll, enfocar un elemento que por left:100% queda
-// fuera de sus 300/150px hace que el navegador desplace TODO el
-// contenedor para "traerlo a la vista" -- eso tapaba las propias
-// filas del menú. Fuera del contenedor (aquí, en el portal), ese
-// desplazamiento ya no puede pasar; la posición se calcula a mano a
-// partir del rectángulo real de la fila que lo abrió.
-function Flyout({ item, ruta, abierto, inline, filaRefs, colRef, onElegir, onCerrar }) {
+// Subopciones de un grupo: se abren EN LÍNEA debajo de su fila,
+// empujando el resto de la lista hacia abajo -- ya no hay columna
+// angosta al lado del contenido para la que tuviera sentido un panel
+// flotante aparte (ver el comentario de arriba). Las flechas ↑/↓
+// navegan entre sus botones (useArrowNavigation, igual que el resto
+// de listas del sitio).
+function Flyout({ item, ruta, abierto, onElegir }) {
   const { t } = useLanguage();
   const { register, onKeyDown } = useArrowNavigation({ count: item.hijos.length, orientation: "vertical" });
   const primerBotonRef = useRef(null);
-  const [posicion, setPosicion] = useState(null);
-
-  // En modo overlay (celular, columna a pantalla completa) no hay a
-  // dónde desplegar un panel a la derecha -- se abre en línea, sin
-  // necesitar medir ni portal. Fuera de ahí (escritorio o la columna
-  // angosta de Inicio en celular) sigue siendo el panel flotante de
-  // siempre, calculado a partir del rectángulo de la fila.
-  useEffect(() => {
-    if (inline || !abierto) {
-      setPosicion(null);
-      return undefined;
-    }
-    const fila = filaRefs.current[item.id];
-    if (!fila) return undefined;
-    const r = fila.getBoundingClientRect();
-    setPosicion({ left: r.right, top: r.top });
-    primerBotonRef.current?.focus({ preventScroll: true });
-
-    // Si la columna se desplaza (o la ventana cambia de tamaño)
-    // mientras el flyout está abierto, su posición fija ya no
-    // coincidiría con la fila -- más simple cerrarlo, igual que un
-    // clic fuera.
-    const col = colRef.current;
-    const onScrollOrResize = () => onCerrar();
-    col?.addEventListener("scroll", onScrollOrResize);
-    window.addEventListener("resize", onScrollOrResize);
-    return () => {
-      col?.removeEventListener("scroll", onScrollOrResize);
-      window.removeEventListener("resize", onScrollOrResize);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [abierto, inline]);
 
   useEffect(() => {
-    if (inline && abierto) primerBotonRef.current?.focus({ preventScroll: true });
-  }, [abierto, inline]);
+    if (abierto) primerBotonRef.current?.focus({ preventScroll: true });
+  }, [abierto]);
 
   if (!abierto) return null;
-  if (!inline && !posicion) return null;
 
-  const lista = (
-    <ul
-      className={`cristal-col__flyout${inline ? " cristal-col__flyout--en-linea" : ""}`}
-      style={inline ? undefined : { left: posicion.left, top: posicion.top }}
-      onKeyDown={onKeyDown(0, () => {})}
-    >
+  return (
+    <ul className="cristal-col__flyout" onKeyDown={onKeyDown(0, () => {})}>
       {item.hijos.map((hijo, i) => {
         const hijoActivo = ruta.itemId === item.id && ruta.hijoId === hijo.id;
         return (
@@ -278,6 +192,4 @@ function Flyout({ item, ruta, abierto, inline, filaRefs, colRef, onElegir, onCer
       })}
     </ul>
   );
-
-  return inline ? lista : createPortal(lista, document.body);
 }

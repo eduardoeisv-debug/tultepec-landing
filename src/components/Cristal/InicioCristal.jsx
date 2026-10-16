@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
-import { Play, Mail, CalendarDays, BookOpen, Flame, MapPinned, Users, Image as ImageIcon, Gamepad2, HeartHandshake } from "lucide-react";
+import { useRef } from "react";
+import { Mail, CalendarDays, BookOpen, Flame, MapPinned, Users, Image as ImageIcon, Gamepad2, HeartHandshake } from "lucide-react";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
-import VideoBienvenidaModal from "../shared/VideoBienvenidaModal.jsx";
+import HeroCristal from "./HeroCristal.jsx";
 import Bienvenida from "../Bienvenida/Bienvenida.jsx";
 import FinalCTA from "../FinalCTA/FinalCTA.jsx";
 import "./InicioCristal.css";
@@ -22,17 +22,13 @@ const NOVEDADES = [
   { icon: HeartHandshake, label: "menu.item.agradecimientos", sub: "cristal.novedades.agradecimientosSub", href: rutaHash("agradecimientos") },
 ];
 
-// Vista de Inicio de Menú Cristal: los 4 accesos colgantes, el
-// bienvenido centrado con los 4 pasos numerados, la franja de
-// "últimas novedades" y, al final, el bloque de me gusta/comentar/
-// compartir -- tal como pide el prompt. El video y la carta son los
-// componentes EXISTENTES (VideoBienvenidaModal.jsx reutiliza el mismo
-// <video>; Bienvenida.jsx es el mismo de siempre, sin tocar), no
-// contenido nuevo.
+// Vista de Inicio de Menú Cristal: HeroCristal.jsx (el relato + la
+// portada grande del video) arriba de todo, los accesos rápidos a
+// carta/calendario/memorias, los 4 pasos numerados, "últimas
+// novedades" y, al final, el bloque de me gusta/comentar/compartir.
+// El <h1> real (el único de esta vista) vive dentro de HeroCristal.
 export default function InicioCristal({ titleRef }) {
   const { t } = useLanguage();
-  const [videoAbierto, setVideoAbierto] = useState(false);
-  const videoTriggerRef = useRef(null);
   const bienvenidaRef = useRef(null);
 
   const irABienvenida = () => {
@@ -41,20 +37,9 @@ export default function InicioCristal({ titleRef }) {
 
   return (
     <div className="cristal-inicio">
-      <div className="cristal-inicio__tiles">
-        <button
-          type="button"
-          ref={videoTriggerRef}
-          className="cristal-tile"
-          onClick={() => setVideoAbierto(true)}
-        >
-          <span className="cristal-tile__icono cristal-tile__icono--video" aria-hidden="true">
-            <Play size={20} strokeWidth={0} fill="currentColor" />
-          </span>
-          <b>{t("hero.verBienvenida")}</b>
-          <span>1:28</span>
-        </button>
+      <HeroCristal titleRef={titleRef} />
 
+      <div className="cristal-inicio__tiles">
         <button type="button" className="cristal-tile" onClick={irABienvenida}>
           <span className="cristal-tile__icono cristal-tile__icono--carta" aria-hidden="true">
             <Mail size={20} strokeWidth={1.8} />
@@ -80,12 +65,6 @@ export default function InicioCristal({ titleRef }) {
       </div>
 
       <div className="cristal-inicio__centro">
-        <p className="cristal-inicio__kick2">{t("cristal.inicio.bienvenidosA")}</p>
-        <h1 className="cristal-inicio__kick" tabIndex={-1} ref={titleRef}>
-          Tultepec
-        </h1>
-        <p className="cristal-inicio__kick3">{t("cristal.marca.sub")}</p>
-
         <ul className="cristal-inicio__pasos">
           {PASOS.map((paso) => {
             const Icono = paso.icon;
@@ -129,8 +108,6 @@ export default function InicioCristal({ titleRef }) {
       <div className="cristal-inicio__cta">
         <FinalCTA />
       </div>
-
-      <VideoBienvenidaModal open={videoAbierto} onClose={() => setVideoAbierto(false)} triggerRef={videoTriggerRef} />
     </div>
   );
 }

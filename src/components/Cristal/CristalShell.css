@@ -1,14 +1,12 @@
 /* Paleta propia de Menú Cristal -- los tonos de cristal (fondos
    translúcidos, línea divisoria) no tienen ningún token cercano en
    variables.css porque son específicos de este vidrio esmerilado; el
-   resto (dorado, rosa, turquesa, noche) si reutiliza los tokens del
+   resto (dorado, rosa, turquesa, noche) sí reutiliza los tokens del
    proyecto directamente en cada archivo en vez de redefinirlos aquí.
-   En :root (no en .cristal-root) a propósito: el flyout del menú
-   (ColumnaCristal.jsx) se monta con un portal a document.body, fuera
-   del árbol de .cristal-root -- ahí abajo no vería estas variables y
-   se quedaba sin fondo ni borde (texto transparente encima de lo que
-   hubiera detrás). Como custom properties de CSS, document.body SÍ
-   hereda de :root aunque el portal lo saque del árbol de React. */
+   En :root para que cualquier parte de Menú Cristal los vea sin
+   depender de dónde caiga en el árbol (TopBarCristal.jsx y
+   ColumnaCristal.jsx, por ejemplo, ya no son hijos directos de
+   .cristal-root). */
 :root {
   --cristal-glass: rgba(12, 12, 34, 0.72);
   --cristal-glass2: rgba(40, 36, 80, 0.72);
@@ -20,15 +18,17 @@
 .cristal-root {
   position: relative;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   /* Respaldo final contra un desborde horizontal de unos 19px en
      Inicio (768px y horizontal angosto) que no pude atar a un
      elemento concreto: ningún nodo pintado excede el viewport (ni
-     siquiera el propio .cristal-inicio__novedades-grid, ya con
-     min-width:0), así que algo en el cálculo de tamaño intrínseco de
-     esa rejilla de 5 columnas empuja el scrollWidth del documento sin
-     que se note visualmente en ningún ancho probado. overflow-x:clip
-     (no hidden) porque no crea un contenedor de scroll propio y no
-     interfiere con el position:sticky de la columna. */
+     siquiera .cristal-inicio__novedades-grid, ya con min-width:0), así
+     que algo en el cálculo de tamaño intrínseco de esa rejilla de 5
+     columnas empuja el scrollWidth del documento sin que se note
+     visualmente en ningún ancho probado. overflow-x:clip (no hidden)
+     porque no crea un contenedor de scroll propio y no interfiere con
+     el position:sticky de la barra superior. */
   overflow-x: clip;
   color: var(--color-paper);
   background:
@@ -49,22 +49,11 @@
     radial-gradient(rgba(255, 214, 120, 0.12) 2px, transparent 2.6px) 23px 23px / 92px 92px;
 }
 
-.cristal-shell {
-  position: relative;
-  display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  min-height: 100vh;
-}
-
+/* El menú (ColumnaCristal.jsx) ya no es una columna que comparte esta
+   rejilla -- es una capa aparte a pantalla completa, montada solo
+   mientras está abierta. El contenido usa todo el ancho siempre, en
+   escritorio y en celular por igual. */
 .cristal-stage {
-  /* Fijo en la 2ª columna a propósito: cuando la columna se oculta en
-     celular (.cristal-col--oculta, display:none -- ver
-     ColumnaCristal.css), deja de contar para la colocación automática
-     de la rejilla, y sin esto el stage pasaba a ocupar la 1ª columna
-     (150px, el ancho de la columna) en vez de la que le toca -- el
-     contenido se veía apretado a la izquierda en vez de a lo ancho de
-     toda la pantalla. */
-  grid-column: 2;
   position: relative;
   min-width: 0;
   padding: 0 max(20px, 3vw) 3rem;
@@ -80,28 +69,8 @@
 }
 
 @media (max-width: 700px) {
-  .cristal-shell {
-    grid-template-columns: 150px minmax(0, 1fr);
-  }
   .cristal-stage {
     padding: 0 0.7rem 2.2rem;
-  }
-
-  /* Con la columna oculta (ColumnaCristal.css, .cristal-col--oculta),
-     la pista de 150px de la regla de arriba se queda ahí igual,
-     vacía -- grid-template-columns reserva el espacio exista o no un
-     elemento que lo ocupe. Una sola columna aquí deja que el
-     contenido use la pantalla entera de verdad. Declarada DESPUÉS de
-     la regla de arriba a propósito: misma especificidad (una sola
-     clase cada una), así que sin este orden la de arriba ganaba por
-     venir después en la hoja de estilos y el contenido se quedaba
-     apretado en los 150px de siempre. */
-  .cristal-shell--rail-oculto {
-    grid-template-columns: 1fr;
-  }
-
-  .cristal-shell--rail-oculto .cristal-stage {
-    grid-column: 1;
   }
 }
 

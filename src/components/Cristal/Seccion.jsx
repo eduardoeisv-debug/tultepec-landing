@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { Menu as MenuIcon } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import FinalCTA from "../FinalCTA/FinalCTA.jsx";
 import Footer from "../Footer/Footer.jsx";
@@ -12,20 +11,13 @@ import "./Seccion.css";
 // propio título, ver HistoriaView.jsx y compañía), o null si la
 // opción todavía no existe (aviso "Próximamente"). El pie y el bloque
 // de compartir van SIEMPRE al final de estas vistas internas (nunca en
-// Inicio, ver InicioCristal.jsx).
-//
-// El botón "Menú" solo se ve en celular (CSS, ver Seccion.css) -- en
-// escritorio la columna ya está siempre visible al lado, no hace
-// falta un botón para volver a ella.
-export default function Seccion({ eyebrow, titulo, Vista, titleRef, onOpenPrivacy, onAbrirMenu }) {
+// Inicio, ver InicioCristal.jsx). Ya no trae su propio botón "Menú" --
+// TopBarCristal.jsx (hamburguesa) ya está siempre visible arriba de
+// todo, en cualquier vista.
+export default function Seccion({ eyebrow, titulo, Vista, titleRef, onOpenPrivacy }) {
   const { t } = useLanguage();
   return (
     <div className="cristal-sec">
-      <button type="button" className="cristal-sec__menu-boton" onClick={onAbrirMenu}>
-        <MenuIcon size={16} strokeWidth={2} aria-hidden="true" />
-        {t("menu.header.titulo")}
-      </button>
-
       <span className="cristal-sec__pill">{eyebrow}</span>
       <h2 className="cristal-sec__titulo" tabIndex={-1} ref={titleRef}>
         {titulo}
