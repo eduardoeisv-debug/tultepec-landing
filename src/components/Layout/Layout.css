@@ -1,0 +1,35 @@
+.layout {
+  position: relative;
+  background: var(--color-night-950);
+  padding: var(--space-lg) 0;
+}
+
+.layout__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  align-items: start;
+}
+
+@media (min-width: 860px) {
+  .layout__grid {
+    grid-template-columns: 380px 1fr;
+  }
+
+  .sidebar-menu {
+    position: sticky;
+    /* Debajo del encabezado fijo + su tira de papel picado. */
+    top: calc(56px + 22px + var(--space-md));
+    max-height: calc(100vh - 56px - 22px - var(--space-md) * 2);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 859px) {
+  .layout {
+    padding: var(--space-sm) 0 var(--space-lg);
+  }
+  .layout__grid {
+    gap: var(--space-sm);
+  }
+}

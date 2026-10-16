@@ -1,113 +1,110 @@
-// Datos del menú "Explora": grupos -> categorías (icono + color) ->
-// opciones. Lo usan tres sitios con la MISMA data (src/components/
-// Header/ExploraMenu.jsx, la sección "Explora Tultepec" en la página y
-// los tres botones de atajo del hero) para que agregar o reordenar una
-// opción no implique tocar tres archivos distintos.
+// Datos del menú lateral: 9 opciones de nivel superior, algunas con
+// submenú (`hijos`) y otras directas (sin `hijos`, van solo a su propia
+// vista). Agregar una opción nueva es solo agregar un objeto aquí --
+// src/components/Layout/SidebarMenu.jsx y el router de hash
+// (useHashRoute.js) leen esta misma lista.
 //
-// Cada opción es { id, label (clave i18n en strings.js), href, soon }.
-// `href` es siempre un ancla ("#id-real-en-la-página") o un hash que
-// alguna pantalla ya escucha para abrirse (ver Hero.jsx y App.jsx):
-// "#galeria/imagenes", "#memorias", "#comparte-memoria" ya existían;
-// "#historia" y "#relatos-escritos" se agregaron para este menú. Con
-// `soon: true`, `href` se ignora (ExploraMenu.jsx no renderiza un
-// enlace, solo el nombre atenuado + "Próximamente").
+// Cada item: { id, label (clave i18n), icon (lucide-react), degradado
+// [colorDesde, colorHasta], hijos: [{ id, label, soon }] | null, soon }.
+// `soon` en un item sin hijos significa que la opción completa todavía
+// no existe (ver src/components/Panel/views/SoonView.jsx). Los colores
+// del degradado reutilizan los tokens de variables.css -- ninguno es un
+// hex nuevo salvo --color-turquoise, que no existía antes de este menú.
 //
-// TODO (dato de ejemplo, no confirmado -- ver Prompt_Menu_Explora_20261016.txt):
-// - "Calendario por mes", "Fiestas del año", "Cómo llegar" y "Planea tu
-//   visita" apuntan los cuatro a "#visita" porque hoy esa sección no
-//   tiene sub-anclas propias para el calendario o el mapa por separado
-//   (ver VisitInfo.jsx) -- si se agregan, actualizar sus `href` aquí.
-// - Confirmar si "Fiestas del año" debe ser una página/lista distinta
-//   del calendario o si de verdad es el mismo destino.
-// - Los grupos, categorías y textos de las opciones son el ejemplo del
-//   prompt; reemplázalos si el pueblo pide otros rubros u otro orden.
+// Ruta por hash: "#/<item.id>/<hijo.id>" si tiene hijos, "#/<item.id>"
+// si es directo. Sin hash (o uno que no coincide con nada de aquí) cae
+// en Inicio -- ver useHashRoute.js.
 
-import { Flame, BookOpen, CalendarDays, Utensils, MapPinned, Gamepad2 } from "lucide-react";
+import { Flame, BookOpen, Landmark, CalendarDays, Utensils, Music, MapPinned, Gamepad2, HeartHandshake } from "lucide-react";
 
 const MENU = [
   {
-    id: "conoce",
-    label: "explora.grupo.conoce",
-    categorias: [
-      {
-        id: "pirotecnia",
-        label: "explora.categoria.pirotecnia",
-        icon: Flame,
-        tono: "terracotta",
-        opciones: [
-          { id: "historia", label: "explora.opcion.historia", href: "#historia", soon: false },
-          { id: "galeria", label: "explora.opcion.galeria", href: "#galeria/imagenes", soon: false },
-          { id: "videos-tipo", label: "explora.opcion.videosTipo", href: null, soon: true },
-          { id: "memorias-oficio", label: "explora.opcion.memoriasOficio", href: null, soon: true },
-        ],
-      },
-      {
-        id: "memorias",
-        label: "explora.categoria.memorias",
-        icon: BookOpen,
-        tono: "gold",
-        opciones: [
-          { id: "memorias-pueblo", label: "explora.opcion.memoriasPueblo", href: "#memorias", soon: false },
-          { id: "relatos", label: "explora.opcion.relatos", href: "#relatos-escritos", soon: false },
-          { id: "comparte", label: "explora.opcion.comparte", href: "#comparte-memoria", soon: false },
-        ],
-      },
+    id: "pirotecnia",
+    label: "menu.item.pirotecnia",
+    icon: Flame,
+    degradado: ["var(--color-gold-light)", "var(--color-terracotta)"],
+    hijos: [
+      { id: "historia", label: "menu.opcion.historia", soon: false },
+      { id: "galeria", label: "menu.opcion.galeria", soon: false },
+      { id: "videos-tipo", label: "menu.opcion.videosTipo", soon: true },
+      { id: "memorias-oficio", label: "menu.opcion.memoriasOficio", soon: true },
     ],
   },
   {
-    id: "vive",
-    label: "explora.grupo.vive",
-    categorias: [
-      {
-        id: "eventos",
-        label: "explora.categoria.eventos",
-        icon: CalendarDays,
-        tono: "fire",
-        opciones: [
-          { id: "calendario", label: "explora.opcion.calendario", href: "#visita", soon: false },
-          { id: "fiestas-ano", label: "explora.opcion.fiestasAno", href: "#visita", soon: false },
-          { id: "ficha-evento", label: "explora.opcion.fichaEvento", href: null, soon: true },
-        ],
-      },
-      {
-        id: "gastronomia",
-        label: "explora.categoria.gastronomia",
-        icon: Utensils,
-        tono: "night",
-        opciones: [
-          { id: "platillos", label: "explora.opcion.platillos", href: null, soon: true },
-          { id: "donde-probarlos", label: "explora.opcion.dondeProbarlos", href: null, soon: true },
-        ],
-      },
+    id: "memorias",
+    label: "menu.item.memorias",
+    icon: BookOpen,
+    degradado: ["var(--color-gold)", "var(--color-gold-light)"],
+    hijos: [
+      { id: "pueblo", label: "menu.opcion.memoriasPueblo", soon: false },
+      { id: "relatos", label: "menu.opcion.relatos", soon: false },
+      { id: "comparte", label: "menu.opcion.comparte", soon: false },
     ],
   },
   {
-    id: "planea",
-    label: "explora.grupo.planea",
-    categorias: [
-      {
-        id: "visitanos",
-        label: "explora.categoria.visitanos",
-        icon: MapPinned,
-        tono: "terracotta",
-        opciones: [
-          { id: "como-llegar", label: "explora.opcion.comoLlegar", href: "#visita", soon: false },
-          { id: "mapa-recorridos", label: "explora.opcion.mapaRecorridos", href: null, soon: true },
-          { id: "planea-visita", label: "explora.opcion.planeaVisita", href: "#visita", soon: false },
-        ],
-      },
-      {
-        id: "juegos",
-        label: "explora.categoria.juegos",
-        icon: Gamepad2,
-        tono: "gold",
-        opciones: [
-          { id: "torito", label: "explora.opcion.torito", href: "#juegos", soon: false },
-          { id: "memorama", label: "explora.opcion.memorama", href: "#juegos", soon: false },
-          { id: "sopa", label: "explora.opcion.sopa", href: "#juegos", soon: false },
-        ],
-      },
+    id: "museos",
+    label: "menu.item.museos",
+    icon: Landmark,
+    degradado: ["var(--color-terracotta)", "var(--color-terracotta-dark)"],
+    hijos: null,
+    soon: true,
+  },
+  {
+    id: "eventos",
+    label: "menu.item.eventos",
+    icon: CalendarDays,
+    degradado: ["var(--color-fire-red)", "var(--color-terracotta)"],
+    hijos: [
+      { id: "calendario", label: "menu.opcion.calendario", soon: false },
+      { id: "fiestas-ano", label: "menu.opcion.fiestasAno", soon: true },
+      { id: "ficha-evento", label: "menu.opcion.fichaEvento", soon: true },
     ],
+  },
+  {
+    id: "gastronomia",
+    label: "menu.item.gastronomia",
+    icon: Utensils,
+    degradado: ["var(--color-terracotta)", "var(--color-gold)"],
+    hijos: null,
+    soon: true,
+  },
+  {
+    id: "musica",
+    label: "menu.item.musica",
+    icon: Music,
+    degradado: ["var(--color-pink)", "var(--color-terracotta-dark)"],
+    hijos: null,
+    soon: true,
+  },
+  {
+    id: "visitanos",
+    label: "menu.item.visitanos",
+    icon: MapPinned,
+    degradado: ["var(--color-turquoise)", "var(--color-night-700)"],
+    hijos: [
+      { id: "como-llegar", label: "menu.opcion.comoLlegar", soon: false },
+      { id: "planea-visita", label: "menu.opcion.planeaVisita", soon: false },
+      { id: "mapa-recorridos", label: "menu.opcion.mapaRecorridos", soon: true },
+    ],
+  },
+  {
+    id: "juegos",
+    label: "menu.item.juegos",
+    icon: Gamepad2,
+    degradado: ["var(--color-gold-light)", "var(--color-pink)"],
+    hijos: [
+      { id: "torito", label: "menu.opcion.torito", soon: false },
+      { id: "memorama", label: "menu.opcion.memorama", soon: false },
+      { id: "sopa", label: "menu.opcion.sopa", soon: false },
+    ],
+  },
+  {
+    id: "agradecimientos",
+    label: "menu.item.agradecimientos",
+    icon: HeartHandshake,
+    degradado: ["var(--color-pink)", "var(--color-gold)"],
+    hijos: null,
+    soon: false,
   },
 ];
 

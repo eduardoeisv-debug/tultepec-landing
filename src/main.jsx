@@ -22,10 +22,10 @@ const isModerationRoute = window.location.pathname.replace(/\/$/, '') === '/mode
 
 // Por defecto, el navegador restaura la posición de scroll al recargar la
 // página (no solo al usar atrás/adelante), lo que hacía que refrescar
-// pareciera "mandar a la mitad" aunque la URL no tuviera ningún ancla. Como
-// esta landing es una sola página sin rutas internas, forzamos que cada
-// carga empiece arriba -- el hook de anclas (#tradiciones, #voces...) sigue
-// llevando al lugar correcto cuando sí hay un hash en la URL.
+// pareciera "mandar a la mitad". Se fuerza a que cada carga empiece arriba
+// -- el router de hash (useHashRoute.js, "#/grupo/opcion") igual resuelve
+// la vista correcta del panel antes del primer render, y ContentPanel.jsx
+// ya sube el panel a la vista por su cuenta si hace falta.
 if ('scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual'
 }

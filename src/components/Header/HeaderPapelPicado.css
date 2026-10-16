@@ -1,0 +1,47 @@
+.header-papel-picado {
+  position: relative;
+  width: 100%;
+  height: 22px;
+  overflow: hidden;
+  background: var(--color-night-900);
+}
+
+.header-papel-picado__svg {
+  width: 110%;
+  height: 100%;
+  margin-left: -5%;
+  display: block;
+}
+
+.header-papel-picado__linea {
+  stroke: var(--color-gold-light);
+  stroke-width: 1.5;
+}
+
+.header-papel-picado__flag {
+  fill: var(--color-paper);
+  opacity: 0.22;
+  animation: header-papel-picado-sway 3.6s ease-in-out infinite;
+}
+
+@keyframes header-papel-picado-sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-papel-picado__flag {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-papel-picado {
+    height: 16px;
+  }
+}

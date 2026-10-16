@@ -2,19 +2,18 @@
    dorado #e3ab3d, ver --hero-ember/--hero-magenta/--hero-purple en
    Hero.css -- se repiten los mismos valores literales aquí porque esas
    custom properties están declaradas en .hero, que no es un ancestro de
-   esta sección) y lo lleva hasta el morado oscuro, sin tocar el dorado
-   de nuevo -- la franja de night-900 queda para VisitInfo (ver el ajuste
-   en VisitInfo.css). La silueta del pueblo cierra la sección, igual que
-   antes cerraba el hero. */
+   esta sección) y lo lleva hasta el morado oscuro. Vive dentro de la
+   vista Inicio del panel (InicioView.jsx), justo debajo del hero --ya
+   no es su propia sección de ancho completo, así que la silueta del
+   pueblo que antes la cerraba (TownSilhouette) se quitó junto con el
+   padding-bottom que le dejaba sitio. */
 .bienvenida {
   position: relative;
   background: linear-gradient(180deg, #e3ab3d 0%, #c1592f 35%, #7a2166 72%, #3a1368 100%);
   color: var(--color-paper);
-  padding: var(--space-xl) 0 clamp(140px, 20vw, 210px);
+  padding: var(--space-lg) 0;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   overflow: hidden;
-  /* Para que el menú "Explora" del encabezado fijo pueda enlazar aquí
-     sin que la franja de arriba quede tapada. */
-  scroll-margin-top: 80px;
 }
 
 .bienvenida__inner {

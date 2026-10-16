@@ -1,36 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, X, ChevronRight, Flame, MessageSquareText, BookOpen, RotateCcw, Landmark, Sparkles } from "lucide-react";
-import MENU from "../../data/menu.js";
+import { Play, X, RotateCcw, Sparkles } from "lucide-react";
 import SparkField from "../shared/SparkField.jsx";
 import HeroFireworks from "../shared/HeroFireworks.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
-import ScrollCue from "../shared/ScrollCue.jsx";
-import GaleriaOverlay from "../shared/GaleriaOverlay.jsx";
-import { GaleriaCardIcon } from "../shared/GaleriaIcons.jsx";
-import { preloadGaleriaImages } from "../../hooks/useGaleriaImages.js";
-import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
-import HistoryModal from "../shared/HistoryModal.jsx";
-import MemoriesModal from "../shared/MemoriesModal.jsx";
-import MuseosModal from "../shared/MuseosModal.jsx";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Hero.css";
 
-export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
+// El hero de siempre (etiqueta + título + subtítulo + video de
+// bienvenida), ahora embebido como la primera mitad de la vista Inicio
+// del panel (ver src/components/Panel/views/InicioView.jsx) en vez de
+// ser su propia sección de ancho completo. Las tarjetas que tenía
+// antes (Explora la historia, Memorias, Relatos, Galería, Museos) se
+// quitaron: esas pantallas ahora son rutas del menú lateral
+// (src/data/menu.js), no modales que este componente abría.
+export default function Hero({ titleRef }) {
   const { t } = useLanguage();
   const [playing, setPlaying] = useState(false);
   const [ended, setEnded] = useState(false);
   const [mobileVideoOpen, setMobileVideoOpen] = useState(false);
   const [mobileEnded, setMobileEnded] = useState(false);
-  const [historyOpen, setHistoryOpen] = useState(false);
-  const [memoriesOpen, setMemoriesOpen] = useState(false);
-  const [galeriaOpen, setGaleriaOpen] = useState(false);
-  const [museosOpen, setMuseosOpen] = useState(false);
-  const historyTriggerRef = useRef(null);
-  const memoriesTriggerRef = useRef(null);
-  const galeriaTriggerRef = useRef(null);
-  const museosTriggerRef = useRef(null);
   const videoRef = useRef(null);
   const mobileVideoRef = useRef(null);
   const posterTriggerRef = useRef(null);
@@ -40,25 +30,6 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
 
   useScrollLock(mobileVideoOpen);
   useFocusTrap(mobileVideoModalRef, mobileVideoOpen);
-
-  // Precarga en segundo plano las fotos/videos de la galería un momento
-  // después de que el hero ya cargó -- así, para cuando alguien realmente
-  // toque la tarjeta "Imágenes y videos", la caché casi siempre ya está
-  // lista y el overlay abre con las fotos puestas en vez de en blanco.
-  // requestIdleCallback (si existe) espera a que el navegador esté libre;
-  // el setTimeout es el respaldo en Safari, que no lo implementa.
-  useEffect(() => {
-    const run = () => {
-      preloadGaleriaImages();
-      preloadGaleriaVideos();
-    };
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(run, { timeout: 4000 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = setTimeout(run, 2000);
-    return () => clearTimeout(id);
-  }, []);
 
   // Compartido por el botón de reinicio de esquina y el de "Ver de nuevo"
   // del overlay de fin, en ambos reproductores (escritorio y móvil).
@@ -120,108 +91,18 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mobileVideoOpen]);
 
-  // Soporta enlaces directos a la galería (#galeria/imagenes,
-  // #galeria/videos) y a las pestañas de "Memorias de mi pueblo"
-  // (#memorias, #voces, #comparte-memoria) -- cada overlay lee el hash
-  // para elegir su pestaña inicial. Se revisa el hash tanto al montar
-  // (enlace directo a la página) como en cada "hashchange" posterior: la
-  // carta de bienvenida enlaza a "#comparte-memoria"/"#memorias" con
-  // anclas normales, y como ninguna de esas rutas tiene un elemento real
-  // con ese id en la página, solo cambian el hash (sin saltar a ningún
-  // lado) -- este listener es lo que realmente abre el modal en ese caso.
-  //
-  // El ref que se enfoca al cerrar (memoriesTriggerRef) normalmente
-  // apunta fijo a la tarjeta "Memorias de mi pueblo" del hero (ver
-  // ref={item.ref} más abajo) -- pero si el modal se abrió por hash desde
-  // otro lado de la página (como estos enlaces de la carta), enfocar esa
-  // tarjeta de vuelta hace que el navegador salte hasta el hero para
-  // mostrarla, aunque quien abrió el modal esté mucho más abajo. Por eso
-  // aquí se sobreescribe el ref con el elemento que de verdad tenía el
-  // foco (el enlace recién clicado) justo antes de abrir -- mismo truco
-  // que ya usa openPrivacy en App.jsx para el mismo problema.
-  useEffect(() => {
-    const syncFromHash = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith("#galeria/")) {
-        galeriaTriggerRef.current = document.activeElement;
-        setGaleriaOpen(true);
-      }
-      if (hash === "#memorias" || hash === "#voces" || hash === "#comparte-memoria") {
-        memoriesTriggerRef.current = document.activeElement;
-        setMemoriesOpen(true);
-      }
-      // "Historia" del menú "Explora" (src/data/menu.js) enlaza con
-      // "#historia" -- mismo mecanismo que arriba, no hay una sección
-      // real con ese id, así que el único efecto del enlace es este.
-      if (hash === "#historia") {
-        historyTriggerRef.current = document.activeElement;
-        setHistoryOpen(true);
-      }
-    };
-    syncFromHash();
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
-  }, []);
-
-  const listItems = [
-    {
-      key: "history",
-      Icon: Flame,
-      label: t("hero.card.history.title"),
-      caption: t("hero.card.history.caption"),
-      onClick: () => setHistoryOpen(true),
-      ref: historyTriggerRef,
-    },
-    {
-      key: "memories",
-      Icon: MessageSquareText,
-      label: t("hero.card.memories.title"),
-      caption: t("hero.card.memories.caption"),
-      onClick: () => setMemoriesOpen(true),
-      ref: memoriesTriggerRef,
-    },
-    {
-      key: "books",
-      Icon: BookOpen,
-      label: t("hero.card.books.title"),
-      caption: t("hero.card.books.caption"),
-      onClick: onOpenBooks,
-      ref: booksTriggerRef,
-    },
-    {
-      key: "galeria",
-      Icon: GaleriaCardIcon,
-      label: t("hero.card.galeria.title"),
-      caption: t("hero.card.galeria.caption"),
-      onClick: () => setGaleriaOpen(true),
-      ref: galeriaTriggerRef,
-    },
-    {
-      key: "museos",
-      Icon: Landmark,
-      label: t("hero.card.museos.title"),
-      caption: t("hero.card.museos.caption"),
-      onClick: () => setMuseosOpen(true),
-      ref: museosTriggerRef,
-      // Módulo en construcción (ver MuseosModal) -- la tarjeta se ve
-      // sombreada/pendiente en vez de lista como las demás, aunque sigue
-      // siendo clicable (abre el aviso explicándolo).
-      pendiente: true,
-    },
-  ];
-
   return (
-    <section className="hero" id="inicio">
+    <div className="hero" id="inicio">
       <HeroFireworks />
       <SparkField />
       <HeroPapelPicado />
-      <div className="container hero__grid">
+      <div className="hero__grid">
         <div className="hero__copy">
           <p className="hero__welcome-line hero__enter hero__enter--1">
             <Sparkles size={20} strokeWidth={1.8} aria-hidden="true" />
             {t("hero.bienvenidosEyebrow")}
           </p>
-          <h1 className="hero__title hero__enter hero__enter--1">
+          <h1 className="hero__title hero__enter hero__enter--1" tabIndex={-1} ref={titleRef}>
             {t("hero.title.line1")} <span>{t("hero.title.line2")}</span>
           </h1>
           <button
@@ -239,39 +120,6 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
             {t("hero.verVideo")}
           </button>
           <p className="hero__subtitle hero__enter hero__enter--2">{t("hero.subtitle")}</p>
-          <ul className="hero__cards hero__enter hero__enter--3">
-            {listItems.map((item) => (
-              <li className="hero__card-item" key={item.key}>
-                <button
-                  type="button"
-                  className={`hero__card${item.pendiente ? " hero__card--pendiente" : ""}`}
-                  onClick={item.onClick}
-                  ref={item.ref}
-                >
-                  <span className="hero__card-icon" aria-hidden="true">
-                    <item.Icon size={26} strokeWidth={1.7} />
-                  </span>
-                  <span className="hero__card-title">{item.label}</span>
-                  <span className="hero__card-caption">{item.caption}</span>
-                  <ChevronRight className="hero__card-arrow" size={16} strokeWidth={2} aria-hidden="true" />
-                </button>
-              </li>
-            ))}
-          </ul>
-
-          <nav className="hero__atajos hero__enter hero__enter--3" aria-label={t("explora.seccion.title")}>
-            {MENU.map((grupo) => (
-              <a
-                className="hero__atajo"
-                key={grupo.id}
-                href={`#explora-${grupo.id}`}
-                aria-label={t("explora.atajoAriaLabel", { grupo: t(grupo.label) })}
-              >
-                {t(grupo.label)}
-                <ChevronRight size={14} strokeWidth={2.4} aria-hidden="true" />
-              </a>
-            ))}
-          </nav>
         </div>
 
         <div className="hero__visual hero__visual--enter">
@@ -356,21 +204,6 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
         </div>
       </div>
 
-      <ScrollCue
-        label={t("hero.scrollCueHistoria")}
-        onClick={() => document.getElementById("bienvenida")?.scrollIntoView({ block: "start" })}
-      />
-
-      <HistoryModal open={historyOpen} onClose={() => setHistoryOpen(false)} triggerRef={historyTriggerRef} />
-      <MemoriesModal
-        open={memoriesOpen}
-        onClose={() => setMemoriesOpen(false)}
-        triggerRef={memoriesTriggerRef}
-        onOpenPrivacy={onOpenPrivacy}
-      />
-      <GaleriaOverlay open={galeriaOpen} onClose={() => setGaleriaOpen(false)} triggerRef={galeriaTriggerRef} />
-      <MuseosModal open={museosOpen} onClose={() => setMuseosOpen(false)} triggerRef={museosTriggerRef} />
-
       {mobileVideoOpen && (
         <div className="hero__mobile-video-backdrop" onMouseDown={closeMobileVideo}>
           <div
@@ -433,6 +266,6 @@ export default function Hero({ onOpenBooks, onOpenPrivacy, booksTriggerRef }) {
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }

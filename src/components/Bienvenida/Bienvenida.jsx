@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import TownSilhouette from "../shared/TownSilhouette.jsx";
-import ScrollCue from "../shared/ScrollCue.jsx";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Bienvenida.css";
 
@@ -26,14 +24,13 @@ function CartaEdge() {
   );
 }
 
-// "Carta de bienvenida": va justo después del hero y antes de la silueta
-// del pueblo (que cierra la sección -- ver TownSilhouette). Empieza
-// compacta, como una nota con solapa de papel picado: al tocarla se abre
-// y muestra el mensaje completo (dos columnas desde 860px); al salir la
-// sección de la pantalla (scroll hacia otra parte de la página) se vuelve
-// a compactar sola, igual que el laberinto del torito se pausa solo al
-// salir de vista -- así no queda desplegada todo el tiempo, solo mientras
-// alguien la está viendo.
+// "Carta de bienvenida": va justo después del hero dentro de InicioView
+// (ver src/components/Panel/views/InicioView.jsx). Empieza compacta,
+// como una nota con solapa de papel picado: al tocarla se abre y
+// muestra el mensaje completo (dos columnas desde 860px); al salir de
+// la pantalla (scroll) se vuelve a compactar sola, igual que el
+// laberinto del torito se pausa solo al salir de vista -- así no queda
+// desplegada todo el tiempo, solo mientras alguien la está viendo.
 export default function Bienvenida() {
   const { t } = useLanguage();
   const [abierta, setAbierta] = useState(false);
@@ -143,10 +140,10 @@ export default function Bienvenida() {
 
                   <div className="bienvenida-carta__cta">
                     <p className="bienvenida-carta__pregunta">{t("bienvenida.cta.pregunta")}</p>
-                    <a href="#comparte-memoria" className="btn btn--dark">
+                    <a href="#/memorias/comparte" className="btn btn--dark">
                       {t("bienvenida.cta.compartir")}
                     </a>
-                    <a href="#memorias" className="bienvenida-carta__link">
+                    <a href="#/memorias/pueblo" className="bienvenida-carta__link">
                       {t("bienvenida.cta.leeMemorias")}
                     </a>
                   </div>
@@ -155,14 +152,7 @@ export default function Bienvenida() {
             </div>
           </div>
         </div>
-
-        <ScrollCue
-          label={t("hero.scrollCue")}
-          onClick={() => document.getElementById("visita")?.scrollIntoView({ block: "start" })}
-        />
       </div>
-
-      <TownSilhouette />
     </section>
   );
 }

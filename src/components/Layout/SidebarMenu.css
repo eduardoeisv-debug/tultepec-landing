@@ -1,0 +1,244 @@
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Barra superior dorada "Menú" -- en escritorio es solo una etiqueta;
+   en celular es el botón real que pliega/despliega la lista (ver
+   sidebar-menu__barra--boton). */
+.sidebar-menu__barra {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.1rem;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: linear-gradient(150deg, var(--color-gold-light) 0%, var(--color-gold) 60%, var(--color-terracotta) 140%);
+  color: var(--color-night-950);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.sidebar-menu__barra--boton {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  width: 100%;
+  padding: 0 1.1rem;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: linear-gradient(150deg, var(--color-gold-light) 0%, var(--color-gold) 60%, var(--color-terracotta) 140%);
+  color: var(--color-night-950);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.sidebar-menu__barra--boton:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: -3px;
+}
+
+/* Mismo truco de grid-template-rows 0fr/1fr que Bienvenida.css y
+   ExploraTultepec.css: anima la altura de un bloque de alto desconocido
+   sin medirlo en JS. En escritorio esta clase siempre lleva
+   "is-abierta" (ver SidebarMenu.jsx: colapsadoEnMovil es siempre false
+   ahí), así que la misma regla deja el menú siempre desplegado sin
+   necesitar un camino de CSS aparte. */
+.sidebar-menu__acordeon {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
+}
+
+.sidebar-menu__acordeon.is-abierta {
+  grid-template-rows: 1fr;
+}
+
+.sidebar-menu__acordeon-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.sidebar-menu__lista {
+  margin: 0;
+  padding: 0.6rem;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: var(--color-night-900);
+  border: 1px solid var(--color-menu-row-border);
+  border-top: none;
+}
+
+.sidebar-menu__item {
+  display: grid;
+  gap: 0.3rem;
+}
+
+/* Fila de nivel superior: botón (con hijos, acordeón) o <a> (enlace
+   directo). Mismo aspecto para los dos -- icono en círculo de
+   degradado, texto, y flecha o insignia "Próximamente" a la derecha. */
+.sidebar-menu__fila {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 48px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 10px;
+  background: var(--color-menu-row-bg);
+  border: 1px solid var(--color-menu-row-border);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
+}
+
+.sidebar-menu__fila:hover {
+  border-color: var(--color-gold-light);
+}
+
+.sidebar-menu__fila:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+/* La fila abierta (acordeón) se resalta. */
+.sidebar-menu__fila.is-abierta {
+  background: rgba(243, 205, 122, 0.1);
+  border-color: var(--color-gold-light);
+}
+
+/* La opción activa (aria-current="page") se marca en dorado. */
+.sidebar-menu__fila[aria-current="page"] {
+  color: var(--color-gold-light);
+  border-color: var(--color-gold-light);
+}
+
+.sidebar-menu__fila.is-proximamente {
+  opacity: 0.7;
+}
+
+.sidebar-menu__icono {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--fila-desde), var(--fila-hasta));
+  color: var(--color-night-950);
+}
+
+.sidebar-menu__texto {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sidebar-menu__flecha {
+  flex-shrink: 0;
+  color: rgba(251, 241, 226, 0.6);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.sidebar-menu__flecha.is-abierta {
+  transform: rotate(180deg);
+}
+
+.sidebar-menu__badge {
+  flex-shrink: 0;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 241, 226, 0.3);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(251, 241, 226, 0.7);
+}
+
+/* Submenú: mismo truco de altura animada, filas más oscuras que las de
+   nivel superior y un punto rosa a la derecha en vez de flecha. */
+.sidebar-menu__submenu {
+  margin: 0.3rem 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.3rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s var(--ease-out);
+}
+
+.sidebar-menu__submenu.is-abierta {
+  max-height: 60vh;
+}
+
+.sidebar-menu__subopcion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  background: var(--color-night-950);
+  border: 1px solid var(--color-menu-row-border);
+  color: rgba(251, 241, 226, 0.82);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
+}
+
+.sidebar-menu__subopcion:hover {
+  border-color: var(--color-gold-light);
+}
+
+.sidebar-menu__subopcion:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
+.sidebar-menu__subopcion[aria-current="page"] {
+  color: var(--color-gold-light);
+  border-color: var(--color-gold-light);
+}
+
+.sidebar-menu__subopcion.is-proximamente {
+  opacity: 0.65;
+}
+
+.sidebar-menu__subopcion-texto {
+  min-width: 0;
+}
+
+.sidebar-menu__punto {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-pink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-menu__acordeon,
+  .sidebar-menu__submenu,
+  .sidebar-menu__flecha,
+  .sidebar-menu__fila,
+  .sidebar-menu__subopcion {
+    transition: none;
+  }
+}

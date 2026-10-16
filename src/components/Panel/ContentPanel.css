@@ -1,0 +1,117 @@
+.panel {
+  min-width: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-night-900);
+  border: 1px solid var(--color-menu-row-border);
+  box-shadow: var(--shadow-deep);
+  overflow: hidden;
+  scroll-margin-top: 16px;
+}
+
+.panel__breadcrumbs {
+  margin: 0;
+  padding: 0.9rem 1.5rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
+.panel__cargando {
+  min-height: 40vh;
+}
+
+/* Vista genérica: la mayoría de las vistas (historia, galería,
+   memorias, eventos...) comparten este padding; Inicio y los juegos
+   traen el suyo propio (ver panel-view--inicio/--juego) porque sus
+   componentes internos ya definen su propio ancho/aire. */
+.panel-view {
+  padding: 1.5rem 1.5rem 2.5rem;
+  color: var(--color-paper);
+}
+
+.panel-view--inicio,
+.panel-view--juego {
+  padding: 0;
+}
+
+.panel-view__head {
+  margin-bottom: 1.5rem;
+}
+
+.panel-view__titulo {
+  margin: 0.3rem 0 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  color: var(--color-paper);
+}
+
+.panel-view__titulo:focus-visible,
+.panel-view__titulo:focus {
+  outline: none;
+}
+
+/* Título oculto visualmente (juegos: el componente ya trae su propio
+   <h2> visible) -- sigue existiendo para el título del documento y
+   como destino de foco al navegar aquí. */
+.panel-view__titulo-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.panel-view__texto {
+  max-width: 62ch;
+  line-height: 1.6;
+  color: rgba(251, 241, 226, 0.85);
+}
+
+/* Aviso "Próximamente" (SoonView.jsx, también usado dentro de
+   MuseosView.jsx con sus propios textos). */
+.panel-soon {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  border: 1px dashed var(--color-menu-row-border);
+  border-radius: var(--radius-md);
+  background: var(--color-menu-row-bg);
+}
+
+.panel-soon__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(243, 205, 122, 0.12);
+  color: var(--color-gold-light);
+}
+
+.panel-soon__texto {
+  margin: 0;
+  color: var(--color-paper);
+}
+
+.panel-soon__sub {
+  margin: 0;
+  color: rgba(251, 241, 226, 0.7);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 859px) {
+  .panel-view {
+    padding: 1.25rem 1.1rem 2rem;
+  }
+  .panel__breadcrumbs {
+    padding: 0.8rem 1.1rem 0;
+  }
+}

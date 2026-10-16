@@ -1,25 +1,11 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "./components/Header/Header.jsx";
-import Hero from "./components/Hero/Hero.jsx";
-import Bienvenida from "./components/Bienvenida/Bienvenida.jsx";
-import VisitInfo from "./components/VisitInfo/VisitInfo.jsx";
-import FuegoTexto from "./components/shared/FuegoTexto.jsx";
-import ExploraTultepec from "./components/ExploraTultepec/ExploraTultepec.jsx";
+import Layout from "./components/Layout/Layout.jsx";
 import FinalCTA from "./components/FinalCTA/FinalCTA.jsx";
-import JuegosLoading from "./components/Juegos/JuegosLoading.jsx";
 import Footer from "./components/Footer/Footer.jsx";
-import RelatosModal from "./components/shared/RelatosModal.jsx";
 import ClickFireworks from "./components/shared/ClickFireworks.jsx";
-import useHashScrollFix from "./hooks/useHashScrollFix.js";
 import { useLanguage } from "./i18n/LanguageContext.jsx";
-
-// Los tres minijuegos (canvas de cohetes + memorama + sopa de letras) no son parte del
-// recorrido principal, así que la sección entera se carga bajo demanda en
-// vez de ir en el bundle inicial. El fallback (JuegosLoading) reserva la
-// altura aproximada de la sección para que el contenido de abajo
-// (FinalCTA) no brinque cuando el chunk termine de cargar.
-const Juegos = lazy(() => import("./components/Juegos/Juegos.jsx"));
 
 const ShareMemoryModal = lazy(() => import("./components/shared/ShareMemoryModal.jsx"));
 // El aviso de privacidad tira de react-markdown (y su cadena de
@@ -41,67 +27,41 @@ function ModalLoading() {
   );
 }
 
+// Encabezado fijo + Layout (menú lateral + panel de contenido, enrutado
+// por hash -- ver useHashRoute.js) + "me gusta/comentar/compartir"
+// (FinalCTA) + pie, siempre a todo lo ancho debajo de las dos columnas,
+// nunca dentro del panel. El menú lateral reemplaza a las tarjetas que
+// antes vivían en Hero.jsx; lo que esas tarjetas abrían (historia,
+// galería, memorias, relatos, museos) ahora son vistas del panel
+// (src/components/Panel/views/), no modales de App.jsx.
 export default function App() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const [booksModalOpen, setBooksModalOpen] = useState(false);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
-  const booksTriggerRef = useRef(null);
   const privacyTriggerRef = useRef(null);
 
-  useHashScrollFix();
-
-  // El menú "Explora" enlaza a "Relatos escritos" con "#relatos-escritos"
-  // (src/data/menu.js) -- RelatosModal.jsx ya usa "#relatos/historia" y
-  // "#relatos/libros" para su propia pestaña interna una vez abierto,
-  // así que aquí se usa un hash distinto para abrirlo desde cero, igual
-  // que Hero.jsx ya hace con "#galeria/...", "#memorias", etc.
-  useEffect(() => {
-    const syncFromHash = () => {
-      if (window.location.hash === "#relatos-escritos") {
-        booksTriggerRef.current = document.activeElement;
-        setBooksModalOpen(true);
-      }
-    };
-    syncFromHash();
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // El aviso de privacidad se abre desde dos sitios distintos (el pie y
-  // el enlace dentro del formulario "Comparte tu memoria", este último
-  // anidado en otro modal) -- en vez de pasar una ref por cada posible
-  // origen, se guarda cuál era el elemento con foco justo antes de abrir
-  // (que es el botón que se acaba de pulsar) para devolvérselo al cerrar.
+  // El aviso de privacidad se abre desde varios sitios (el pie y el
+  // enlace dentro de "Comparte tu historia", este último dentro de una
+  // vista del panel) -- se guarda cuál era el elemento con foco justo
+  // antes de abrir (el botón que se acaba de pulsar) para devolvérselo
+  // al cerrar.
   const openPrivacy = () => {
     privacyTriggerRef.current = document.activeElement;
     setPrivacyModalOpen(true);
   };
-  // "Comparte tu memoria" ahora vive como pestaña dentro de MemoriesModal
-  // (ver Hero.jsx). ShareMemoryModal y este estado se dejan montados pero
-  // sin ningún botón que los abra, por si se necesita un acceso directo
-  // en otro lugar más adelante -- openShare() sigue funcionando si algo
-  // vuelve a llamarlo.
+  // "Comparte tu memoria" ahora vive como pestaña dentro de la vista de
+  // Memorias (ver MemoriasContenido.jsx). ShareMemoryModal y este estado
+  // se dejan montados pero sin ningún botón que los abra, por si se
+  // necesita un acceso directo en otro lugar más adelante -- openShare()
+  // sigue funcionando si algo vuelve a llamarlo.
   const openShare = () => setShareModalOpen(true);
 
   return (
     <>
       <ClickFireworks />
       <Header />
-      <main>
-        <Hero onOpenBooks={() => setBooksModalOpen(true)} onOpenPrivacy={openPrivacy} booksTriggerRef={booksTriggerRef} />
-        <Bienvenida />
-        <VisitInfo />
-        <FuegoTexto />
-        <ExploraTultepec />
-        <Suspense fallback={<JuegosLoading />}>
-          <Juegos />
-        </Suspense>
-        <FinalCTA />
-      </main>
+      <Layout onOpenPrivacy={openPrivacy} />
+      <FinalCTA />
       <Footer onOpenPrivacy={openPrivacy} />
-
-      <RelatosModal open={booksModalOpen} onClose={() => setBooksModalOpen(false)} triggerRef={booksTriggerRef} />
 
       {shareModalOpen && (
         <Suspense fallback={<ModalLoading />}>

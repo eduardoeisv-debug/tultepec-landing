@@ -5,7 +5,8 @@
   background: rgba(13, 17, 46, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(243, 205, 122, 0.4);
+  /* La línea dorada fina ahora la pone HeaderPapelPicado.css, justo
+     debajo -- antes era este borde, se quita para no duplicarla. */
 }
 
 .site-header__inner {
@@ -41,13 +42,6 @@
 .site-header__subtitle {
   color: var(--color-gold-light);
   font-weight: 500;
-}
-
-.site-header__actions {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-shrink: 0;
 }
 
 @media (max-width: 640px) {

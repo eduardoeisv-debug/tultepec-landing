@@ -17,6 +17,11 @@
   --color-fire-red: #d7263d;
   --color-fire-red-dark: #a81b2d;
   --color-pink: #ff2d8a;
+  --color-turquoise: #2bc4b4;
+  /* Fila del menú lateral (SidebarMenu.jsx): no hay tokens existentes
+     lo bastante cercanos a estos dos para reutilizarlos. */
+  --color-menu-row-bg: #171937;
+  --color-menu-row-border: #2d3060;
 
   /* Semantic */
   --bg-page: var(--color-paper);
