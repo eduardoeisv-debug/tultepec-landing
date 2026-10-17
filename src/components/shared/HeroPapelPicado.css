@@ -19,6 +19,9 @@
   width: 110%;
   height: 100%;
   margin-left: -5%;
+  /* Un poco de profundidad para que el festoneado no se vea pegado al
+     fondo -- sutil a propósito, es una tira decorativa chica. */
+  filter: drop-shadow(0 3px 4px rgba(10, 8, 26, 0.35));
 }
 
 .hero-papel-picado__flag {
