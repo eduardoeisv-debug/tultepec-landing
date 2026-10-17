@@ -5,8 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#10132b" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- #1a1b4b: el tono más oscuro del degradado de fondo de Menú
+         Cristal (ver .cristal-root en CristalShell.css), no el
+         --color-night-900 genérico de antes -- para que la barra de
+         estado/gestos del sistema combine con el fondo real. -->
+    <meta name="theme-color" content="#1a1b4b" />
+    <!-- viewport-fit=cover: sin esto, la página no se extendía debajo
+         de la barra de gestos de Android/el borde redondeado de
+         iPhone, y esa franja quedaba pintada por el sistema (blanca)
+         en vez de por nuestro CSS -- env(safe-area-inset-bottom) de
+         abajo tampoco hace nada sin este cover. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
       content="Tultepec convierte el fuego en arte: castillos y toritos que sus familias han heredado por generaciones. Historia, memorias y tradiciones de la Capital de la Pirotecnia."

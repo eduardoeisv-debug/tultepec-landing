@@ -21,9 +21,13 @@
    celular, ver más abajo, o un reflow tardío), lo que se asoma detrás
    ya es el mismo degradado oscuro y no el crema de --bg-page (pensado
    para la página de moderación, que sí usa fondo claro -- :has() para
-   no tocarle su fondo a esa página). */
+   no tocarle su fondo a esa página). background-color aparte (no solo
+   el degradado dentro de background-image): así hay un color plano de
+   respaldo real incluso en el instante en que el degradado en sí
+   todavía no termina de pintar. */
 body:has(.cristal-root) {
-  background: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+  background-color: #5a2a63;
+  background-image: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
 }
 
 .cristal-root {
@@ -82,7 +86,12 @@ body:has(.cristal-root) {
 .cristal-stage {
   position: relative;
   min-width: 0;
-  padding: 0 max(20px, 3vw) 3rem;
+  /* + env(safe-area-inset-bottom): en celulares con barra de gestos
+     (Android) o el indicador de inicio (iPhone), sin esto la última
+     tarjeta (p.ej. Agradecimientos al fondo de Inicio) quedaba justo
+     debajo de esa franja, parcialmente tapada. 0px de respaldo en
+     navegadores que no soportan env(). */
+  padding: 0 max(20px, 3vw) calc(3rem + env(safe-area-inset-bottom, 0px));
 }
 
 /* Sin sangrado a los lados (nada de márgenes negativos): a 390px el
@@ -96,7 +105,7 @@ body:has(.cristal-root) {
 
 @media (max-width: 700px) {
   .cristal-stage {
-    padding: 0 0.7rem 2.2rem;
+    padding: 0 0.7rem calc(2.2rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
