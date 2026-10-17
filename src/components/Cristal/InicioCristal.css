@@ -57,6 +57,12 @@
    solo en celular) para que ícono + texto queden centrados en las dos
    vistas por igual, no solo en una. */
 .cristal-bento__tile {
+  /* Respaldo de --icon-color/--icon-ink: InicioCristal.jsx siempre las
+     pone inline por tarjeta (más específico, gana sobre esto), pero
+     declararlas aquí evita repetir un var(..., fallback) distinto en
+     cada regla de abajo que las usa. */
+  --icon-color: var(--color-gold-light);
+  --icon-ink: #14163a;
   grid-column: span 2;
   min-width: 0;
   min-height: 132px;
@@ -111,21 +117,67 @@
   line-height: 1.4;
 }
 
-/* Fondo y color del ícono vía custom properties puestas inline por
-   tarjeta (InicioCristal.jsx, --icon-color/--icon-ink) -- el valor por
-   defecto aquí (dorado claro + tinta oscura) es solo un respaldo por
-   si algún acceso llegara a quedarse sin esas variables. 50px/ícono de
-   25px (ver el size= en InicioCristal.jsx): dentro del rango 48-52px /
-   24-26px pedido. */
+/* Círculo pseudo-3D (antes un color plano): radial-gradient que
+   simula una esfera con luz desde arriba-izquierda (más clara ahí,
+   el --icon-color real a la mitad, más oscura hacia la orilla
+   contraria) + ::before como brillo especular arriba + box-shadow con
+   un inset oscuro abajo (sombra propia de la esfera) y uno claro
+   arriba (realce) más una sombra proyectada hacia afuera del mismo
+   tono del ícono, en vez de una genérica. 50px/ícono de 25px (ver el
+   size= en InicioCristal.jsx): dentro del rango 48-52px / 24-26px
+   pedido. */
 .cristal-bento__tile-icono {
+  position: relative;
   width: 50px;
   height: 50px;
   flex-shrink: 0;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--icon-color, var(--color-gold-light));
-  color: var(--icon-ink, #14163a);
+  overflow: hidden;
+  background: radial-gradient(
+    circle at 30% 25%,
+    color-mix(in srgb, var(--icon-color) 60%, white),
+    var(--icon-color) 45%,
+    color-mix(in srgb, var(--icon-color) 70%, black)
+  );
+  color: var(--icon-ink);
+  box-shadow:
+    inset 0 -3px 5px rgba(0, 0, 0, 0.35),
+    inset 0 2px 3px rgba(255, 255, 255, 0.4),
+    0 6px 14px -4px color-mix(in srgb, var(--icon-color) 55%, transparent);
+  transition: transform 0.15s var(--ease-out);
+}
+
+.cristal-bento__tile-icono::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 55%);
+  pointer-events: none;
+}
+
+.cristal-bento__tile-icono svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.3));
+}
+
+/* Al presionar la tarjeta, el círculo "se hunde" -- feedback táctil
+   consistente con el relieve 3D de arriba, no solo el translateY/fondo
+   del :hover de la tarjeta entera. */
+.cristal-bento__tile:active .cristal-bento__tile-icono {
+  transform: translateY(2px) scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cristal-bento__tile-icono {
+    transition: none;
+  }
+  .cristal-bento__tile:active .cristal-bento__tile-icono {
+    transform: none;
+  }
 }
 
 .cristal-inicio__cta {
