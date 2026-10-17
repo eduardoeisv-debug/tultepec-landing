@@ -6,16 +6,24 @@
   box-sizing: border-box;
 }
 
-/* #5a2a63: el final (100%) del degradado de fondo de Menú Cristal
-   (.cristal-root en CristalShell.css) -- de respaldo detrás de body,
-   para que un rebote de scroll elástico (iOS) o el borde que
-   viewport-fit=cover ahora deja ver nunca muestre blanco. No se
-   limita a las páginas de Menú Cristal (la de moderación también
-   hereda este fondo oscuro de html) porque solo se nota en ese rebote
-   de borde, nunca en el contenido normal de ninguna de las dos. */
 html {
   scroll-behavior: smooth;
-  background-color: #5a2a63;
+}
+
+/* Antes html tenía un color plano de respaldo (el final del degradado,
+   morado) -- se notaba como un corte contra el degradado real en
+   cuanto se hacía scroll a una parte más clara/azul de la página,
+   sobre todo en la franja de la barra de gestos (Android) o el
+   indicador de inicio (iPhone), que siempre muestra el fondo de
+   html/body tal cual esté en ese momento del documento, no el de
+   .cristal-root. Con el MISMO degradado aquí (mismos cortes, sin
+   background-attachment:fixed) en vez de un color plano, lo que se
+   asome por cualquier borde coincide exactamente con el degradado
+   real sea cual sea la posición del scroll -- nunca hay una costura.
+   Alcance limitado a las páginas de Menú Cristal (:has) para no
+   tocarle el fondo claro a la de moderación. */
+html:has(.cristal-root) {
+  background: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
 }
 
 /* Foco visible de respaldo: cubre cualquier elemento interactivo que no

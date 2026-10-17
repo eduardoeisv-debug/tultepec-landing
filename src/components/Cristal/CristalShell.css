@@ -15,19 +15,19 @@
   --cristal-line: rgba(246, 238, 226, 0.22);
 }
 
-/* Respaldo del degradado en body (no solo en .cristal-root): si por lo
-   que sea el alto real del documento se adelanta al de .cristal-root
-   en algún instante del scroll (p.ej. background-attachment:fixed en
-   celular, ver más abajo, o un reflow tardío), lo que se asoma detrás
-   ya es el mismo degradado oscuro y no el crema de --bg-page (pensado
-   para la página de moderación, que sí usa fondo claro -- :has() para
-   no tocarle su fondo a esa página). background-color aparte (no solo
-   el degradado dentro de background-image): así hay un color plano de
-   respaldo real incluso en el instante en que el degradado en sí
-   todavía no termina de pintar. */
+/* Respaldo del degradado en body (no solo en .cristal-root, mismo
+   motivo que html arriba en global.css): el MISMO degradado, mismos
+   cortes, sin background-attachment:fixed -- así, en cualquier borde
+   donde se asome el fondo de body en vez del de .cristal-root (la
+   franja de la barra de gestos/indicador de inicio que deja ver
+   viewport-fit=cover, un rebote de scroll elástico en iOS), el color
+   coincide exactamente con el degradado real en esa posición del
+   scroll, sin costura. Antes tenía un color plano de respaldo (el
+   final del degradado) que SÍ se notaba como un corte en cuanto la
+   página se scrolleaba a una parte más clara/azul del degradado real.
+   :has() para no tocarle el fondo claro a la página de moderación. */
 body:has(.cristal-root) {
-  background-color: #5a2a63;
-  background-image: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+  background: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
 }
 
 .cristal-root {
