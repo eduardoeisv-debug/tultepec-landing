@@ -6,6 +6,7 @@
 .cristal-col__backdrop {
   position: fixed;
   inset: 0;
+  height: 100dvh;
   z-index: 60;
   display: flex;
   justify-content: flex-start;
@@ -329,8 +330,18 @@
 }
 
 @media (max-width: 700px) {
+  /* position:fixed + inset:0 en vez de depender solo del alto
+     100dvh del flex item -- en algunos Android/Chrome el valor de
+     dvh usado por el layout del panel y el que en verdad pinta el
+     sistema para la barra de gestos se desincronizaban por un
+     instante, dejando ver el fondo del sitio (su propio theme-color)
+     en esa franja en vez del fondo del panel. */
   .cristal-col {
+    position: fixed;
+    inset: 0;
     width: 100%;
+    height: 100dvh;
+    margin: 0;
   }
   /* Un poco más chico que en escritorio -- "Tultepec Digital" en
      2.1rem ya cabía sin cortarse ni a 360px, pero más chico deja más
