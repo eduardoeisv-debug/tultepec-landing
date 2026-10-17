@@ -118,7 +118,7 @@ export default function InicioCristal({ titleRef }) {
                 <b>{t(item.label)}</b>
                 {item.sub && <span>{t(item.sub)}</span>}
               </span>
-              {esAncho && <ChevronRight className="cristal-bento__tile-chevron" size={20} strokeWidth={2} aria-hidden="true" />}
+              {esAncho && <ChevronRight className="cristal-bento__tile-chevron" size={22} strokeWidth={2} aria-hidden="true" />}
             </a>
           );
         })}

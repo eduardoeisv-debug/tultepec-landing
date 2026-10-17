@@ -2,18 +2,21 @@
   position: sticky;
   top: 0;
   z-index: 40;
+  /* isolation:isolate -- fuerza su propio contexto de apilamiento
+     aparte del resto de .cristal-root, para que z-index:40 compita
+     contra el contenido que scrollea debajo de forma predecible sin
+     depender de que ningún ancestro en el camino decida crear (o no)
+     un contexto nuevo por su cuenta. */
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.7rem max(20px, 3vw);
-  /* --cristal-glass (72% opaco) dejaba pasar demasiado el texto que
-     scrollea por detrás ("Bienvenidos a Tultepec", "Capital de la...")
-     -- el mismo tono casi opaco que ya usa el cajón del menú a
-     pantalla completa (--cristal-glass-movil, 97%) en vez de uno
-     nuevo, para que la barra se lea sólida sin perder el blur. */
-  background: var(--cristal-glass-movil);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* Sólido de verdad (antes --cristal-glass-movil, 97% opaco + blur) --
+     mismo motivo que BottomNav.css: ese 3% de transparencia restante
+     ya se notaba con las tarjetas de colores del Bento pasando detrás
+     al hacer scroll en celular, incluso con el blur. */
+  background: #0e0e26;
   border-bottom: 1px solid var(--cristal-line);
   padding-top: max(0.7rem, env(safe-area-inset-top, 0px));
 }

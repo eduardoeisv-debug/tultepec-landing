@@ -191,38 +191,50 @@
   }
   /* Agradecimientos (último acceso, cantidad impar de 9): en vez de
      quedarse solo colgando a la mitad de la última fila, ocupa las 2
-     columnas en un formato horizontal -- ícono a la izquierda, texto a
-     la derecha, chevron pegado justo después del texto. Mismo
-     padding/min-height que las demás tarjetas (no se pisan aquí) para
-     que no desentone en alto contra sus vecinas de arriba.
-     flex:1 en el texto (como se usó en una versión anterior) estiraba
-     su CAJA hasta el borde derecho de la tarjeta, pero "Agradecimientos
-     / Gracias" es corto y queda alineado a la izquierda DENTRO de esa
-     caja -- el chevron (pegado al borde de la caja, no al texto) se
-     veía flotando solo, lejos del título/subtítulo. Sin flex:1, el
-     texto mide lo que su contenido necesita y el chevron queda
-     inmediatamente después, como parte del mismo grupo visual; el
-     espacio sobrante se queda vacío al final de la tarjeta, no
-     interrumpiendo nada. */
+     columnas en una fila horizontal baja -- ícono a la izquierda,
+     texto a flex:1 (centrado verticalmente, no estirado a lo alto) y
+     chevron pegado al extremo derecho con margin-left:auto, como una
+     fila de lista normal. min-height/padding propios (88px / 16px
+     20px) en vez de los 128px / 0.9rem 0.6rem de las tarjetas
+     normales -- sin esto se veía con el mismo alto vertical pensado
+     para ícono+título+bajada apilados, de más para una sola fila. */
   .cristal-bento__tile--ancho {
     grid-column: span 2;
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     text-align: left;
-    gap: 0.9rem;
+    gap: 16px;
+    min-height: 88px;
+    padding: 16px 20px;
+  }
+  .cristal-bento__tile--ancho .cristal-bento__tile-icono {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
   }
   .cristal-bento__tile--ancho .cristal-bento__tile-texto {
+    flex: 1;
     min-width: 0;
     text-align: left;
   }
   .cristal-bento__tile-chevron {
     display: none;
   }
+  /* Mismo color (var(--color-paper), 60% opacidad) y en el mismo rango
+     de tamaño (20-24px, aquí 22 -- ver el size= en InicioCristal.jsx)
+     que .cristal-grupo-resumen__flecha, el chevron ya establecido en
+     las listas de un grupo (p.ej. al entrar a Memorias sin elegir
+     subopción todavía) -- antes usaba --cristal-soft sin opacidad, un
+     tono distinto al del resto del sitio para este mismo tipo de
+     indicador. */
   .cristal-bento__tile--ancho .cristal-bento__tile-chevron {
     display: block;
     flex-shrink: 0;
-    color: var(--cristal-soft);
+    margin-left: auto;
+    color: var(--color-paper);
+    opacity: 0.6;
   }
   .cristal-inicio__cta {
     margin-top: 2rem;
