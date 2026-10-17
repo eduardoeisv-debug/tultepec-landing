@@ -113,55 +113,75 @@
   list-style: none;
   margin: 0.6rem 0 0;
   padding: 0;
-  border-top: 1px solid var(--cristal-line);
 }
 
 .cristal-col__item {
   position: relative;
-  border-bottom: 1px solid var(--cristal-line);
 }
 
+/* Fila plana y minimalista: sin las líneas divisorias de antes (ya no
+   hay border-top/bottom en .cristal-col__menu/__item), ícono a la
+   izquierda en vez de un círculo a la derecha, y sin flecha -- tocar
+   despliega el grupo igual, el indicador visual ahora es el propio
+   fondo de cristal + el puntito dorado de abajo. El margen horizontal
+   dej a un respiro a los lados para que el fondo redondeado de
+   hover/activo no llegue pegado al borde de la tarjeta. */
 .cristal-col__fila {
   all: unset;
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem;
-  width: 100%;
+  gap: 0.75rem;
+  width: calc(100% - 1.2rem);
+  margin: 0 0.6rem;
   min-height: 48px;
-  padding: 0 1rem 0 1.6rem;
+  padding: 0 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
   color: var(--cristal-soft);
   font-family: var(--font-body);
   font-size: 0.95rem;
   text-decoration: none;
-  transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out);
+  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 .cristal-col__fila:hover {
-  background: var(--cristal-glass2);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
   color: var(--color-paper);
 }
 
 /* La opción elegida (Inicio, cualquier item sin hijos cuando es la
-   ruta activa, o un grupo que el usuario acaba de abrir) se ve en
-   dorado de verdad -- texto Y el círculo del ícono, que toma
-   color:currentColor de su fila -- en vez del blanco hueso de antes,
-   que se notaba igual que un simple hover y no dejaba claro cuál era
-   la opción elegida. Un grupo desplegado (aria-expanded) cuenta como
-   "elegido" igual que aria-current -- es la fila en la que el usuario
-   acaba de hacer clic, aunque en sí no navegue a ningún lado. */
+   ruta activa, o un grupo que el usuario acaba de abrir) abarca todo
+   el ancho con cristal esmerilado + ícono y texto en dorado + un
+   puntito dorado con resplandor al extremo derecho (::after, puramente
+   decorativo -- no hace falta un elemento propio en el JSX). Un grupo
+   desplegado (aria-expanded) cuenta como "elegido" igual que
+   aria-current -- es la fila en la que el usuario acaba de hacer
+   clic, aunque en sí no navegue a ningún lado. */
 .cristal-col__fila[aria-expanded="true"],
 .cristal-col__fila[aria-current="page"] {
-  background: var(--cristal-glass2);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
   color: var(--color-gold-light);
-  box-shadow: inset 4px 0 var(--color-gold-light);
+}
+
+.cristal-col__fila[aria-expanded="true"]::after,
+.cristal-col__fila[aria-current="page"]::after {
+  content: "";
+  flex-shrink: 0;
+  margin-left: auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-gold-light);
+  box-shadow: 0 0 8px rgba(243, 205, 122, 0.7);
 }
 
 .cristal-col__fila:focus-visible {
   outline: 2px solid var(--color-gold-light);
-  outline-offset: -2px;
+  outline-offset: 2px;
 }
 
 .cristal-col__fila.is-proximamente {
@@ -169,41 +189,32 @@
 }
 
 .cristal-col__texto {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  flex: 1 1 auto;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.cristal-col__flecha {
-  color: inherit;
-  transition: transform 0.2s var(--ease-out);
-}
-
-.cristal-col__flecha.is-abierta {
-  transform: rotate(90deg);
-}
-
+/* Discreta a propósito -- antes era una cápsula dorada brillante que
+   competía con el resto de acentos dorados de la fila; ahora es un
+   gris translúcido apagado, visible pero sin llamar la atención. */
 .cristal-col__badge {
-  font-size: 0.62rem;
-  font-weight: 700;
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 0.6rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 999px;
-  padding: 0.05rem 0.5rem;
-  color: var(--color-gold-light);
+  letter-spacing: 0.02em;
+  padding: 0.12rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(226, 226, 235, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .cristal-col__icono {
   flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  border: 1.5px solid currentColor;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
 }
 
 /* Subopciones de un grupo: en línea debajo de su fila, empujando el
@@ -301,9 +312,6 @@
   .cristal-col {
     width: 100%;
   }
-  .cristal-col__badge {
-    display: none;
-  }
   .cristal-col__herramientas {
     flex-wrap: wrap;
     gap: 0.35rem;
@@ -312,7 +320,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cristal-col__fila,
-  .cristal-col__flecha,
   .cristal-col__boton,
   .cristal-col,
   .cristal-col__backdrop {

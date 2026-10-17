@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Home, Shield, Share2, Check, ChevronRight, X } from "lucide-react";
+import { Home, Shield, Share2, Check, X } from "lucide-react";
 import MENU from "../../data/menu.js";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
@@ -81,10 +81,8 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
               aria-current={!ruta.itemId ? "page" : undefined}
               onClick={alSeleccionar}
             >
+              <Home className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
               <span className="cristal-col__texto">{t("menu.inicio")}</span>
-              <span className="cristal-col__icono" aria-hidden="true">
-                <Home size={14} strokeWidth={1.8} />
-              </span>
             </a>
           </li>
 
@@ -103,13 +101,8 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                     aria-haspopup="true"
                     onClick={() => setGrupoAbierto((actual) => (actual === item.id ? null : item.id))}
                   >
-                    <span className="cristal-col__texto">
-                      {t(item.label)}
-                      <ChevronRight className={`cristal-col__flecha${abierto ? " is-abierta" : ""}`} size={14} strokeWidth={2} aria-hidden="true" />
-                    </span>
-                    <span className="cristal-col__icono" aria-hidden="true">
-                      <Icono size={14} strokeWidth={1.8} />
-                    </span>
+                    <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
+                    <span className="cristal-col__texto">{t(item.label)}</span>
                   </button>
                 ) : (
                   <a
@@ -118,13 +111,9 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                     aria-current={activo ? "page" : undefined}
                     onClick={alSeleccionar}
                   >
-                    <span className="cristal-col__texto">
-                      {t(item.label)}
-                      {item.soon && <span className="cristal-col__badge">{t("menu.proximamente.badge")}</span>}
-                    </span>
-                    <span className="cristal-col__icono" aria-hidden="true">
-                      <Icono size={14} strokeWidth={1.8} />
-                    </span>
+                    <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
+                    <span className="cristal-col__texto">{t(item.label)}</span>
+                    {item.soon && <span className="cristal-col__badge">{t("menu.proximamente.badge")}</span>}
                   </a>
                 )}
 
