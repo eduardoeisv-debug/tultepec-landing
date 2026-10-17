@@ -91,12 +91,26 @@ html {
   transition: transform 0.15s var(--ease-out);
 }
 
+/* Óvalo chico de brillo (antes inset:0, cubriendo todo el círculo) --
+   dimensiones relativas al propio círculo (70% x 40%, corrido a la
+   zona donde ya apunta la luz del radial-gradient de arriba, at 30%
+   25%) para que lea como un destello puntual de verdad, no un lavado
+   parejo de toda la mitad de arriba. overflow:hidden + position:relative
+   en .icono-3d (arriba) son los que lo mantienen contenido DENTRO del
+   círculo -- si algo externo llegara a pisarle esas dos propiedades a
+   un .icono-3d en particular (ver el comentario grande en
+   ColumnaCristal.css sobre el bug del óvalo gigante en el menú), este
+   ::before se estiraría contra el siguiente ancestro posicionado en
+   vez de quedarse en el círculo. */
 .icono-3d::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 55%);
+  top: 6%;
+  left: 15%;
+  width: 70%;
+  height: 40%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 80%);
   pointer-events: none;
 }
 

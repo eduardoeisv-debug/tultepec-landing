@@ -344,8 +344,19 @@
    orden de los stylesheets. Selector compuesto (más específico que
    cualquiera de las dos clases por separado) para que esto gane
    siempre y el círculo pseudo-3D no se vea aplastado a un círculo
-   plano. */
+   plano.
+   position:relative + overflow:hidden explícitos aquí fueron el bug
+   real (ver el historial): all:unset también los resetea a
+   static/visible, y sin position:relative en ESTE botón, el ::before
+   de .icono-3d (position:absolute; inset:0, el brillo de arriba) se
+   posicionaba contra el ancestro posicionado más cercano que
+   encontraba -- que resultó ser .cristal-col (position:fixed, el
+   panel entero) -- así que el brillo del botón se estiraba a cubrir
+   los 390x800+ px del panel completo en vez de los 48x48px del
+   círculo, viéndose como un óvalo blanco gigante tapando la cabecera. */
 .cristal-col__boton.icono-3d {
+  position: relative;
+  overflow: hidden;
   border: none;
   /* Explícitos (no los 50px por defecto de .icono-3d): para que este
      círculo y el del escudo de al lado sigan midiendo exactamente lo
