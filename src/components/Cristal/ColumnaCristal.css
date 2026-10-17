@@ -193,14 +193,22 @@
   color: var(--color-gold-light);
 }
 
+/* Dorado siempre, como la casita de TopBarCristal.jsx -- antes
+   tomaba color:currentColor de su fila, así que se veía en el lila
+   suave (--cristal-soft) de las filas en reposo y solo se ponía
+   dorado en la fila activa; ahora todos los íconos del menú usan el
+   mismo tono dorado todo el tiempo, sea cual sea el estado de su
+   fila. La fila activa se sigue distinguiendo por su texto y la
+   barra dorada a la izquierda (ver [aria-current="page"] abajo). */
 .cristal-col__icono {
   flex-shrink: 0;
   width: 26px;
   height: 26px;
-  border: 1.5px solid currentColor;
+  border: 1.5px solid var(--color-gold-light);
   border-radius: 50%;
   display: grid;
   place-items: center;
+  color: var(--color-gold-light);
 }
 
 /* Subopciones de un grupo: en línea debajo de su fila, empujando el
