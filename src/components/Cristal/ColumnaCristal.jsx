@@ -148,12 +148,13 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
           </a>
           <button
             type="button"
-            className="cristal-col__boton"
+            className="cristal-col__boton icono-3d"
             onClick={compartir}
             aria-label={copiado ? t("shareButtons.copied") : t("shareButtons.label")}
             title={copiado ? t("shareButtons.copied") : t("shareButtons.label")}
+            style={{ "--icon-color": "var(--color-turquoise)", "--icon-ink": "#14163a" }}
           >
-            {copiado ? <Check size={18} strokeWidth={2.2} /> : <Share2 size={18} strokeWidth={1.8} />}
+            {copiado ? <Check size={20} strokeWidth={2.2} /> : <Share2 size={20} strokeWidth={1.8} />}
           </button>
         </div>
       </nav>

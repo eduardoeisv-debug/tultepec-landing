@@ -315,12 +315,16 @@
   border-top: 1px solid var(--cristal-line);
 }
 
+/* 48px (antes 44px): el de compartir ahora es .icono-3d (ver más
+   abajo), que pide 48-52px -- se sube también el escudo, que no
+   cambia de estilo, para que los dos círculos del pie sigan midiendo
+   lo mismo uno junto al otro. */
 .cristal-col__boton {
   all: unset;
   box-sizing: border-box;
   cursor: pointer;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border: 1.5px solid var(--cristal-line);
   border-radius: 50%;
   display: grid;
@@ -332,6 +336,38 @@
 .cristal-col__boton:hover {
   border-color: var(--color-gold-light);
   color: var(--color-gold-light);
+}
+
+/* .cristal-col__boton usa all:unset (para el botón "a secas", el
+   escudo) -- eso le borraría también el fondo/sombras a .icono-3d en
+   el botón de compartir, que SÍ lleva ambas clases, sin importar el
+   orden de los stylesheets. Selector compuesto (más específico que
+   cualquiera de las dos clases por separado) para que esto gane
+   siempre y el círculo pseudo-3D no se vea aplastado a un círculo
+   plano. */
+.cristal-col__boton.icono-3d {
+  border: none;
+  /* Explícitos (no los 50px por defecto de .icono-3d): para que este
+     círculo y el del escudo de al lado sigan midiendo exactamente lo
+     mismo -- 48px igual cae dentro del rango 48-52px pedido. */
+  width: 48px;
+  height: 48px;
+  color: var(--icon-ink, #14163a);
+  background: radial-gradient(
+    circle at 30% 25%,
+    color-mix(in srgb, var(--icon-color, var(--color-gold-light)) 60%, white),
+    var(--icon-color, var(--color-gold-light)) 45%,
+    color-mix(in srgb, var(--icon-color, var(--color-gold-light)) 70%, black)
+  );
+  box-shadow:
+    inset 0 -3px 5px rgba(0, 0, 0, 0.35),
+    inset 0 2px 3px rgba(255, 255, 255, 0.4),
+    0 6px 14px -4px color-mix(in srgb, var(--icon-color, var(--color-gold-light)) 55%, transparent);
+}
+
+.cristal-col__boton.icono-3d:hover {
+  border-color: transparent;
+  color: var(--icon-ink, #14163a);
 }
 
 .cristal-col__boton:focus-visible {

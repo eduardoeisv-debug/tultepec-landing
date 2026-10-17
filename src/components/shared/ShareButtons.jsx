@@ -41,30 +41,33 @@ export default function ShareButtons() {
       <span className="share-buttons__label">{t("shareButtons.label")}</span>
       <div className="share-buttons__row">
         <a
-          className="share-buttons__btn share-buttons__btn--whatsapp"
+          className="share-buttons__btn icono-3d"
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={t("shareButtons.whatsapp")}
+          style={{ "--icon-color": "#25d366", "--icon-ink": "#fff" }}
         >
           {WhatsAppIcon}
         </a>
         <a
-          className="share-buttons__btn share-buttons__btn--facebook"
+          className="share-buttons__btn icono-3d"
           href={facebookHref}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={t("shareButtons.facebook")}
+          style={{ "--icon-color": "#1877f2", "--icon-ink": "#fff" }}
         >
           {FacebookIcon}
         </a>
         <button
           type="button"
-          className="share-buttons__btn share-buttons__btn--copy"
+          className="share-buttons__btn icono-3d"
           onClick={handleCopy}
           aria-label={t("shareButtons.copyLink")}
+          style={{ "--icon-color": "var(--color-turquoise)", "--icon-ink": "#14163a" }}
         >
-          {copied ? <Check size={18} strokeWidth={2} /> : <Link2 size={18} strokeWidth={1.8} />}
+          {copied ? <Check size={22} strokeWidth={2} /> : <Link2 size={22} strokeWidth={1.8} />}
         </button>
       </div>
       {copied && <span className="share-buttons__copied">{t("shareButtons.copied")}</span>}

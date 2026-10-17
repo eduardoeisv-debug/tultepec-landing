@@ -117,64 +117,17 @@
   line-height: 1.4;
 }
 
-/* Círculo pseudo-3D (antes un color plano): radial-gradient que
-   simula una esfera con luz desde arriba-izquierda (más clara ahí,
-   el --icon-color real a la mitad, más oscura hacia la orilla
-   contraria) + ::before como brillo especular arriba + box-shadow con
-   un inset oscuro abajo (sombra propia de la esfera) y uno claro
-   arriba (realce) más una sombra proyectada hacia afuera del mismo
-   tono del ícono, en vez de una genérica. 50px/ícono de 25px (ver el
-   size= en InicioCristal.jsx): dentro del rango 48-52px / 24-26px
-   pedido. */
-.cristal-bento__tile-icono {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: radial-gradient(
-    circle at 30% 25%,
-    color-mix(in srgb, var(--icon-color) 60%, white),
-    var(--icon-color) 45%,
-    color-mix(in srgb, var(--icon-color) 70%, black)
-  );
-  color: var(--icon-ink);
-  box-shadow:
-    inset 0 -3px 5px rgba(0, 0, 0, 0.35),
-    inset 0 2px 3px rgba(255, 255, 255, 0.4),
-    0 6px 14px -4px color-mix(in srgb, var(--icon-color) 55%, transparent);
-  transition: transform 0.15s var(--ease-out);
-}
-
-.cristal-bento__tile-icono::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 55%);
-  pointer-events: none;
-}
-
-.cristal-bento__tile-icono svg {
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.3));
-}
-
-/* Al presionar la tarjeta, el círculo "se hunde" -- feedback táctil
-   consistente con el relieve 3D de arriba, no solo el translateY/fondo
-   del :hover de la tarjeta entera. */
+/* El círculo pseudo-3D en sí (gradiente, brillo, sombras) ahora es
+   .icono-3d, compartido en global.css -- aquí solo queda lo propio de
+   este contexto: el :active de la tarjeta entera (el <a>, no el
+   <span> del ícono) hunde el círculo, y el tamaño ya es el mismo
+   50px/ícono 25px por defecto de .icono-3d, dentro del rango
+   48-52px / 24-26px pedido, así que no hace falta pisarlo aquí. */
 .cristal-bento__tile:active .cristal-bento__tile-icono {
   transform: translateY(2px) scale(0.97);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cristal-bento__tile-icono {
-    transition: none;
-  }
   .cristal-bento__tile:active .cristal-bento__tile-icono {
     transform: none;
   }
@@ -239,17 +192,30 @@
   /* Agradecimientos (último acceso, cantidad impar de 9): en vez de
      quedarse solo colgando a la mitad de la última fila, ocupa las 2
      columnas en un formato horizontal -- ícono a la izquierda, texto a
-     la derecha -- y más bajo que el resto de tarjetas verticales. */
+     la derecha con flex:1 (nada de hueco muerto sobrante), chevron al
+     extremo derecho. Mismo padding/min-height que las demás tarjetas
+     (no se pisan aquí) para que no desentone en alto contra sus
+     vecinas de arriba. */
   .cristal-bento__tile--ancho {
     grid-column: span 2;
     flex-direction: row;
-    min-height: auto;
-    text-align: left;
+    align-items: center;
     justify-content: flex-start;
-    padding: 0.8rem 1.1rem;
+    text-align: left;
+    gap: 0.9rem;
   }
   .cristal-bento__tile--ancho .cristal-bento__tile-texto {
+    flex: 1 1 auto;
+    min-width: 0;
     text-align: left;
+  }
+  .cristal-bento__tile-chevron {
+    display: none;
+  }
+  .cristal-bento__tile--ancho .cristal-bento__tile-chevron {
+    display: block;
+    flex-shrink: 0;
+    color: var(--cristal-soft);
   }
   .cristal-inicio__cta {
     margin-top: 2rem;

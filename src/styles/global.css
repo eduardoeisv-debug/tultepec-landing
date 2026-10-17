@@ -50,6 +50,75 @@ html {
   border-radius: 4px;
 }
 
+/* Círculo pseudo-3D compartido: botones/íconos redondos en todo el
+   sitio (tarjetas de Inicio, WhatsApp/Facebook/compartir, botones del
+   menú lateral...) que quieran la misma esfera con volumen en vez de
+   un círculo de color plano -- un radial-gradient que simula luz desde
+   arriba-izquierda (más clara ahí, el --icon-color real a la mitad,
+   más oscura hacia la orilla contraria), un brillo especular arriba
+   (::before) y box-shadow con un inset oscuro abajo (sombra propia),
+   uno claro arriba (realce) y una sombra proyectada hacia afuera del
+   mismo tono del ícono. Cada quien pone --icon-color (y --icon-ink si
+   el ícono necesita texto oscuro en vez de blanco) inline, por
+   instancia -- igual que ya hacía InicioCristal.jsx con las tarjetas
+   del Bento antes de que esto se volviera compartido.
+   .icono-3d:active cubre el caso en que ESTE círculo sea el propio
+   elemento interactivo (un botón/enlace circular, como los de
+   compartir); cuando el círculo es un <span> decorativo dentro de un
+   enlace más grande (una tarjeta), el :active va del lado de quien lo
+   usa, con un selector como ".padre:active .icono-3d" (ver
+   InicioCristal.css). */
+.icono-3d {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at 30% 25%,
+    color-mix(in srgb, var(--icon-color, var(--color-gold-light)) 60%, white),
+    var(--icon-color, var(--color-gold-light)) 45%,
+    color-mix(in srgb, var(--icon-color, var(--color-gold-light)) 70%, black)
+  );
+  color: var(--icon-ink, #14163a);
+  box-shadow:
+    inset 0 -3px 5px rgba(0, 0, 0, 0.35),
+    inset 0 2px 3px rgba(255, 255, 255, 0.4),
+    0 6px 14px -4px color-mix(in srgb, var(--icon-color, var(--color-gold-light)) 55%, transparent);
+  transition: transform 0.15s var(--ease-out);
+}
+
+.icono-3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 55%);
+  pointer-events: none;
+}
+
+.icono-3d svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.3));
+}
+
+.icono-3d:active {
+  transform: translateY(2px) scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icono-3d {
+    transition: none;
+  }
+  .icono-3d:active {
+    transform: none;
+  }
+}
+
 .btn--on-light:focus-visible,
 .share-memory-form--light :focus-visible,
 .privacy-modal :focus-visible,

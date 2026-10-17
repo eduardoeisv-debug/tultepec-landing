@@ -1,4 +1,4 @@
-import { Ticket, BookOpen, Flame, MapPinned, Users, Image as ImageIcon, CalendarDays, Gamepad2, HeartHandshake } from "lucide-react";
+import { Ticket, BookOpen, Flame, MapPinned, Users, Image as ImageIcon, CalendarDays, Gamepad2, HeartHandshake, ChevronRight } from "lucide-react";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import HeroCristal from "./HeroCristal.jsx";
@@ -111,13 +111,14 @@ export default function InicioCristal({ titleRef }) {
               href={item.href}
               style={{ "--icon-color": item.color, "--icon-ink": item.ink }}
             >
-              <span className="cristal-bento__tile-icono" aria-hidden="true">
+              <span className="cristal-bento__tile-icono icono-3d" aria-hidden="true">
                 <Icono size={25} strokeWidth={1.8} />
               </span>
               <span className="cristal-bento__tile-texto">
                 <b>{t(item.label)}</b>
                 {item.sub && <span>{t(item.sub)}</span>}
               </span>
+              {esAncho && <ChevronRight className="cristal-bento__tile-chevron" size={20} strokeWidth={2} aria-hidden="true" />}
             </a>
           );
         })}

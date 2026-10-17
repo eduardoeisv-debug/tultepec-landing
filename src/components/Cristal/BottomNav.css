@@ -19,11 +19,16 @@
     justify-content: space-around;
     height: 64px;
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    /* Mismo tono que TopBarCristal.css (97% opaco + blur) -- "sólido"
-       en la práctica, sin introducir un tono nuevo. */
-    background: var(--cristal-glass-movil);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    /* Sólido de verdad (sin alpha ni blur) -- antes usaba el mismo
+       97% opaco + blur de TopBarCristal.css, pero ahí sí se notaba
+       transparentando el texto de la página al hacer scroll por
+       detrás; esta barra es position:fixed (no sticky, como el
+       header) y queda pegada en un punto distinto del documento, así
+       que un blur de lo que pasa detrás se nota más. Mismo tono sólido
+       que ya usa el panel del menú (ColumnaCristal.css) y el fondo de
+       html/body en celular (global.css, #0e0e26) para no introducir un
+       color nuevo. */
+    background: #0e0e26;
     border-top: 1px solid var(--cristal-line);
   }
 }
