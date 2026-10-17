@@ -26,10 +26,42 @@ export default function JuegosSeccion() {
         ariaLabel={t("menu.item.juegos")}
         activeId={juego}
         onChange={setJuego}
+        // Corta/larga (.segmented-tabs__label-corta/-larga, ver
+        // SegmentedTabs.css): "Laberinto del torito" no cabía en su
+        // óvalo en celular (las 3 pestañas reparten el ancho por
+        // igual) y el texto se salía -- abajo de 480px se ve el
+        // nombre corto, arriba el completo.
         tabs={[
-          { id: "torito", icon: Gamepad2, label: t("menu.opcion.torito") },
-          { id: "memorama", icon: Gamepad2, label: t("menu.opcion.memorama") },
-          { id: "sopa", icon: Gamepad2, label: t("menu.opcion.sopa") },
+          {
+            id: "torito",
+            icon: Gamepad2,
+            label: (
+              <>
+                <span className="segmented-tabs__label-corta">{t("menu.opcion.toritoCorto")}</span>
+                <span className="segmented-tabs__label-larga">{t("menu.opcion.torito")}</span>
+              </>
+            ),
+          },
+          {
+            id: "memorama",
+            icon: Gamepad2,
+            label: (
+              <>
+                <span className="segmented-tabs__label-corta">{t("menu.opcion.memoramaCorto")}</span>
+                <span className="segmented-tabs__label-larga">{t("menu.opcion.memorama")}</span>
+              </>
+            ),
+          },
+          {
+            id: "sopa",
+            icon: Gamepad2,
+            label: (
+              <>
+                <span className="segmented-tabs__label-corta">{t("menu.opcion.sopaCorto")}</span>
+                <span className="segmented-tabs__label-larga">{t("menu.opcion.sopa")}</span>
+              </>
+            ),
+          },
         ]}
       />
 

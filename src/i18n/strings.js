@@ -481,8 +481,11 @@ export const STRINGS = {
   "menu.opcion.planeaVisita": { es: "Planea tu visita", en: "Plan your visit" },
   "menu.opcion.mapaRecorridos": { es: "Mapa y recorridos", en: "Map and routes" },
   "menu.opcion.torito": { es: "Laberinto del torito", en: "Torito maze" },
+  "menu.opcion.toritoCorto": { es: "Torito", en: "Torito" },
   "menu.opcion.memorama": { es: "Memorama", en: "Memory game" },
+  "menu.opcion.memoramaCorto": { es: "Memorama", en: "Memory" },
   "menu.opcion.sopa": { es: "Sopa de letras", en: "Word search" },
+  "menu.opcion.sopaCorto": { es: "Sopa", en: "Words" },
 
   "agradecimientos.eyebrow": { es: "Con cariño", en: "With gratitude" },
   "agradecimientos.title": { es: "Agradecimientos", en: "Acknowledgments" },
