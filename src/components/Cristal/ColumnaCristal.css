@@ -152,23 +152,20 @@
   color: var(--color-paper);
 }
 
-/* La opción elegida (Inicio, cualquier item sin hijos cuando es la
-   ruta activa, o un grupo que el usuario acaba de abrir) abarca todo
-   el ancho con cristal esmerilado + ícono y texto en dorado + un
-   puntito dorado con resplandor al extremo derecho (::after, puramente
-   decorativo -- no hace falta un elemento propio en el JSX). Un grupo
-   desplegado (aria-expanded) cuenta como "elegido" igual que
-   aria-current -- es la fila en la que el usuario acaba de hacer
-   clic, aunque en sí no navegue a ningún lado. */
-.cristal-col__fila[aria-expanded="true"],
-.cristal-col__fila[aria-current="page"] {
+/* La única fila resaltada en un momento dado (ColumnaCristal.jsx
+   decide cuál vía la clase is-resaltada, no directamente por
+   aria-current/aria-expanded -- ver el comentario grande de ahí
+   arriba): abarca todo el ancho con cristal esmerilado + ícono y
+   texto en dorado + un puntito dorado con resplandor al extremo
+   derecho (::after, puramente decorativo -- no hace falta un elemento
+   propio en el JSX). */
+.cristal-col__fila.is-resaltada {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.1);
   color: var(--color-gold-light);
 }
 
-.cristal-col__fila[aria-expanded="true"]::after,
-.cristal-col__fila[aria-current="page"]::after {
+.cristal-col__fila.is-resaltada::after {
   content: "";
   flex-shrink: 0;
   margin-left: auto;

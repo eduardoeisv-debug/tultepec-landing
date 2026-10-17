@@ -16,6 +16,16 @@ import "./ColumnaCristal.css";
 // despliega su lista EN LÍNEA debajo (empuja el resto de filas hacia
 // abajo) -- ya no hay columna angosta al lado del contenido para la
 // que tuviera sentido un panel flotante aparte.
+//
+// `is-resaltada` (la tarjeta dorada de abajo) es un estado VISUAL
+// aparte de aria-current/aria-expanded, que sí reflejan siempre el
+// estado real para lectores de pantalla: la fila dorada "a secas"
+// (sin que ningún grupo esté desplegado) es la ruta activa de verdad;
+// en cuanto se despliega un grupo, SOLO ese grupo se ve dorado -- la
+// ruta activa sigue siéndolo (su aria-current no se toca), pero deja
+// de competir visualmente con lo que el usuario está mirando en ese
+// momento. Sin esto, abrir "Memorias" mientras se está en Inicio
+// dejaba dos filas doradas a la vez.
 export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   const { t } = useLanguage();
   const [grupoAbierto, setGrupoAbierto] = useState(() => {
@@ -76,7 +86,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
         <ul className="cristal-col__menu">
           <li className="cristal-col__item">
             <a
-              className="cristal-col__fila"
+              className={`cristal-col__fila${!ruta.itemId && !grupoAbierto ? " is-resaltada" : ""}`}
               href={rutaHash(null)}
               aria-current={!ruta.itemId ? "page" : undefined}
               onClick={alSeleccionar}
@@ -96,7 +106,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                 {item.hijos ? (
                   <button
                     type="button"
-                    className="cristal-col__fila"
+                    className={`cristal-col__fila${abierto ? " is-resaltada" : ""}`}
                     aria-expanded={abierto}
                     aria-haspopup="true"
                     onClick={() => setGrupoAbierto((actual) => (actual === item.id ? null : item.id))}
@@ -106,7 +116,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                   </button>
                 ) : (
                   <a
-                    className={`cristal-col__fila${item.soon ? " is-proximamente" : ""}`}
+                    className={`cristal-col__fila${item.soon ? " is-proximamente" : ""}${activo && !grupoAbierto ? " is-resaltada" : ""}`}
                     href={rutaHash(item.id)}
                     aria-current={activo ? "page" : undefined}
                     onClick={alSeleccionar}
