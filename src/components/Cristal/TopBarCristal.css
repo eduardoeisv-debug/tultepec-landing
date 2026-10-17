@@ -13,6 +13,16 @@
   padding-top: max(0.7rem, env(safe-area-inset-top, 0px));
 }
 
+/* "Cristal Flotante": mismo cristal esmerilado que el selector de
+   idioma y las tarjetas del Bento (bg translúcido + blur + borde
+   sutil) en vez del círculo con solo borde de antes. 44px (no los
+   40px de un w-10/h-10) para no bajar del área táctil mínima que ya
+   se cuida en todo el sitio -- el aspecto es el mismo, solo un poco
+   más grande. El trazo del ícono va siempre dorado con un resplandor
+   chico (drop-shadow, no box-shadow: así el brillo seduce el SVG en
+   vez de solo el círculo) -- ya no depende de :hover ni de
+   aria-current="page" para destacar, igual que ya se hizo antes con
+   la casita, ahora también para la hamburguesa. */
 .cristal-topbar__boton {
   all: unset;
   box-sizing: border-box;
@@ -20,35 +30,39 @@
   cursor: pointer;
   width: 44px;
   height: 44px;
-  border: 1.5px solid var(--cristal-line);
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: var(--color-paper);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-gold-light);
   text-decoration: none;
-  transition: border-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
 
-.cristal-topbar__boton:hover,
-.cristal-topbar__boton[aria-current="page"] {
-  border-color: var(--color-gold-light);
-  color: var(--color-gold-light);
+/* El resplandor va en el SVG, no en el botón entero -- puesto en
+   .cristal-topbar__boton se le pegaba también al círculo de cristal
+   (fondo + borde), no solo al trazo del ícono. */
+.cristal-topbar__boton svg {
+  filter: drop-shadow(0 0 6px rgba(243, 205, 122, 0.5));
 }
 
-/* La casita siempre en dorado (no solo al pasar el mouse o estar ya
-   en Inicio, como el resto de .cristal-topbar__boton) -- antes se
-   veía tenue casi todo el tiempo porque solo tomaba color cuando
-   coincidía con aria-current="page"; al ser la acción de "volver" más
-   usada de la barra, conviene que destaque siempre, en escritorio y
-   en celular por igual. */
-.cristal-topbar__boton--casa {
-  border-color: var(--color-gold-light);
-  color: var(--color-gold-light);
+.cristal-topbar__boton:hover {
+  transform: scale(1.05);
+  border-color: rgba(243, 205, 122, 0.4);
 }
 
 .cristal-topbar__boton:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cristal-topbar__boton {
+    transition: none;
+  }
 }
 
 .cristal-topbar__marca {
@@ -75,23 +89,50 @@
   opacity: 0.72;
 }
 
-/* Selector ES|EN -- mismo aspecto (colores, radios) que tenía dentro
-   del menú (.cristal-col__lang, ColumnaCristal.css), movido aquí
-   porque ahora vive en la barra siempre visible en vez de dentro del
-   cajón (ver LanguageToggle.jsx). flex-shrink:0 para que nunca sea lo
-   que ceda espacio -- eso le toca a .cristal-topbar__marca, que ya
-   tiene su propio recorte con ellipsis. */
+/* "Pestañas de Cristal": mismo cristal esmerilado que el resto del
+   rediseño Bento (bg translúcido + blur + borde sutil, ver
+   InicioCristal.css .cristal-bento__tile) en vez del borde liso de
+   antes. flex-shrink:0 para que nunca sea lo que ceda espacio -- eso
+   le toca a .cristal-topbar__marca, que ya tiene su propio recorte
+   con ellipsis. position:relative porque el óvalo activo
+   (__indicator) es un hijo position:absolute que se desliza detrás
+   de los botones. */
 .cristal-topbar__lang {
+  position: relative;
   display: flex;
   flex-shrink: 0;
-  border: 1.5px solid var(--cristal-line);
+  padding: 3px;
   border-radius: 999px;
-  padding: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* El óvalo dorado que marca el idioma activo -- un solo elemento que
+   se desliza con transform (ver LanguageToggle.jsx) en vez de pintar
+   el fondo de cada botón por separado, mismo mecanismo que ya usa
+   SegmentedTabs.jsx en el resto del sitio. El resplandor usa el
+   dorado propio del proyecto (--color-gold-light) en vez de un ámbar
+   nuevo, para no desentonar con el resto de acentos dorados de Menú
+   Cristal. */
+.cristal-topbar__lang-indicator {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / 2);
+  height: calc(100% - 6px);
+  border-radius: 999px;
+  background: var(--color-gold-light);
+  box-shadow: 0 0 12px rgba(243, 205, 122, 0.45);
+  transition: transform 0.3s var(--ease-out);
 }
 
 .cristal-topbar__lang button {
   all: unset;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
   cursor: pointer;
   min-width: 36px;
   height: 44px;
@@ -100,18 +141,27 @@
   text-align: center;
   font-size: 0.74rem;
   font-weight: 700;
-  color: var(--cristal-soft);
-  transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out);
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 0.2s var(--ease-out);
+}
+
+.cristal-topbar__lang button:hover {
+  color: var(--color-paper);
 }
 
 .cristal-topbar__lang button[aria-pressed="true"] {
-  background: var(--color-gold-light);
   color: var(--color-night-950);
 }
 
 .cristal-topbar__lang button:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cristal-topbar__lang-indicator {
+    transition: none;
+  }
 }
 
 /* En celular ya hay bastante compitiendo por el mismo espacio angosto
