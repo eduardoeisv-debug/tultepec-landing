@@ -15,9 +15,21 @@
   --cristal-line: rgba(246, 238, 226, 0.22);
 }
 
+/* Respaldo del degradado en body (no solo en .cristal-root): si por lo
+   que sea el alto real del documento se adelanta al de .cristal-root
+   en algún instante del scroll (p.ej. background-attachment:fixed en
+   celular, ver más abajo, o un reflow tardío), lo que se asoma detrás
+   ya es el mismo degradado oscuro y no el crema de --bg-page (pensado
+   para la página de moderación, que sí usa fondo claro -- :has() para
+   no tocarle su fondo a esa página). */
+body:has(.cristal-root) {
+  background: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+}
+
 .cristal-root {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   /* Respaldo final contra un desborde horizontal de unos 19px en
@@ -37,6 +49,20 @@
     radial-gradient(700px 500px at 25% 30%, rgba(43, 196, 180, 0.18), transparent 70%),
     linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
   background-attachment: fixed;
+}
+
+/* background-attachment:fixed en celular es la causa real de la
+   franja crema que "se despega" al hacer scroll -- es un patrón que
+   en iOS Safari (y varios navegadores Android) desincroniza el fondo
+   fijo del alto real del documento durante el scroll con inercia,
+   dejando ver lo que haya detrás (--bg-page, crema, el mismo tono de
+   "Una carta para ti") en vez del degradado. Se desactiva solo en
+   celular -- en escritorio no tiene este problema y se conserva el
+   efecto. */
+@media (max-width: 700px) {
+  .cristal-root {
+    background-attachment: scroll;
+  }
 }
 
 .cristal-root::before {

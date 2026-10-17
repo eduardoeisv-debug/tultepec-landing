@@ -6,7 +6,12 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.7rem max(20px, 3vw);
-  background: var(--cristal-glass);
+  /* --cristal-glass (72% opaco) dejaba pasar demasiado el texto que
+     scrollea por detrás ("Bienvenidos a Tultepec", "Capital de la...")
+     -- el mismo tono casi opaco que ya usa el cajón del menú a
+     pantalla completa (--cristal-glass-movil, 97%) en vez de uno
+     nuevo, para que la barra se lea sólida sin perder el blur. */
+  background: var(--cristal-glass-movil);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--cristal-line);
