@@ -24,7 +24,7 @@ export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
       </button>
 
       <a className="cristal-topbar__marca" href={rutaHash(null)}>
-        Tultepec
+        Tultepec <span className="cristal-topbar__marca-sub">· {t("header.subtitle")}</span>
       </a>
 
       <a

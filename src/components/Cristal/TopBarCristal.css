@@ -54,6 +54,16 @@
   text-decoration: none;
 }
 
+/* Más chico y tenue que "Tultepec" -- cabe en la barra sin que el
+   nombre del pueblo pierda protagonismo; si de verdad no cupiera en
+   una pantalla muy angosta, el overflow:ellipsis de arriba lo recorta
+   solo, nunca desborda. */
+.cristal-topbar__marca-sub {
+  font-weight: 400;
+  font-size: 0.82em;
+  opacity: 0.72;
+}
+
 @media (max-width: 480px) {
   .cristal-topbar {
     padding-left: 0.9rem;
