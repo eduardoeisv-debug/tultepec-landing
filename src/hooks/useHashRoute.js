@@ -26,9 +26,11 @@ function leerRuta() {
   if (item.hijos) {
     const hijo = item.hijos.find((h) => h.id === hijoId);
     // "#/pirotecnia" a secas (o un hijo que ya no existe) no es un
-    // enlace roto -- se queda en el grupo y abre su primera pestaña,
-    // igual que si se hubiera hecho clic en la fila del menú.
-    return { itemId, hijoId: hijo ? hijoId : item.hijos[0].id };
+    // enlace roto -- se queda en el grupo con hijoId null, y
+    // CristalShell.jsx muestra ahí el resumen del grupo
+    // (GrupoResumen.jsx) con el abanico completo de subopciones, en
+    // vez de adivinar la primera y esconder las demás.
+    return { itemId, hijoId: hijo ? hijoId : null };
   }
   // Item directo (sin hijos): un hijoId en la URL no debería existir,
   // pero si alguien lo escribe a mano no es razón para mandarlo a

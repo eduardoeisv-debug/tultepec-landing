@@ -1,4 +1,4 @@
-import { lazy, useCallback, useEffect, useRef, useState } from "react";
+import { lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import MENU from "../../data/menu.js";
 import useHashRoute from "../../hooks/useHashRoute.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
@@ -7,6 +7,7 @@ import TopBarCristal from "./TopBarCristal.jsx";
 import ColumnaCristal from "./ColumnaCristal.jsx";
 import Seccion from "./Seccion.jsx";
 import InicioCristal from "./InicioCristal.jsx";
+import GrupoResumen from "./GrupoResumen.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import "./CristalShell.css";
 
@@ -104,6 +105,19 @@ export default function CristalShell() {
     }
   };
 
+  // Fuera del if/else de abajo (las reglas de hooks no dejan llamar
+  // useMemo condicionalmente): item.find es barato, MENU tiene un
+  // puñado de filas. Memorizado por `item` (no por cada render) para
+  // que Vista sea la MISMA función entre renders mientras se siga en
+  // el mismo grupo -- si no, Seccion vería un componente "nuevo" en
+  // cada render de CristalShell (p.ej. al abrir/cerrar el menú) y
+  // remontaría GrupoResumen de más.
+  const item = ruta.itemId ? MENU.find((i) => i.id === ruta.itemId) : undefined;
+  const vistaGrupoResumen = useMemo(() => {
+    if (!item?.hijos) return null;
+    return () => <GrupoResumen item={item} />;
+  }, [item]);
+
   let contenido;
   let tituloDocumento;
   if (ruta.itemId === "privacidad") {
@@ -115,13 +129,23 @@ export default function CristalShell() {
     tituloDocumento = "Tultepec · Estado de México";
     contenido = <InicioCristal titleRef={titleRef} />;
   } else {
-    const item = MENU.find((i) => i.id === ruta.itemId);
     const hijo = item?.hijos ? item.hijos.find((h) => h.id === ruta.hijoId) : null;
+    // Grupo sin subopción elegida todavía (llegó por una tarjeta del
+    // Bento de Inicio, o por "#/pirotecnia" a secas): su resumen
+    // (GrupoResumen.jsx) en vez de REGISTRO, que no tiene entrada
+    // para el grupo a secas.
+    const esResumenGrupo = Boolean(item?.hijos && !hijo);
     const clave = item?.hijos ? `${item.id}/${hijo?.id}` : item?.id;
     const etiqueta = hijo ? t(hijo.label) : item ? t(item.label) : "";
     tituloDocumento = item ? `${etiqueta} · Tultepec` : "Tultepec · Estado de México";
     contenido = item ? (
-      <Seccion eyebrow={t(item.label)} titulo={etiqueta} Vista={REGISTRO[clave]} titleRef={titleRef} onOpenPrivacy={onOpenPrivacy} />
+      <Seccion
+        eyebrow={t(item.label)}
+        titulo={etiqueta}
+        Vista={esResumenGrupo ? vistaGrupoResumen : REGISTRO[clave]}
+        titleRef={titleRef}
+        onOpenPrivacy={onOpenPrivacy}
+      />
     ) : (
       <InicioCristal titleRef={titleRef} />
     );
