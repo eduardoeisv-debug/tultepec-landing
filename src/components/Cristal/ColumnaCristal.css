@@ -39,6 +39,11 @@
   overflow-y: auto;
   overflow-x: hidden;
   animation: cristal-col-in 0.22s var(--ease-out);
+  /* El flash gris que Chrome/Safari en celular ponen por su cuenta al
+     tocar (antes de que corra cualquier CSS propio) se veía como un
+     sombreado incorrecto de más, encima del dorado real -- se quita
+     para que la única reacción visual al tocar sea la nuestra. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 @keyframes cristal-col-in {
@@ -230,10 +235,21 @@
   border-bottom: 0;
 }
 
-.cristal-col__flyout a:hover,
+.cristal-col__flyout a:hover {
+  background: rgba(251, 241, 226, 0.08);
+  color: var(--color-paper);
+}
+
+/* Separado de :hover (antes era la misma regla, con el mismo dorado
+   para ambos) -- en escritorio, al reabrir el menú, el puntero puede
+   quedar quieto sobre una fila que no es la elegida y encender su
+   :hover sin que nadie la haya tocado; con el mismo dorado que
+   aria-current, esa fila "hovereada por casualidad" se veía
+   exactamente igual que la subopción activa de verdad. */
 .cristal-col__flyout a[aria-current="page"] {
   background: rgba(251, 241, 226, 0.08);
   color: var(--color-gold-light);
+  box-shadow: inset 4px 0 var(--color-gold-light);
 }
 
 .cristal-col__flyout a:focus-visible {
