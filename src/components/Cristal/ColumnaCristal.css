@@ -23,6 +23,16 @@
 }
 
 .cristal-col {
+  /* position:fixed propio (no solo heredado de .cristal-col__backdrop,
+     que ya es fixed/inset:0 por su cuenta) + top:0/left:0 explícitos:
+     así el panel siempre abre pegado arriba del viewport sin importar
+     cuánto scroll llevara la página detrás, en vez de depender
+     únicamente de que su contenedor sea fixed. Lo saca del flujo flex
+     del backdrop, pero left:0 ya logra el mismo alineado a la
+     izquierda que antes daba justify-content:flex-start ahí. */
+  position: fixed;
+  top: 0;
+  left: 0;
   width: min(420px, 100%);
   /* 100vh a secas puede incluir la barra del navegador en celular
      (sobre todo al voltear a horizontal), dejando la tarjeta más alta
