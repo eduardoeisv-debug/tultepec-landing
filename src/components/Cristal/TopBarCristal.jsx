@@ -13,6 +13,16 @@ import "./TopBarCristal.css";
 // siempre visible de antes -- ver CristalShell.jsx.
 export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
   const { t } = useLanguage();
+
+  // Siempre sube hasta arriba de la página, incluso si ya se estaba
+  // en Inicio con scroll hacia abajo -- en ese caso el hash no cambia
+  // (ya es "#/"), así que no hay hashchange que dispare el scroll-to-
+  // top que ya hace CristalShell.jsx al cambiar de ruta; este clic lo
+  // cubre directamente en vez de depender de eso.
+  const irAInicio = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <header className="cristal-topbar">
       <button
@@ -32,8 +42,9 @@ export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
       <LanguageToggle />
 
       <a
-        className="cristal-topbar__boton"
+        className="cristal-topbar__boton cristal-topbar__boton--casa"
         href={rutaHash(null)}
+        onClick={irAInicio}
         aria-label={t("menu.inicio")}
         aria-current={enInicio ? "page" : undefined}
       >

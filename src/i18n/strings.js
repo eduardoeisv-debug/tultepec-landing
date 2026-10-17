@@ -12,7 +12,7 @@ export const STRINGS = {
   "languageSwitcher.ariaLabel": { es: "Cambiar idioma", en: "Change language" },
 
   "hero.bienvenidosEyebrow": { es: "Bienvenidos a Tultepec", en: "Welcome to Tultepec" },
-  "hero.title.line1": { es: "Tultepec Capital de la", en: "Tultepec Capital of" },
+  "hero.title.line1": { es: "Capital de la", en: "Capital of" },
   "hero.title.line2": { es: "Pirotecnia", en: "Fireworks" },
   "hero.subtitle": {
     es: "Este es un espacio para guardar y compartir las memorias de nuestro pueblo: su historia, su gente, sus fiestas y el oficio que convierte el fuego en arte.",

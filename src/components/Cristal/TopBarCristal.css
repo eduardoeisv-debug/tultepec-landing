@@ -35,6 +35,17 @@
   color: var(--color-gold-light);
 }
 
+/* La casita siempre en dorado (no solo al pasar el mouse o estar ya
+   en Inicio, como el resto de .cristal-topbar__boton) -- antes se
+   veía tenue casi todo el tiempo porque solo tomaba color cuando
+   coincidía con aria-current="page"; al ser la acción de "volver" más
+   usada de la barra, conviene que destaque siempre, en escritorio y
+   en celular por igual. */
+.cristal-topbar__boton--casa {
+  border-color: var(--color-gold-light);
+  color: var(--color-gold-light);
+}
+
 .cristal-topbar__boton:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
@@ -101,6 +112,16 @@
 .cristal-topbar__lang button:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
+}
+
+/* En celular ya hay bastante compitiendo por el mismo espacio angosto
+   (marca + selector de idioma + casita) -- "· Estado de México" se
+   quita del todo en vez de recortarse con ellipsis, "Tultepec" solo
+   ya identifica la marca de sobra y así no empuja al selector. */
+@media (max-width: 700px) {
+  .cristal-topbar__marca-sub {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
