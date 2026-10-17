@@ -147,24 +147,9 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
           >
             {copiado ? <Check size={18} strokeWidth={2.2} /> : <Share2 size={18} strokeWidth={1.8} />}
           </button>
-          <LanguageToggle />
         </div>
       </nav>
     </div>
-  );
-}
-
-function LanguageToggle() {
-  const { language, setLanguage, t } = useLanguage();
-  return (
-    <span className="cristal-col__lang" role="group" aria-label={t("languageSwitcher.ariaLabel")}>
-      <button type="button" aria-pressed={language === "es"} onClick={() => setLanguage("es")}>
-        ES
-      </button>
-      <button type="button" aria-pressed={language === "en"} onClick={() => setLanguage("en")}>
-        EN
-      </button>
-    </span>
   );
 }
 

@@ -272,36 +272,6 @@
   outline-offset: 2px;
 }
 
-.cristal-col__lang {
-  display: flex;
-  margin-left: auto;
-  border: 1.5px solid var(--cristal-line);
-  border-radius: 999px;
-  padding: 2px;
-}
-
-.cristal-col__lang button {
-  all: unset;
-  box-sizing: border-box;
-  cursor: pointer;
-  height: 44px;
-  padding: 0 0.75rem;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--cristal-soft);
-}
-
-.cristal-col__lang button[aria-pressed="true"] {
-  background: var(--color-gold-light);
-  color: var(--color-night-950);
-}
-
-.cristal-col__lang button:focus-visible {
-  outline: 2px solid var(--color-gold-light);
-  outline-offset: 2px;
-}
-
 @media (max-width: 700px) {
   .cristal-col {
     width: 100%;
@@ -312,9 +282,6 @@
   .cristal-col__herramientas {
     flex-wrap: wrap;
     gap: 0.35rem;
-  }
-  .cristal-col__lang {
-    margin-left: 0;
   }
 }
 

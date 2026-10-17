@@ -64,6 +64,45 @@
   opacity: 0.72;
 }
 
+/* Selector ES|EN -- mismo aspecto (colores, radios) que tenía dentro
+   del menú (.cristal-col__lang, ColumnaCristal.css), movido aquí
+   porque ahora vive en la barra siempre visible en vez de dentro del
+   cajón (ver LanguageToggle.jsx). flex-shrink:0 para que nunca sea lo
+   que ceda espacio -- eso le toca a .cristal-topbar__marca, que ya
+   tiene su propio recorte con ellipsis. */
+.cristal-topbar__lang {
+  display: flex;
+  flex-shrink: 0;
+  border: 1.5px solid var(--cristal-line);
+  border-radius: 999px;
+  padding: 2px;
+}
+
+.cristal-topbar__lang button {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  min-width: 36px;
+  height: 44px;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--cristal-soft);
+  transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out);
+}
+
+.cristal-topbar__lang button[aria-pressed="true"] {
+  background: var(--color-gold-light);
+  color: var(--color-night-950);
+}
+
+.cristal-topbar__lang button:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
 @media (max-width: 480px) {
   .cristal-topbar {
     padding-left: 0.9rem;
@@ -72,5 +111,11 @@
   }
   .cristal-topbar__marca {
     font-size: 1rem;
+  }
+  .cristal-topbar__lang button {
+    min-width: 32px;
+    height: 44px;
+    padding: 0 0.45rem;
+    font-size: 0.7rem;
   }
 }
