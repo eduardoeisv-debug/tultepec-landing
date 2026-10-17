@@ -23,7 +23,7 @@ export default function Footer({ onOpenPrivacy }) {
       <div className="container footer__bottom">
         <span className="footer__signature">
           <span className="footer__signature-seal">
-            <img src="/images/brand/ea-seal.jpg" alt={t("footer.sealAlt")} />
+            <img src="/images/brand/ea-seal.jpg" alt={t("footer.sealAlt")} width="52" height="52" />
           </span>
           <span className="footer__signature-text">
             {t("footer.madeBy")} <strong>EA</strong>

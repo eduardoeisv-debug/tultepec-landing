@@ -55,8 +55,13 @@
   max-width: 60ch;
 }
 
+/* Antes 30vh -- con una pantalla oscura detrás, ese hueco se leía como
+   un bloque vacío grande mientras el chunk de la vista (React.lazy)
+   descargaba. Mucho más chico: sigue reservando algo de espacio (evita
+   un salto de layout notorio cuando el contenido real aparece) sin
+   dominar la pantalla. */
 .cristal-sec__cargando {
-  min-height: 30vh;
+  min-height: 64px;
 }
 
 .cristal-sec__cta {

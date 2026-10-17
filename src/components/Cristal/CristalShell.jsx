@@ -13,6 +13,7 @@ import GrupoResumen from "./GrupoResumen.jsx";
 import ErrorBoundary from "./ErrorBoundary.jsx";
 import ErrorFallback from "./ErrorFallback.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
+import Footer from "../Footer/Footer.jsx";
 import "./CristalShell.css";
 
 const HistoriaView = lazy(() => import("../Panel/views/HistoriaView.jsx"));
@@ -151,7 +152,7 @@ export default function CristalShell() {
     );
   } else if (!ruta.itemId) {
     tituloDocumento = "Tultepec · Estado de México";
-    contenido = <InicioCristal titleRef={titleRef} onOpenPrivacy={onOpenPrivacy} />;
+    contenido = <InicioCristal titleRef={titleRef} />;
   } else {
     const hijo = item?.hijos ? item.hijos.find((h) => h.id === ruta.hijoId) : null;
     // Grupo sin subopción elegida todavía (llegó por una tarjeta del
@@ -179,7 +180,7 @@ export default function CristalShell() {
         onOpenPrivacy={onOpenPrivacy}
       />
     ) : (
-      <InicioCristal titleRef={titleRef} onOpenPrivacy={onOpenPrivacy} />
+      <InicioCristal titleRef={titleRef} />
     );
   }
 
@@ -210,6 +211,13 @@ export default function CristalShell() {
           {contenido}
         </ErrorBoundary>
       </main>
+      {/* Fuera del ErrorBoundary de arriba (que se remonta por completo
+          en cada cambio de ruta, por su key) para que el pie no
+          desaparezca ni tarde en volver mientras el chunk de la vista
+          nueva (React.lazy, ver REGISTRO arriba) todavía se descarga --
+          antes vivía dentro de cada vista (CierreComun.jsx) y el hueco
+          del Suspense de Seccion.jsx se sentía como "el pie tarda". */}
+      <Footer onOpenPrivacy={onOpenPrivacy} />
       <BottomNav enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} menuAbierto={menuAbierto} />
     </div>
   );

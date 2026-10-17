@@ -59,7 +59,7 @@ const ACCESOS = [
 // mismo que usan las vistas internas, ver Seccion.jsx) se queda fuera
 // de la rejilla, al final. El <h1> real (el único de esta vista) vive
 // dentro de HeroCristal.
-export default function InicioCristal({ titleRef, onOpenPrivacy }) {
+export default function InicioCristal({ titleRef }) {
   const { t } = useLanguage();
 
   return (
@@ -87,7 +87,7 @@ export default function InicioCristal({ titleRef, onOpenPrivacy }) {
         })}
       </div>
 
-      <CierreComun ctaClassName="cristal-inicio__cta" onOpenPrivacy={onOpenPrivacy} />
+      <CierreComun ctaClassName="cristal-inicio__cta" />
     </div>
   );
 }

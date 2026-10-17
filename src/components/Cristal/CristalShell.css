@@ -71,10 +71,11 @@
 .cristal-stage {
   position: relative;
   min-width: 0;
-  /* El respaldo de la barra de gestos/indicador de inicio
-     (env(safe-area-inset-bottom)) ya lo pone Footer.css en su propio
-     padding -- toda ruta termina en <Footer/> (CierreComun.jsx), así
-     que sumarlo aquí también solo duplicaba el hueco debajo de él. */
+  /* flex:1 -- .cristal-root es flex-column (min-height:100dvh); sin
+     esto, una vista corta (p.ej. "Próximamente") dejaba a Footer
+     pegado justo debajo de su contenido en vez de al fondo real del
+     viewport. */
+  flex: 1 0 auto;
   padding: 0 max(20px, 3vw) 3rem;
 }
 

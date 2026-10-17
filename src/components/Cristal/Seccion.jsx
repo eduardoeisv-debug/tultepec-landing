@@ -48,7 +48,7 @@ export default function Seccion({ eyebrow, eyebrowHref, titulo, Vista, titleRef,
         )}
       </Suspense>
 
-      <CierreComun ctaClassName="cristal-sec__cta" onOpenPrivacy={onOpenPrivacy} />
+      <CierreComun ctaClassName="cristal-sec__cta" />
     </div>
   );
 }
