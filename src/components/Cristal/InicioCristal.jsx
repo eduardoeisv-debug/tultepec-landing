@@ -1,4 +1,4 @@
-import { Ticket, BookOpen, Flame, MapPinned, Users, Image as ImageIcon, CalendarDays, Gamepad2, HeartHandshake, ChevronRight } from "lucide-react";
+import { Ticket, BookOpen, Flame, MapPinned, Users, Image as ImageIcon, CalendarDays, Gamepad2, HeartHandshake } from "lucide-react";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import HeroCristal from "./HeroCristal.jsx";
@@ -101,8 +101,9 @@ export default function InicioCristal({ titleRef }) {
         {ACCESOS.map((item) => {
           const Icono = item.icon;
           // Agradecimientos (siempre el último acceso): tarjeta ancha
-          // y horizontal en celular en vez del mismo molde vertical de
-          // las otras 8 -- ver .cristal-bento__tile--ancho.
+          // en celular (ocupa las 2 columnas) en vez de 1 como las
+          // otras 8 -- mismo molde vertical centrado que todas, solo
+          // más ancha. Ver .cristal-bento__tile--ancho.
           const esAncho = item.key === "agradecimientos";
           return (
             <a
@@ -118,7 +119,6 @@ export default function InicioCristal({ titleRef }) {
                 <b>{t(item.label)}</b>
                 {item.sub && <span>{t(item.sub)}</span>}
               </span>
-              {esAncho && <ChevronRight className="cristal-bento__tile-chevron" size={22} strokeWidth={2} aria-hidden="true" />}
             </a>
           );
         })}
