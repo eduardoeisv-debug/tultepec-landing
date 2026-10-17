@@ -149,8 +149,15 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
         </ul>
 
         <div className="cristal-col__herramientas">
-          <a className="cristal-col__boton" href={rutaHash("privacidad")} onClick={alSeleccionar} aria-label={t("footer.privacyLink")} title={t("footer.privacyLink")}>
-            <Shield size={18} strokeWidth={1.8} />
+          <a
+            className="cristal-col__boton icono-3d"
+            href={rutaHash("privacidad")}
+            onClick={alSeleccionar}
+            aria-label={t("footer.privacyLink")}
+            title={t("footer.privacyLink")}
+            style={{ "--icon-color": "var(--color-gold-light)", "--icon-ink": "#14163a" }}
+          >
+            <Shield size={20} strokeWidth={1.8} />
           </a>
           <button
             type="button"
