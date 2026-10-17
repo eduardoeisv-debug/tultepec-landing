@@ -1,0 +1,86 @@
+/* "Pastilla": cápsula angosta centrada, no una tarjeta de ancho
+   completo -- mismo lenguaje visual que el resto de Menú Cristal
+   (cristal esmerilado, borde sutil) pero con --cristal-glass-movil
+   (97% opaco) en vez del 72% translúcido normal, a propósito: ya hubo
+   más de un bug de "se transparenta el texto de atrás" en este
+   proyecto con fondos menos opacos + blur en celular (TopBarCristal,
+   BottomNav), así que esta pastilla nueva arranca directo con el tono
+   que sí se comportó bien ahí. */
+.tultepec-ahora {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 1.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--cristal-glass-movil);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-soft);
+}
+
+.tultepec-ahora__texto {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  /* --cristal-soft sobre este fondo ya da ~8.5:1 de contraste (ver la
+     misma cuenta en InicioCristal.css para las tarjetas del Bento),
+     bien arriba del mínimo de 4.5:1 pedido. */
+  color: var(--cristal-soft);
+  white-space: nowrap;
+  opacity: 0;
+  animation: tultepec-ahora-fade 0.4s ease-out forwards;
+}
+
+.tultepec-ahora__texto span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.tultepec-ahora__icono {
+  flex-shrink: 0;
+  color: var(--color-gold-light);
+}
+
+/* Mismo alto que el texto cargado (línea de 0.82rem + el padding de
+   la pastilla) -- para que no haya salto de layout entre el skeleton
+   y el contenido real. */
+.tultepec-ahora__skeleton {
+  display: block;
+  width: 180px;
+  height: 0.82rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes tultepec-ahora-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tultepec-ahora__texto {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .tultepec-ahora {
+    padding: 0.5rem 0.9rem;
+  }
+  .tultepec-ahora__texto {
+    font-size: 0.76rem;
+  }
+}

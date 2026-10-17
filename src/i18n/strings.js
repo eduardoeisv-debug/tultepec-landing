@@ -520,6 +520,9 @@ export const STRINGS = {
   "cristal.novedades.calendarioSub": { es: "Próximos eventos", en: "Upcoming events" },
   "cristal.novedades.juegosSub": { es: "3 juegos", en: "3 games" },
   "cristal.novedades.agradecimientosSub": { es: "Gracias", en: "Thank you" },
+
+  // Pastilla "Tultepec ahora" (hora + clima, TultepecAhora.jsx).
+  "tultepecAhora.ariaLabel": { es: "Hora y clima en Tultepec", en: "Time and weather in Tultepec" },
   "cristal.tiles.calendarioSub": { es: "Feria Nacional", en: "National Fair" },
   "cristal.tiles.memoriasSub": { es: "Recuerdos", en: "Memories" },
   "cristal.seccion.proximamente": {

@@ -4,6 +4,7 @@ import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import HeroCristal from "./HeroCristal.jsx";
 import Bienvenida from "../Bienvenida/Bienvenida.jsx";
 import CierreComun from "./CierreComun.jsx";
+import TultepecAhora from "./TultepecAhora.jsx";
 import "./InicioCristal.css";
 
 // Los 4 pasos numerados de antes + "últimas novedades" ahora son un
@@ -89,6 +90,8 @@ export default function InicioCristal({ titleRef }) {
 
   return (
     <div className="cristal-inicio">
+      <TultepecAhora />
+
       <div className="cristal-bento">
         <div className="cristal-bento__principal">
           <HeroCristal titleRef={titleRef} />
