@@ -70,18 +70,24 @@
 .cristal-col__logo h1 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 700;
   font-size: 2.1rem;
   line-height: 1.05;
-  color: var(--color-paper);
+  color: var(--color-gold);
 }
 
+/* Mismo tratamiento que .cristal-sec__pill (la miga de pan de las
+   vistas internas): negrita, mayúsculas, con tracking -- en vez de la
+   misma fuente display en cursiva ligera del h1 de arriba, se lee más
+   como un "eyebrow" que como un subtítulo suelto. */
 .cristal-col__logo p {
-  margin: 0.3rem 0 0;
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: 1.2rem;
-  color: var(--color-gold-light);
+  margin: 0.35rem 0 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gold);
 }
 
 .cristal-col__cerrar {
