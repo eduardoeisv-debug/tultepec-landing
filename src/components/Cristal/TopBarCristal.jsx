@@ -36,7 +36,7 @@ export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
       </button>
 
       <a className="cristal-topbar__marca" href={rutaHash(null)}>
-        Tultepec 360 <span className="cristal-topbar__marca-sub">· {t("header.subtitle")}</span>
+        Tultepec Digital
       </a>
 
       <LanguageToggle />

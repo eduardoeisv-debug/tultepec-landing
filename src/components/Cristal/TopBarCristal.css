@@ -79,16 +79,6 @@
   text-decoration: none;
 }
 
-/* Más chico y tenue que "Tultepec" -- cabe en la barra sin que el
-   nombre del pueblo pierda protagonismo; si de verdad no cupiera en
-   una pantalla muy angosta, el overflow:ellipsis de arriba lo recorta
-   solo, nunca desborda. */
-.cristal-topbar__marca-sub {
-  font-weight: 400;
-  font-size: 0.82em;
-  opacity: 0.72;
-}
-
 /* "Pestañas de Cristal": mismo cristal esmerilado que el resto del
    rediseño Bento (bg translúcido + blur + borde sutil, ver
    InicioCristal.css .cristal-bento__tile) en vez del borde liso de
@@ -161,16 +151,6 @@
 @media (prefers-reduced-motion: reduce) {
   .cristal-topbar__lang-indicator {
     transition: none;
-  }
-}
-
-/* En celular ya hay bastante compitiendo por el mismo espacio angosto
-   (marca + selector de idioma + casita) -- "· Estado de México" se
-   quita del todo en vez de recortarse con ellipsis, "Tultepec" solo
-   ya identifica la marca de sobra y así no empuja al selector. */
-@media (max-width: 700px) {
-  .cristal-topbar__marca-sub {
-    display: none;
   }
 }
 

@@ -75,7 +75,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
       <nav ref={colRef} className="cristal-col" aria-label={t("menu.ariaLabel")}>
         <div className="cristal-col__cabecera">
           <a className="cristal-col__logo" href={rutaHash(null)} onClick={alSeleccionar}>
-            <h1>Tultepec 360</h1>
+            <h1>Tultepec Digital</h1>
             <p>{t("cristal.marca.sub")}</p>
           </a>
           <button type="button" ref={cerrarRef} className="cristal-col__cerrar" onClick={onCerrar} aria-label={t("menu.movil.cerrar")}>
