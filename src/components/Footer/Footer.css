@@ -5,12 +5,20 @@
   z-index: 4;
   background: var(--color-night-950);
   color: rgba(251, 241, 226, 0.7);
-  /* El respaldo de la barra de gestos/indicador de inicio ya lo cubre
-     el padding-bottom de .cristal-stage en celular (CristalShell.css,
-     calc(64px + env(safe-area-inset-bottom) + 2.2rem) -- la franja de
-     abajo ahora la pinta BottomNav.css, no el pie), así que sumarlo
-     aquí también solo duplicaba el hueco debajo del pie. */
   padding: var(--space-lg) 0 var(--space-md);
+}
+
+/* Respaldo de BottomNav.css (64px + safe-area) -- Footer es el último
+   bloque real antes de la barra fija, así que es quien debe reservarle
+   el espacio (una sola vez, aquí) en vez de .cristal-stage, que
+   termina ANTES de Footer y dejaba ese hueco vacío mostrando el
+   degradado de fondo entre el contenido y el pie. Mismo corte de
+   768px que BottomNav.css -- en escritorio no existe la barra, así
+   que no hace falta el respaldo ahí. */
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: calc(var(--space-md) + 64px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .footer__grid {

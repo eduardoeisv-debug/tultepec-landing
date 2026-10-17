@@ -15,6 +15,17 @@
   scroll-margin-top: 80px;
 }
 
+/* --space-xl (5.5rem/88px) es para escritorio -- en celular, siendo
+   el último bloque antes de Footer, dejaba mucho espacio vacío debajo
+   de los botones de compartir sin ninguna razón de layout (nada que
+   necesite ese respiro de por sí, solo heredaba el mismo valor que el
+   resto del sitio). 32px arriba y abajo, parejo. */
+@media (max-width: 700px) {
+  .final-cta {
+    padding: 32px 0;
+  }
+}
+
 .final-cta__content {
   position: relative;
   /* Por encima del canvas de fuegos al clic (z-index: 3, fijo a toda

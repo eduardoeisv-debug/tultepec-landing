@@ -93,20 +93,20 @@
   position: relative;
 }
 
+/* Sin padding-bottom grande aquí -- antes reservaba 64px+safe-area
+   (el alto de BottomNav) PEGADO AL FINAL DE .cristal-stage, pero
+   Footer.jsx ya no vive dentro de .cristal-stage (ver CristalShell.jsx,
+   se movió fuera del <ErrorBoundary> para que no se remonte por
+   ruta) -- ese padding quedaba ANTES de Footer, no después, así que
+   entre el bloque de "Comparte esta página" (FinalCTA, el último
+   contenido real dentro de .cristal-stage) y Footer se abría un hueco
+   vacío del alto exacto de ese padding, dejando ver el degradado de
+   .cristal-root de fondo. El respaldo de BottomNav ahora vive en el
+   padding-bottom de Footer.css, que si es el último bloque antes de
+   la barra. */
 @media (max-width: 700px) {
   .cristal-stage {
-    padding: 0 0.7rem 2.2rem;
-  }
-}
-
-/* BottomNav.css usa su propio @media (max-width:768px) -- este debe
-   coincidir con ese mismo corte, no con los 700px de arriba, para que
-   el hueco de abajo exista exactamente mientras la barra esté
-   visible. Va después del bloque de 700px (misma especificidad, el
-   que aparece último gana) para que gane en ambos rangos. */
-@media (max-width: 768px) {
-  .cristal-stage {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 2.2rem);
+    padding: 0 0.7rem 0;
   }
 }
 
