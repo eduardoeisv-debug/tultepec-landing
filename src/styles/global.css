@@ -23,15 +23,18 @@
    encima de esto. color-scheme:dark para que el navegador tampoco
    asuma blanco en nada que pinte por su cuenta (scrollbars, el canvas
    por defecto) antes de que corra cualquier CSS de aquí.
-   overscroll-behavior-y:none para que un rebote de scroll (el "tirón"
-   al llegar al final) no se sienta como que pasa a otra página ni
-   deje ver nada detrás. */
+   Sin overscroll-behavior-y: ese "no dejar ver nada detrás" en el
+   tirón de rebote era justo lo que además apagaba el gesto nativo de
+   pull-to-refresh de Chrome/Android en todo el sitio -- ya no hace
+   falta: el fondo real de html/body de aquí mismo coincide con el
+   degradado visible en cualquier punto del scroll (y con el tono de
+   BottomNav.css en celular, ver cristal-chrome-movil más abajo), así
+   que el rebote ya no revela nada fuera de lugar por su cuenta. */
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
   background-color: #1a1b4b;
   background-image: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
-  overscroll-behavior-y: none;
 }
 
 /* Foco visible de respaldo: cubre cualquier elemento interactivo que no
@@ -67,7 +70,6 @@ body {
   margin: 0;
   background-color: #1a1b4b;
   background-image: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
-  overscroll-behavior-y: none;
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: var(--fs-body);
