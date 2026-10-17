@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { ChevronLeft } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import FinalCTA from "../FinalCTA/FinalCTA.jsx";
 import Footer from "../Footer/Footer.jsx";
@@ -14,11 +15,27 @@ import "./Seccion.css";
 // Inicio, ver InicioCristal.jsx). Ya no trae su propio botón "Menú" --
 // TopBarCristal.jsx (hamburguesa) ya está siempre visible arriba de
 // todo, en cualquier vista.
-export default function Seccion({ eyebrow, titulo, Vista, titleRef, onOpenPrivacy }) {
+//
+// Dentro de una subopción, `eyebrowHref` (ver CristalShell.jsx) hace
+// de la miga de pan un enlace de regreso al resumen de su grupo
+// (GrupoResumen.jsx) -- antes la única salida era la casita de
+// TopBarCristal.jsx, que manda siempre hasta Inicio, así que ver otra
+// subopción del mismo grupo obligaba a salir del todo y volver a
+// entrar por su tarjeta del Bento. Sin eyebrowHref (Inicio, grupos sin
+// hijos, o el resumen del grupo en sí) se queda como texto plano,
+// igual que antes.
+export default function Seccion({ eyebrow, eyebrowHref, titulo, Vista, titleRef, onOpenPrivacy }) {
   const { t } = useLanguage();
   return (
     <div className="cristal-sec">
-      <span className="cristal-sec__pill">{eyebrow}</span>
+      {eyebrowHref ? (
+        <a className="cristal-sec__pill cristal-sec__pill--link" href={eyebrowHref}>
+          <ChevronLeft size={14} strokeWidth={2.4} aria-hidden="true" />
+          {eyebrow}
+        </a>
+      ) : (
+        <span className="cristal-sec__pill">{eyebrow}</span>
+      )}
       <h2 className="cristal-sec__titulo" tabIndex={-1} ref={titleRef}>
         {titulo}
       </h2>

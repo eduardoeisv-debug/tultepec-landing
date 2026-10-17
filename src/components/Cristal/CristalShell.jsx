@@ -1,6 +1,6 @@
 import { lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import MENU from "../../data/menu.js";
-import useHashRoute from "../../hooks/useHashRoute.js";
+import useHashRoute, { rutaHash } from "../../hooks/useHashRoute.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
@@ -138,9 +138,17 @@ export default function CristalShell() {
     const clave = item?.hijos ? `${item.id}/${hijo?.id}` : item?.id;
     const etiqueta = hijo ? t(hijo.label) : item ? t(item.label) : "";
     tituloDocumento = item ? `${etiqueta} · Tultepec` : "Tultepec · Estado de México";
+    // Dentro de una subopción (no en el resumen del grupo en sí), la
+    // miga de pan vuelve a ese resumen en vez de a Inicio -- antes la
+    // única salida era la casita de TopBarCristal.jsx, que manda
+    // siempre hasta Inicio, así que para ver otra subopción del mismo
+    // grupo (p.ej. Historia -> Galería dentro de Pirotecnia) había que
+    // salir del todo y volver a entrar por la tarjeta del Bento.
+    const eyebrowHref = item?.hijos && hijo ? rutaHash(item.id) : undefined;
     contenido = item ? (
       <Seccion
         eyebrow={t(item.label)}
+        eyebrowHref={eyebrowHref}
         titulo={etiqueta}
         Vista={esResumenGrupo ? vistaGrupoResumen : REGISTRO[clave]}
         titleRef={titleRef}

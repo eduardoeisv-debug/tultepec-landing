@@ -12,6 +12,31 @@
   color: var(--color-gold-light);
 }
 
+/* Miga de pan que vuelve al resumen del grupo (ver el comentario de
+   eyebrowHref en Seccion.jsx) -- margen negativo + padding para que
+   el área de toque sea más grande que el texto sin mover el resto
+   del bloque hacia la derecha. */
+.cristal-sec__pill--link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: -0.4rem 0 0 -0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out);
+}
+
+.cristal-sec__pill--link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-paper);
+}
+
+.cristal-sec__pill--link:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
+}
+
 .cristal-sec__titulo {
   margin: 0.4rem 0 1.1rem;
   font-family: var(--font-display);
