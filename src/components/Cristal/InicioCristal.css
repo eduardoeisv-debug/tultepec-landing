@@ -51,12 +51,21 @@
   min-width: 0;
 }
 
+/* min-height uniforme -- sin esto, las 5 tarjetas con bajada (`sub`,
+   ver ACCESOS) salían más altas que las 4 sin ella, y la rejilla se
+   veía despareja fila a fila. align-items/text-align centrados (antes
+   solo en celular) para que ícono + texto queden centrados en las dos
+   vistas por igual, no solo en una. */
 .cristal-bento__tile {
   grid-column: span 2;
   min-width: 0;
+  min-height: 132px;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
   padding: 1.1rem 1.2rem 1.2rem;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
@@ -66,6 +75,13 @@
   color: var(--cristal-soft);
   text-decoration: none;
   transition: background 0.15s var(--ease-out), border-color 0.15s var(--ease-out), transform 0.15s var(--ease-out);
+}
+
+.cristal-bento__tile-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
 }
 
 .cristal-bento__tile:hover {
@@ -85,42 +101,31 @@
   color: var(--color-paper);
 }
 
+/* 13px fijos (no un rem que dependiera del font-size base) -- el
+   0.8rem/0.66rem de antes caían justo por debajo del mínimo legible
+   de 13px pedido, sobre todo en la versión compacta de celular. El
+   color (--cristal-soft, heredado) ya da ~8.5:1 de contraste contra el
+   fondo de la tarjeta, bien por encima del mínimo de 4.5:1 de WCAG AA. */
 .cristal-bento__tile span {
-  font-size: 0.8rem;
+  font-size: 13px;
   line-height: 1.4;
 }
 
+/* Fondo y color del ícono vía custom properties puestas inline por
+   tarjeta (InicioCristal.jsx, --icon-color/--icon-ink) -- el valor por
+   defecto aquí (dorado claro + tinta oscura) es solo un respaldo por
+   si algún acceso llegara a quedarse sin esas variables. 50px/ícono de
+   25px (ver el size= en InicioCristal.jsx): dentro del rango 48-52px /
+   24-26px pedido. */
 .cristal-bento__tile-icono {
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--color-gold-light);
-  color: #14163a;
-  margin-bottom: 0.15rem;
-}
-
-/* Colores de ícono por tarjeta, solo para variedad visual (sin
-   significado por sección) -- mismos tonos que ya usaba el resto del
-   sitio (ver --color-* en variables.css), rotando cada 5 tarjetas. */
-.cristal-bento__tile--c1 .cristal-bento__tile-icono {
-  background: var(--color-pink);
-  color: #fff;
-}
-
-.cristal-bento__tile--c2 .cristal-bento__tile-icono {
-  background: var(--color-turquoise);
-}
-
-.cristal-bento__tile--c3 .cristal-bento__tile-icono {
-  background: var(--color-terracotta);
-  color: #fff;
-}
-
-.cristal-bento__tile--c4 .cristal-bento__tile-icono {
-  background: var(--color-fire-red);
-  color: #fff;
+  background: var(--icon-color, var(--color-gold-light));
+  color: var(--icon-ink, #14163a);
 }
 
 .cristal-inicio__cta {
@@ -146,12 +151,12 @@
 /* Celular: Principal y Carta se quedan apiladas a todo el ancho (1/-1
    ya les llega del breakpoint de 980px de arriba, sigue aplicando),
    pero los 9 accesos ahora van de a 2 por fila en vez de uno solo --
-   tarjetas más chicas y compactas (ícono, tipografía y relleno
-   reducidos) para que quepan dos por fila sin que el texto se corte;
-   "Memorias de mi pueblo" y el resto de títulos largos hacen salto de
-   línea en vez de desbordar, igual que ya hacían en una sola columna.
-   El borde redondeado, el fondo de cristal y los colores de cada
-   ícono NO cambian aquí -- solo el acomodo y el tamaño. */
+   tarjetas más chicas y compactas (tipografía y relleno reducidos)
+   para que quepan dos por fila sin que el texto se corte; "Memorias de
+   mi pueblo" y el resto de títulos largos hacen salto de línea en vez
+   de desbordar, igual que ya hacían en una sola columna. El borde
+   redondeado, el fondo de cristal y los colores de cada ícono NO
+   cambian aquí -- solo el acomodo y el tamaño. */
 @media (max-width: 700px) {
   .cristal-inicio {
     padding-top: 2.2rem;
@@ -166,28 +171,33 @@
   }
   .cristal-bento__tile {
     grid-column: span 1;
-    align-items: center;
-    text-align: center;
-    gap: 0.35rem;
+    /* 128px, no 116 -- las 4 tarjetas sin bajada (sub) ya cabían en
+       116, pero las 5 con bajada necesitaban más y lo desbordaban,
+       quedando un poco más altas pese al min-height "igual". 128
+       alcanza para las 9 por igual, así que las 9 terminan exactamente
+       a la misma altura, no solo con el mismo piso. */
+    min-height: 128px;
+    gap: 0.4rem;
     padding: 0.9rem 0.6rem;
-  }
-  /* El noveno acceso (cantidad impar) se queda solo en la última
-     fila -- se le da las 2 columnas para que no cuelgue a la mitad. */
-  .cristal-bento__tile:last-child {
-    grid-column: span 2;
-  }
-  .cristal-bento__tile-icono {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 0;
   }
   .cristal-bento__tile b {
     font-size: clamp(0.72rem, 3.4vw, 0.84rem);
     line-height: 1.25;
   }
-  .cristal-bento__tile span {
-    font-size: 0.66rem;
-    line-height: 1.3;
+  /* Agradecimientos (último acceso, cantidad impar de 9): en vez de
+     quedarse solo colgando a la mitad de la última fila, ocupa las 2
+     columnas en un formato horizontal -- ícono a la izquierda, texto a
+     la derecha -- y más bajo que el resto de tarjetas verticales. */
+  .cristal-bento__tile--ancho {
+    grid-column: span 2;
+    flex-direction: row;
+    min-height: auto;
+    text-align: left;
+    justify-content: flex-start;
+    padding: 0.8rem 1.1rem;
+  }
+  .cristal-bento__tile--ancho .cristal-bento__tile-texto {
+    text-align: left;
   }
   .cristal-inicio__cta {
     margin-top: 2rem;

@@ -54,14 +54,19 @@
   }
 }
 
+/* Opacidad bajada (antes 0.08/0.12) -- sobre el fondo casi opaco de
+   .cristal-root se notaba poco, pero el cristal de las tarjetas del
+   Bento (InicioCristal.css, apenas 3% blanco) lo deja ver clarísimo
+   por encima, y un puntito cayendo justo sobre un ícono o un texto se
+   leía como que se "cruzaban". */
 .cristal-root::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(rgba(255, 255, 255, 0.08) 1.4px, transparent 1.8px) 0 0 / 46px 46px,
-    radial-gradient(rgba(255, 214, 120, 0.12) 2px, transparent 2.6px) 23px 23px / 92px 92px;
+    radial-gradient(rgba(255, 255, 255, 0.04) 1.4px, transparent 1.8px) 0 0 / 46px 46px,
+    radial-gradient(rgba(255, 214, 120, 0.06) 2px, transparent 2.6px) 23px 23px / 92px 92px;
 }
 
 /* El menú (ColumnaCristal.jsx) ya no es una columna que comparte esta

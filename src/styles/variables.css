@@ -18,6 +18,12 @@
   --color-fire-red-dark: #a81b2d;
   --color-pink: #ff2d8a;
   --color-turquoise: #2bc4b4;
+  /* Tarjetas de acceso de Inicio (InicioCristal.jsx): 6 destinos
+     distintos necesitan 6 colores de círculo distintos para que
+     ninguno se repita entre secciones diferentes -- los 5 tonos de
+     arriba ya estaban todos asignados (pirotecnia/memorias/eventos/
+     visitanos/juegos), así que este es nuevo, no reutiliza ninguno. */
+  --color-violet: #9b6bdb;
   /* Fila del menú lateral (SidebarMenu.jsx): no hay tokens existentes
      lo bastante cercanos a estos dos para reutilizarlos. */
   --color-menu-row-bg: #171937;
