@@ -92,25 +92,24 @@
   flex: 1 1 0;
 }
 
-/* Mismo círculo pseudo-3D que los demás botones redondos del sitio
-   (.icono-3d, global.css) -- antes era un cuadrado redondeado con su
-   propio borde/sombra plana. El fondo con degradado de .icono-3d
-   queda tapado por la foto en sí (object-fit:cover la cubre entera),
-   pero el brillo (::before) y las sombras siguen pintándose encima /
-   alrededor; mix-blend-mode:screen en la imagen deja que ese degradado
-   dorado se mezcle con ella en vez de taparla del todo. */
+/* Revertido del círculo pseudo-3D (.icono-3d): con el brillo/degradado
+   dorado encima, el mix-blend-mode:screen lavaba el logo casi hasta
+   desaparecerlo -- se ve mejor plano, como estaba antes. */
 .footer__signature-seal {
   display: block;
   flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(243, 205, 122, 0.55);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
 
 .footer__signature-seal img {
-  position: relative;
-  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
   object-fit: cover;
   mix-blend-mode: screen;
 }
