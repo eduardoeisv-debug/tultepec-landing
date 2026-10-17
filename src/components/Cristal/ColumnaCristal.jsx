@@ -78,6 +78,15 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
     return () => meta.setAttribute("content", anterior);
   }, []);
 
+  // El theme-color de arriba no basta en Chrome/Android: la franja de
+  // la barra de gestos del sistema la pinta a partir del fondo real de
+  // html/body (ver el comentario grande en global.css), así que
+  // también hay que cambiar ESE fondo mientras el menú está abierto.
+  useEffect(() => {
+    document.documentElement.classList.add("cristal-menu-abierto");
+    return () => document.documentElement.classList.remove("cristal-menu-abierto");
+  }, []);
+
   // Clic fuera de la tarjeta del menú (sobre el fondo oscurecido) la
   // cierra -- Escape ya lo maneja CristalShell.jsx, que es quien monta
   // este componente.
