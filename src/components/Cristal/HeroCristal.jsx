@@ -23,7 +23,7 @@ export default function HeroCristal({ titleRef }) {
           {t("hero.bienvenidosEyebrow")}
         </p>
         <h1 className="cristal-hero__titulo" tabIndex={-1} ref={titleRef}>
-          {t("hero.title.line1")} <span>{t("hero.title.line2")}</span>
+          {t("hero.title.line1")} <span className="brand-mirror--static">{t("hero.title.line2")}</span>
         </h1>
         <p className="cristal-hero__subtitulo">{t("hero.subtitle")}</p>
       </div>

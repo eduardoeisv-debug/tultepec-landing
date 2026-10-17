@@ -201,7 +201,7 @@ export default function CristalShell() {
 
   return (
     <div className="cristal-root">
-      <TopBarCristal enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} botonMenuRef={botonMenuRef} />
+      <TopBarCristal enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} botonMenuRef={botonMenuRef} menuAbierto={menuAbierto} />
       {menuAbierto && <ColumnaCristal ruta={ruta} onCompartir={onCompartir} onCerrar={cerrarMenu} />}
       <main className="cristal-stage" ref={stageRef}>
         <div className="cristal-stage__papel">

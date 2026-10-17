@@ -6,6 +6,7 @@ import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { useSound } from "../../hooks/useSound.jsx";
+import BrandSparkles from "../shared/BrandSparkles.jsx";
 import "./ColumnaCristal.css";
 
 // Menú de "Menú Cristal": ya no es una columna siempre visible al lado
@@ -81,7 +82,12 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
       <nav ref={colRef} className="cristal-col" aria-label={t("menu.ariaLabel")}>
         <div className="cristal-col__cabecera">
           <a className="cristal-col__logo" href={rutaHash(null)} onClick={alSeleccionar}>
-            <h1>Tultepec Digital</h1>
+            <h1>
+              <span className="brand-mirror">
+                Tultepec Digital
+                <BrandSparkles />
+              </span>
+            </h1>
             <p>{t("cristal.marca.sub")}</p>
           </a>
           <button type="button" ref={cerrarRef} className="cristal-col__cerrar" onClick={onCerrar} aria-label={t("menu.movil.cerrar")}>

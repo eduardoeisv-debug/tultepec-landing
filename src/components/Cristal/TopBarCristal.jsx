@@ -2,6 +2,7 @@ import { Menu as MenuIcon, Home } from "lucide-react";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import LanguageToggle from "./LanguageToggle.jsx";
+import BrandSparkles from "../shared/BrandSparkles.jsx";
 import "./TopBarCristal.css";
 
 // Barra superior, siempre visible (escritorio y celular por igual):
@@ -11,7 +12,7 @@ import "./TopBarCristal.css";
 // abrirlo para cambiar de idioma) y una casita para volver directo a
 // Inicio sin tener que abrir el menú primero. Reemplaza a la columna
 // siempre visible de antes -- ver CristalShell.jsx.
-export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
+export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef, menuAbierto }) {
   const { t } = useLanguage();
 
   // Siempre sube hasta arriba de la página, incluso si ya se estaba
@@ -36,7 +37,10 @@ export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
       </button>
 
       <a className="cristal-topbar__marca" href={rutaHash(null)}>
-        Tultepec Digital
+        <span className={`brand-mirror${menuAbierto ? " is-paused" : ""}`}>
+          Tultepec Digital
+          <BrandSparkles />
+        </span>
       </a>
 
       <LanguageToggle />
