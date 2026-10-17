@@ -192,10 +192,18 @@
   /* Agradecimientos (último acceso, cantidad impar de 9): en vez de
      quedarse solo colgando a la mitad de la última fila, ocupa las 2
      columnas en un formato horizontal -- ícono a la izquierda, texto a
-     la derecha con flex:1 (nada de hueco muerto sobrante), chevron al
-     extremo derecho. Mismo padding/min-height que las demás tarjetas
-     (no se pisan aquí) para que no desentone en alto contra sus
-     vecinas de arriba. */
+     la derecha, chevron pegado justo después del texto. Mismo
+     padding/min-height que las demás tarjetas (no se pisan aquí) para
+     que no desentone en alto contra sus vecinas de arriba.
+     flex:1 en el texto (como se usó en una versión anterior) estiraba
+     su CAJA hasta el borde derecho de la tarjeta, pero "Agradecimientos
+     / Gracias" es corto y queda alineado a la izquierda DENTRO de esa
+     caja -- el chevron (pegado al borde de la caja, no al texto) se
+     veía flotando solo, lejos del título/subtítulo. Sin flex:1, el
+     texto mide lo que su contenido necesita y el chevron queda
+     inmediatamente después, como parte del mismo grupo visual; el
+     espacio sobrante se queda vacío al final de la tarjeta, no
+     interrumpiendo nada. */
   .cristal-bento__tile--ancho {
     grid-column: span 2;
     flex-direction: row;
@@ -205,7 +213,6 @@
     gap: 0.9rem;
   }
   .cristal-bento__tile--ancho .cristal-bento__tile-texto {
-    flex: 1 1 auto;
     min-width: 0;
     text-align: left;
   }
