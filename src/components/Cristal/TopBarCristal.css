@@ -159,6 +159,18 @@
   }
 }
 
+/* BottomNav.css ya trae su propio botón de Inicio en celular -- dejar
+   también el de aquí era redundante y, peor, descentraba el título
+   (marca ocupa el espacio que sobra entre hamburguesa y selector de
+   idioma; con 4 elementos en vez de 3 ese espacio ya no quedaba
+   centrado respecto a toda la barra). Mismo corte que BottomNav.css
+   (768px), no los 480px de abajo. */
+@media (max-width: 768px) {
+  .cristal-topbar__boton--inicio {
+    display: none;
+  }
+}
+
 @media (max-width: 480px) {
   .cristal-topbar {
     padding-left: 0.9rem;

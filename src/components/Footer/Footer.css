@@ -5,12 +5,12 @@
   z-index: 4;
   background: var(--color-night-950);
   color: rgba(251, 241, 226, 0.7);
-  /* + env(safe-area-inset-bottom): el pie es el último bloque con
-     fondo propio de cada vista -- sin esto, su azul oscuro terminaba
-     donde terminaba el contenido y la franja de la barra de
-     gestos/indicador de inicio quedaba mostrando el degradado de
-     .cristal-root en vez de seguir con el mismo tono del pie. */
-  padding: var(--space-lg) 0 calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+  /* El respaldo de la barra de gestos/indicador de inicio ya lo cubre
+     el padding-bottom de .cristal-stage en celular (CristalShell.css,
+     calc(64px + env(safe-area-inset-bottom) + 2.2rem) -- la franja de
+     abajo ahora la pinta BottomNav.css, no el pie), así que sumarlo
+     aquí también solo duplicaba el hueco debajo del pie. */
+  padding: var(--space-lg) 0 var(--space-md);
 }
 
 .footer__grid {

@@ -93,6 +93,17 @@
   }
 }
 
+/* BottomNav.css usa su propio @media (max-width:768px) -- este debe
+   coincidir con ese mismo corte, no con los 700px de arriba, para que
+   el hueco de abajo exista exactamente mientras la barra esté
+   visible. Va después del bloque de 700px (misma especificidad, el
+   que aparece último gana) para que gane en ambos rangos. */
+@media (max-width: 768px) {
+  .cristal-stage {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 2.2rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cristal-root {
     background-attachment: scroll;

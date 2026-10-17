@@ -75,17 +75,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Mientras el menú móvil está abierto (ColumnaCristal.jsx agrega esta
-   clase a <html> solo mientras está montado), el fondo real de
-   html/body debe verse como el panel del menú, no el degradado del
-   sitio -- la franja de la barra de gestos de Android, igual que con
-   el bug de la franja crema de arriba, la pinta el sistema a partir
-   del fondo real de html/body, sin importar qué haya encima en capas
-   position:fixed (el panel del menú, en este caso). background-image
-   a none porque si no, el degradado (opaco) seguiría tapando el
-   background-color sólido de abajo. */
-html.cristal-menu-abierto,
-html.cristal-menu-abierto body {
+/* En celular (CristalShell.jsx agrega esta clase a <html> mientras
+   un media query de JS marca el ancho como móvil -- ver esMovil ahí
+   mismo), el fondo real de html/body debe verse como BottomNav.css y
+   el panel del menú (mismo tono, --cristal-glass-movil), no el
+   degradado del sitio -- la franja de la barra de gestos de Android,
+   igual que con el bug de la franja crema de arriba, la pinta el
+   sistema a partir del fondo real de html/body, sin importar qué haya
+   encima en capas position:fixed. background-image a none porque si
+   no, el degradado (opaco) seguiría tapando el background-color
+   sólido de abajo. */
+html.cristal-chrome-movil,
+html.cristal-chrome-movil body {
   background-image: none;
   background-color: #0e0e26;
 }

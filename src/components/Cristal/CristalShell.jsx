@@ -2,8 +2,10 @@ import { lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import MENU from "../../data/menu.js";
 import useHashRoute, { rutaHash } from "../../hooks/useHashRoute.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
+import useMediaQuery from "../../hooks/useMediaQuery.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
+import BottomNav from "./BottomNav.jsx";
 import ColumnaCristal from "./ColumnaCristal.jsx";
 import Seccion from "./Seccion.jsx";
 import InicioCristal from "./InicioCristal.jsx";
@@ -48,6 +50,12 @@ const REGISTRO = {
 
 const SITE_URL = "https://tultepec-landing.vercel.app/";
 
+// Mismo tono sólido que BottomNav/ColumnaCristal usan como fondo
+// (--cristal-glass-movil, ~97% opaco) vs. el azul del degradado del
+// sitio que trae index.html por defecto (su <meta name="theme-color">).
+const COLOR_CHROME_MOVIL = "#0e0e26";
+const COLOR_CHROME_SITIO = "#1a1b4b";
+
 // Punto de entrada de "Menú Cristal": barra superior siempre visible
 // (TopBarCristal.jsx, hamburguesa + casita) + el contenido de la ruta
 // activa a todo el ancho -- el menú (ColumnaCristal.jsx) ya no es una
@@ -60,6 +68,20 @@ export default function CristalShell() {
   const stageRef = useRef(null);
   const botonMenuRef = useRef(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const esMovil = useMediaQuery("(max-width: 768px)");
+
+  // La barra inferior fija (BottomNav.jsx) solo existe en celular --
+  // su mismo tono (casi negro, no el azul del degradado del sitio)
+  // debe pintar también la franja de la barra de gestos de Android/el
+  // indicador de inicio de iOS, que el sistema colorea a partir del
+  // theme-color y del fondo real de html/body, no de lo que haya
+  // encima en capas position:fixed (mismo mecanismo ya identificado
+  // para el menú -- ver el historial de CristalShell.css/global.css).
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    document.documentElement.classList.toggle("cristal-chrome-movil", esMovil);
+    meta?.setAttribute("content", esMovil ? COLOR_CHROME_MOVIL : COLOR_CHROME_SITIO);
+  }, [esMovil]);
 
   // Al cerrar el menú (Escape, clic fuera, X o elegir una opción), el
   // foco vuelve a la hamburguesa que lo abrió -- si no, tras cerrar
@@ -188,6 +210,7 @@ export default function CristalShell() {
           {contenido}
         </ErrorBoundary>
       </main>
+      <BottomNav enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} menuAbierto={menuAbierto} />
     </div>
   );
 }

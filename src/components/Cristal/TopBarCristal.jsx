@@ -42,7 +42,7 @@ export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef }) {
       <LanguageToggle />
 
       <a
-        className="cristal-topbar__boton"
+        className="cristal-topbar__boton cristal-topbar__boton--inicio"
         href={rutaHash(null)}
         onClick={irAInicio}
         aria-label={t("menu.inicio")}

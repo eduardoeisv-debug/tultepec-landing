@@ -5,12 +5,8 @@ import { rutaHash } from "../../hooks/useHashRoute.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import { useSound } from "../../hooks/useSound.jsx";
 import "./ColumnaCristal.css";
-
-// Aproximación sólida de --cristal-glass-movil (rgba(14,14,38,0.97),
-// CristalShell.css) -- theme-color no compone transparencia como el
-// CSS normal, así que se usa la versión opaca equivalente.
-const COLOR_THEME_MENU = "#0e0e26";
 
 // Menú de "Menú Cristal": ya no es una columna siempre visible al lado
 // del contenido -- se abre como una capa a pantalla completa (en
@@ -33,6 +29,7 @@ const COLOR_THEME_MENU = "#0e0e26";
 // dejaba dos filas doradas a la vez.
 export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   const { t } = useLanguage();
+  const { playTap } = useSound();
   const [grupoAbierto, setGrupoAbierto] = useState(() => {
     const item = MENU.find((i) => i.id === ruta.itemId);
     return item?.hijos ? item.id : null;
@@ -42,6 +39,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   const cerrarRef = useRef(null);
 
   const compartir = () => {
+    playTap();
     onCompartir();
     setCopiado(true);
     setTimeout(() => setCopiado(false), 2000);
@@ -62,31 +60,6 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
     cerrarRef.current?.focus();
   }, []);
 
-  // La franja de la barra de gestos/sistema en Android se pinta con el
-  // theme-color de la etiqueta meta, no con el CSS de la página -- sin
-  // esto, al abrir el menú esa franja seguía mostrando el azul del
-  // sitio (theme-color de index.html) en vez del fondo casi negro del
-  // panel. Este componente solo está montado mientras el menú está
-  // abierto (CristalShell.jsx lo monta/desmonta), así que mount =
-  // abrir y unmount = cerrar son el momento justo para el cambio y su
-  // restauración.
-  useEffect(() => {
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (!meta) return undefined;
-    const anterior = meta.getAttribute("content");
-    meta.setAttribute("content", COLOR_THEME_MENU);
-    return () => meta.setAttribute("content", anterior);
-  }, []);
-
-  // El theme-color de arriba no basta en Chrome/Android: la franja de
-  // la barra de gestos del sistema la pinta a partir del fondo real de
-  // html/body (ver el comentario grande en global.css), así que
-  // también hay que cambiar ESE fondo mientras el menú está abierto.
-  useEffect(() => {
-    document.documentElement.classList.add("cristal-menu-abierto");
-    return () => document.documentElement.classList.remove("cristal-menu-abierto");
-  }, []);
-
   // Clic fuera de la tarjeta del menú (sobre el fondo oscurecido) la
   // cierra -- Escape ya lo maneja CristalShell.jsx, que es quien monta
   // este componente.
@@ -98,7 +71,10 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [onCerrar]);
 
-  const alSeleccionar = () => onCerrar();
+  const alSeleccionar = () => {
+    playTap();
+    onCerrar();
+  };
 
   return (
     <div className="cristal-col__backdrop">
@@ -139,7 +115,10 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                     className={`cristal-col__fila${abierto ? " is-resaltada" : ""}`}
                     aria-expanded={abierto}
                     aria-haspopup="true"
-                    onClick={() => setGrupoAbierto((actual) => (actual === item.id ? null : item.id))}
+                    onClick={() => {
+                      playTap();
+                      setGrupoAbierto((actual) => (actual === item.id ? null : item.id));
+                    }}
                   >
                     <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
                     <span className="cristal-col__texto">{t(item.label)}</span>

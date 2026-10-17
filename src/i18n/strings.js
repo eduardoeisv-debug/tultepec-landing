@@ -449,6 +449,13 @@ export const STRINGS = {
   "menu.proximamente.badge": { es: "Próximamente", en: "Coming soon" },
   "menu.proximamente.anuncio": { es: "Próximamente: {opcion}", en: "Coming soon: {opcion}" },
 
+  // Barra de navegación inferior fija (celular, BottomNav.jsx).
+  "bottomnav.ariaLabel": { es: "Navegación principal", en: "Main navigation" },
+  "bottomnav.menu": { es: "Menú", en: "Menu" },
+  "bottomnav.sonido": { es: "Sonido", en: "Sound" },
+  "sonido.activar": { es: "Activar sonido", en: "Enable sound" },
+  "sonido.desactivar": { es: "Silenciar", en: "Mute" },
+
   "panel.proximamente.titulo": { es: "Esta sección se está preparando", en: "This section is being prepared" },
   "panel.proximamente.texto": {
     es: "Todavía estamos armando \"{opcion}\". Vuelve pronto para verla.",
