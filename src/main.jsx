@@ -30,6 +30,23 @@ if ('scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual'
 }
 
+// Actualizar la página (F5, pull-to-refresh, "recargar" del navegador) debe
+// mandar a Inicio aunque se estuviera en otra sección -- pero un enlace
+// directo a una sección (compartido, escrito a mano, o un favorito) debe
+// seguir abriendo ahí mismo, y atrás/adelante debe seguir funcionando. La
+// Navigation Timing API distingue el tipo real de carga (`reload` vs
+// `navigate` vs `back_forward`), así que solo se limpia el hash cuando de
+// verdad fue un refresco -- replaceState en vez de solo vaciar el hash para
+// no dejar un "#" suelto en la barra de direcciones ni agregar una entrada
+// nueva al historial. Antes de montar React, para que useHashRoute.js lea
+// el hash ya limpio en su primer render (sin parpadeo de la sección vieja).
+if (!isModerationRoute) {
+  const navegacion = performance.getEntriesByType('navigation')[0]
+  if (navegacion?.type === 'reload' && window.location.hash && window.location.hash !== '#/') {
+    window.history.replaceState(null, '', window.location.pathname + window.location.search)
+  }
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {isModerationRoute ? (
