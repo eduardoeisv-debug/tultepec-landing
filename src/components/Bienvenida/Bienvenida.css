@@ -21,6 +21,46 @@
   z-index: 4;
 }
 
+/* Tarjeta de la Carta del Bento de Inicio (ver InicioCristal.jsx):
+   el degradado y el borde redondeado de .bienvenida de arriba daban
+   por hecho una sección propia de ancho completo -- dentro de una
+   celda de la rejilla, esa forma ya la da la tarjeta de cristal que
+   la envuelve (.cristal-bento__carta en InicioCristal.css), así que
+   aquí se queda transparente para no duplicar el marco. .container
+   (clase global, ver global.css) también se neutraliza: su padding
+   horizontal se sumaba al padding propio de la tarjeta. */
+.bienvenida--bento {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.bienvenida--bento .bienvenida__inner {
+  padding: 0;
+}
+
+/* .bienvenida__grid pasa a una columna por debajo de 860px de
+   VIEWPORT (ver más abajo) -- pero en el Bento esta tarjeta mide
+   siempre alrededor de 1/3 del ancho del stage (grid-column: span 2
+   de 6, ver .cristal-bento__carta en InicioCristal.css), angosta en
+   cualquier viewport, así que se fuerza una sola columna siempre en
+   vez de depender de un ancho de pantalla que ya no refleja el ancho
+   real de la tarjeta. Tipografía un poco más chica a juego con ese
+   mismo ancho reducido. */
+.bienvenida--bento .bienvenida__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.bienvenida--bento .bienvenida__copy h2 {
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+}
+
+.bienvenida--bento .bienvenida-carta__body {
+  padding: 1.5rem 1.6rem 1.8rem;
+  font-size: 1.05rem;
+}
+
 /* Nota compacta (cerrada por defecto): mismo papel crema + remate picado
    que la carta, para que de un vistazo se note que es una carta sin
    tener que desplegarla. Botón real (no solo una tarjeta decorativa) para

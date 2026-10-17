@@ -1,12 +1,20 @@
+/* Tarjeta Principal del Bento de Inicio (ver InicioCristal.jsx/.css):
+   mismo cristal esmerilado (bg-white/[0.03] + backdrop-blur + borde
+   sutil) que el resto de tarjetas de la rejilla -- antes este bloque
+   flotaba directo sobre el fondo del stage; el despeje para que no
+   choque con las banderitas de papel picado de arriba ahora lo pone
+   el padding-top de .cristal-inicio (que envuelve toda la rejilla),
+   no esta tarjeta en particular. */
 .cristal-hero {
   display: grid;
-  gap: 1.6rem;
-  /* Más que la altura de la tira de papel picado (54px en escritorio,
-     ver HeroPapelPicado.css) -- no reserva su propio espacio (está en
-     position:absolute dentro de .cristal-stage__papel, que mide 0 de
-     alto), así que sin este margen las banderitas quedaban encima del
-     eyebrow. */
-  padding: 3.2rem 0 2.6rem;
+  gap: 1.5rem;
+  padding: 2.2rem 1.9rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-deep);
 }
 
 .cristal-hero__eyebrow {
@@ -119,9 +127,9 @@
 
 @media (max-width: 700px) {
   .cristal-hero {
-    /* Un poco más que los 38px de la tira de papel picado en celular. */
-    padding-top: 2.2rem;
+    padding: 1.6rem 1.3rem;
     gap: 1.3rem;
+    border-radius: var(--radius-md);
   }
   .cristal-hero__video {
     padding: 1.1rem 1.2rem;

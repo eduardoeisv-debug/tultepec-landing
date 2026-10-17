@@ -31,7 +31,7 @@ function CartaEdge() {
 // la pantalla (scroll) se vuelve a compactar sola, igual que el
 // laberinto del torito se pausa solo al salir de vista -- así no queda
 // desplegada todo el tiempo, solo mientras alguien la está viendo.
-export default function Bienvenida() {
+export default function Bienvenida({ className = "" }) {
   const { t } = useLanguage();
   const [abierta, setAbierta] = useState(false);
   const [resaltar, setResaltar] = useState(false);
@@ -76,7 +76,12 @@ export default function Bienvenida() {
   }, []);
 
   return (
-    <section className="bienvenida" id="bienvenida" aria-labelledby="bienvenida-nota-titulo" ref={seccionRef}>
+    <section
+      className={`bienvenida${className ? ` ${className}` : ""}`}
+      id="bienvenida"
+      aria-labelledby="bienvenida-nota-titulo"
+      ref={seccionRef}
+    >
       <div className="container bienvenida__inner">
         <button
           type="button"
