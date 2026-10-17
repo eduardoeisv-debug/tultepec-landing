@@ -37,11 +37,10 @@ export const STRINGS = {
     en: "An archive made to honor the memory of a town.",
   },
   "footer.thanks": {
-    es: "Un agradecimiento especial a la Profesora Juana Antonieta Zuñiga Urban y al Profesor Fernando Manuel Torices Ramírez, por compartir con generosidad su conocimiento y sus recuerdos — el verdadero corazón de este archivo.",
-    en: "A special thanks to Professor Juana Antonieta Zuñiga Urban and Professor Fernando Manuel Torices Ramírez, for generously sharing their knowledge and memories — the true heart of this archive.",
+    es: "Un agradecimiento especial al grupo Memorias de mi pueblo, por compartir con generosidad su conocimiento y sus recuerdos — el verdadero corazón de este archivo.",
+    en: "A special thanks to the Memorias de mi pueblo group, for generously sharing their knowledge and memories — the true heart of this archive.",
   },
-  "footer.thanksName1": { es: "la Profesora Juana Antonieta Zuñiga Urban", en: "Professor Juana Antonieta Zuñiga Urban" },
-  "footer.thanksName2": { es: "Profesor Fernando Manuel Torices Ramírez", en: "Professor Fernando Manuel Torices Ramírez" },
+  "footer.thanksName": { es: "grupo Memorias de mi pueblo", en: "Memorias de mi pueblo group" },
   "footer.disclaimer": {
     es: "Proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno, gremio pirotécnico ni organizador oficial de la Feria Nacional de la Pirotecnia.",
     en: "Independent cultural project, made as a portfolio piece. It does not represent any government institution, pyrotechnic guild, or official organizer of the Feria Nacional de la Pirotecnia.",
@@ -518,4 +517,10 @@ export const STRINGS = {
     en: "This section is being prepared. Check back soon.",
   },
   "cristal.privacidad.titulo": { es: "Aviso de privacidad", en: "Privacy notice" },
+  "cristal.error.titulo": { es: "Algo no cargó bien", en: "Something didn't load right" },
+  "cristal.error.texto": {
+    es: "Puede ser que el sitio se haya actualizado mientras tenías esta pestaña abierta. Recarga la página para seguir.",
+    en: "The site may have updated while this tab was open. Reload the page to continue.",
+  },
+  "cristal.error.recargar": { es: "Recargar página", en: "Reload page" },
 };

@@ -1,0 +1,57 @@
+.cristal-error {
+  max-width: 480px;
+  margin: 3.2rem auto;
+  padding: 2rem 1.8rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+.cristal-error__titulo {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--color-paper);
+}
+
+.cristal-error__texto {
+  margin: 0 0 1.4rem;
+  color: var(--cristal-soft);
+  line-height: 1.6;
+}
+
+.cristal-error__boton {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  min-height: 44px;
+  padding: 0 1.4rem;
+  border-radius: 999px;
+  background: var(--color-gold-light);
+  color: var(--color-night-950);
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: transform 0.15s var(--ease-out);
+}
+
+.cristal-error__boton:hover {
+  transform: translateY(-2px);
+}
+
+.cristal-error__boton:focus-visible {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cristal-error__boton {
+    transition: none;
+  }
+}

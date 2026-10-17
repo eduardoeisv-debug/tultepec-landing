@@ -135,13 +135,19 @@
 }
 
 .cristal-col__fila:hover,
-.cristal-col__fila[aria-expanded="true"],
-.cristal-col__fila[aria-current="page"] {
+.cristal-col__fila[aria-expanded="true"] {
   background: var(--cristal-glass2);
   color: var(--color-paper);
 }
 
+/* La opción elegida (Inicio, o cualquier item sin hijos cuando es la
+   ruta activa) se ve en dorado de verdad -- texto Y el círculo del
+   ícono, que toma color:currentColor de su fila -- en vez del blanco
+   hueso de antes, que se notaba igual que un simple hover y no dejaba
+   claro cuál era la opción actual. */
 .cristal-col__fila[aria-current="page"] {
+  background: var(--cristal-glass2);
+  color: var(--color-gold-light);
   box-shadow: inset 4px 0 var(--color-gold-light);
 }
 

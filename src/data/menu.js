@@ -77,17 +77,6 @@ const MENU = [
     soon: true,
   },
   {
-    id: "visitanos",
-    label: "menu.item.visitanos",
-    icon: MapPinned,
-    degradado: ["var(--color-turquoise)", "var(--color-night-700)"],
-    hijos: [
-      { id: "como-llegar", label: "menu.opcion.comoLlegar", soon: false },
-      { id: "planea-visita", label: "menu.opcion.planeaVisita", soon: false },
-      { id: "mapa-recorridos", label: "menu.opcion.mapaRecorridos", soon: true },
-    ],
-  },
-  {
     // Sin hijos a propósito en Menú Cristal: el prompt pide "Juegos...
     // sin subopciones" en la columna -- el selector entre los 3 juegos
     // vive DENTRO de la vista (JuegosSeccion.jsx), no como flyout.
@@ -97,6 +86,17 @@ const MENU = [
     degradado: ["var(--color-gold-light)", "var(--color-pink)"],
     hijos: null,
     soon: false,
+  },
+  {
+    id: "visitanos",
+    label: "menu.item.visitanos",
+    icon: MapPinned,
+    degradado: ["var(--color-turquoise)", "var(--color-night-700)"],
+    hijos: [
+      { id: "como-llegar", label: "menu.opcion.comoLlegar", soon: false },
+      { id: "planea-visita", label: "menu.opcion.planeaVisita", soon: false },
+      { id: "mapa-recorridos", label: "menu.opcion.mapaRecorridos", soon: true },
+    ],
   },
   {
     id: "agradecimientos",

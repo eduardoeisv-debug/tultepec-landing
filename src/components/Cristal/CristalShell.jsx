@@ -8,6 +8,8 @@ import ColumnaCristal from "./ColumnaCristal.jsx";
 import Seccion from "./Seccion.jsx";
 import InicioCristal from "./InicioCristal.jsx";
 import GrupoResumen from "./GrupoResumen.jsx";
+import ErrorBoundary from "./ErrorBoundary.jsx";
+import ErrorFallback from "./ErrorFallback.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import "./CristalShell.css";
 
@@ -182,7 +184,9 @@ export default function CristalShell() {
         <div className="cristal-stage__papel">
           <HeroPapelPicado />
         </div>
-        {contenido}
+        <ErrorBoundary key={`${ruta.itemId}/${ruta.hijoId}`} fallback={<ErrorFallback />}>
+          {contenido}
+        </ErrorBoundary>
       </main>
     </div>
   );
