@@ -3,7 +3,7 @@ import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import HeroCristal from "./HeroCristal.jsx";
 import Bienvenida from "../Bienvenida/Bienvenida.jsx";
-import FinalCTA from "../FinalCTA/FinalCTA.jsx";
+import CierreComun from "./CierreComun.jsx";
 import "./InicioCristal.css";
 
 // Los 4 pasos numerados de antes + "últimas novedades" ahora son un
@@ -54,10 +54,12 @@ const ACCESOS = [
 // de "Una carta para ti" (Bienvenida.jsx, con su propio cristal en
 // vez del degradado que traía cuando era su propia sección de ancho
 // completo) y las tarjetas chicas de ACCESOS, todo dentro de la misma
-// rejilla asimétrica (.cristal-bento, ver el CSS). El bloque de me
-// gusta/comentar/compartir se queda fuera de la rejilla, al final. El
-// <h1> real (el único de esta vista) vive dentro de HeroCristal.
-export default function InicioCristal({ titleRef }) {
+// rejilla asimétrica (.cristal-bento, ver el CSS). El cierre (me
+// gusta/comentar/compartir + pie de página, CierreComun.jsx -- el
+// mismo que usan las vistas internas, ver Seccion.jsx) se queda fuera
+// de la rejilla, al final. El <h1> real (el único de esta vista) vive
+// dentro de HeroCristal.
+export default function InicioCristal({ titleRef, onOpenPrivacy }) {
   const { t } = useLanguage();
 
   return (
@@ -85,9 +87,7 @@ export default function InicioCristal({ titleRef }) {
         })}
       </div>
 
-      <div className="cristal-inicio__cta">
-        <FinalCTA />
-      </div>
+      <CierreComun ctaClassName="cristal-inicio__cta" onOpenPrivacy={onOpenPrivacy} />
     </div>
   );
 }

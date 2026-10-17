@@ -127,7 +127,7 @@ export default function CristalShell() {
     );
   } else if (!ruta.itemId) {
     tituloDocumento = "Tultepec · Estado de México";
-    contenido = <InicioCristal titleRef={titleRef} />;
+    contenido = <InicioCristal titleRef={titleRef} onOpenPrivacy={onOpenPrivacy} />;
   } else {
     const hijo = item?.hijos ? item.hijos.find((h) => h.id === ruta.hijoId) : null;
     // Grupo sin subopción elegida todavía (llegó por una tarjeta del
@@ -155,7 +155,7 @@ export default function CristalShell() {
         onOpenPrivacy={onOpenPrivacy}
       />
     ) : (
-      <InicioCristal titleRef={titleRef} />
+      <InicioCristal titleRef={titleRef} onOpenPrivacy={onOpenPrivacy} />
     );
   }
 

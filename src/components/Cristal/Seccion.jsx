@@ -1,8 +1,7 @@
 import { Suspense } from "react";
 import { ChevronLeft } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
-import FinalCTA from "../FinalCTA/FinalCTA.jsx";
-import Footer from "../Footer/Footer.jsx";
+import CierreComun from "./CierreComun.jsx";
 import "./Seccion.css";
 
 // Envoltura genérica de cualquier vista que no sea Inicio ni el aviso
@@ -10,11 +9,12 @@ import "./Seccion.css";
 // de la subopción, o del grupo si no tiene) y el contenido real
 // debajo -- `Vista` es el componente ya existente del sitio (sin su
 // propio título, ver HistoriaView.jsx y compañía), o null si la
-// opción todavía no existe (aviso "Próximamente"). El pie y el bloque
-// de compartir van SIEMPRE al final de estas vistas internas (nunca en
-// Inicio, ver InicioCristal.jsx). Ya no trae su propio botón "Menú" --
-// TopBarCristal.jsx (hamburguesa) ya está siempre visible arriba de
-// todo, en cualquier vista.
+// opción todavía no existe (aviso "Próximamente"). El cierre (me
+// gusta/comentar/compartir + pie de página) va SIEMPRE al final de
+// estas vistas internas, igual que en Inicio ahora (ver
+// InicioCristal.jsx y CierreComun.jsx). Ya no trae su propio botón
+// "Menú" -- TopBarCristal.jsx (hamburguesa) ya está siempre visible
+// arriba de todo, en cualquier vista.
 //
 // Dentro de una subopción, `eyebrowHref` (ver CristalShell.jsx) hace
 // de la miga de pan un enlace de regreso al resumen de su grupo
@@ -48,10 +48,7 @@ export default function Seccion({ eyebrow, eyebrowHref, titulo, Vista, titleRef,
         )}
       </Suspense>
 
-      <div className="cristal-sec__cta">
-        <FinalCTA />
-      </div>
-      <Footer onOpenPrivacy={onOpenPrivacy} />
+      <CierreComun ctaClassName="cristal-sec__cta" onOpenPrivacy={onOpenPrivacy} />
     </div>
   );
 }
