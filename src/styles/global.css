@@ -6,24 +6,32 @@
   box-sizing: border-box;
 }
 
+/* Este fondo (color-scheme, background-color, el degradado) iba antes
+   detrás de :has(.cristal-root) para no tocarle el fondo claro a la
+   página de moderación -- pero :has() solo empieza a cumplirse una
+   vez que React monta .cristal-root dentro de #root, y hasta
+   entonces (el instante entre que carga este HTML estático y que el
+   bundle de React corre) html no tenía NINGÚN fondo propio, así que
+   el navegador pintaba su blanco por defecto -- ahí volvía a verse la
+   franja blanca, sobre todo en conexiones más lentas. Ahora es
+   incondicional: background-color sólido de inmediato (sin esperar a
+   que cargue ni corra nada), más el mismo degradado del fondo real
+   como capa encima para que coincida exactamente con .cristal-root en
+   cualquier punto del scroll. La página de moderación no se ve
+   afectada: su propio wrapper (.moderation-login/-panel en
+   Moderation.css) ya pinta su fondo claro de pared a pared por
+   encima de esto. color-scheme:dark para que el navegador tampoco
+   asuma blanco en nada que pinte por su cuenta (scrollbars, el canvas
+   por defecto) antes de que corra cualquier CSS de aquí.
+   overscroll-behavior-y:none para que un rebote de scroll (el "tirón"
+   al llegar al final) no se sienta como que pasa a otra página ni
+   deje ver nada detrás. */
 html {
   scroll-behavior: smooth;
-}
-
-/* Antes html tenía un color plano de respaldo (el final del degradado,
-   morado) -- se notaba como un corte contra el degradado real en
-   cuanto se hacía scroll a una parte más clara/azul de la página,
-   sobre todo en la franja de la barra de gestos (Android) o el
-   indicador de inicio (iPhone), que siempre muestra el fondo de
-   html/body tal cual esté en ese momento del documento, no el de
-   .cristal-root. Con el MISMO degradado aquí (mismos cortes, sin
-   background-attachment:fixed) en vez de un color plano, lo que se
-   asome por cualquier borde coincide exactamente con el degradado
-   real sea cual sea la posición del scroll -- nunca hay una costura.
-   Alcance limitado a las páginas de Menú Cristal (:has) para no
-   tocarle el fondo claro a la de moderación. */
-html:has(.cristal-root) {
-  background: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+  color-scheme: dark;
+  background-color: #1a1b4b;
+  background-image: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+  overscroll-behavior-y: none;
 }
 
 /* Foco visible de respaldo: cubre cualquier elemento interactivo que no
@@ -47,9 +55,19 @@ html:has(.cristal-root) {
   outline-color: var(--color-terracotta);
 }
 
+/* Mismo fondo que html de arriba (no detrás de :has(), mismo motivo:
+   tiene que estar ahí ANTES de que React monte nada). --bg-page
+   (crema, pensado para el fondo de la página de moderación) ya no es
+   la base de body -- su wrapper propio (.moderation-login/-panel)
+   sigue pintando ese crema por encima de esto de todos modos, pared a
+   pared, así que no se nota el cambio ahí; lo que sí se evita es la
+   franja de body color crema detrás de Menú Cristal en lo que React
+   termina de montar. */
 body {
   margin: 0;
-  background: var(--bg-page);
+  background-color: #1a1b4b;
+  background-image: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+  overscroll-behavior-y: none;
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: var(--fs-body);
