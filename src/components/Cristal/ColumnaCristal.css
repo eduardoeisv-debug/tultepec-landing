@@ -139,17 +139,20 @@
   transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out);
 }
 
-.cristal-col__fila:hover,
-.cristal-col__fila[aria-expanded="true"] {
+.cristal-col__fila:hover {
   background: var(--cristal-glass2);
   color: var(--color-paper);
 }
 
-/* La opción elegida (Inicio, o cualquier item sin hijos cuando es la
-   ruta activa) se ve en dorado de verdad -- texto Y el círculo del
-   ícono, que toma color:currentColor de su fila -- en vez del blanco
-   hueso de antes, que se notaba igual que un simple hover y no dejaba
-   claro cuál era la opción actual. */
+/* La opción elegida (Inicio, cualquier item sin hijos cuando es la
+   ruta activa, o un grupo que el usuario acaba de abrir) se ve en
+   dorado de verdad -- texto Y el círculo del ícono, que toma
+   color:currentColor de su fila -- en vez del blanco hueso de antes,
+   que se notaba igual que un simple hover y no dejaba claro cuál era
+   la opción elegida. Un grupo desplegado (aria-expanded) cuenta como
+   "elegido" igual que aria-current -- es la fila en la que el usuario
+   acaba de hacer clic, aunque en sí no navegue a ningún lado. */
+.cristal-col__fila[aria-expanded="true"],
 .cristal-col__fila[aria-current="page"] {
   background: var(--cristal-glass2);
   color: var(--color-gold-light);
