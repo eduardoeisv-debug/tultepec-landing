@@ -14,45 +14,34 @@ import ErrorBoundary from "./ErrorBoundary.jsx";
 import ErrorFallback from "./ErrorFallback.jsx";
 import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import Footer from "../Footer/Footer.jsx";
+// Importadas directo, no con React.lazy -- precargarlas en segundo
+// plano (lo que hacía esta misma sección antes) seguía dejando un
+// hueco real: si el usuario tocaba una opción del menú ANTES de que
+// la precarga alcanzara a terminar (típicamente los primeros 1-3s
+// tras cargar, justo cuando alguien suele empezar a explorar), esa
+// primera navegación todavía disparaba una descarga de red de
+// verdad, y durante ese rato la página se veía corta (solo título +
+// esqueleto), dejando ver el bloque de compartir y el pie de una vez.
+// Juntas pesan ~15kB comprimidas (ver el historial) -- un costo chico
+// y fijo en el paquete principal a cambio de que nunca más dependan
+// de una descarga para aparecer. PrivacidadContenido se queda como
+// React.lazy aparte: carga react-markdown + remark-gfm (~168kB
+// comprimidos, muy por arriba del resto) y no es una opción del menú
+// que alguien toque de pasada.
+import HistoriaView from "../Panel/views/HistoriaView.jsx";
+import GaleriaView from "../Panel/views/GaleriaView.jsx";
+import MemoriasPuebloView from "../Panel/views/MemoriasPuebloView.jsx";
+import RelatosView from "../Panel/views/RelatosView.jsx";
+import ComparteView from "../Panel/views/ComparteView.jsx";
+import MuseosView from "../Panel/views/MuseosView.jsx";
+import CalendarioView from "../Panel/views/CalendarioView.jsx";
+import ComoLlegarView from "../Panel/views/ComoLlegarView.jsx";
+import PlaneaVisitaView from "../Panel/views/PlaneaVisitaView.jsx";
+import JuegosSeccion from "../Panel/views/JuegosSeccion.jsx";
+import AgradecimientosView from "../Panel/views/AgradecimientosView.jsx";
+import AcercaDeView from "../Panel/views/AcercaDeView.jsx";
 import "./CristalShell.css";
 
-// Las funciones de import van en un objeto aparte (no directo dentro
-// de cada lazy()) para poder volver a llamarlas en el efecto de
-// precarga de ahí abajo -- import() de la MISMA ruta ya en curso o
-// resuelta no vuelve a pedir la red, React la reusa tal cual, así que
-// llamarla de nuevo aquí es gratis si ya se precargó y es exactamente
-// lo que lazy() habría hecho de todos modos si no. PrivacidadContenido
-// se queda fuera a propósito: carga react-markdown + remark-gfm (unos
-// 168kB comprimidos, muy por arriba del resto) y no es una opción del
-// menú que alguien toque de pasada -- precargarla de entrada
-// competiría por ancho de banda con las vistas que sí importa adelantar.
-const IMPORTADORES = {
-  historia: () => import("../Panel/views/HistoriaView.jsx"),
-  galeria: () => import("../Panel/views/GaleriaView.jsx"),
-  memoriasPueblo: () => import("../Panel/views/MemoriasPuebloView.jsx"),
-  relatos: () => import("../Panel/views/RelatosView.jsx"),
-  comparte: () => import("../Panel/views/ComparteView.jsx"),
-  museos: () => import("../Panel/views/MuseosView.jsx"),
-  calendario: () => import("../Panel/views/CalendarioView.jsx"),
-  comoLlegar: () => import("../Panel/views/ComoLlegarView.jsx"),
-  planeaVisita: () => import("../Panel/views/PlaneaVisitaView.jsx"),
-  juegos: () => import("../Panel/views/JuegosSeccion.jsx"),
-  agradecimientos: () => import("../Panel/views/AgradecimientosView.jsx"),
-  acercaDe: () => import("../Panel/views/AcercaDeView.jsx"),
-};
-
-const HistoriaView = lazy(IMPORTADORES.historia);
-const GaleriaView = lazy(IMPORTADORES.galeria);
-const MemoriasPuebloView = lazy(IMPORTADORES.memoriasPueblo);
-const RelatosView = lazy(IMPORTADORES.relatos);
-const ComparteView = lazy(IMPORTADORES.comparte);
-const MuseosView = lazy(IMPORTADORES.museos);
-const CalendarioView = lazy(IMPORTADORES.calendario);
-const ComoLlegarView = lazy(IMPORTADORES.comoLlegar);
-const PlaneaVisitaView = lazy(IMPORTADORES.planeaVisita);
-const JuegosSeccion = lazy(IMPORTADORES.juegos);
-const AgradecimientosView = lazy(IMPORTADORES.agradecimientos);
-const AcercaDeView = lazy(IMPORTADORES.acercaDe);
 const PrivacidadContenido = lazy(() => import("../Panel/views/PrivacidadContenido.jsx"));
 
 // Mismo registro "item/hijo" -> componente que ya usaba ContentPanel.jsx
@@ -95,35 +84,6 @@ export default function CristalShell() {
   const botonMenuRef = useRef(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const esMovil = useMediaQuery("(max-width: 768px)");
-
-  // Precarga en segundo plano de los chunks de React.lazy de las vistas
-  // internas -- sin esto, la PRIMERA vez que se entra a cada opción
-  // (p.ej. "Eventos > Calendario"), el navegador recién empieza a
-  // descargar su JS justo al navegar: mientras tanto la página se ve
-  // muy corta (solo la miga de pan + el título + el esqueleto chico de
-  // Suspense), así que el bloque de compartir y el pie -- que van
-  // DESPUÉS del contenido real -- ya caben en ese primer pantallazo
-  // corto y se alcanzan a ver, hasta que el chunk termina de cargar y
-  // empuja todo hacia abajo. requestIdleCallback (con setTimeout de
-  // respaldo donde no exista) para no competir con la carga inicial de
-  // la propia página -- arranca la precarga unos segundos después de
-  // que el navegador ya esté libre. Cada import() es la misma promesa
-  // que ya usan los lazy() de arriba -- si el usuario navega antes de
-  // que esto termine, no se descarga dos veces, solo sigue en curso.
-  useEffect(() => {
-    const idle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 2000));
-    const cancelarIdle = window.cancelIdleCallback ?? clearTimeout;
-    const id = idle(() => {
-      Object.values(IMPORTADORES).forEach((importar) => {
-        importar().catch(() => {
-          // Sin red, chunk 404 por un deploy a medias, etc. -- no pasa
-          // nada: si el usuario de verdad navega ahí, React.lazy lo
-          // vuelve a intentar en el momento, con su propio fallback.
-        });
-      });
-    });
-    return () => cancelarIdle(id);
-  }, []);
 
   // La barra inferior fija (BottomNav.jsx) solo existe en celular --
   // su mismo tono (casi negro, no el azul del degradado del sitio)
