@@ -8,11 +8,28 @@ import useReveal from "../../hooks/useReveal.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./FinalCTA.css";
 
-export default function FinalCTA() {
+// `reducido`: Seccion.jsx (todas las vistas que no son Inicio) lo pasa
+// en true -- título, párrafo y el bloque de me gusta/comentar son
+// específicos de la portada; en el resto del sitio solo queda la franja
+// de compartir, pegada directo al Footer. InicioCristal.jsx no pasa
+// nada (completo, el comportamiento de siempre).
+export default function FinalCTA({ reducido = false }) {
   const { t } = useLanguage();
   const ref = useReveal();
   const [commentOpen, setCommentOpen] = useState(false);
   const commentTriggerRef = useRef(null);
+
+  if (reducido) {
+    return (
+      <section className="final-cta final-cta--reducido" ref={ref}>
+        <div className="container final-cta__content reveal">
+          <div className="final-cta__share">
+            <ShareButtons />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="final-cta" id="interactua" ref={ref}>

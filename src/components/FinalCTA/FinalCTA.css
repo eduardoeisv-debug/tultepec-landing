@@ -56,6 +56,17 @@
   justify-content: center;
 }
 
+/* Versión reducida (fuera de Inicio, ver FinalCTA.jsx): __share es el
+   único hijo, no el último de una pila con título/párrafo/me-gusta
+   arriba -- el margen y la línea divisoria de arriba estaban pensados
+   para separarse de ESE contenido; sin él, se veían como un espacio y
+   un filete sueltos antes de nada. */
+.final-cta--reducido .final-cta__share {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 .final-cta__engage {
   margin-top: 0.8rem;
   display: flex;

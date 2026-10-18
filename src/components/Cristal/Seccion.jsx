@@ -4,17 +4,17 @@ import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import CierreComun from "./CierreComun.jsx";
 import "./Seccion.css";
 
-// Envoltura genérica de cualquier vista que no sea Inicio ni el aviso
-// de privacidad: miga de pan (nombre del grupo en dorado), h2 (nombre
-// de la subopción, o del grupo si no tiene) y el contenido real
-// debajo -- `Vista` es el componente ya existente del sitio (sin su
-// propio título, ver HistoriaView.jsx y compañía), o null si la
-// opción todavía no existe (aviso "Próximamente"). El cierre (me
-// gusta/comentar/compartir + pie de página) va SIEMPRE al final de
-// estas vistas internas, igual que en Inicio ahora (ver
-// InicioCristal.jsx y CierreComun.jsx). Ya no trae su propio botón
-// "Menú" -- TopBarCristal.jsx (hamburguesa) ya está siempre visible
-// arriba de todo, en cualquier vista.
+// Envoltura genérica de cualquier vista que no sea Inicio: miga de pan
+// (nombre del grupo en dorado), h2 (nombre de la subopción, o del
+// grupo si no tiene) y el contenido real debajo -- `Vista` es el
+// componente ya existente del sitio (sin su propio título, ver
+// HistoriaView.jsx y compañía), o null si la opción todavía no existe
+// (aviso "Próximamente"). El cierre va al final de estas vistas
+// internas igual que en Inicio, pero reducido (reducido en
+// CierreComun/FinalCTA): solo la franja de compartir, sin título,
+// párrafo ni me gusta/comentar -- eso es específico de la portada. Ya
+// no trae su propio botón "Menú" -- TopBarCristal.jsx (hamburguesa) ya
+// está siempre visible arriba de todo, en cualquier vista.
 //
 // Dentro de una subopción, `eyebrowHref` (ver CristalShell.jsx) hace
 // de la miga de pan un enlace de regreso al resumen de su grupo
@@ -48,7 +48,7 @@ export default function Seccion({ eyebrow, eyebrowHref, titulo, Vista, titleRef,
         )}
       </Suspense>
 
-      <CierreComun ctaClassName="cristal-sec__cta" />
+      <CierreComun ctaClassName="cristal-sec__cta" reducido />
     </div>
   );
 }

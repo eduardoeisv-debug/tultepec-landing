@@ -9,11 +9,13 @@ import FinalCTA from "../FinalCTA/FinalCTA.jsx";
 // todavía se está descargando. `ctaClassName` es el margen/ancho
 // propio de cada contexto (.cristal-sec__cta vs .cristal-inicio__cta,
 // con reglas distintas en cada CSS), para no cambiar el aspecto que ya
-// tenía cada uno.
-export default function CierreComun({ ctaClassName }) {
+// tenía cada uno. `reducido` pasa directo a FinalCTA -- Seccion.jsx (el
+// resto del sitio) lo manda en true, InicioCristal.jsx no lo manda
+// (completo).
+export default function CierreComun({ ctaClassName, reducido }) {
   return (
     <div className={ctaClassName}>
-      <FinalCTA />
+      <FinalCTA reducido={reducido} />
     </div>
   );
 }
