@@ -2,22 +2,24 @@ import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import AgradecimientoEspecial from "../shared/AgradecimientoEspecial.jsx";
 import "./Footer.css";
 
-export default function Footer({ onOpenPrivacy }) {
+export default function Footer({ onOpenPrivacy, enInicio }) {
   const { t } = useLanguage();
   const anio = new Date().getFullYear();
 
   return (
     <footer className="footer">
-      <div className="container footer__grid">
+      <div className={`container footer__grid${enInicio ? "" : " footer__grid--solo"}`}>
         <div>
           <span className="footer__brand">Tultepec · {t("header.subtitle")}</span>
           <p className="footer__tagline">{t("footer.tagline")}</p>
           <p className="footer__disclaimer">{t("footer.disclaimer")}</p>
         </div>
 
-        <div className="footer__agradecimiento-card">
-          <AgradecimientoEspecial className="footer__thanks" />
-        </div>
+        {enInicio && (
+          <div className="footer__agradecimiento-card">
+            <AgradecimientoEspecial className="footer__thanks" />
+          </div>
+        )}
       </div>
 
       <div className="container footer__bottom">

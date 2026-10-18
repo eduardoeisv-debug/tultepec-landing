@@ -19,9 +19,11 @@ export default function TopBarCristal({ enInicio, onAbrirMenu, botonMenuRef, men
   // en Inicio con scroll hacia abajo -- en ese caso el hash no cambia
   // (ya es "#/"), así que no hay hashchange que dispare el scroll-to-
   // top que ya hace CristalShell.jsx al cambiar de ruta; este clic lo
-  // cubre directamente en vez de depender de eso.
+  // cubre directamente en vez de depender de eso. instant, no smooth:
+  // un salto animado acá se sentía igual de lento que el bug real que
+  // se corrigió en CristalShell.jsx (ver el comentario grande ahí).
   const irAInicio = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   };
 
   return (

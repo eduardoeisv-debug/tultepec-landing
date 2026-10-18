@@ -15,9 +15,14 @@ export default function BottomNav({ enInicio, onAbrirMenu, menuAbierto }) {
   const { t } = useLanguage();
   const { enabled, toggle, playTap } = useSound();
 
+  // Solo cubre el caso de ya estar en Inicio con scroll hacia abajo: el
+  // hash no cambia (ya es "#/"), así que CristalShell.jsx no vuelve a
+  // disparar su propio reinicio de scroll (depende de que la ruta
+  // cambie). instant, no smooth -- un salto animado acá se sentía
+  // igual de lento que el bug real que se corrigió en CristalShell.jsx.
   const irAInicio = () => {
     playTap();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   };
 
   const abrirMenu = () => {

@@ -67,6 +67,19 @@
   border-top: none;
 }
 
+/* .final-cta de base trae fondo azul noche + mucho padding (pensado
+   para la sección completa de Inicio, con título/párrafo/me-gusta) --
+   la versión reducida no es una tarjeta, son los íconos directo sobre
+   el degradado de la página: sin fondo, sin el padding grande, solo
+   el respiro necesario para la etiqueta + 3 íconos + separación antes
+   del Footer. Nada de min-height/height fija tampoco -- .final-cta no
+   tenía ninguna de las dos para empezar, así que no hay que quitarlas,
+   solo no heredar el padding/fondo de la versión completa. */
+.final-cta--reducido {
+  background: none;
+  padding: 1.5rem 0 1.75rem;
+}
+
 .final-cta__engage {
   margin-top: 0.8rem;
   display: flex;

@@ -30,6 +30,14 @@
   border-bottom: 1px solid rgba(251, 241, 226, 0.12);
 }
 
+/* Sin la tarjeta de agradecimiento (fuera de Inicio, ver Footer.jsx)
+   queda un solo hijo -- una columna, para que el bloque de la
+   izquierda use todo el ancho en vez de dejar un hueco donde estaba
+   la tarjeta. */
+.footer__grid--solo {
+  grid-template-columns: 1fr;
+}
+
 .footer__brand {
   font-family: var(--font-display);
   font-weight: 700;

@@ -1,4 +1,4 @@
-import { lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import MENU from "../../data/menu.js";
 import useHashRoute, { rutaHash } from "../../hooks/useHashRoute.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
@@ -185,16 +185,26 @@ export default function CristalShell() {
   }
 
   // Sube al inicio de la página y actualiza el título del documento al
-  // cambiar de ruta -- ambos como efecto (no durante el render, que
-  // debe quedarse puro) y saltando la primera carga, igual que hacía
+  // cambiar de ruta -- saltando la primera carga, igual que hacía
   // ContentPanel.jsx en el diseño anterior.
+  // useLayoutEffect (no useEffect): corre antes de que el navegador
+  // pinte el siguiente frame, así el salto de scroll ya pasó cuando se
+  // ve la ruta nueva -- con useEffect (que corre después de pintar)
+  // alcanzaba a pintarse un frame de la vista nueva con el scroll
+  // todavía en la posición vieja (p.ej. mostrando primero los botones
+  // de compartir del fondo de la página anterior) antes de saltar.
+  // behavior:"instant", no "auto": "auto" no es instantáneo por sí
+  // solo, significa "lo que diga scroll-behavior en el CSS" -- y
+  // global.css pone scroll-behavior:smooth en html (para los anclas
+  // internos), así que "auto" heredaba ese scroll animado en cada
+  // cambio de ruta.
   const esPrimerCambioRef = useRef(true);
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.title = tituloDocumento;
     if (esPrimerCambioRef.current) {
       esPrimerCambioRef.current = false;
     } else {
-      window.scrollTo({ top: 0, behavior: "auto" });
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ruta.itemId, ruta.hijoId]);
@@ -217,7 +227,7 @@ export default function CristalShell() {
           nueva (React.lazy, ver REGISTRO arriba) todavía se descarga --
           antes vivía dentro de cada vista (CierreComun.jsx) y el hueco
           del Suspense de Seccion.jsx se sentía como "el pie tarda". */}
-      <Footer onOpenPrivacy={onOpenPrivacy} />
+      <Footer onOpenPrivacy={onOpenPrivacy} enInicio={!ruta.itemId} />
       <BottomNav enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} menuAbierto={menuAbierto} />
     </div>
   );
