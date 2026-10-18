@@ -16,18 +16,43 @@ import HeroPapelPicado from "../shared/HeroPapelPicado.jsx";
 import Footer from "../Footer/Footer.jsx";
 import "./CristalShell.css";
 
-const HistoriaView = lazy(() => import("../Panel/views/HistoriaView.jsx"));
-const GaleriaView = lazy(() => import("../Panel/views/GaleriaView.jsx"));
-const MemoriasPuebloView = lazy(() => import("../Panel/views/MemoriasPuebloView.jsx"));
-const RelatosView = lazy(() => import("../Panel/views/RelatosView.jsx"));
-const ComparteView = lazy(() => import("../Panel/views/ComparteView.jsx"));
-const MuseosView = lazy(() => import("../Panel/views/MuseosView.jsx"));
-const CalendarioView = lazy(() => import("../Panel/views/CalendarioView.jsx"));
-const ComoLlegarView = lazy(() => import("../Panel/views/ComoLlegarView.jsx"));
-const PlaneaVisitaView = lazy(() => import("../Panel/views/PlaneaVisitaView.jsx"));
-const JuegosSeccion = lazy(() => import("../Panel/views/JuegosSeccion.jsx"));
-const AgradecimientosView = lazy(() => import("../Panel/views/AgradecimientosView.jsx"));
-const AcercaDeView = lazy(() => import("../Panel/views/AcercaDeView.jsx"));
+// Las funciones de import van en un objeto aparte (no directo dentro
+// de cada lazy()) para poder volver a llamarlas en el efecto de
+// precarga de ahí abajo -- import() de la MISMA ruta ya en curso o
+// resuelta no vuelve a pedir la red, React la reusa tal cual, así que
+// llamarla de nuevo aquí es gratis si ya se precargó y es exactamente
+// lo que lazy() habría hecho de todos modos si no. PrivacidadContenido
+// se queda fuera a propósito: carga react-markdown + remark-gfm (unos
+// 168kB comprimidos, muy por arriba del resto) y no es una opción del
+// menú que alguien toque de pasada -- precargarla de entrada
+// competiría por ancho de banda con las vistas que sí importa adelantar.
+const IMPORTADORES = {
+  historia: () => import("../Panel/views/HistoriaView.jsx"),
+  galeria: () => import("../Panel/views/GaleriaView.jsx"),
+  memoriasPueblo: () => import("../Panel/views/MemoriasPuebloView.jsx"),
+  relatos: () => import("../Panel/views/RelatosView.jsx"),
+  comparte: () => import("../Panel/views/ComparteView.jsx"),
+  museos: () => import("../Panel/views/MuseosView.jsx"),
+  calendario: () => import("../Panel/views/CalendarioView.jsx"),
+  comoLlegar: () => import("../Panel/views/ComoLlegarView.jsx"),
+  planeaVisita: () => import("../Panel/views/PlaneaVisitaView.jsx"),
+  juegos: () => import("../Panel/views/JuegosSeccion.jsx"),
+  agradecimientos: () => import("../Panel/views/AgradecimientosView.jsx"),
+  acercaDe: () => import("../Panel/views/AcercaDeView.jsx"),
+};
+
+const HistoriaView = lazy(IMPORTADORES.historia);
+const GaleriaView = lazy(IMPORTADORES.galeria);
+const MemoriasPuebloView = lazy(IMPORTADORES.memoriasPueblo);
+const RelatosView = lazy(IMPORTADORES.relatos);
+const ComparteView = lazy(IMPORTADORES.comparte);
+const MuseosView = lazy(IMPORTADORES.museos);
+const CalendarioView = lazy(IMPORTADORES.calendario);
+const ComoLlegarView = lazy(IMPORTADORES.comoLlegar);
+const PlaneaVisitaView = lazy(IMPORTADORES.planeaVisita);
+const JuegosSeccion = lazy(IMPORTADORES.juegos);
+const AgradecimientosView = lazy(IMPORTADORES.agradecimientos);
+const AcercaDeView = lazy(IMPORTADORES.acercaDe);
 const PrivacidadContenido = lazy(() => import("../Panel/views/PrivacidadContenido.jsx"));
 
 // Mismo registro "item/hijo" -> componente que ya usaba ContentPanel.jsx
@@ -70,6 +95,35 @@ export default function CristalShell() {
   const botonMenuRef = useRef(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const esMovil = useMediaQuery("(max-width: 768px)");
+
+  // Precarga en segundo plano de los chunks de React.lazy de las vistas
+  // internas -- sin esto, la PRIMERA vez que se entra a cada opción
+  // (p.ej. "Eventos > Calendario"), el navegador recién empieza a
+  // descargar su JS justo al navegar: mientras tanto la página se ve
+  // muy corta (solo la miga de pan + el título + el esqueleto chico de
+  // Suspense), así que el bloque de compartir y el pie -- que van
+  // DESPUÉS del contenido real -- ya caben en ese primer pantallazo
+  // corto y se alcanzan a ver, hasta que el chunk termina de cargar y
+  // empuja todo hacia abajo. requestIdleCallback (con setTimeout de
+  // respaldo donde no exista) para no competir con la carga inicial de
+  // la propia página -- arranca la precarga unos segundos después de
+  // que el navegador ya esté libre. Cada import() es la misma promesa
+  // que ya usan los lazy() de arriba -- si el usuario navega antes de
+  // que esto termine, no se descarga dos veces, solo sigue en curso.
+  useEffect(() => {
+    const idle = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 2000));
+    const cancelarIdle = window.cancelIdleCallback ?? clearTimeout;
+    const id = idle(() => {
+      Object.values(IMPORTADORES).forEach((importar) => {
+        importar().catch(() => {
+          // Sin red, chunk 404 por un deploy a medias, etc. -- no pasa
+          // nada: si el usuario de verdad navega ahí, React.lazy lo
+          // vuelve a intentar en el momento, con su propio fallback.
+        });
+      });
+    });
+    return () => cancelarIdle(id);
+  }, []);
 
   // La barra inferior fija (BottomNav.jsx) solo existe en celular --
   // su mismo tono (casi negro, no el azul del degradado del sitio)
