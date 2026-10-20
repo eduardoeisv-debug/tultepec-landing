@@ -61,10 +61,14 @@
   font-size: 1.05rem;
 }
 
-/* Nota compacta (cerrada por defecto): mismo papel crema + remate picado
-   que la carta, para que de un vistazo se note que es una carta sin
-   tener que desplegarla. Botón real (no solo una tarjeta decorativa) para
-   que Enter/Espacio también la abran. */
+/* Nota compacta (cerrada por defecto): ya no es el papel crema + zigzag
+   rosa de antes (ajeno a la paleta azul marino/dorado del resto del
+   sitio) -- fondo azul marino un poco más claro que el de la página
+   (--color-night-700, igual que .cristal-menu-row-bg/-border de otras
+   partes del sitio), borde dorado a baja opacidad, esquinas redondeadas
+   parejas (--radius-md, igual que .cristal-bento__tile) y un brillo
+   dorado muy sutil en vez de una sombra negra sola. Botón real (no solo
+   una tarjeta decorativa) para que Enter/Espacio también la abran. */
 .bienvenida__nota {
   all: unset;
   cursor: pointer;
@@ -72,20 +76,22 @@
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  border-radius: 6px 6px var(--radius-lg) var(--radius-lg);
-  background: var(--color-paper);
-  color: var(--color-ink);
-  box-shadow: var(--shadow-deep);
+  border-radius: var(--radius-md);
+  background: var(--color-night-700);
+  color: var(--color-paper);
+  border: 1px solid rgba(243, 205, 122, 0.3);
+  box-shadow: var(--shadow-soft), 0 0 22px -10px rgba(243, 205, 122, 0.35);
   overflow: hidden;
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 .bienvenida__nota:hover {
   transform: translateY(-2px);
+  border-color: rgba(243, 205, 122, 0.55);
 }
 
 .bienvenida__nota:focus-visible {
-  outline: 2px solid var(--color-terracotta);
+  outline: 2px solid var(--color-gold-light);
   outline-offset: 3px;
 }
 
@@ -93,24 +99,32 @@
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  padding: 1rem 1.3rem;
+  /* 1.05rem/1.3rem (no 1rem/1.3rem) -- con el ícono de 48px (antes
+     42px) el área táctil total ya pasaba los 48px pedidos, pero se
+     deja explícito con min-height para no depender solo de la suma de
+     paddings + alto del ícono. */
+  padding: 1.05rem 1.3rem;
+  min-height: 48px;
 }
 
+/* Mismo contenedor redondeado que los íconos de Inicio (.icono-3d,
+   global.css: círculo con degradado + sombra interior/exterior,
+   48-50px) -- aquí con --icon-color dorado en vez del color por
+   sección que usan las tarjetas del Bento, mismo patrón que ya usan el
+   escudo/compartir del pie del menú (ColumnaCristal.jsx). El sobre
+   sigue siendo un ícono de LÍNEA (stroke, sin relleno) -- solo cambia
+   de vivir en una caja beige con tinta roja a vivir en esta esfera
+   dorada con tinta oscura, igual que cualquier otro ícono del sitio. */
 .bienvenida__nota-icono {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: rgba(154, 69, 35, 0.12);
-  color: var(--color-fire-red-dark);
+  width: 48px;
+  height: 48px;
+  --icon-color: var(--color-gold-light);
+  --icon-ink: #14163a;
 }
 
 .bienvenida__nota-icono svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
 
 .bienvenida__nota-texto {
@@ -126,19 +140,23 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.1rem;
-  color: var(--color-ink);
+  color: var(--color-paper);
 }
 
+/* --cristal-soft (no --color-ink-soft, pensado para texto sobre papel
+   crema): ya probado en otras pastillas de Menú Cristal sobre fondos
+   casi tan oscuros como este (--color-night-700/-800) con ~8.5:1 de
+   contraste, bien arriba del mínimo de 4.5:1 pedido. */
 .bienvenida__nota-hint {
   font-size: 0.82rem;
-  color: var(--color-ink-soft);
+  color: var(--cristal-soft);
 }
 
 .bienvenida__nota-chevron {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  color: var(--color-ink-soft);
+  color: var(--color-gold-light);
   transition: transform 0.3s var(--ease-out);
 }
 
@@ -171,24 +189,61 @@
   animation: bienvenida-nota-sobre 0.9s ease-in-out 0.1s 1 both;
 }
 
+/* Dorado (antes rgba(255,45,138,...), el mismo rosa fucsia que se quita
+   del resto de la tarjeta) -- incluso el destello de aviso usa ahora
+   solo acentos de la paleta del sitio. */
 @keyframes bienvenida-nota-brillo {
   0%,
   100% {
-    filter: brightness(1) drop-shadow(0 0 0 rgba(255, 45, 138, 0));
+    filter: brightness(1) drop-shadow(0 0 0 rgba(243, 205, 122, 0));
   }
   45% {
-    filter: brightness(1.6) drop-shadow(0 0 6px rgba(255, 45, 138, 0.65));
+    filter: brightness(1.3) drop-shadow(0 0 6px rgba(243, 205, 122, 0.65));
   }
 }
 
-.bienvenida__nota.is-resaltada .bienvenida-carta__edge {
+.bienvenida__nota.is-resaltada .bienvenida-carta__solapa {
   animation: bienvenida-nota-brillo 1.1s ease-out 0.1s 1 both;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bienvenida__nota.is-resaltada .bienvenida__nota-icono,
-  .bienvenida__nota.is-resaltada .bienvenida-carta__edge {
+  .bienvenida__nota.is-resaltada .bienvenida-carta__solapa {
     animation: none;
+  }
+}
+
+/* Solapa de sobre: un solo triángulo de línea dorada (ver SobreSolapa
+   en Bienvenida.jsx) en vez del zigzag rosa repetido de antes -- la
+   silueta de la solapa de un sobre real, vista de frente. Al abrir
+   (clase .is-abierta en .bienvenida__nota, puesta por el mismo botón),
+   se levanta un poco y se atenúa -- como una solapa que ya se desdobló
+   -- con transform/opacity nada más, en 0.26s (dentro de los ≤300ms
+   pedidos). transform-origin arriba: el triángulo gira/se encoge desde
+   su propio borde superior, no desde el centro de la tarjeta entera. */
+.bienvenida-carta__solapa {
+  display: block;
+  width: 100%;
+  height: 24px;
+  overflow: visible;
+}
+
+.bienvenida-carta__solapa path {
+  stroke: var(--color-gold-light);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transform-origin: 50% 0%;
+  transition: transform 0.26s var(--ease-out), opacity 0.26s var(--ease-out);
+}
+
+.bienvenida__nota.is-abierta .bienvenida-carta__solapa path {
+  transform: translateY(-3px) scaleY(0.82);
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bienvenida-carta__solapa path {
+    transition: none;
   }
 }
 
@@ -250,30 +305,63 @@
   color: rgba(251, 241, 226, 0.82);
 }
 
+/* Marco parejo (antes 6px arriba / --radius-lg abajo, a juego con el
+   zigzag que ya no existe) + borde dorado a baja opacidad, mismo
+   lenguaje que .bienvenida__nota de arriba y que el resto de tarjetas
+   del sitio -- el papel crema cálido se conserva como área de lectura
+   (pedido explícito), nada más dentro de un marco coherente con la
+   paleta. opacity/transform: la carta se revela junto con el
+   acordeón (abajo, .is-abierta), en vez de aparecer de golpe en cuanto
+   el alto deja de ser 0 -- 0.28s, dentro de los ≤300ms pedidos. */
 .bienvenida-carta {
   position: relative;
-  border-radius: 6px 6px var(--radius-lg) var(--radius-lg);
+  border-radius: var(--radius-md);
   background: var(--color-paper);
   color: var(--color-ink);
+  border: 1px solid rgba(154, 108, 38, 0.35);
   box-shadow: var(--shadow-deep);
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.28s var(--ease-out), transform 0.28s var(--ease-out);
 }
 
-.bienvenida-carta__edge {
+.bienvenida__acordeon.is-abierta .bienvenida-carta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bienvenida-carta {
+    transition: none;
+  }
+}
+
+/* Remate superior: una franja dorada fina (reemplaza el zigzag rosa) --
+   más discreta que la solapa de la nota cerrada a propósito, porque
+   aquí la carta ya está "abierta", no hace falta repetir la silueta
+   del sobre otra vez. */
+.bienvenida-carta::before {
+  content: "";
   display: block;
-  width: 100%;
-  height: 20px;
-  fill: #ff2d8a;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-gold-light) 15%, var(--color-gold-light) 85%, transparent);
 }
 
+/* Work Sans (antes Fraunces, la fuente de títulos -- pedido explícito:
+   la serif se queda solo para títulos y firma), 16-17px e interlineado
+   1.6. max-width en ch (no un valor fijo): ancho de lectura cómodo sin
+   importar cuánto más grande se vuelva esta tarjeta en el Bento en
+   pantallas muy anchas. */
 .bienvenida-carta__body {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
   padding: 1.8rem 2.4rem 2.2rem;
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  line-height: 1.7;
+  max-width: 60ch;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
 .bienvenida-carta__firma {
@@ -281,6 +369,7 @@
   flex-direction: column;
   gap: 0.1rem;
   margin-top: 0.3rem;
+  font-family: var(--font-display);
 }
 
 .bienvenida-carta__despedida {
@@ -289,11 +378,36 @@
   color: var(--color-ink-soft);
 }
 
+/* --color-fire-red-dark (no un rosa nuevo): ya es uno de los dos
+   acentos permitidos para este rediseño (dorado oscuro o el rojo
+   cálido del botón de like) -- no hacía falta cambiarlo. */
 .bienvenida-carta__nombres {
   font-style: italic;
   font-weight: 800;
   font-size: 1.5rem;
   color: var(--color-fire-red-dark);
+}
+
+/* Cierre de la carta: línea divisoria fina + sello EA (mismo logo que
+   Footer.jsx) centrado, chico -- un cierre discreto, no una firma
+   corporativa. Antes de .bienvenida-carta__cta (que ya trae su propia
+   línea divisoria para el bloque de "comparte tu historia", un bloque
+   funcional aparte, no parte del cierre de la carta en sí). */
+.bienvenida-carta__cierre {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(42, 28, 18, 0.15);
+}
+
+.bienvenida-carta__cierre img {
+  display: block;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0.9;
 }
 
 .bienvenida-carta__cta {
@@ -344,8 +458,10 @@
 }
 
 @media (max-width: 640px) {
+  /* 1.5rem = 24px, el mínimo pedido para el padding interno en móvil
+     (antes 1.4rem/22.4px, un poco corto). */
   .bienvenida-carta__body {
-    padding: 1.4rem 1.5rem 1.8rem;
+    padding: 1.5rem 1.5rem 1.8rem;
     font-size: 1.05rem;
   }
 

@@ -2,24 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Bienvenida.css";
 
-const TOOTH_COUNT = 14;
-const TOOTH_WIDTH = 400 / TOOTH_COUNT;
-
-// Borde "picado" del encabezado de la carta: una tira sólida + una fila de
-// triángulos, igual que el remate de HeroPapelPicado.jsx pero sin las
-// banderitas colgantes (aquí es el borde de una tarjeta, no una guirnalda).
-// viewBox fijo + preserveAspectRatio="none" para que se estire al ancho
-// real de la tarjeta en cualquier pantalla, sin tener que calcular nada en
-// JS según el layout.
-function CartaEdge() {
-  const teeth = Array.from({ length: TOOTH_COUNT }, (_, i) => {
-    const x = i * TOOTH_WIDTH;
-    return <path key={i} d={`M${x},10 L${x + TOOTH_WIDTH},10 L${x + TOOTH_WIDTH / 2},20 Z`} />;
-  });
+// Solapa de sobre (línea dorada, sin relleno) para la tarjeta cerrada --
+// reemplaza el borde en zigzag rosa fucsia de antes, ajeno a la paleta
+// del sitio. Un solo triángulo (no una fila repetida de dientes) desde
+// las dos esquinas superiores hasta un punto central, como la solapa de
+// un sobre real visto de frente. viewBox fijo + preserveAspectRatio="none"
+// para que se estire al ancho real de la tarjeta en cualquier pantalla.
+function SobreSolapa() {
   return (
-    <svg className="bienvenida-carta__edge" viewBox="0 0 400 20" preserveAspectRatio="none" aria-hidden="true">
-      <rect width="400" height="10" />
-      {teeth}
+    <svg className="bienvenida-carta__solapa" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M2,2 L200,56 L398,2" fill="none" />
     </svg>
   );
 }
@@ -93,9 +85,9 @@ export default function Bienvenida({ className = "" }) {
           aria-expanded={abierta}
           aria-controls="bienvenida-contenido"
         >
-          <CartaEdge />
+          <SobreSolapa />
           <span className="bienvenida__nota-cuerpo">
-            <span className="bienvenida__nota-icono" aria-hidden="true">
+            <span className="bienvenida__nota-icono icono-3d" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="5" width="18" height="14" rx="2" />
                 <path d="M4 7l8 6 8-6" />
@@ -132,7 +124,6 @@ export default function Bienvenida({ className = "" }) {
               </div>
 
               <article className="bienvenida-carta">
-                <CartaEdge />
                 <div className="bienvenida-carta__body">
                   <p>{t("bienvenida.carta.p1")}</p>
                   <p>{t("bienvenida.carta.p2")}</p>
@@ -141,6 +132,10 @@ export default function Bienvenida({ className = "" }) {
                   <div className="bienvenida-carta__firma">
                     <span className="bienvenida-carta__despedida">{t("bienvenida.firma.despedida")}</span>
                     <span className="bienvenida-carta__nombres">{t("bienvenida.firma.nombres")}</span>
+                  </div>
+
+                  <div className="bienvenida-carta__cierre" aria-hidden="true">
+                    <img src="/images/brand/ea-seal.jpg" alt="" width="34" height="34" />
                   </div>
 
                   <div className="bienvenida-carta__cta">
