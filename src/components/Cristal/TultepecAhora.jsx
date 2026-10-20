@@ -166,15 +166,15 @@ export default function TultepecAhora() {
         <span className="tultepec-ahora__skeleton" aria-hidden="true" />
       ) : (
         <span className="tultepec-ahora__texto">
+          <span className="tultepec-ahora__lugar">{t("tultepecAhora.lugar")}</span>
           {infoClima && (
-            <>
+            <span className="tultepec-ahora__clima">
               <Icono className="tultepec-ahora__icono" size={16} strokeWidth={2} aria-hidden="true" />
-              <span>
-                {Math.round(clima.temperatura)} °C · {pick(infoClima)} ·{" "}
-              </span>
-            </>
+              <span className="tultepec-ahora__temp">{Math.round(clima.temperatura)}°C</span>
+              <span className="tultepec-ahora__desc">{pick(infoClima)}</span>
+            </span>
           )}
-          {hora}
+          <span className="tultepec-ahora__hora">{hora}</span>
         </span>
       )}
     </div>

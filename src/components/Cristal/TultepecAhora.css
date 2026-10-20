@@ -5,7 +5,11 @@
    más de un bug de "se transparenta el texto de atrás" en este
    proyecto con fondos menos opacos + blur en celular (TopBarCristal,
    BottomNav), así que esta pastilla nueva arranca directo con el tono
-   que sí se comportó bien ahí. */
+   que sí se comportó bien ahí. Vive dentro de .cristal-stage (padding:
+   0 max(20px,3vw) 3rem, ver CristalShell.css) -- igual que
+   .cristal-bento más abajo, así que el mismo margin:0 auto la alinea
+   contra el mismo margen lateral del resto de la página, sin padding
+   propio extra que la desalinee. */
 .tultepec-ahora {
   display: flex;
   align-items: center;
@@ -13,35 +17,45 @@
   width: fit-content;
   max-width: 100%;
   margin: 0 auto 1.4rem;
-  padding: 0.55rem 1.1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 999px;
   background: var(--cristal-glass-movil);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow-soft);
 }
 
+/* Antes "N °C · estado · hora" con puntos como separador -- ahora tres
+   grupos (lugar / clima / hora) separados por el mismo gap parejo, sin
+   signos de puntuación de por medio. */
 .tultepec-ahora__texto {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.3rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  /* --cristal-soft sobre este fondo ya da ~8.5:1 de contraste (ver la
-     misma cuenta en InicioCristal.css para las tarjetas del Bento),
-     bien arriba del mínimo de 4.5:1 pedido. */
-  color: var(--cristal-soft);
+  gap: 0.7rem;
   white-space: nowrap;
   opacity: 0;
   animation: tultepec-ahora-fade 0.4s ease-out forwards;
 }
 
-.tultepec-ahora__texto span {
+/* Etiqueta pequeña y tenue -- "Tultepec" identifica el lugar sin
+   competir con la temperatura, que es el dato con más peso visual de
+   la pastilla. */
+.tultepec-ahora__lugar {
+  /* 0.82rem = 13.1px al tamaño de fuente base del sitio -- el piso de
+     13px pedido para celular no tendría sentido dejarlo más chico en
+     escritorio, donde sobra espacio de sobra. */
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(251, 241, 226, 0.5);
+}
+
+.tultepec-ahora__clima {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  white-space: nowrap;
+  gap: 0.4rem;
 }
 
 .tultepec-ahora__icono {
@@ -49,13 +63,33 @@
   color: var(--color-gold-light);
 }
 
-/* Mismo alto que el texto cargado (línea de 0.82rem + el padding de
+/* La temperatura es el dato más grande y con más peso de la pastilla
+   -- dorado del tema, 700, claramente por encima del estado del clima
+   y la hora (ambos 600, --cristal-soft tenue). */
+.tultepec-ahora__temp {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-gold-light);
+}
+
+.tultepec-ahora__desc,
+.tultepec-ahora__hora {
+  font-size: 0.85rem;
+  font-weight: 600;
+  /* --cristal-soft sobre este fondo ya da ~8.5:1 de contraste (ver la
+     misma cuenta en InicioCristal.css para las tarjetas del Bento),
+     bien arriba del mínimo de 4.5:1 pedido. */
+  color: var(--cristal-soft);
+}
+
+/* Mismo alto aproximado que el texto cargado (línea + el padding de
    la pastilla) -- para que no haya salto de layout entre el skeleton
-   y el contenido real. */
+   y el contenido real. Un poco más ancho que antes: el texto real
+   ahora también incluye la etiqueta "Tultepec". */
 .tultepec-ahora__skeleton {
   display: block;
-  width: 180px;
-  height: 0.82rem;
+  width: 210px;
+  height: 0.85rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
 }
@@ -76,11 +110,27 @@
   }
 }
 
+/* 13px mínimo en celular (pedido explícito) para el texto secundario
+   (lugar/estado/hora) -- en rem a 0.82/0.78rem ya rondaban ese piso en
+   la mayoría de los navegadores, pero con px fijos queda garantizado
+   sin depender del font-size base de la página. La temperatura se
+   queda claramente arriba de ese piso (15px), para que la jerarquía
+   siga siendo obvia también en la pantalla más chica. */
 @media (max-width: 480px) {
   .tultepec-ahora {
-    padding: 0.5rem 0.9rem;
+    padding: 0.55rem 1rem;
   }
   .tultepec-ahora__texto {
-    font-size: 0.76rem;
+    gap: 0.55rem;
+  }
+  .tultepec-ahora__lugar {
+    font-size: 13px;
+  }
+  .tultepec-ahora__temp {
+    font-size: 15px;
+  }
+  .tultepec-ahora__desc,
+  .tultepec-ahora__hora {
+    font-size: 13px;
   }
 }

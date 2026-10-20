@@ -526,6 +526,7 @@ export const STRINGS = {
 
   // Pastilla "Tultepec ahora" (hora + clima, TultepecAhora.jsx).
   "tultepecAhora.ariaLabel": { es: "Hora y clima en Tultepec", en: "Time and weather in Tultepec" },
+  "tultepecAhora.lugar": { es: "Tultepec", en: "Tultepec" },
   "cristal.tiles.calendarioSub": { es: "Feria Nacional", en: "National Fair" },
   "cristal.tiles.memoriasSub": { es: "Recuerdos", en: "Memories" },
   "cristal.seccion.proximamente": {
