@@ -1,4 +1,4 @@
-import { Ticket, BookOpen, Flame, MapPinned, Users, Image as ImageIcon, CalendarDays, Gamepad2, HeartHandshake } from "lucide-react";
+import { Ticket, BookOpen, Flame, MapPinned, Image as ImageIcon, Gamepad2, HeartHandshake } from "lucide-react";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import HeroCristal from "./HeroCristal.jsx";
@@ -11,16 +11,17 @@ import "./InicioCristal.css";
 // solo set de accesos directos (mismo trato visual: ícono + rótulo,
 // con o sin bajada según tenga texto de más) para las tarjetas chicas
 // del Bento de abajo -- ver cristal-bento__tile en InicioCristal.css.
-// `color`/`ink` (fondo del círculo del ícono y el color del ícono en
-// sí, vía --icon-color/--icon-ink) van por DESTINO, no por índice de
-// la lista -- antes rotaban con `i % 5` y, al ser 9 tarjetas para solo
-// 5 tonos, terminaban repitiendo color entre secciones que no tienen
-// nada que ver (p.ej. Memorias y "Calendario por mes" quedaban con el
-// mismo). Aquí cada una de las 6 secciones reales (pirotecnia,
-// memorias, eventos, visitanos, juegos, agradecimientos) tiene su
-// propio tono fijo, y un acceso que es subopción de una de ellas
-// (memoriasPueblo, galeria, calendario) comparte el de su sección a
-// propósito -- es la MISMA sección, no una distinta.
+// "Memorias de mi pueblo" y "Calendario por mes" ya no están aquí --
+// se repetían con "Memorias" y "Eventos" (llevan a lo mismo, solo que
+// sin pasar por el resumen del grupo); sus rutas y los textos en
+// menu.js/el flyout del menú lateral siguen intactos, solo se quitó
+// el acceso directo del Bento. `color`/`ink` (fondo del círculo del
+// ícono y el color del ícono en sí, vía --icon-color/--icon-ink) van
+// por DESTINO, no por índice de la lista -- cada una de las 6
+// secciones reales (pirotecnia, memorias, eventos, visitanos, juegos,
+// agradecimientos) tiene su propio tono fijo, y "galeria" (subopción
+// de pirotecnia) comparte el de su sección a propósito -- es la MISMA
+// sección, no una distinta.
 const ACCESOS = [
   { key: "pirotecnia", label: "menu.item.pirotecnia", icon: Flame, href: rutaHash("pirotecnia"), color: "var(--color-terracotta)", ink: "#fff" },
   { key: "memorias", label: "menu.item.memorias", icon: BookOpen, href: rutaHash("memorias"), color: "var(--color-gold)", ink: "#14163a" },
@@ -29,30 +30,12 @@ const ACCESOS = [
   { key: "eventos", label: "menu.item.eventos", icon: Ticket, href: rutaHash("eventos"), color: "var(--color-fire-red)", ink: "#fff" },
   { key: "visitanos", label: "menu.item.visitanos", icon: MapPinned, href: rutaHash("visitanos"), color: "var(--color-turquoise)", ink: "#14163a" },
   {
-    key: "memoriasPueblo",
-    label: "menu.opcion.memoriasPueblo",
-    sub: "cristal.novedades.memoriasSub",
-    icon: Users,
-    href: rutaHash("memorias", "pueblo"),
-    color: "var(--color-gold)",
-    ink: "#14163a",
-  },
-  {
     key: "galeria",
     label: "menu.opcion.galeria",
     sub: "cristal.novedades.galeriaSub",
     icon: ImageIcon,
     href: rutaHash("pirotecnia", "galeria"),
     color: "var(--color-terracotta)",
-    ink: "#fff",
-  },
-  {
-    key: "calendario",
-    label: "menu.opcion.calendario",
-    sub: "cristal.novedades.calendarioSub",
-    icon: CalendarDays,
-    href: rutaHash("eventos", "calendario"),
-    color: "var(--color-fire-red)",
     ink: "#fff",
   },
   {
@@ -104,9 +87,12 @@ export default function InicioCristal({ titleRef }) {
         {ACCESOS.map((item) => {
           const Icono = item.icon;
           // Agradecimientos (siempre el último acceso): tarjeta ancha
-          // en celular (ocupa las 2 columnas) en vez de 1 como las
-          // otras 8 -- mismo molde vertical centrado que todas, solo
-          // más ancha. Ver .cristal-bento__tile--ancho.
+          // (ocupa todas las columnas de la rejilla, en cualquier
+          // ancho de pantalla) en vez de compartir fila con otra --
+          // mismo molde vertical centrado que todas, solo más ancha,
+          // y de paso evita que quede sola y descentrada al final si
+          // el número de accesos no es múltiplo exacto de columnas.
+          // Ver .cristal-bento__tile--ancho.
           const esAncho = item.key === "agradecimientos";
           return (
             <a

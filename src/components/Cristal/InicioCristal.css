@@ -127,6 +127,21 @@
   transform: translateY(2px) scale(0.97);
 }
 
+/* Agradecimientos ocupa toda la rejilla (no solo en celular, ver el
+   bloque de 700px de abajo) para que nunca quede como sobrante suelto
+   a la mitad de una fila -- en vez de depender de que la cantidad de
+   accesos sea múltiplo exacto de columnas en cada ancho (6 en
+   escritorio, 4 en tablet, 2 en celular), siempre cierra su propia
+   fila completa. Selector compuesto (no solo .cristal-bento__tile--ancho
+   a secas) porque el .cristal-bento__tile{grid-column:span 1} del
+   bloque de 700px de abajo tiene la misma especificidad y, al venir
+   después en el archivo, le ganaba a esta regla por orden de cascada
+   en celular -- con las dos clases juntas en el selector, gana
+   siempre, sin importar el orden. */
+.cristal-bento__tile.cristal-bento__tile--ancho {
+  grid-column: 1 / -1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cristal-bento__tile:active .cristal-bento__tile-icono {
     transform: none;
@@ -155,13 +170,13 @@
 
 /* Celular: Principal y Carta se quedan apiladas a todo el ancho (1/-1
    ya les llega del breakpoint de 980px de arriba, sigue aplicando),
-   pero los 9 accesos ahora van de a 2 por fila en vez de uno solo --
+   pero los accesos ahora van de a 2 por fila en vez de uno solo --
    tarjetas más chicas y compactas (tipografía y relleno reducidos)
-   para que quepan dos por fila sin que el texto se corte; "Memorias de
-   mi pueblo" y el resto de títulos largos hacen salto de línea en vez
-   de desbordar, igual que ya hacían en una sola columna. El borde
-   redondeado, el fondo de cristal y los colores de cada ícono NO
-   cambian aquí -- solo el acomodo y el tamaño. */
+   para que quepan dos por fila sin que el texto se corte; los títulos
+   largos hacen salto de línea en vez de desbordar, igual que ya hacían
+   en una sola columna. El borde redondeado, el fondo de cristal y los
+   colores de cada ícono NO cambian aquí -- solo el acomodo y el
+   tamaño. */
 @media (max-width: 700px) {
   .cristal-inicio {
     padding-top: 2.2rem;
@@ -189,20 +204,13 @@
     font-size: clamp(0.72rem, 3.4vw, 0.84rem);
     line-height: 1.25;
   }
-  /* Agradecimientos (último acceso, cantidad impar de 9): en vez de
-     quedarse solo colgando a la mitad de la última fila, ocupa las 2
-     columnas (grid-column:1/-1) -- pero con el MISMO molde vertical
-     centrado que las otras 8 (nada de fila horizontal/chevron, que se
-     probaron en rondas anteriores y se descartaron): mismo
-     padding/min-height/borde/radio, heredados tal cual de
-     .cristal-bento__tile de arriba, nada que pisar aquí salvo el
-     ancho. Las propiedades de centrado (flex-direction:column,
-     align-items/justify-content:center, text-align:center, gap) se
-     repiten explícitas de todos modos para que esta tarjeta no
-     dependa en silencio de que .cristal-bento__tile nunca cambie esos
-     valores. */
+  /* Agradecimientos: el ancho completo ya lo da la regla sin media
+     query de arriba -- aquí solo queda el MISMO molde vertical
+     centrado que las otras tarjetas (nada de fila horizontal/chevron,
+     que se probaron en rondas anteriores y se descartaron), repetido
+     explícito para que esta tarjeta no dependa en silencio de que
+     .cristal-bento__tile nunca cambie esos valores. */
   .cristal-bento__tile--ancho {
-    grid-column: 1 / -1;
     display: flex;
     flex-direction: column;
     align-items: center;
