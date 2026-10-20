@@ -194,7 +194,26 @@ export default function GaleriaView() {
                     onClick={() => goToLightbox(i)}
                     aria-label={t("galeria.verFoto", { n: i + 1, total: filteredPhotos.length })}
                   >
-                    <img src={photo.src} alt="" loading="lazy" onLoad={(e) => e.currentTarget.classList.add("is-loaded")} />
+                    {/* thumbSrc/thumb2xSrc (400/800px, ver useGaleriaImages.js) en vez de
+                        photo.src (hasta 1200px, para el visor ampliado) -- cargar el
+                        tamaño completo en una celda de 130px era puro desperdicio.
+                        Las primeras 6 (las que ya se ven sin scroll en casi cualquier
+                        ancho) van "eager" para que no esperen a que el navegador decida
+                        que "ya casi están en pantalla"; el resto, "lazy" de verdad. Solo
+                        la primera pide fetchpriority alto -- es la única candidata real a
+                        LCP de esta vista. */}
+                    <img
+                      src={photo.thumbSrc}
+                      srcSet={`${photo.thumbSrc} 400w, ${photo.thumb2xSrc} 800w`}
+                      sizes="130px"
+                      width={400}
+                      height={400}
+                      alt=""
+                      loading={i < 6 ? "eager" : "lazy"}
+                      decoding="async"
+                      fetchPriority={i === 0 ? "high" : undefined}
+                      onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
+                    />
                   </button>
                 ))}
               </div>
@@ -295,7 +314,19 @@ export default function GaleriaView() {
           )}
 
           <figure className="galeria-lightbox__stage" onMouseDown={(e) => e.stopPropagation()}>
-            <img src={activeLightboxPhoto.src} alt="" />
+            {/* photo.src ya es la versión "completa" (hasta 1200px, ver
+                useGaleriaImages.js/optimize-images.mjs) -- no la miniatura de la
+                cuadrícula. decoding="async" para no bloquear el hilo principal
+                decodificando mientras se monta el visor; no lleva loading="lazy"
+                (este <img> solo existe en el DOM mientras el visor está abierto, así
+                que "diferir su carga" no tendría a qué esperar). */}
+            <img
+              key={activeLightboxPhoto.id}
+              src={activeLightboxPhoto.src}
+              alt=""
+              decoding="async"
+              onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
+            />
             <figcaption>
               {activeLightboxPhoto.meta?.titulo ? pick(activeLightboxPhoto.meta.titulo) : pick(activeLightboxPhoto.categoryLabel)}
               {activeLightboxPhoto.meta?.descripcion && <span> — {pick(activeLightboxPhoto.meta.descripcion)}</span>}

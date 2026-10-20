@@ -1,0 +1,11 @@
+/* Mismo motivo que .cristal-sec__cargando (Seccion.css): reserva
+   espacio mientras el chunk del juego (React.lazy) descarga, para que
+   cambiar de pestaña no colapse a 0 de alto por un instante -- antes
+   esta clase no tenía ningún estilo propio. Más alta que el genérico
+   de Seccion.css (240px, no 64px) porque el área de juego real
+   (tablero/canvas) es bastante más grande que un párrafo de texto. */
+.cristal-juegos__cargando {
+  min-height: 240px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+}

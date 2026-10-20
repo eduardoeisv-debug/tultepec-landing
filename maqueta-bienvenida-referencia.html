@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Portada con mensaje de bienvenida</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,500;1,9..144,800&amp;family=Work+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#F2B544}a:hover{color:#FFD27A}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr);gap:56px;align-items:center}
+.tarjetas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.carta{display:grid;grid-template-columns:minmax(0,0.8fr) minmax(0,1.2fr);gap:56px;align-items:start}
+@media (max-width: 860px){
+.hero{grid-template-columns:minmax(0,1fr);gap:40px}
+.carta{grid-template-columns:minmax(0,1fr);gap:28px}
+}
+@media (max-width: 520px){
+.tarjetas{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: linear-gradient(180deg, #13112C 0px, #1A1438 520px, #2E1A4A 1000px, #5A2A44 1500px, #7A3B36 1720px, #13112C 1721px); color: #FBF1DC; font-family: 'Work Sans', 'Helvetica Neue', sans-serif">
+
+<header style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 14px 40px; background: #13112C; border-bottom: 1px solid rgba(251, 241, 220, 0.12)">
+<a href="#inicio" style="display: flex; align-items: baseline; gap: 8px; text-decoration: none; color: #FBF1DC">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 20px">Tultepec</span>
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 16px; color: {{acento}}">· Estado de México</span>
+</a>
+<div aria-label="Idioma" style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; border: 1px solid rgba(251, 241, 220, 0.25)">
+<button type="button" style="min-width: 48px; min-height: 36px; border: 0; border-radius: 999px; background: {{acento}}; color: #1B1016; font: 600 13px 'Work Sans', sans-serif; cursor: pointer">ES</button>
+<button type="button" style="min-width: 48px; min-height: 36px; border: 0; border-radius: 999px; background: transparent; color: #FBF1DC; font: 600 13px 'Work Sans', sans-serif; cursor: pointer">EN</button>
+</div>
+</header>
+
+<svg viewBox="0 0 1280 44" preserveAspectRatio="xMidYMin slice" aria-hidden="true" style="display: block; width: 100%; height: 44px">
+<path d="M0 3Q640 12 1280 3" fill="none" stroke="#FBF1DC" stroke-opacity="0.5" stroke-width="1.5"></path>
+<g>
+<path d="M20 5h44l-22 32z" fill="#F2B544"></path><path d="M100 6h44l-22 32z" fill="#E8206A"></path><path d="M180 7h44l-22 32z" fill="#19B8A6"></path><path d="M260 8h44l-22 32z" fill="#E07A2E"></path><path d="M340 8h44l-22 32z" fill="#FBF1DC"></path><path d="M420 9h44l-22 32z" fill="#F2B544"></path><path d="M500 9h44l-22 32z" fill="#E8206A"></path><path d="M580 9h44l-22 32z" fill="#19B8A6"></path><path d="M660 9h44l-22 32z" fill="#E07A2E"></path><path d="M740 9h44l-22 32z" fill="#FBF1DC"></path><path d="M820 9h44l-22 32z" fill="#F2B544"></path><path d="M900 8h44l-22 32z" fill="#E8206A"></path><path d="M980 8h44l-22 32z" fill="#19B8A6"></path><path d="M1060 7h44l-22 32z" fill="#E07A2E"></path><path d="M1140 6h44l-22 32z" fill="#FBF1DC"></path><path d="M1220 5h44l-22 32z" fill="#F2B544"></path>
+</g>
+</svg>
+
+<main id="inicio" style="width: 100%; max-width: 1180px; margin: 0 auto; box-sizing: border-box; padding: 40px 40px 0">
+<div class="hero">
+<div style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; color: {{acento}}">
+<svg viewBox="0 0 24 24" aria-hidden="true" style="width: 20px; height: 20px; flex: none"><path d="M12 2v5M12 17v5M2 12h5M17 12h5M5 5l3.5 3.5M15.5 15.5L19 19M19 5l-3.5 3.5M8.5 15.5L5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+Bienvenidos a Tultepec
+</div>
+<h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 60px; line-height: 1.04; letter-spacing: -0.01em">Tultepec<span style="display: block">Capital de la</span><span style="display: block; font-style: italic; color: {{acento}}">Pirotecnia</span></h1>
+<p style="margin: 0; max-width: 34em; font-size: 18px; line-height: 1.6; color: #E6D8C3">Este es un espacio para guardar y compartir las memorias de nuestro pueblo: su historia, su gente, sus fiestas y el oficio que convierte el fuego en arte.</p>
+
+<nav aria-label="Secciones" class="tarjetas" style="margin-top: 6px">
+<a href="#historia" style="display: flex; align-items: center; gap: 14px; min-height: 72px; box-sizing: border-box; padding: 14px 16px; border-radius: 16px; background: rgba(251, 241, 220, 0.06); border: 1px solid rgba(251, 241, 220, 0.16); text-decoration: none; color: #FBF1DC">
+<span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex: none; border-radius: 10px; background: rgba(242, 181, 68, 0.14); color: {{acento}}"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 22px; height: 22px"><path d="M12 3c3 4 5 6 5 9.5A5 5 0 0 1 7 12.5C7 10 9 9 9 6c1.5 1 2.5 2.5 3 4 0-2.5 0-5 0-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 3px; flex: 1"><span style="font-weight: 600; font-size: 16px">Explora la historia</span><span style="font-size: 13.5px; color: #CDBDA6">Momentos y tradiciones</span></span>
+</a>
+<a href="#memorias" style="display: flex; align-items: center; gap: 14px; min-height: 72px; box-sizing: border-box; padding: 14px 16px; border-radius: 16px; background: rgba(251, 241, 220, 0.06); border: 1px solid rgba(251, 241, 220, 0.16); text-decoration: none; color: #FBF1DC">
+<span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex: none; border-radius: 10px; background: rgba(242, 181, 68, 0.14); color: {{acento}}"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 22px; height: 22px"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M8 9h8M8 12h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 3px; flex: 1"><span style="font-weight: 600; font-size: 16px">Memorias de mi pueblo</span><span style="font-size: 13.5px; color: #CDBDA6">Testimonios del pueblo</span></span>
+</a>
+<a href="#relatos" style="display: flex; align-items: center; gap: 14px; min-height: 72px; box-sizing: border-box; padding: 14px 16px; border-radius: 16px; background: rgba(251, 241, 220, 0.06); border: 1px solid rgba(251, 241, 220, 0.16); text-decoration: none; color: #FBF1DC">
+<span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex: none; border-radius: 10px; background: rgba(242, 181, 68, 0.14); color: {{acento}}"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 22px; height: 22px"><path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M12 6v14" stroke="currentColor" stroke-width="1.8"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 3px; flex: 1"><span style="font-weight: 600; font-size: 16px">Relatos escritos</span><span style="font-size: 13.5px; color: #CDBDA6">3 libros publicados</span></span>
+</a>
+<a href="#galeria" style="display: flex; align-items: center; gap: 14px; min-height: 72px; box-sizing: border-box; padding: 14px 16px; border-radius: 16px; background: rgba(251, 241, 220, 0.06); border: 1px solid rgba(251, 241, 220, 0.16); text-decoration: none; color: #FBF1DC">
+<span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex: none; border-radius: 10px; background: rgba(242, 181, 68, 0.14); color: {{acento}}"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 22px; height: 22px"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M3 16l5-5 4 4 3-3 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><circle cx="16" cy="9" r="1.6" fill="currentColor"></circle></svg></span>
+<span style="display: flex; flex-direction: column; gap: 3px; flex: 1"><span style="font-weight: 600; font-size: 16px">Imágenes y videos</span><span style="font-size: 13.5px; color: #CDBDA6">Galería del pueblo</span></span>
+</a>
+<a href="#museos" style="grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; min-height: 72px; box-sizing: border-box; padding: 14px 16px; border-radius: 16px; background: rgba(251, 241, 220, 0.06); border: 1px solid rgba(251, 241, 220, 0.16); text-decoration: none; color: #FBF1DC">
+<span style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex: none; border-radius: 10px; background: rgba(242, 181, 68, 0.14); color: {{acento}}"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 22px; height: 22px"><path d="M3 9l9-5 9 5M5 9v9M9.5 9v9M14.5 9v9M19 9v9M3 20h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 3px; flex: 1"><span style="font-weight: 600; font-size: 16px">Museos</span><span style="font-size: 13.5px; color: #CDBDA6">Próximamente</span></span>
+</a>
+</nav>
+</div>
+
+<figure style="margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px">
+<a href="#video" aria-label="Ver video de bienvenida" style="position: relative; display: block; width: 100%; max-width: 360px; aspect-ratio: 9 / 13; border-radius: 24px; overflow: hidden; border: 1px solid rgba(251, 241, 220, 0.22); box-shadow: 0 30px 60px rgba(5, 3, 18, 0.55)">
+<img src="/_blob/cd5f60c7fca6be54880e4a47d7e61225" alt="Castillo encendido entre una lluvia de chispas" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<span style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19, 17, 44, 0.05) 30%, rgba(19, 17, 44, 0.85) 100%)"></span>
+<span style="position: absolute; left: 0; right: 0; bottom: 28px; display: flex; flex-direction: column; align-items: center; gap: 12px">
+<span style="display: flex; align-items: center; justify-content: center; width: 68px; height: 68px; border-radius: 50%; background: {{acento}}; box-shadow: 0 0 0 8px rgba(242, 181, 68, 0.25)"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 26px; height: 26px; margin-left: 3px"><path d="M7 4.5l13 7.5-13 7.5z" fill="#1B1016"></path></svg></span>
+<span style="font-weight: 600; font-size: 17px; color: #FBF1DC">Ver bienvenida</span>
+<span style="font-size: 13.5px; color: #E6D8C3">Un recorrido por el pueblo en 1:28</span>
+</span>
+</a>
+</figure>
+</div>
+
+<a href="#bienvenida" style="display: flex; flex-direction: column; align-items: center; gap: 4px; width: max-content; margin: 44px auto 0; min-height: 44px; font-weight: 500; font-size: 15px; text-decoration: none; color: #E6D8C3">
+Conoce nuestra historia
+<svg viewBox="0 0 24 24" aria-hidden="true" style="width: 20px; height: 20px"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="#F2B544" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</main>
+
+<section id="bienvenida" aria-labelledby="titulo-carta" style="width: 100%; max-width: 1180px; margin: 0 auto; box-sizing: border-box; padding: 72px 40px 40px">
+<div class="carta">
+<div style="display: flex; flex-direction: column; gap: 18px; padding-top: 28px">
+<div style="font-weight: 600; font-size: 16px; color: {{acento}}">Mensaje de bienvenida</div>
+<h2 id="titulo-carta" style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 46px; line-height: 1.08">Una casa para nuestras memorias</h2>
+<p style="margin: 0; max-width: 24em; font-size: 17px; line-height: 1.6; color: #E6D8C3">Por qué existe esta página, contado por quienes la hacemos.</p>
+</div>
+
+<article style="position: relative; border-radius: 6px 6px 18px 18px; background: #FBF1DC; color: #2A1A24; box-shadow: 0 30px 70px rgba(5, 3, 18, 0.5); overflow: hidden">
+<svg viewBox="0 0 640 30" preserveAspectRatio="xMidYMin slice" aria-hidden="true" style="display: block; width: 100%; height: 30px">
+<rect width="640" height="8" fill="#E8206A"></rect>
+<path d="M0 8h640v8l-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10z" fill="#E8206A"></path>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 18px; padding: 30px 44px 40px; font-family: 'Fraunces', Georgia, serif; font-size: 19px; line-height: 1.7">
+<p style="margin: 0">Tultepec es conocido por su pirotecnia, pero detrás de cada castillo y cada torito hay familias, recuerdos y tradiciones que han pasado de generación en generación.</p>
+<p style="margin: 0">Creamos este sitio para que esas memorias no se pierdan. Aquí encontrarás relatos de nuestra gente, la historia del pueblo, las fiestas que celebramos a lo largo del año y las imágenes que lo cuentan mejor que cualquier palabra.</p>
+<p style="margin: 0">Si eres de aquí, esperamos que te reconozcas en estas páginas. Si nos visitas por primera vez, bienvenido: esta también es tu casa.</p>
+<div style="display: flex; flex-direction: column; gap: 2px; margin-top: 6px">
+<span style="font-style: italic; font-size: 19px; color: #5A3A48">Con cariño,</span>
+<span style="font-style: italic; font-weight: 800; font-size: 26px; color: #A3124A">[Sus nombres]</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 10px; padding-top: 22px; border-top: 1px solid rgba(42, 26, 36, 0.15); font-family: 'Work Sans', sans-serif">
+<span style="flex: 1 1 100%; font-size: 16px; line-height: 1.5; color: #4A3340">¿Tienes una historia o una foto de Tultepec?</span>
+<a href="#compartir" style="display: flex; align-items: center; min-height: 48px; box-sizing: border-box; padding: 0 22px; border-radius: 999px; background: #2A1A24; color: #FBF1DC; font-weight: 600; font-size: 15.5px; text-decoration: none">Comparte tu historia</a>
+<a href="#memorias" style="display: flex; align-items: center; min-height: 48px; font-weight: 600; font-size: 15.5px; color: #A3124A">Lee las memorias del pueblo</a>
+</div>
+</div>
+</article>
+</div>
+<a href="#planea" style="display: flex; flex-direction: column; align-items: center; gap: 4px; width: max-content; margin: 56px auto 0; min-height: 44px; font-weight: 500; font-size: 15px; text-decoration: none; color: #FBF1DC">
+¿Cuándo vienes?
+<svg viewBox="0 0 24 24" aria-hidden="true" style="width: 20px; height: 20px"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="#F2B544" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</section>
+
+<div aria-hidden="true" style="position: relative; height: 210px; background: linear-gradient(180deg, #7A3B36 0%, #B5532F 45%, #E8913A 72%, #3B1F5C 88%, #13112C 100%)">
+<svg viewBox="0 0 1280 150" preserveAspectRatio="xMidYMax slice" style="position: absolute; left: 0; right: 0; top: 0; width: 100%; height: 150px; display: block">
+<g fill="#160F30">
+<rect x="150" y="40" width="380" height="110"></rect><rect x="700" y="60" width="150" height="90"></rect><rect x="880" y="30" width="130" height="120"></rect><rect x="1040" y="76" width="220" height="74"></rect><rect x="0" y="90" width="150" height="60"></rect>
+</g>
+<g fill="#F2C46A">
+<rect x="210" y="60" width="16" height="22"></rect><rect x="268" y="60" width="16" height="22"></rect><rect x="410" y="60" width="16" height="22"></rect><rect x="458" y="60" width="16" height="22"></rect><rect x="766" y="92" width="14" height="20"></rect><rect x="930" y="50" width="14" height="20"></rect><rect x="930" y="96" width="14" height="20"></rect><rect x="1120" y="96" width="14" height="20"></rect>
+</g>
+</svg>
+</div>
+
+<section id="planea" aria-labelledby="titulo-planea" style="background: #13112C; padding: 24px 40px 80px">
+<div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-weight: 600; font-size: 15px; color: {{acento}}">Planea tu visita</div>
+<h2 id="titulo-planea" style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 40px; line-height: 1.1">¿Cuándo vienes y cómo llegas?</h2>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 18px; padding: 26px; border-radius: 18px; background: #1B1A3A; border: 1px solid rgba(251, 241, 220, 0.12)">
+<h3 style="margin: 0; display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 22px"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 22px; height: 22px"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#F2B544" stroke-width="1.8"></rect><path d="M3 10h18M8 3v4M16 3v4" stroke="#F2B544" stroke-width="1.8" stroke-linecap="round"></path></svg>¿En qué mes hay celebraciones?</h3>
+<div role="group" aria-label="Mes" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px">
+<button type="button" style="flex: none; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(251, 241, 220, 0.3); background: transparent; color: #FBF1DC; font: 600 13.5px 'Work Sans', sans-serif">Agosto</button>
+<button type="button" style="flex: none; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(251, 241, 220, 0.3); background: transparent; color: #FBF1DC; font: 600 13.5px 'Work Sans', sans-serif">Septiembre</button>
+<button type="button" style="flex: none; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(251, 241, 220, 0.3); background: transparent; color: #FBF1DC; font: 600 13.5px 'Work Sans', sans-serif">Octubre</button>
+<button type="button" aria-pressed="true" style="flex: none; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid {{acento}}; background: {{acento}}; color: #1B1016; font: 600 13.5px 'Work Sans', sans-serif">Noviembre</button>
+<button type="button" style="flex: none; min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(251, 241, 220, 0.3); background: transparent; color: #FBF1DC; font: 600 13.5px 'Work Sans', sans-serif">Diciembre</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 12px; background: rgba(251, 241, 220, 0.05)"><span style="flex: none; width: 52px; text-align: center; font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 22px; color: {{acento}}">1</span><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 16px">Día de Muertos y recorrido de farolitos</span><span style="font-size: 13.5px; color: #CDBDA6">1 de noviembre</span></span></div>
+<div style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 12px; background: rgba(251, 241, 220, 0.05)"><span style="flex: none; width: 52px; text-align: center; font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 22px; color: {{acento}}">22</span><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 16px">Santa Cecilia</span><span style="font-size: 13.5px; color: #CDBDA6">22 de noviembre</span></span></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h3 style="margin: 0; display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 22px"><svg viewBox="0 0 24 24" aria-hidden="true" style="width: 22px; height: 22px"><path d="M21 3L3 10.5l7.5 3 3 7.5z" fill="none" stroke="#F2B544" stroke-width="1.8" stroke-linejoin="round"></path></svg>¿Cómo llegas?</h3>
+<p style="margin: 0; max-width: 40em; font-size: 16px; line-height: 1.6; color: #E6D8C3">Tultepec es un municipio del Estado de México, dentro de la zona metropolitana norte del Valle de México: a menos de una hora de la Ciudad de México, perfecto para una visita de un día.</p>
+<div style="display: flex; align-items: center; justify-content: center; height: 220px; border-radius: 18px; border: 1px dashed rgba(251, 241, 220, 0.35); background: #1B1A3A; color: #CDBDA6; font-size: 15px">Tu mapa actual va aquí</div>
+<a href="#mapa" style="display: flex; align-items: center; width: max-content; min-height: 46px; padding: 0 22px; border-radius: 999px; background: {{acento}}; color: #1B1016; font-weight: 600; font-size: 15px; text-decoration: none">Cómo llegar</a>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="titulo-cierre" style="background: #13112C; padding: 40px 40px 88px; text-align: center">
+<div style="max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px">
+<h2 id="titulo-cierre" style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 42px; line-height: 1.12">La memoria del pueblo sigue encendida</h2>
+<p style="margin: 0; font-size: 16.5px; line-height: 1.6; color: #E6D8C3">Cada visita a este archivo es una forma de mantener viva la historia de Tultepec. Vuelve cuando quieras seguir el hilo de la tradición.</p>
+<p style="margin: 8px 0 0; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 16px; color: #CDBDA6">Si te gustó el contenido de este sitio, déjanos tu like y un comentario</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+<button type="button" style="min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(251, 241, 220, 0.35); background: transparent; color: #FBF1DC; font: 600 14px 'Work Sans', sans-serif">Me gusta</button>
+<button type="button" style="min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid rgba(251, 241, 220, 0.35); background: transparent; color: #FBF1DC; font: 600 14px 'Work Sans', sans-serif">Comentar</button>
+</div>
+</div>
+</section>
+
+<footer style="background: #0F0E25; border-top: 1px solid rgba(251, 241, 220, 0.1); padding: 44px 40px 32px">
+<div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-wrap: wrap; gap: 32px 64px">
+<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: 18px; color: {{acento}}">Tultepec · Estado de México</span>
+<span style="font-size: 14px; color: #CDBDA6">Un sitio hecho para honrar la memoria de un pueblo.</span>
+<p style="margin: 6px 0 0; padding-left: 14px; border-left: 2px solid rgba(242, 181, 68, 0.5); font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: 14.5px; line-height: 1.55; color: #E6D8C3">Un agradecimiento especial a la Profesora Juana Antonieta Zúñiga Urban y al Profesor Fernando Manuel Torices Ramírez, por compartir con generosidad su conocimiento y sus recuerdos: el verdadero corazón de este archivo.</p>
+</div>
+<p style="flex: 1 1 320px; margin: 0; font-size: 14px; line-height: 1.6; color: #CDBDA6">Proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno, gremio pirotécnico ni organizador oficial de la Feria Nacional de la Pirotecnia.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 20px; border-top: 1px solid rgba(251, 241, 220, 0.1); font-size: 13px; color: #CDBDA6">
+<span>© 2026 Tultepec · Pueblo Pirotécnico, proyecto de portafolio.</span>
+<span>Hecho por <strong style="color: #FBF1DC">EA</strong></span>
+<a href="#privacidad">Aviso de privacidad</a>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"acento":{"editor":"color","default":"#F2B544","options":["#F2B544","#FF8A3D","#19B8A6"]},"$preview":{"width":1280,"height":3360}}'>
+class Component extends DCLogic {
+renderVals() {
+return { acento: this.props.acento ?? '#F2B544' };
+}
+}
+</script>
+</body>
+</html>

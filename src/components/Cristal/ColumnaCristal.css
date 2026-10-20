@@ -50,6 +50,15 @@
   overflow-y: auto;
   overflow-x: hidden;
   animation: cristal-col-in 0.22s var(--ease-out);
+  /* Solo transform/opacity se animan (ver @keyframes abajo) -- la capa
+     compuesta aparte que esto fuerza evita que el navegador tenga que
+     repintar el panel entero (texto, iconos, blur) en cada frame de la
+     entrada, que es justo lo que se sentía como el "salto" al abrir en
+     celular. Vive seguro aquí: .cristal-col solo existe en el DOM
+     mientras el menú está abierto (CristalShell.jsx lo monta/desmonta
+     entero), así que la capa nunca queda reservada de más tiempo del
+     que hace falta. */
+  will-change: transform, opacity;
   /* El flash gris que Chrome/Safari en celular ponen por su cuenta al
      tocar (antes de que corra cualquier CSS propio) se veía como un
      sombreado incorrecto de más, encima del dorado real -- se quita
@@ -415,6 +424,17 @@
     width: 100%;
     height: 100dvh;
     margin: 0;
+    /* Mismo motivo que TopBarCristal.css/BottomNav.css: --cristal-glass-movil
+       ya es 97% opaco, así que el blur(6px) de arriba no tapaba nada
+       de verdad detrás -- solo le pedía a la GPU recomponer un blur
+       de pantalla completa en cada frame de la animación de entrada,
+       justo cuando también se está montando la vista destino. En
+       escritorio el panel no cubre toda la pantalla (max 420px de
+       ancho) y el blur sí suaviza el contenido real que se alcanza a
+       ver al lado, así que se deja tal cual ahí. */
+    background: #0e0e26;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   /* Un poco más chico que en escritorio -- "Tultepec Digital" en
      2.1rem ya cabía sin cortarse ni a 360px, pero más chico deja más
@@ -425,6 +445,17 @@
   .cristal-col__herramientas {
     flex-wrap: wrap;
     gap: 0.35rem;
+  }
+  /* A diferencia de .cristal-col (arriba), este sí deja ver la página
+     real detrás -- rgba(5,6,18,0.55) a secas sin blur se veía
+     demasiado transparente (el fondo de la página de atrás se notaba
+     nítido, sin suavizar). Más opaco (0.75) compensa la falta de blur
+     sin pedirle a la GPU que difumine toda la pantalla en cada frame
+     de apertura. */
+  .cristal-col__backdrop {
+    background: rgba(5, 6, 18, 0.75);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 

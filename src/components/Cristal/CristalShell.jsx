@@ -3,7 +3,7 @@ import SECTIONS from "../../data/sections.js";
 import useHashRoute, { rutaHash } from "../../hooks/useHashRoute.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import useMediaQuery from "../../hooks/useMediaQuery.js";
-import { preloadGaleriaImages } from "../../hooks/useGaleriaImages.js";
+import { preloadGaleriaImages, preloadGaleriaThumbnails } from "../../hooks/useGaleriaImages.js";
 import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
@@ -39,7 +39,7 @@ import MuseosView from "../Panel/views/MuseosView.jsx";
 import CalendarioView from "../Panel/views/CalendarioView.jsx";
 import ComoLlegarView from "../Panel/views/ComoLlegarView.jsx";
 import PlaneaVisitaView from "../Panel/views/PlaneaVisitaView.jsx";
-import JuegosSeccion from "../Panel/views/JuegosSeccion.jsx";
+import JuegosSeccion, { preloadJuegos } from "../Panel/views/JuegosSeccion.jsx";
 import AgradecimientosView from "../Panel/views/AgradecimientosView.jsx";
 import AcercaDeView from "../Panel/views/AcercaDeView.jsx";
 import "./CristalShell.css";
@@ -108,6 +108,25 @@ export default function CristalShell() {
     preloadGaleriaVideos();
   }, []);
 
+  // Los únicos dos React.lazy que le quedan al sitio (PrivacidadContenido
+  // y los 3 minijuegos de Juegos, ver sus respectivos comentarios) se
+  // adelantan también aquí, en vez de esperar solo al roce de mouse/dedo
+  // sobre su fila del menú (ColumnaCristal.jsx) -- cubre a quien entra
+  // directo a una de esas rutas por enlace compartido o navega con
+  // teclado/lector de pantalla, que nunca dispara un onMouseEnter.
+  // requestIdleCallback (con setTimeout de respaldo en Safari, que no
+  // lo trae) para no competir por el hilo principal con el primer
+  // pintado real de la página.
+  useEffect(() => {
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1500));
+    const cancelarIdle = window.cancelIdleCallback || clearTimeout;
+    const id = idle(() => {
+      preloadJuegos();
+      import("../Panel/views/PrivacidadContenido.jsx");
+    });
+    return () => cancelarIdle(id);
+  }, []);
+
   // La barra inferior fija (BottomNav.jsx) solo existe en celular --
   // su mismo tono (casi negro, no el azul del degradado del sitio)
   // debe pintar también la franja de la barra de gestos de Android/el
@@ -120,6 +139,15 @@ export default function CristalShell() {
     document.documentElement.classList.toggle("cristal-chrome-movil", esMovil);
     meta?.setAttribute("content", esMovil ? COLOR_CHROME_MOVIL : COLOR_CHROME_SITIO);
   }, [esMovil]);
+
+  // Abrir el menú ya es buena señal de que la Galería (dentro de
+  // Pirotecnia) podría venir pronto -- adelanta la descarga de sus
+  // miniaturas de verdad (no solo el sondeo de qué fotos existen, ya
+  // disparado arriba) para que, si la elige, ya estén en caché.
+  const abrirMenu = useCallback(() => {
+    setMenuAbierto(true);
+    preloadGaleriaThumbnails();
+  }, []);
 
   // Al cerrar el menú (Escape, clic fuera, X o elegir una opción), el
   // foco vuelve a la hamburguesa que lo abrió -- si no, tras cerrar
@@ -248,7 +276,7 @@ export default function CristalShell() {
 
   return (
     <div className="cristal-root">
-      <TopBarCristal enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} botonMenuRef={botonMenuRef} menuAbierto={menuAbierto} />
+      <TopBarCristal enInicio={!ruta.itemId} onAbrirMenu={abrirMenu} botonMenuRef={botonMenuRef} menuAbierto={menuAbierto} />
       {menuAbierto && <ColumnaCristal ruta={ruta} onCompartir={onCompartir} onCerrar={cerrarMenu} />}
       <main className="cristal-stage" ref={stageRef}>
         <div className="cristal-stage__papel">
@@ -265,7 +293,7 @@ export default function CristalShell() {
           antes vivía dentro de cada vista (CierreComun.jsx) y el hueco
           del Suspense de Seccion.jsx se sentía como "el pie tarda". */}
       <Footer onOpenPrivacy={onOpenPrivacy} />
-      <BottomNav enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} menuAbierto={menuAbierto} />
+      <BottomNav enInicio={!ruta.itemId} onAbrirMenu={abrirMenu} menuAbierto={menuAbierto} />
     </div>
   );
 }

@@ -21,8 +21,17 @@
   }
 }
 
+/* Todo centrado, de arriba a abajo: marca+lema, aviso del proyecto,
+   fila de enlaces -- columna flex en vez del bloque simple de antes
+   para poder controlar el espaciado vertical entre cada parte con
+   gap/margin explícitos (escala 16/24/32px, no los --space-* globales,
+   pensados para secciones más grandes que este pie). */
 .footer__grid {
-  padding-bottom: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 1.5rem; /* 24px -- hasta el divisor de abajo */
   border-bottom: 1px solid rgba(251, 241, 226, 0.12);
 }
 
@@ -38,57 +47,81 @@
   font-size: 0.9rem;
 }
 
+/* Ancho máximo de lectura cómoda (~36ch) + centrado -- antes ocupaba
+   el ancho completo de la columna, que en escritorio llegaba a leerse
+   como una línea larga de más. */
 .footer__disclaimer {
-  margin-top: 0.9rem;
+  margin-top: 1.5rem; /* 24px -- separado del lema como bloque aparte */
+  max-width: 36ch;
   font-size: 0.85rem;
   line-height: 1.6;
   color: rgba(251, 241, 226, 0.55);
 }
 
-/* Agradecimientos y Acerca de: viven solo aquí, no como tarjeta de
-   Inicio ni fila de menú aparte (ver sections.js, showInFooter) --
-   mismo tratamiento visual que el aviso de privacidad de abajo. */
+/* Agradecimientos, Acerca de Y Aviso de privacidad (el botón se movió
+   aquí desde .footer__bottom, ver Footer.jsx) -- una sola fila
+   centrada, separados por "·" (::before en todos menos el primero, no
+   un carácter suelto en el JSX) para que el wrap en pantallas angostas
+   nunca deje un punto huérfano al principio de una línea. */
 .footer__links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 1rem;
-  margin-top: 0.9rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+  margin-top: 1.5rem; /* 24px */
 }
 
-.footer__links a {
+.footer__links a,
+.footer__links button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-gold-light);
   text-decoration: underline;
   text-underline-offset: 2px;
+  cursor: pointer;
 }
 
-.footer__links a:hover {
+.footer__links a:not(:first-child)::before,
+.footer__links button:not(:first-child)::before {
+  content: "·";
+  text-decoration: none;
+  color: rgba(251, 241, 226, 0.35);
+}
+
+.footer__links a:hover,
+.footer__links button:hover {
   color: var(--color-gold);
 }
 
-.footer__links a:focus-visible {
+.footer__links a:focus-visible,
+.footer__links button:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 3px;
 }
 
-/* Barra inferior en tres partes: logo+"Hecho por EA" a la izquierda,
-   © al centro, aviso de privacidad a la derecha. */
+/* Lo que queda del pie tras mover el aviso de privacidad arriba:
+   el sello + "Hecho por EA" y, debajo, el copyright -- ambos
+   centrados, ya no en fila de 3 columnas. */
 .footer__bottom {
-  padding-top: var(--space-md);
+  padding-top: 2rem; /* 32px -- después del divisor */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  font-size: 0.875rem;
-  color: rgba(251, 241, 226, 0.5);
+  gap: 1rem; /* 16px entre el sello y el copyright */
 }
 
 .footer__signature {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  flex: 1 1 0;
 }
 
 /* Revertido del círculo pseudo-3D (.icono-3d): con el brillo/degradado
@@ -124,43 +157,6 @@
 }
 
 .footer__copyright {
-  flex: 1 1 0;
-  text-align: center;
-}
-
-.footer__privacy-link {
-  flex: 1 1 0;
-  text-align: right;
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-gold-light);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.footer__privacy-link:hover {
-  color: var(--color-gold);
-}
-
-.footer__privacy-link:focus-visible {
-  outline: 2px solid var(--color-gold-light);
-  outline-offset: 3px;
-}
-
-@media (max-width: 720px) {
-  .footer__bottom {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .footer__signature,
-  .footer__copyright,
-  .footer__privacy-link {
-    flex: none;
-    text-align: center;
-    justify-content: center;
-  }
+  font-size: 0.8rem;
+  color: rgba(251, 241, 226, 0.5);
 }

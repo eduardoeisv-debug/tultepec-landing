@@ -19,12 +19,21 @@ export default function Footer({ onOpenPrivacy }) {
         <span className="footer__brand">Tultepec · {t("header.subtitle")}</span>
         <p className="footer__tagline">{t("footer.tagline")}</p>
         <p className="footer__disclaimer">{t("footer.disclaimer")}</p>
+        {/* Aviso de privacidad vivía como botón aparte en .footer__bottom
+            (junto a "Hecho por EA" y el copyright) -- se suma aquí mismo,
+            después de Agradecimientos/Acerca de, para que las tres salidas
+            del pie queden en una sola fila. Es <button> (abre el modal in-
+            línea, no navega), no <a> como sus dos vecinos, pero comparte el
+            mismo estilo -- ver footer__links en Footer.css. */}
         <nav className="footer__links" aria-label={t("footer.linksAriaLabel")}>
           {ENLACES_PIE.map((item) => (
             <a key={item.id} href={rutaHash(item.id)}>
               {t(item.label)}
             </a>
           ))}
+          <button type="button" onClick={onOpenPrivacy}>
+            {t("footer.privacyLink")}
+          </button>
         </nav>
       </div>
 
@@ -40,9 +49,6 @@ export default function Footer({ onOpenPrivacy }) {
         <span className="footer__copyright">
           © {anio} {t("footer.copyright")}
         </span>
-        <button type="button" className="footer__privacy-link" onClick={onOpenPrivacy}>
-          {t("footer.privacyLink")}
-        </button>
       </div>
     </footer>
   );

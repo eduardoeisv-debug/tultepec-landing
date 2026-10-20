@@ -33,8 +33,8 @@ export const STRINGS = {
   "common.cerrar": { es: "Cerrar", en: "Close" },
 
   "footer.tagline": {
-    es: "Un archivo hecho para honrar la memoria de un pueblo.",
-    en: "An archive made to honor the memory of a town.",
+    es: "Un sitio hecho para honrar la memoria de un pueblo.",
+    en: "A site made to honor a town's memory.",
   },
   "footer.thanksName": { es: "grupo Memorias de mi pueblo", en: "Memorias de mi pueblo group" },
   "footer.disclaimer": {

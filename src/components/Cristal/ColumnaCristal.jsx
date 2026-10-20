@@ -6,8 +6,17 @@ import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { useSound } from "../../hooks/useSound.jsx";
+import { preloadJuegos } from "../Panel/views/JuegosSeccion.jsx";
+import { preloadGaleriaThumbnails } from "../../hooks/useGaleriaImages.js";
 import BrandSparkles from "../shared/BrandSparkles.jsx";
 import "./ColumnaCristal.css";
+
+// Dispara el chunk de PrivacidadContenido (React.lazy en
+// CristalShell.jsx) apenas el dedo/mouse roza el escudo del pie del
+// menú -- mismo propósito que preloadJuegos (ver más abajo), ruta
+// idéntica a la de CristalShell.jsx así que Vite resuelve al mismo
+// chunk sin descargarlo dos veces.
+const preloadPrivacidad = () => import("../Panel/views/PrivacidadContenido.jsx");
 
 // Todo SECTIONS salvo "inicio" (que ya tiene su propia fila fija,
 // primera, justo abajo) -- calculado una sola vez al cargar el
@@ -131,6 +140,14 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                       playTap();
                       setGrupoAbierto((actual) => (actual === item.id ? null : item.id));
                     }}
+                    // Pirotecnia es la única fila con hijos cuya
+                    // Galería adentro tiene algo que de verdad vale la
+                    // pena adelantar: las miniaturas (ver
+                    // useGaleriaImages.js). abrirMenu ya las dispara al
+                    // abrir el menú completo, pero esto cubre a quien
+                    // reabre el menú y SOLO roza esta fila.
+                    onMouseEnter={item.id === "pirotecnia" ? preloadGaleriaThumbnails : undefined}
+                    onTouchStart={item.id === "pirotecnia" ? preloadGaleriaThumbnails : undefined}
                   >
                     <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
                     <span className="cristal-col__texto">{t(item.label)}</span>
@@ -151,6 +168,13 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                     href={rutaHash(item.id)}
                     aria-current={activo ? "page" : undefined}
                     onClick={alSeleccionar}
+                    // Juegos es la única fila sin hijos que todavía
+                    // esconde un React.lazy detrás (los 3 minijuegos,
+                    // ver JuegosSeccion.jsx) -- roce de mouse/dedo
+                    // adelanta esa descarga antes de que el clic real
+                    // la necesite.
+                    onMouseEnter={item.id === "juegos" ? preloadJuegos : undefined}
+                    onTouchStart={item.id === "juegos" ? preloadJuegos : undefined}
                   >
                     <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
                     <span className="cristal-col__texto">{t(item.label)}</span>
@@ -168,6 +192,8 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
             className="cristal-col__boton icono-3d"
             href={rutaHash("privacidad")}
             onClick={alSeleccionar}
+            onMouseEnter={preloadPrivacidad}
+            onTouchStart={preloadPrivacidad}
             aria-label={t("footer.privacyLink")}
             title={t("footer.privacyLink")}
             style={{ "--icon-color": "var(--color-gold-light)", "--icon-ink": "#14163a" }}
