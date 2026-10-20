@@ -30,20 +30,21 @@
 
 /* A diferencia de .cristal-bento__principal (cuyo cristal lo pone
    HeroCristal.css porque esa tarjeta vive sola, también en la vieja
-   pantalla completa de antes), aquí el cristal lo pone este mismo div
-   -- Bienvenida.jsx se queda sin fondo propio en modo --bento (ver
-   Bienvenida.css) para no duplicar el marco. */
+   pantalla completa de antes), este div ya NO pone su propio cristal
+   (fondo/blur/borde/sombra) -- Bienvenida.jsx, desde el rediseño de
+   "Una carta para ti" a la paleta marino/dorado del sitio, SÍ trae su
+   propio marco (.bienvenida__nota cerrada, .bienvenida-carta abierta,
+   ver Bienvenida.css), así que el cristal de este wrapper ya no
+   enmarcaba nada -- quedaban dos marcos concéntricos, el de este div y
+   el de la tarjeta de adentro. Se deja el padding (el espacio sigue
+   haciendo falta, solo ya no lo pinta ESTE elemento) para que la
+   tarjeta de adentro conserve el mismo respiro contra los bordes de su
+   celda del Bento que las demás tarjetas vecinas. */
 .cristal-bento__carta {
   grid-column: span 2;
   min-width: 0;
   display: flex;
   padding: 1.7rem 1.8rem;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-deep);
 }
 
 .cristal-bento__carta > * {
@@ -177,6 +178,14 @@
   .cristal-bento__principal,
   .cristal-bento__carta {
     grid-column: 1 / -1;
+  }
+  /* 24px de más (al gap normal de la rejilla, --space-md/1.1rem ya
+     puesto en .cristal-bento) solo entre el video de bienvenida y la
+     carta -- apiladas y, desde el cambio de arriba, ya sin su propio
+     marco de cristal cada una, sin este respiro extra se leían como
+     dos bloques de contenido pegados en vez de dos piezas distintas. */
+  .cristal-bento__carta {
+    margin-top: 24px;
   }
   .cristal-bento__tile {
     grid-column: span 2;

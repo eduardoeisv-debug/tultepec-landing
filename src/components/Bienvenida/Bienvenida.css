@@ -21,14 +21,18 @@
   z-index: 4;
 }
 
-/* Tarjeta de la Carta del Bento de Inicio (ver InicioCristal.jsx):
-   el degradado y el borde redondeado de .bienvenida de arriba daban
-   por hecho una sección propia de ancho completo -- dentro de una
-   celda de la rejilla, esa forma ya la da la tarjeta de cristal que
-   la envuelve (.cristal-bento__carta en InicioCristal.css), así que
-   aquí se queda transparente para no duplicar el marco. .container
-   (clase global, ver global.css) también se neutraliza: su padding
-   horizontal se sumaba al padding propio de la tarjeta. */
+/* Tarjeta de la Carta del Bento de Inicio (ver InicioCristal.jsx): el
+   degradado y el borde redondeado de .bienvenida de arriba daban por
+   hecho una sección propia de ancho completo -- dentro de una celda
+   de la rejilla, ese marco ya no hace falta aquí: lo da la tarjeta de
+   adentro (.bienvenida__nota cerrada / .bienvenida-carta abierta, más
+   abajo en este mismo archivo), no el div que la envuelve
+   (.cristal-bento__carta en InicioCristal.css, que tampoco pinta
+   fondo/borde propio desde que esta tarjeta tiene el suyo -- antes de
+   eso sí los daba, y los dos marcos concéntricos se veían como dos
+   bloques iguales apilados). .container (clase global, ver global.css)
+   también se neutraliza aquí: su padding horizontal se sumaba al
+   padding propio de la tarjeta. */
 .bienvenida--bento {
   background: none;
   padding: 0;
