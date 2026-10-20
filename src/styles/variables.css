@@ -42,6 +42,9 @@
   /* Typography */
   --font-display: "Fraunces", "Iowan Old Style", serif;
   --font-body: "Work Sans", "Segoe UI", sans-serif;
+  /* Solo el "EA" del logo del pie (Footer.css) la usa -- no hace falta
+     en ningún otro texto del sitio. */
+  --font-logo: "Space Grotesk", "Segoe UI", sans-serif;
 
   --fs-hero: clamp(2.6rem, 5.5vw, 4.6rem);
   --fs-h2: clamp(2rem, 3.6vw, 2.9rem);

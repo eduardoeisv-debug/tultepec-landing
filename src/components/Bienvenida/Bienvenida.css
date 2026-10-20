@@ -462,13 +462,16 @@
   border-top: 1px solid rgba(42, 28, 18, 0.15);
 }
 
+/* Sin recorte circular ni opacidad reducida (antes border-radius:50% +
+   opacity:0.9, pensados para el .jpg cuadrado de antes) -- logo-ea.svg
+   ya trae su propia esquina redondeada dibujada adentro (rx=44 sobre
+   un lienzo de 200), un círculo encima le cortaría el hexágono y el
+   monograma por las puntas. Nítido a pantalla completa para que se
+   lea bien incluso a este tamaño chico (34px). */
 .bienvenida-carta__cierre img {
   display: block;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-  opacity: 0.9;
 }
 
 .bienvenida-carta__cta {

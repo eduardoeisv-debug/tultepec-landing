@@ -39,11 +39,18 @@ export default function Footer({ onOpenPrivacy }) {
 
       <div className="container footer__bottom">
         <span className="footer__signature">
+          {/* alt="" (decorativo): el lema de abajo ya dice en texto real
+              lo que antes solo estaba en el alt de la imagen -- con los
+              dos, un lector de pantalla anunciaría la misma frase dos
+              veces seguidas. */}
           <span className="footer__signature-seal">
-            <img src="/images/brand/ea-seal.jpg" alt={t("footer.sealAlt")} width="52" height="52" />
+            <img src="/images/brand/logo-ea.svg" alt="" width="64" height="64" />
           </span>
           <span className="footer__signature-text">
-            {t("footer.madeBy")} <strong>EA</strong>
+            <span className="footer__signature-madeby">
+              {t("footer.madeBy")} <strong>EA</strong>
+            </span>
+            <span className="footer__signature-tagline">{t("footer.sealTagline")}</span>
           </span>
         </span>
         <span className="footer__copyright">

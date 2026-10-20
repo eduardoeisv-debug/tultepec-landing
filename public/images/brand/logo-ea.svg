@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Sello EA">
+  <defs>
+    <linearGradient id="ea-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14204A" />
+      <stop offset="100%" stop-color="#070B1C" />
+    </linearGradient>
+    <filter id="ea-hex-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="ea-hex-blur" />
+      <feMerge>
+        <feMergeNode in="ea-hex-blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <!-- Pulso de los 3 nodos: solo corre cuando este SVG se usa en la
+         web (se incruste como imagen o directo en el documento, las
+         animaciones CSS/SMIL internas de un SVG se reproducen igual).
+         No existe una copia aparte para favicon: este mismo archivo no
+         se usa como favicon (el sitio conserva su propio ícono de
+         llama, ver index.html), así que no hace falta una variante
+         estática por separado.
+         CDATA: el contenido de style es XML de verdad aquí (no HTML,
+         donde los navegadores son más permisivos); un parser XML
+         estricto (el que usa, por ejemplo, el script que optimiza las
+         fotos de la galería) interpreta cualquier signo de menor-que
+         suelto dentro de ese bloque como el inicio de una etiqueta
+         nueva, no como texto. CDATA evita tener que acordarse de
+         escapar cada uno. -->
+    <style>
+      <![CDATA[
+      .ea-node {
+        animation: ea-node-pulso 2.6s ease-in-out infinite;
+      }
+      .ea-node--2 {
+        animation-delay: 0.9s;
+      }
+      .ea-node--3 {
+        animation-delay: 1.8s;
+      }
+      @keyframes ea-node-pulso {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ea-node {
+          animation: none;
+          opacity: 1;
+        }
+      }
+      ]]>
+    </style>
+  </defs>
+
+  <!-- Fondo: rectángulo redondeado con degradado diagonal + borde interior -->
+  <rect x="4" y="4" width="192" height="192" rx="44" fill="url(#ea-bg)" />
+  <rect x="4" y="4" width="192" height="192" rx="44" fill="none" stroke="#2B3A78" stroke-opacity="0.7" stroke-width="1" />
+
+  <!-- Hexágono de línea fina, con brillo suave -->
+  <polygon
+    points="100,24 165.8,62 165.8,138 100,176 34.2,138 34.2,62"
+    fill="none"
+    stroke="#38D0FF"
+    stroke-width="2.5"
+    filter="url(#ea-hex-glow)"
+  />
+
+  <!-- Líneas cortas de cada nodo hacia adentro -->
+  <line x1="100" y1="24" x2="100" y2="46" stroke="#38D0FF" stroke-opacity="0.6" stroke-width="1.6" />
+  <line x1="34.2" y1="138" x2="50" y2="128" stroke="#38D0FF" stroke-opacity="0.6" stroke-width="1.6" />
+  <line x1="165.8" y1="138" x2="150" y2="128" stroke="#38D0FF" stroke-opacity="0.6" stroke-width="1.6" />
+
+  <!-- Nodos en los 3 vértices -->
+  <g class="ea-node">
+    <circle cx="100" cy="24" r="5.5" fill="#070B1C" stroke="#38D0FF" stroke-width="2" />
+    <circle cx="100" cy="24" r="1.8" fill="#38D0FF" />
+  </g>
+  <g class="ea-node ea-node--2">
+    <circle cx="34.2" cy="138" r="5.5" fill="#070B1C" stroke="#38D0FF" stroke-width="2" />
+    <circle cx="34.2" cy="138" r="1.8" fill="#38D0FF" />
+  </g>
+  <g class="ea-node ea-node--3">
+    <circle cx="165.8" cy="138" r="5.5" fill="#070B1C" stroke="#38D0FF" stroke-width="2" />
+    <circle cx="165.8" cy="138" r="1.8" fill="#38D0FF" />
+  </g>
+
+  <!-- Monograma EA, trazos de 6px (5px la barra de unión) -->
+  <g transform="translate(-5 2)" fill="none" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M64 104 H137" stroke="#F2C75C" stroke-width="5" />
+    <path d="M98 72 H64 V132 H98" stroke="#EAF2FF" stroke-width="6" />
+    <path d="M106 132 L126 72 L146 132" stroke="#F2C75C" stroke-width="6" />
+  </g>
+</svg>

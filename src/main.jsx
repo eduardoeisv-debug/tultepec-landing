@@ -9,6 +9,9 @@ import '@fontsource/work-sans/400.css'
 import '@fontsource/work-sans/500.css'
 import '@fontsource/work-sans/600.css'
 import '@fontsource/work-sans/700.css'
+// Solo 700 -- el único peso que usa el logo EA ("EA" del pie,
+// Footer.css), en ningún otro lado del sitio.
+import '@fontsource/space-grotesk/700.css'
 // URLs (con hash de Vite, ?url en vez de un <link> estático en index.html
 // que se desactualizaría en cada build) de las 2 variantes que de verdad
 // se ven en el primer pintado: Work Sans 400 (todo el cuerpo de texto) y

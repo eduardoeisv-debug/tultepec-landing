@@ -41,9 +41,9 @@ export const STRINGS = {
     es: "Proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno, gremio pirotécnico ni organizador oficial de la Feria Nacional de la Pirotecnia.",
     en: "Independent cultural project, made as a portfolio piece. It does not represent any government institution, pyrotechnic guild, or official organizer of the Feria Nacional de la Pirotecnia.",
   },
-  "footer.sealAlt": {
-    es: "Sello EA — Dos mentes, una visión. Creamos el futuro.",
-    en: "EA Seal — Two minds, one vision. We create the future.",
+  "footer.sealTagline": {
+    es: "Dos mentes · Una visión · Creamos el futuro",
+    en: "Two minds · One vision · We create the future",
   },
   "footer.madeBy": { es: "Hecho por", en: "Made by" },
   "footer.copyright": {

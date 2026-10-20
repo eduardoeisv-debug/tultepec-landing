@@ -141,7 +141,7 @@ export default function Bienvenida({ className = "" }) {
                   </div>
 
                   <div className="bienvenida-carta__cierre" aria-hidden="true">
-                    <img src="/images/brand/ea-seal.jpg" alt="" width="34" height="34" />
+                    <img src="/images/brand/logo-ea.svg" alt="" width="34" height="34" />
                   </div>
 
                   <div className="bienvenida-carta__cta">
