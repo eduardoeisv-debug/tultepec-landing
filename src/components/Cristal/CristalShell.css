@@ -81,13 +81,16 @@
      pegado justo debajo de su contenido en vez de al fondo real del
      viewport. */
   flex: 1 0 auto;
-  /* Variable (no el valor suelto repetido) para que FinalCTA.css pueda
-     cancelarla con un margin negativo igual y volver a ponerla como su
-     propio padding -- así su fondo llega de borde a borde en celular
-     sin que el contenido de adentro pierda el mismo respiro lateral
-     que ya tenía. Ver el comentario de .final-cta en ese archivo. */
+  /* Variables (no los valores sueltos repetidos) para que FinalCTA.css
+     pueda cancelarlas con un margin negativo igual y volver a ponerlas
+     como su propio padding -- así su fondo llega de borde a borde (en
+     celular Y en escritorio) sin que el contenido de adentro pierda el
+     mismo respiro que ya tenía, ni quede un hueco morado entre el
+     panel y Footer donde antes estaba este padding-bottom. Ver el
+     comentario de .final-cta en ese archivo. */
   --cristal-gutter: max(20px, 3vw);
-  padding: 0 var(--cristal-gutter) 3rem;
+  --cristal-stage-pb: 3rem;
+  padding: 0 var(--cristal-gutter) var(--cristal-stage-pb);
 }
 
 /* Sin sangrado a los lados (nada de márgenes negativos): a 390px el
@@ -112,7 +115,16 @@
    la barra. */
 @media (max-width: 700px) {
   .cristal-stage {
-    padding: 0 0.7rem 0;
+    /* --cristal-gutter/--cristal-stage-pb TAMBIÉN se redeclaran aquí,
+       no solo el padding -- son variables, no se "heredan actualizadas"
+       solo por cambiar la propiedad padding que las usa; si se dejaban
+       en max(20px,3vw)/3rem de la regla de arriba, FinalCTA.css habría
+       cancelado/repuesto un valor (20px+) que ya no coincidía con el
+       padding real aplicado aquí (0.7rem), dejando su contenido con más
+       respiro lateral del que tenía antes del cambio. */
+    --cristal-gutter: 0.7rem;
+    --cristal-stage-pb: 0rem;
+    padding: 0 var(--cristal-gutter) var(--cristal-stage-pb);
   }
 }
 

@@ -160,9 +160,12 @@
   }
 }
 
+/* Sin max-width/margin:auto propios -- ese límite de ancho ahora vive
+   adentro, en .final-cta__content (FinalCTA.css), para que .final-cta
+   mismo (el fondo oscuro del panel) pueda extenderse de borde a borde
+   sin que ESTE envoltorio se lo impida primero. */
 .cristal-inicio__cta {
-  max-width: var(--max-width);
-  margin: 2.5rem auto 0;
+  margin-top: 2.5rem;
 }
 
 /* Tablet: la Principal y la Carta se apilan a todo el ancho (4+2 ya

@@ -152,7 +152,6 @@ export const STRINGS = {
     en: "Tultepec, the town that gave fire its name — discover its history:",
   },
 
-  "likeButton.teGusta": { es: "Te gusta", en: "You like this" },
   "likeButton.meGusta": { es: "Me gusta", en: "Like" },
 
   "historyModal.eyebrow": { es: "Explora la historia", en: "Explore the history" },

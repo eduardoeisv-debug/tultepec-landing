@@ -53,7 +53,7 @@ export default function LikeButton() {
       <span className="like-button__icon">
         <Heart size={19} strokeWidth={1.8} fill={liked ? "currentColor" : "none"} />
       </span>
-      <span>{liked ? t("likeButton.teGusta") : t("likeButton.meGusta")}</span>
+      <span>{t("likeButton.meGusta")}</span>
       {count !== null && <span className="like-button__count">{count}</span>}
     </button>
   );
