@@ -1,7 +1,6 @@
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import SECTIONS from "../../data/sections.js";
-import AgradecimientoEspecial from "../shared/AgradecimientoEspecial.jsx";
 import "./Footer.css";
 
 // Agradecimientos y Acerca de: en el pie, no como tarjeta de Inicio ni
@@ -10,31 +9,23 @@ import "./Footer.css";
 // no hay una lista propia de este componente que se pueda desincronizar.
 const ENLACES_PIE = SECTIONS.filter((s) => s.showInFooter);
 
-export default function Footer({ onOpenPrivacy, enInicio }) {
+export default function Footer({ onOpenPrivacy }) {
   const { t } = useLanguage();
   const anio = new Date().getFullYear();
 
   return (
     <footer className="footer">
-      <div className={`container footer__grid${enInicio ? "" : " footer__grid--solo"}`}>
-        <div>
-          <span className="footer__brand">Tultepec · {t("header.subtitle")}</span>
-          <p className="footer__tagline">{t("footer.tagline")}</p>
-          <p className="footer__disclaimer">{t("footer.disclaimer")}</p>
-          <nav className="footer__links" aria-label={t("footer.linksAriaLabel")}>
-            {ENLACES_PIE.map((item) => (
-              <a key={item.id} href={rutaHash(item.id)}>
-                {t(item.label)}
-              </a>
-            ))}
-          </nav>
-        </div>
-
-        {enInicio && (
-          <div className="footer__agradecimiento-card">
-            <AgradecimientoEspecial className="footer__thanks" />
-          </div>
-        )}
+      <div className="container footer__grid">
+        <span className="footer__brand">Tultepec · {t("header.subtitle")}</span>
+        <p className="footer__tagline">{t("footer.tagline")}</p>
+        <p className="footer__disclaimer">{t("footer.disclaimer")}</p>
+        <nav className="footer__links" aria-label={t("footer.linksAriaLabel")}>
+          {ENLACES_PIE.map((item) => (
+            <a key={item.id} href={rutaHash(item.id)}>
+              {t(item.label)}
+            </a>
+          ))}
+        </nav>
       </div>
 
       <div className="container footer__bottom">

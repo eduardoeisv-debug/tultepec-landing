@@ -264,7 +264,7 @@ export default function CristalShell() {
           nueva (React.lazy, ver REGISTRO arriba) todavía se descarga --
           antes vivía dentro de cada vista (CierreComun.jsx) y el hueco
           del Suspense de Seccion.jsx se sentía como "el pie tarda". */}
-      <Footer onOpenPrivacy={onOpenPrivacy} enInicio={!ruta.itemId} />
+      <Footer onOpenPrivacy={onOpenPrivacy} />
       <BottomNav enInicio={!ruta.itemId} onAbrirMenu={() => setMenuAbierto(true)} menuAbierto={menuAbierto} />
     </div>
   );

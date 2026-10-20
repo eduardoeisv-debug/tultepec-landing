@@ -22,20 +22,8 @@
 }
 
 .footer__grid {
-  display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: var(--space-lg);
-  align-items: start;
   padding-bottom: var(--space-md);
   border-bottom: 1px solid rgba(251, 241, 226, 0.12);
-}
-
-/* Sin la tarjeta de agradecimiento (fuera de Inicio, ver Footer.jsx)
-   queda un solo hijo -- una columna, para que el bloque de la
-   izquierda use todo el ancho en vez de dejar un hueco donde estaba
-   la tarjeta. */
-.footer__grid--solo {
-  grid-template-columns: 1fr;
 }
 
 .footer__brand {
@@ -82,30 +70,6 @@
 .footer__links a:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 3px;
-}
-
-/* Tarjeta del agradecimiento especial -- arriba a la derecha en
-   escritorio, debajo del nombre/aviso en celular (ver el breakpoint
-   más abajo). */
-.footer__agradecimiento-card {
-  padding: 1.1rem 1.3rem;
-  border: 1px solid rgba(251, 241, 226, 0.14);
-  border-radius: 16px;
-  background: var(--color-footer-card-bg);
-}
-
-.footer__thanks {
-  margin: 0;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--color-gold-light);
-}
-
-.footer__thanks strong {
-  color: var(--color-paper);
-  font-style: normal;
 }
 
 /* Barra inferior en tres partes: logo+"Hecho por EA" a la izquierda,
@@ -187,10 +151,6 @@
 }
 
 @media (max-width: 720px) {
-  .footer__grid {
-    grid-template-columns: 1fr;
-  }
-
   .footer__bottom {
     flex-direction: column;
     text-align: center;

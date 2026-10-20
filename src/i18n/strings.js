@@ -36,10 +36,6 @@ export const STRINGS = {
     es: "Un archivo hecho para honrar la memoria de un pueblo.",
     en: "An archive made to honor the memory of a town.",
   },
-  "footer.thanks": {
-    es: "Un agradecimiento especial al grupo Memorias de mi pueblo, por compartir con generosidad su conocimiento y sus recuerdos — el verdadero corazón de este archivo.",
-    en: "A special thanks to the Memorias de mi pueblo group, for generously sharing their knowledge and memories — the true heart of this archive.",
-  },
   "footer.thanksName": { es: "grupo Memorias de mi pueblo", en: "Memorias de mi pueblo group" },
   "footer.disclaimer": {
     es: "Proyecto cultural independiente, hecho como pieza de portafolio. No representa a ninguna institución de gobierno, gremio pirotécnico ni organizador oficial de la Feria Nacional de la Pirotecnia.",
