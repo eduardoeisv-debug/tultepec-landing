@@ -25,10 +25,10 @@ export default function LanguageToggle({ className }) {
         aria-hidden="true"
         style={{ transform: `translateX(${activeIndex * 100}%)` }}
       />
-      <button type="button" aria-pressed={language === "es"} onClick={() => setLanguage("es")}>
+      <button type="button" lang="es" aria-pressed={language === "es"} onClick={() => setLanguage("es")}>
         ES
       </button>
-      <button type="button" aria-pressed={language === "en"} onClick={() => setLanguage("en")}>
+      <button type="button" lang="en" aria-pressed={language === "en"} onClick={() => setLanguage("en")}>
         EN
       </button>
     </span>

@@ -87,33 +87,36 @@
   text-decoration: none;
 }
 
-/* "Pestañas de Cristal": mismo cristal esmerilado que el resto del
-   rediseño Bento (bg translúcido + blur + borde sutil, ver
-   InicioCristal.css .cristal-bento__tile) en vez del borde liso de
-   antes. flex-shrink:0 para que nunca sea lo que ceda espacio -- eso
-   le toca a .cristal-topbar__marca, que ya tiene su propio recorte
-   con ellipsis. position:relative porque el óvalo activo
-   (__indicator) es un hijo position:absolute que se desliza detrás
-   de los botones. */
+/* Píldora de azul marino (antes cristal blanco translúcido, no
+   combinaba con "marino + dorado" del resto del sitio) con borde
+   dorado de 1px a baja opacidad -- mismo lenguaje que .bienvenida__nota
+   y otras píldoras/tarjetas de Menú Cristal. Alto ~40px en escritorio
+   (sube a 44px de ÁREA TÁCTIL con un pseudo-elemento invisible por
+   botón, ver .cristal-topbar__lang button::before más abajo -- la
+   píldora en sí no tiene que ser tan alta como el mínimo táctil
+   pedido). flex-shrink:0 para que nunca sea lo que ceda espacio -- eso
+   le toca a .cristal-topbar__marca, que ya tiene su propio recorte con
+   ellipsis. position:relative porque el óvalo activo (__indicator) es
+   un hijo position:absolute que se desliza detrás de los botones. */
 .cristal-topbar__lang {
   position: relative;
   display: flex;
+  align-items: center;
   flex-shrink: 0;
+  height: 40px;
   padding: 3px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-night-700);
+  border: 1px solid rgba(243, 205, 122, 0.3);
 }
 
-/* El óvalo dorado que marca el idioma activo -- un solo elemento que
+/* La píldora dorada que marca el idioma activo -- un solo elemento que
    se desliza con transform (ver LanguageToggle.jsx) en vez de pintar
    el fondo de cada botón por separado, mismo mecanismo que ya usa
-   SegmentedTabs.jsx en el resto del sitio. El resplandor usa el
-   dorado propio del proyecto (--color-gold-light) en vez de un ámbar
-   nuevo, para no desentonar con el resto de acentos dorados de Menú
-   Cristal. */
+   SegmentedTabs.jsx en el resto del sitio. Sombra corta (antes un
+   resplandor difuso de 12px de radio a 45% -- competía de más con el
+   resto de acentos dorados del encabezado), 200ms (no 300ms) para
+   quedar dentro del tope pedido. */
 .cristal-topbar__lang-indicator {
   position: absolute;
   top: 3px;
@@ -122,28 +125,58 @@
   height: calc(100% - 6px);
   border-radius: 999px;
   background: var(--color-gold-light);
-  box-shadow: 0 0 12px rgba(243, 205, 122, 0.45);
-  transition: transform 0.3s var(--ease-out);
+  box-shadow: 0 2px 8px rgba(243, 205, 122, 0.25);
+  transition: transform 0.2s var(--ease-out);
 }
 
+/* height:100% (llena el alto de 40px/36px del contenedor, con el
+   padding de 3px ya puesto en .cristal-topbar__lang) -- antes 44px
+   fijos, que eran justo los que inflaban el contenedor entero a 50-52px
+   de alto en vez de los 36-40px pedidos. El área táctil de 44px mínima
+   ahora la da el ::before de abajo, sin agrandar la píldora visible. */
 .cristal-topbar__lang button {
   all: unset;
   box-sizing: border-box;
   position: relative;
   z-index: 1;
   cursor: pointer;
-  min-width: 36px;
-  height: 44px;
-  padding: 0 0.6rem;
+  min-width: 39px;
+  height: 100%;
+  padding: 0 0.5rem;
   border-radius: 999px;
   text-align: center;
   font-size: 0.74rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.45);
+  /* Crema/lila tenue (antes blanco a 45%, ~4.52:1 sobre el fondo del
+     encabezado -- apenas arriba del mínimo pedido, sin margen real).
+     --cristal-soft a esta opacidad ya da >4.5:1 sobre la nueva píldora
+     marino Y sobre el fondo sólido del encabezado por igual. */
+  color: rgba(201, 198, 228, 0.82);
   transition: color 0.2s var(--ease-out);
 }
 
-.cristal-topbar__lang button:hover {
+/* Área táctil de 44px mínima sin agrandar la píldora visible: un
+   pseudo-elemento invisible (sin fondo ni borde) centrado sobre cada
+   botón, con al menos 44px por lado -- expandido parejo en los 4
+   lados así que no empuja el layout ni se nota, solo amplía dónde
+   responde el toque/clic. */
+.cristal-topbar__lang button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+/* :not([aria-pressed="true"]) en los dos -- el botón activo (sobre la
+   píldora dorada) ya tiene su propio color fijo (marino oscuro) más
+   abajo; sin este filtro, pasar el mouse o enfocar el botón activo lo
+   pintaría de crema sobre fondo dorado, justo el contraste que NO se
+   quiere ahí. */
+.cristal-topbar__lang button:not([aria-pressed="true"]):hover,
+.cristal-topbar__lang button:not([aria-pressed="true"]):focus-visible {
   color: var(--color-paper);
 }
 
@@ -174,6 +207,12 @@
   }
 }
 
+/* Antes dos bloques @media (max-width:480px) separados -- uno solo.
+   Selector de idioma: ancho total ~84-88px (antes ~72px ya, pero con
+   el contenedor más bajo y texto reacomodado le sobra aire al título
+   de al lado) y alto de píldora 36px (el extremo bajo de los 36-40px
+   pedidos) -- el área táctil de 44px sigue garantizada por el ::before
+   de arriba, independiente del alto visible de la píldora. */
 @media (max-width: 480px) {
   .cristal-topbar {
     padding-left: 0.9rem;
@@ -183,10 +222,12 @@
   .cristal-topbar__marca {
     font-size: 1rem;
   }
+  .cristal-topbar__lang {
+    height: 36px;
+  }
   .cristal-topbar__lang button {
-    min-width: 32px;
-    height: 44px;
+    min-width: 39px;
     padding: 0 0.45rem;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
   }
 }
