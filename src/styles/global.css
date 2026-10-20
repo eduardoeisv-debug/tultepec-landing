@@ -35,6 +35,60 @@ html {
   color-scheme: dark;
   background-color: #1a1b4b;
   background-image: linear-gradient(180deg, #1a1b4b 0%, #2a1f5c 45%, #5a2a63 100%);
+  /* Firefox (scrollbar-width/-color son propiedades estándar, heredadas
+     -- declararlas una sola vez aquí ya alcanza a cualquier contenedor
+     con su propio overflow en todo el sitio, sin repetir la regla por
+     cada uno). "thin" + el pulgar dorado de --scrollbar-thumb (ver
+     variables.css), riel transparente. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  /* Solo en el documento: reserva el ancho de la barra aunque no haga
+     falta en ese momento, para que cambiar de una vista corta (sin
+     scroll) a una larga (con scroll) no corra el contenido unos
+     píxeles -- en un panel/modal interno esa misma reserva se vería
+     como una franja vacía sin scrollbar real adentro, así que no se
+     repite ahí (ver el comentario de las reglas de abajo). */
+  scrollbar-gutter: stable;
+}
+
+/* WebKit (Chrome/Edge/Safari) no hereda ::-webkit-scrollbar -- el
+   selector universal (no un contenedor por nombre, uno por uno) aplica
+   el mismo estilo a CUALQUIER elemento con su propio scroll en todo el
+   sitio (html/body, el panel del menú, el modal de comentarios, la
+   tabla del aviso de privacidad, el carrusel de libros de Relatos,
+   etc.), presentes y futuros, sin tener que acordarse de repetir esto
+   cada vez que se agregue un contenedor nuevo con overflow propio. */
+*::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+/* Sin flechas -- los botones nativos de avance/retroceso del riel no
+   combinan con ningún otro control del sitio. */
+*::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* border + background-clip:padding-box (no solo border-radius): dejan
+   un margen real del color de FONDO alrededor del pulgar (no solo una
+   esquina redondeada pegada al borde del riel), para que no se vea
+   pegado a los bordes del contenedor en pantallas con scrollbar ancho
+   por configuración del sistema. border-color transparent -- el único
+   borde "visible" es ese hueco, no una línea de color. */
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-thumb-hover);
 }
 
 /* Foco visible de respaldo: cubre cualquier elemento interactivo que no

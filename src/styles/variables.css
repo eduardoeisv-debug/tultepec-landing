@@ -65,4 +65,14 @@
   --max-width: 1180px;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Barra de desplazamiento (global.css): un solo lugar para el ancho y
+     los dos tonos del pulgar -- dorado (--color-gold-light) a ~30%
+     normal / ~60% en hover y active, riel siempre transparente. Mismas
+     variables para el estándar (scrollbar-width/-color, Firefox) y
+     WebKit (Chrome/Edge/Safari, ::-webkit-scrollbar-*). */
+  --scrollbar-width: 8px;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(243, 205, 122, 0.3);
+  --scrollbar-thumb-hover: rgba(243, 205, 122, 0.6);
 }
