@@ -81,7 +81,13 @@
      pegado justo debajo de su contenido en vez de al fondo real del
      viewport. */
   flex: 1 0 auto;
-  padding: 0 max(20px, 3vw) 3rem;
+  /* Variable (no el valor suelto repetido) para que FinalCTA.css pueda
+     cancelarla con un margin negativo igual y volver a ponerla como su
+     propio padding -- así su fondo llega de borde a borde en celular
+     sin que el contenido de adentro pierda el mismo respiro lateral
+     que ya tenía. Ver el comentario de .final-cta en ese archivo. */
+  --cristal-gutter: max(20px, 3vw);
+  padding: 0 var(--cristal-gutter) 3rem;
 }
 
 /* Sin sangrado a los lados (nada de márgenes negativos): a 390px el

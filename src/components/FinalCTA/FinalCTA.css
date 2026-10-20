@@ -19,10 +19,27 @@
    el último bloque antes de Footer, dejaba mucho espacio vacío debajo
    de los botones de compartir sin ninguna razón de layout (nada que
    necesite ese respiro de por sí, solo heredaba el mismo valor que el
-   resto del sitio). 32px arriba y abajo, parejo. */
+   resto del sitio). 32px arriba y abajo, parejo.
+   margin-left/right negativos = -1 × el padding lateral de .cristal-
+   stage (--cristal-gutter, ver CristalShell.css): cancelan ese padding
+   heredado para que el FONDO de esta sección llegue a los bordes de
+   verdad (como ya hace Footer, que vive fuera de .cristal-stage y por
+   eso nunca tuvo este problema) -- no 100vw, que en escritorio se
+   desborda por el ancho de la barra de scroll; aquí el valor exacto a
+   cancelar ya se conoce, así que no hay ese riesgo. padding-left/right
+   repone esa misma cantidad como propia, para que .final-cta__content
+   (adentro) seguir viendo el mismo respiro lateral que ya tenía. */
+/* :not(.final-cta--reducido) a propósito: la versión reducida (fuera
+   de Inicio) ya no tiene fondo propio (background:none, ver más abajo)
+   -- no hay nada que "bandas moradas" ahí, así que no necesita este
+   full-bleed, y tocarla de todos modos arriesgaba una pelea de
+   especificidad con su propio padding (misma especificidad, el orden
+   del archivo decide) sin ganar nada a cambio. */
 @media (max-width: 700px) {
-  .final-cta {
-    padding: 32px 0;
+  .final-cta:not(.final-cta--reducido) {
+    padding: 32px var(--cristal-gutter);
+    margin-left: calc(-1 * var(--cristal-gutter));
+    margin-right: calc(-1 * var(--cristal-gutter));
   }
 }
 
