@@ -323,6 +323,7 @@ export const STRINGS = {
   "galeria.tabs.videos": { es: "Videos", en: "Videos" },
   "galeria.chips.ariaLabel": { es: "Filtrar por categoría", en: "Filter by category" },
   "galeria.cargandoFotos": { es: "Buscando fotos…", en: "Looking for photos…" },
+  "galeria.cargarMas": { es: "Cargar más fotos", en: "Load more photos" },
   "galeria.cargandoVideos": { es: "Buscando videos…", en: "Looking for videos…" },
   "galeria.vacio.titulo": { es: "Pronto compartiremos más", en: "More coming soon" },
   "galeria.vacio.fotos": {

@@ -140,14 +140,22 @@ export default function CristalShell() {
     meta?.setAttribute("content", esMovil ? COLOR_CHROME_MOVIL : COLOR_CHROME_SITIO);
   }, [esMovil]);
 
-  // Abrir el menú ya es buena señal de que la Galería (dentro de
-  // Pirotecnia) podría venir pronto -- adelanta la descarga de sus
-  // miniaturas de verdad (no solo el sondeo de qué fotos existen, ya
-  // disparado arriba) para que, si la elige, ya estén en caché.
-  const abrirMenu = useCallback(() => {
-    setMenuAbierto(true);
-    preloadGaleriaThumbnails();
-  }, []);
+  const abrirMenu = useCallback(() => setMenuAbierto(true), []);
+
+  // Adelanta la descarga de verdad de las primeras miniaturas de la
+  // Galería (no solo el sondeo de qué fotos existen, ya disparado
+  // arriba) en cuanto la ruta ENTRA a Pirotecnia -- a propósito no en
+  // abrirMenu (demasiado pronto: bajaría datos para cualquiera que abra
+  // el menú y nunca toque Pirotecnia) ni con las 45 completas (ver
+  // PRELOAD_COUNT en useGaleriaImages.js). Cubre tanto el roce de
+  // mouse/dedo sobre la fila del menú (ColumnaCristal.jsx, más rápido
+  // porque adelanta ANTES del clic) como entrar directo por un enlace
+  // compartido o con teclado/lector de pantalla, que nunca dispara ese
+  // roce -- preloadGaleriaThumbnails ya se protege sola contra llamarse
+  // dos veces.
+  useEffect(() => {
+    if (ruta.itemId === "pirotecnia") preloadGaleriaThumbnails();
+  }, [ruta.itemId]);
 
   // Al cerrar el menú (Escape, clic fuera, X o elegir una opción), el
   // foco vuelve a la hamburguesa que lo abrió -- si no, tras cerrar

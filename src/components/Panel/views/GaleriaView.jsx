@@ -12,6 +12,14 @@ import { TabImagenesIcon, TabVideosIcon } from "../../shared/GaleriaIcons.jsx";
 import "../../shared/SegmentedTabs.css";
 import "../../shared/GaleriaOverlay.css";
 
+// Cuántas fotos se montan de entrada (y cuántas más por cada tanda) --
+// no las 45 de un jalón: bajo red lenta, 45 <img> compitiendo a la vez
+// por ancho de banda es justo lo que se sentía como "llegan
+// desordenadas, con huecos". El centinela de abajo del todo (ver
+// IntersectionObserver más abajo) pide la siguiente tanda solo cuando
+// de verdad se acerca al borde de la pantalla.
+const PAGE_SIZE = 12;
+
 // Lo que antes era GaleriaOverlay.jsx, reubicado como vista del panel:
 // mismas pestañas (Imágenes/Videos), mismos chips de categoría, misma
 // cuadrícula y el mismo visor ampliado (lightbox) -- ese sí se queda
@@ -27,10 +35,12 @@ export default function GaleriaView() {
   const [chipIndex, setChipIndex] = useState(0);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [videoIndex, setVideoIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const bodyRef = useRef(null);
   const touchStartX = useRef(null);
   const lightboxCloseRef = useRef(null);
   const lightboxRef = useRef(null);
+  const centinelaRef = useRef(null);
 
   const { status: imgStatus, photos } = useGaleriaImages(true);
   const { status: vidStatus, videos } = useGaleriaVideos(true);
@@ -47,17 +57,36 @@ export default function GaleriaView() {
     () => (chip === "todas" ? photos : photos.filter((p) => p.chip === chip)),
     [photos, chip]
   );
+  const visiblePhotos = useMemo(() => filteredPhotos.slice(0, visibleCount), [filteredPhotos, visibleCount]);
 
   useEffect(() => {
     setPhotoIndex(0);
+    setVisibleCount(PAGE_SIZE);
   }, [chip]);
+
+  // Centinela: en cuanto entra al viewport (rootMargin la adelanta un
+  // poco, antes de que de verdad se vea), pide PAGE_SIZE fotos más --
+  // mismo patrón de "cargar conforme se necesita" que loading="lazy" en
+  // las imágenes, pero para las propias <button>/<img> de la cuadrícula.
+  useEffect(() => {
+    const nodo = centinelaRef.current;
+    if (!nodo || visibleCount >= filteredPhotos.length) return undefined;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) setVisibleCount((n) => Math.min(n + PAGE_SIZE, filteredPhotos.length));
+      },
+      { rootMargin: "400px" }
+    );
+    obs.observe(nodo);
+    return () => obs.disconnect();
+  }, [visibleCount, filteredPhotos.length]);
 
   const { register: registerChip, onKeyDown: chipKeyDown } = useArrowNavigation({
     count: CHIPS.length,
     orientation: "horizontal",
   });
   const { register: registerPhoto, onKeyDown: photoKeyDown, focusAt: focusPhotoAt } = useArrowNavigation({
-    count: filteredPhotos.length,
+    count: visiblePhotos.length,
     orientation: "both",
   });
   const { register: registerVideo, onKeyDown: videoKeyDown } = useArrowNavigation({
@@ -101,6 +130,18 @@ export default function GaleriaView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxIndex]);
 
+  // Adelanta la foto siguiente y la anterior (tamaño completo, no la
+  // miniatura) en cuanto se abre el visor o se navega dentro de él -- el
+  // click en las flechas/el swipe ya las encuentra en caché HTTP, sin
+  // esperar a que empiecen a bajar justo en ese momento.
+  useEffect(() => {
+    if (lightboxIndex === null || filteredPhotos.length < 2) return;
+    const siguiente = filteredPhotos[(lightboxIndex + 1) % filteredPhotos.length];
+    const anterior = filteredPhotos[(lightboxIndex - 1 + filteredPhotos.length) % filteredPhotos.length];
+    new Image().src = siguiente.src;
+    new Image().src = anterior.src;
+  }, [lightboxIndex, filteredPhotos]);
+
   const onLightboxTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -132,7 +173,7 @@ export default function GaleriaView() {
             id: "imagenes",
             icon: TabImagenesIcon,
             label: t("galeria.tabs.imagenes"),
-            count: imgStatus === "done" ? photos.length : null,
+            count: imgStatus === "done" || imgStatus === "partial" ? photos.length : null,
           },
           {
             id: "videos",
@@ -173,7 +214,9 @@ export default function GaleriaView() {
               ))}
             </div>
 
-            {imgStatus === "loading" && <p className="galeria-status">{t("galeria.cargandoFotos")}</p>}
+            {imgStatus === "loading" && filteredPhotos.length === 0 && (
+              <p className="galeria-status">{t("galeria.cargandoFotos")}</p>
+            )}
 
             {imgStatus === "done" && filteredPhotos.length === 0 && (
               <div className="galeria-empty">
@@ -182,41 +225,56 @@ export default function GaleriaView() {
               </div>
             )}
 
-            {imgStatus === "done" && filteredPhotos.length > 0 && (
-              <div className="galeria-grid" onKeyDown={photoKeyDown(photoIndex, setPhotoIndex)}>
-                {filteredPhotos.map((photo, i) => (
-                  <button
-                    key={photo.id}
-                    type="button"
-                    ref={registerPhoto(i)}
-                    tabIndex={photoIndex === i ? 0 : -1}
-                    className="galeria-thumb"
-                    onClick={() => goToLightbox(i)}
-                    aria-label={t("galeria.verFoto", { n: i + 1, total: filteredPhotos.length })}
-                  >
-                    {/* thumbSrc/thumb2xSrc (400/800px, ver useGaleriaImages.js) en vez de
-                        photo.src (hasta 1200px, para el visor ampliado) -- cargar el
-                        tamaño completo en una celda de 130px era puro desperdicio.
-                        Las primeras 6 (las que ya se ven sin scroll en casi cualquier
-                        ancho) van "eager" para que no esperen a que el navegador decida
-                        que "ya casi están en pantalla"; el resto, "lazy" de verdad. Solo
-                        la primera pide fetchpriority alto -- es la única candidata real a
-                        LCP de esta vista. */}
-                    <img
-                      src={photo.thumbSrc}
-                      srcSet={`${photo.thumbSrc} 400w, ${photo.thumb2xSrc} 800w`}
-                      sizes="130px"
-                      width={400}
-                      height={400}
-                      alt=""
-                      loading={i < 6 ? "eager" : "lazy"}
-                      decoding="async"
-                      fetchPriority={i === 0 ? "high" : undefined}
-                      onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
-                    />
-                  </button>
-                ))}
-              </div>
+            {filteredPhotos.length > 0 && (
+              <>
+                {/* visiblePhotos (de PAGE_SIZE en PAGE_SIZE, ver el centinela de
+                    abajo), no las filteredPhotos completas -- bajo red lenta, montar
+                    las 45 <img> de un jalón es justo lo que se sentía como "llegan
+                    desordenadas, con huecos": todas compitiendo a la vez por ancho
+                    de banda. */}
+                <div className="galeria-grid" onKeyDown={photoKeyDown(photoIndex, setPhotoIndex)}>
+                  {visiblePhotos.map((photo, i) => (
+                    <button
+                      key={photo.id}
+                      type="button"
+                      ref={registerPhoto(i)}
+                      tabIndex={photoIndex === i ? 0 : -1}
+                      className="galeria-thumb"
+                      onClick={() => goToLightbox(i)}
+                      aria-label={t("galeria.verFoto", { n: i + 1, total: filteredPhotos.length })}
+                    >
+                      {/* thumbSrc/thumb2xSrc (400/800px, ver useGaleriaImages.js) en vez
+                          de photo.src (hasta 1280px, para el visor ampliado) -- cargar
+                          el tamaño completo en una celda de 130px era puro desperdicio.
+                          Las primeras 9 (las 3 filas que ya se ven sin hacer scroll en
+                          casi cualquier ancho) van "eager" para que no esperen a que el
+                          navegador decida que "ya casi están en pantalla"; el resto,
+                          "lazy" de verdad. Solo la primera pide fetchpriority alto -- es
+                          la única candidata real a LCP de esta vista. */}
+                      <img
+                        src={photo.thumbSrc}
+                        srcSet={`${photo.thumbSrc} 400w, ${photo.thumb2xSrc} 800w`}
+                        sizes="130px"
+                        width={400}
+                        height={400}
+                        alt=""
+                        loading={i < 9 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchPriority={i === 0 ? "high" : undefined}
+                        onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {visibleCount < filteredPhotos.length && (
+                  <div className="galeria-cargar-mas" ref={centinelaRef}>
+                    <button type="button" onClick={() => setVisibleCount((n) => Math.min(n + PAGE_SIZE, filteredPhotos.length))}>
+                      {t("galeria.cargarMas")}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}

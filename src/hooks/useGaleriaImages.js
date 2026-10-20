@@ -4,6 +4,9 @@ import { IMAGE_CATEGORIES, PHOTO_META } from "../data/galeria.js";
 
 const MAX_PHOTOS = 30; // tope de seguridad, no el número de peticiones reales
 const BATCH_SIZE = 8;
+// Cuántas miniaturas adelanta preloadGaleriaThumbnails -- no las 45, para
+// no gastarle datos a quien ni toque Pirotecnia (ver ese comentario).
+const PRELOAD_COUNT = 9;
 
 // Caché en memoria del módulo: una vez detectadas las fotos reales de cada
 // categoría en esta pestaña del navegador, no se vuelven a probar en
@@ -12,7 +15,13 @@ const BATCH_SIZE = 8;
 // dejarlas listas desde antes de que el visitante abra la galería. Se
 // pierde solo al recargar la página.
 let photosCache = null;
+let partialPhotos = [];
 let inFlight = null;
+// Quien quiera enterarse de cada categoría que va resolviendo mientras
+// photosCache todavía no existe (ver loadAll/ensureLoaded de abajo) -- en
+// la práctica solo el hook de este archivo se suscribe, pero Set en vez de
+// una sola variable por si StrictMode llega a montar dos instancias.
+const subscribers = new Set();
 
 // Prueba public/images/<folder>/01.*, 02.*, ... en LOTES de BATCH_SIZE en
 // paralelo (no las 30 posiciones de un jalón, ni tampoco una por una en
@@ -58,10 +67,30 @@ function toThumb(src, folder) {
   return src.replace(`/${folder}/`, `/${folder}/thumbs/`);
 }
 
+function notifySubscribers() {
+  for (const fn of subscribers) fn(partialPhotos);
+}
+
+// A diferencia de la versión anterior (que esperaba a Promise.all de las
+// 5 categorías antes de mostrar UNA sola foto), aquí cada categoría que
+// termina se suma de inmediato a partialPhotos y avisa a quien esté
+// escuchando (el hook de abajo) -- así la cuadrícula empieza a pintar en
+// cuanto la categoría MÁS RÁPIDA resuelve, en vez de esperar a la más
+// lenta (castillos-monumentales, 16 fotos, necesita 3 rondas de sondeo
+// contra 1-2 de las demás). Bajo redes lentas, esperar a las 5 Y DESPUÉS
+// montar las 45 fotos de golpe era justo lo que se sentía como "llegan
+// desordenadas, con huecos": nada se veía durante la espera larga, y
+// luego 45 peticiones de imagen competían todas a la vez por ancho de
+// banda. El orden final (una vez completo) sigue siendo el de
+// IMAGE_CATEGORIES (Promise.all preserva el orden de entrada, no el de
+// resolución), así que preloadGaleriaThumbnails (más abajo) puede seguir
+// asumiendo que las primeras PRELOAD_COUNT del arreglo completo son
+// siempre las mismas.
 function loadAll() {
+  partialPhotos = [];
   const work = IMAGE_CATEGORIES.map(async (cat) => {
     const found = await probeCategoryBatched(cat.folder);
-    return found.map((item) => ({
+    const categoryPhotos = found.map((item) => ({
       id: item.id,
       src: item.src,
       thumbSrc: toThumb(item.src, item.folder),
@@ -71,6 +100,9 @@ function loadAll() {
       categoryLabel: cat.label,
       meta: PHOTO_META[item.metaKey] || null,
     }));
+    partialPhotos = [...partialPhotos, ...categoryPhotos];
+    notifySubscribers();
+    return categoryPhotos;
   });
   return Promise.all(work).then((perCategory) => perCategory.flat());
 }
@@ -81,12 +113,17 @@ function loadAll() {
 // nunca se duplican las peticiones). El resultado no se cancela si el
 // componente que lo disparó se desmonta -- sigue siendo útil para cuando
 // se abra la galería más tarde, en esta sesión o en otra apertura.
-function ensureLoaded() {
+// onProgress (opcional) se suscribe a las actualizaciones parciales
+// mientras el sondeo sigue en curso -- quien lo pase debe quitarse de
+// `subscribers` cuando ya no le interese (ver el cleanup del hook).
+function ensureLoaded(onProgress) {
+  if (onProgress) subscribers.add(onProgress);
   if (photosCache) return Promise.resolve(photosCache);
   if (!inFlight) {
     inFlight = loadAll().then((all) => {
       photosCache = all;
       inFlight = null;
+      subscribers.clear();
       return all;
     });
   }
@@ -102,29 +139,29 @@ export function preloadGaleriaImages() {
 }
 
 // A diferencia de preloadGaleriaImages (solo HEAD, para DESCUBRIR qué
-// fotos existen), esto sí baja los bytes de verdad de cada miniatura
-// con new Image().src -- para cuando el navegador los vuelva a pedir
-// al entrar a la Galería, ya los tenga en caché HTTP y se vean al
-// instante. A propósito NO se llama sola al montar el shell (serían
-// ~1-1.6MB de descarga para cualquiera que ni toque el menú) -- la
-// dispara quien de verdad muestra intención de llegar ahí: abrir el
-// menú, o pasar el mouse/dedo por la fila de Pirotecnia (ver
-// ColumnaCristal.jsx/CristalShell.jsx).
+// fotos existen), esto sí baja los bytes de verdad de las primeras
+// PRELOAD_COUNT miniaturas (las 3 filas que se ven sin hacer scroll, no
+// las 45) con new Image().src -- para cuando el navegador las vuelva a
+// pedir al entrar a la Galería, ya las tenga en caché HTTP y se vean al
+// instante. A propósito NO se llama sola al montar el shell, ni con las
+// 45 -- la dispara solo quien de verdad muestra intención de entrar a
+// Pirotecnia (ver ColumnaCristal.jsx/CristalShell.jsx), y nunca descarga
+// más de lo que la primera pantalla necesita.
 let thumbsPrecargados = false;
 export function preloadGaleriaThumbnails() {
   if (thumbsPrecargados) return;
   thumbsPrecargados = true;
   ensureLoaded().then((photos) => {
-    for (const photo of photos) {
-      const esRetina = window.devicePixelRatio > 1;
+    const esRetina = window.devicePixelRatio > 1;
+    for (const photo of photos.slice(0, PRELOAD_COUNT)) {
       new Image().src = esRetina ? photo.thumb2xSrc : photo.thumbSrc;
     }
   });
 }
 
 export default function useGaleriaImages(active) {
-  const [status, setStatus] = useState(photosCache ? "done" : "idle");
-  const [photos, setPhotos] = useState(photosCache || []);
+  const [status, setStatus] = useState(photosCache ? "done" : partialPhotos.length ? "partial" : "idle");
+  const [photos, setPhotos] = useState(photosCache || partialPhotos);
 
   useEffect(() => {
     if (!active) return undefined;
@@ -135,9 +172,16 @@ export default function useGaleriaImages(active) {
     }
 
     let cancelled = false;
-    setStatus("loading");
+    setStatus(partialPhotos.length ? "partial" : "loading");
+    setPhotos(partialPhotos);
 
-    ensureLoaded().then((all) => {
+    const onProgress = (partial) => {
+      if (cancelled) return;
+      setPhotos(partial);
+      setStatus("partial");
+    };
+
+    ensureLoaded(onProgress).then((all) => {
       if (cancelled) return;
       setPhotos(all);
       setStatus("done");
@@ -145,6 +189,7 @@ export default function useGaleriaImages(active) {
 
     return () => {
       cancelled = true;
+      subscribers.delete(onProgress);
     };
   }, [active]);
 
