@@ -3,6 +3,8 @@ import MENU from "../../data/menu.js";
 import useHashRoute, { rutaHash } from "../../hooks/useHashRoute.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import useMediaQuery from "../../hooks/useMediaQuery.js";
+import { preloadGaleriaImages } from "../../hooks/useGaleriaImages.js";
+import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
 import BottomNav from "./BottomNav.jsx";
@@ -84,6 +86,27 @@ export default function CristalShell() {
   const botonMenuRef = useRef(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const esMovil = useMediaQuery("(max-width: 768px)");
+
+  // Arranca de inmediato el sondeo de qué fotos/videos existen de
+  // verdad en public/images|videos/<categoría>/ (useGaleriaImages.js /
+  // useGaleriaVideos.js, "01.jpg", "02.jpg"... hasta el primer hueco)
+  // -- a diferencia de las vistas de arriba (ya en el paquete
+  // principal, sin red de por medio), esto SÍ es una serie real de
+  // peticiones que no se puede resolver con un import estático: hay
+  // que preguntarle al servidor qué archivos están ahí. preloadGaleria-
+  // Images/Videos ya existían para esto mismo (pensadas para llamarse
+  // desde el Hero de antes del rediseño a Menú Cristal) pero habían
+  // quedado sin ningún punto que las llamara -- cada visita a Galería
+  // empezaba el sondeo desde cero en ese momento, con la página corta
+  // mientras tanto (mismo síntoma que ya se corrigió para el resto de
+  // las vistas, pero por esta otra causa). Sin idle/retraso: son
+  // peticiones chicas, arrancarlas apenas monta el shell les da el
+  // mayor margen posible antes de que alguien llegue a tocar esa
+  // tarjeta.
+  useEffect(() => {
+    preloadGaleriaImages();
+    preloadGaleriaVideos();
+  }, []);
 
   // La barra inferior fija (BottomNav.jsx) solo existe en celular --
   // su mismo tono (casi negro, no el azul del degradado del sitio)
