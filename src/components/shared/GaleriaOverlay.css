@@ -325,19 +325,17 @@
   max-height: 100%;
 }
 
-/* aspect-ratio: solo un valor de arranque -- el navegador lo cambia
-   por la proporción real en cuanto la foto carga (así funciona
-   aspect-ratio en un <img>, no hace falta JS). Evita que, antes de
-   eso, el <img> ocupe 0 de alto (sin intrínseco todavía) y el visor
-   "salte" de golpe al tamaño real -- el salto que queda, de todos
-   modos, es chico y ya no es a partir de la nada. El fondo + el fade
-   de opacity (mismo patrón que .galeria-thumb img) hacen que mientras
-   tanto se vea un placeholder sólido, no un hueco vacío ni el ícono de
-   imagen rota. */
+/* Sin aspect-ratio fijo aquí a propósito: el <img> ya trae width/height
+   reales (el manifest de la galería, ver GaleriaView.jsx/
+   build-galeria-manifest.mjs), así que el navegador calcula solo la
+   proporción correcta de CADA foto antes de que cargue -- un 4/3 fijo
+   para todas aplanaba fotos verticales y dejaba franjas vacías en las
+   muy panorámicas. El fondo + el fade de opacity (mismo patrón que
+   .galeria-thumb img) hacen que mientras carga se vea un placeholder
+   sólido, no un hueco vacío ni el ícono de imagen rota. */
 .galeria-lightbox__stage img {
   max-width: 100%;
   max-height: 70vh;
-  aspect-ratio: 4 / 3;
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.04);
   box-shadow: var(--shadow-deep);

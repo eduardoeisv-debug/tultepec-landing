@@ -161,6 +161,30 @@ export default function GaleriaView() {
 
   const activeLightboxPhoto = lightboxIndex !== null ? filteredPhotos[lightboxIndex] : null;
 
+  // Para que un recuadro nunca se quede vacío: la primera falla reintenta
+  // la MISMA miniatura con una query nueva (?retry=1 -- si ya estaba en
+  // caché del navegador como "fallida", reasignar el src idéntico no
+  // dispara una petición nueva por sí solo). Si vuelve a fallar, cae a la
+  // foto completa (photo.src) -- quitando el srcset/sizes primero, porque
+  // mientras sigan puestos el navegador los sigue prefiriendo sobre
+  // cualquier src que se le asigne después, y el respaldo nunca se vería.
+  const manejarErrorMiniatura = (e, photo) => {
+    const img = e.currentTarget;
+    const intentos = Number(img.dataset.intentos || "0");
+    if (intentos === 0) {
+      img.dataset.intentos = "1";
+      img.srcset = `${photo.thumbSrc}?retry=1 400w, ${photo.thumb2xSrc}?retry=1 800w`;
+      img.src = `${photo.thumbSrc}?retry=1`;
+    } else if (intentos === 1) {
+      img.dataset.intentos = "2";
+      img.removeAttribute("srcset");
+      img.removeAttribute("sizes");
+      img.src = photo.src;
+    }
+    // Si hasta la foto completa falla (intentos === 2), ya no hay más
+    // respaldo -- se deja como está, sin seguir reintentando en bucle.
+  };
+
   return (
     <div className="panel-view panel-view--anidada">
       <p className="panel-view__subtitulo-anidado">{t("galeria.subtitle")}</p>
@@ -178,7 +202,7 @@ export default function GaleriaView() {
             id: "imagenes",
             icon: TabImagenesIcon,
             label: t("galeria.tabs.imagenes"),
-            count: imgStatus === "done" || imgStatus === "partial" ? photos.length : null,
+            count: imgStatus === "done" ? photos.length : null,
           },
           {
             id: "videos",
@@ -221,6 +245,13 @@ export default function GaleriaView() {
 
             {imgStatus === "loading" && filteredPhotos.length === 0 && (
               <p className="galeria-status">{t("galeria.cargandoFotos")}</p>
+            )}
+
+            {imgStatus === "error" && (
+              <div className="galeria-empty">
+                <p>{t("galeria.error.titulo")}</p>
+                <p className="galeria-empty__sub">{t("galeria.error.sub")}</p>
+              </div>
             )}
 
             {imgStatus === "done" && filteredPhotos.length === 0 && (
@@ -267,6 +298,7 @@ export default function GaleriaView() {
                         decoding="async"
                         fetchPriority={i === 0 ? "high" : undefined}
                         onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
+                        onError={(e) => manejarErrorMiniatura(e, photo)}
                       />
                     </button>
                   ))}
@@ -386,9 +418,20 @@ export default function GaleriaView() {
             <img
               key={activeLightboxPhoto.id}
               src={activeLightboxPhoto.src}
+              width={activeLightboxPhoto.width}
+              height={activeLightboxPhoto.height}
               alt=""
               decoding="async"
               onLoad={(e) => e.currentTarget.classList.add("is-loaded")}
+              onError={(e) => {
+                // Un solo reintento (?retry=1) -- no hay a dónde más
+                // "caer": esta ya es la versión completa.
+                const img = e.currentTarget;
+                if (!img.dataset.intentos) {
+                  img.dataset.intentos = "1";
+                  img.src = `${activeLightboxPhoto.src}?retry=1`;
+                }
+              }}
             />
             <figcaption>
               {activeLightboxPhoto.meta?.titulo ? pick(activeLightboxPhoto.meta.titulo) : pick(activeLightboxPhoto.categoryLabel)}

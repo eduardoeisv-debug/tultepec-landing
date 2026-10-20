@@ -41,6 +41,11 @@ supabase/.temp
 # "predev" en package.json) -- no se commitea, siempre se regenera.
 src/data/memorias.json
 
+# Generado por scripts/build-galeria-manifest.mjs a partir de
+# public/images/ en cada build/dev (ver "prebuild"/"predev" en
+# package.json) -- no se commitea, siempre se regenera.
+public/galeria/manifest.json
+
 # Archivos temporales de Word (se crean mientras un .docx está abierto),
 # nunca se deben commitear.
 Documentos/~$*

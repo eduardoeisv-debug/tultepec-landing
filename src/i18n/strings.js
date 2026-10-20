@@ -322,7 +322,7 @@ export const STRINGS = {
   "galeria.tabs.imagenes": { es: "Imágenes", en: "Photos" },
   "galeria.tabs.videos": { es: "Videos", en: "Videos" },
   "galeria.chips.ariaLabel": { es: "Filtrar por categoría", en: "Filter by category" },
-  "galeria.cargandoFotos": { es: "Buscando fotos…", en: "Looking for photos…" },
+  "galeria.cargandoFotos": { es: "Cargando fotos…", en: "Loading photos…" },
   "galeria.cargarMas": { es: "Cargar más fotos", en: "Load more photos" },
   "galeria.cargandoVideos": { es: "Buscando videos…", en: "Looking for videos…" },
   "galeria.vacio.titulo": { es: "Pronto compartiremos más", en: "More coming soon" },
@@ -333,6 +333,11 @@ export const STRINGS = {
   "galeria.vacio.videos": {
     es: "Todavía no hay videos publicados.",
     en: "There are no published videos yet.",
+  },
+  "galeria.error.titulo": { es: "No se pudo cargar la galería", en: "The gallery couldn't load" },
+  "galeria.error.sub": {
+    es: "Revisa tu conexión e inténtalo de nuevo más tarde.",
+    en: "Check your connection and try again later.",
   },
   "galeria.verFoto": { es: "Ver foto {n} de {total}", en: "View photo {n} of {total}" },
   "galeria.fotoAnterior": { es: "Foto anterior", en: "Previous photo" },

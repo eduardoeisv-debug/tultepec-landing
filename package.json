@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "npm run build:memorias",
+    "predev": "npm run build:memorias && npm run build:galeria-manifest",
     "dev": "vite",
-    "prebuild": "npm run build:memorias",
+    "prebuild": "npm run build:memorias && npm run build:galeria-manifest",
     "build": "vite build",
     "build:memorias": "node scripts/build-memorias.mjs",
+    "build:galeria-manifest": "node scripts/build-galeria-manifest.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

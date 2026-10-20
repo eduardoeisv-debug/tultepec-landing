@@ -1,9 +1,19 @@
 // Contenido de la galería unificada "Imágenes y videos" del hero. Cada
 // categoría apunta a una carpeta en public/images/<folder>/ o
-// public/videos/<folder>/ con archivos numerados (01, 02, ...) -- agregar
-// una foto o video nuevo solo requiere soltar el archivo numerado en la
-// carpeta correspondiente (useGaleriaImages/useGaleriaVideos los detectan
-// solos), sin tocar este archivo.
+// public/videos/<folder>/ con archivos numerados (01, 02, ...).
+//
+// Videos: agregar uno nuevo solo requiere soltar el archivo numerado en
+// su carpeta -- useGaleriaVideos.js lo detecta solo (sondeo por HEAD).
+//
+// Fotos: YA NO se sondean en el navegador (ese sondeo confundía errores
+// de red reales con "la foto no existe" -- bug de producción corregido
+// con este cambio). Agregar una foto nueva requiere: (1) soltar el
+// original en assets-originales/galeria/<folder>/NN.<ext>, (2) correr
+// `node scripts/optimize-images.mjs` (genera el WebP + miniaturas en
+// public/images/<folder>/), y (3) el manifest (public/galeria/
+// manifest.json) se regenera solo en el siguiente build/dev
+// (scripts/build-galeria-manifest.mjs, ver "prebuild"/"predev" en
+// package.json) -- no hace falta tocarlo a mano.
 //
 // Para ponerle título, descripción o créditos a una foto o video en
 // particular, agrega una entrada a PHOTO_META o VIDEO_META usando la llave
