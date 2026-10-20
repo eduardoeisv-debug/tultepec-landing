@@ -2,16 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Bienvenida.css";
 
-// Solapa de sobre (línea dorada, sin relleno) para la tarjeta cerrada --
-// reemplaza el borde en zigzag rosa fucsia de antes, ajeno a la paleta
-// del sitio. Un solo triángulo (no una fila repetida de dientes) desde
-// las dos esquinas superiores hasta un punto central, como la solapa de
-// un sobre real visto de frente. viewBox fijo + preserveAspectRatio="none"
-// para que se estire al ancho real de la tarjeta en cualquier pantalla.
+// Solapa de sobre (línea dorada) para la tarjeta cerrada -- reemplaza
+// el borde en zigzag rosa fucsia de antes, ajeno a la paleta del
+// sitio. Un solo triángulo (no una fila repetida de dientes) desde las
+// dos esquinas superiores hasta un punto central, como la solapa de un
+// sobre real visto de frente. viewBox fijo + preserveAspectRatio="none"
+// para que se estire al ancho real de la tarjeta en cualquier
+// pantalla. El recorte a las esquinas redondeadas (para que la línea
+// arranque justo en la esquina de la tarjeta, no por fuera de su
+// curva) vive en el CSS, con un border-radius + overflow:hidden en
+// este mismo <svg> -- mismo radio que .bienvenida__nota, así que las
+// dos curvas coinciden exactas. Relleno dorado muy tenue (6%, opcional
+// por encargo) para darle volumen al triángulo, no solo una línea.
 function SobreSolapa() {
   return (
     <svg className="bienvenida-carta__solapa" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M2,2 L200,56 L398,2" fill="none" />
+      <path d="M1,1 L200,57 L399,1" fill="rgba(243, 205, 122, 0.07)" />
     </svg>
   );
 }

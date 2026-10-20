@@ -99,11 +99,14 @@
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  /* 1.05rem/1.3rem (no 1rem/1.3rem) -- con el ícono de 48px (antes
-     42px) el área táctil total ya pasaba los 48px pedidos, pero se
-     deja explícito con min-height para no depender solo de la suma de
-     paddings + alto del ícono. */
-  padding: 1.05rem 1.3rem;
+  /* padding-top más chico que el resto (0.85rem, no 1.05rem parejo):
+     la solapa de arriba (24px) ya aporta su propio "peso" visual sobre
+     el contenido -- con el mismo padding que abajo, el ícono/título
+     quedaban corridos hacia abajo respecto al triángulo de la solapa
+     en vez de centrados bajo ella. min-height explícito (no depender
+     solo de la suma de paddings + alto del ícono) para que el área
+     táctil se quede en 48px+ aunque el padding-top baje. */
+  padding: 0.85rem 1.3rem 1.05rem;
   min-height: 48px;
 }
 
@@ -154,8 +157,8 @@
 
 .bienvenida__nota-chevron {
   flex-shrink: 0;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   color: var(--color-gold-light);
   transition: transform 0.3s var(--ease-out);
 }
@@ -220,12 +223,21 @@
    se levanta un poco y se atenúa -- como una solapa que ya se desdobló
    -- con transform/opacity nada más, en 0.26s (dentro de los ≤300ms
    pedidos). transform-origin arriba: el triángulo gira/se encoge desde
-   su propio borde superior, no desde el centro de la tarjeta entera. */
+   su propio borde superior, no desde el centro de la tarjeta entera.
+   border-radius + overflow:hidden, mismo radio que .bienvenida__nota
+   (el botón que lo contiene): antes la línea se dibujaba recta de
+   esquina a esquina y el overflow:hidden DEL BOTÓN la cortaba de golpe
+   justo donde empezaba la curva, dejándola ver "suelta", como si no
+   llegara hasta la esquina de verdad. Con el mismo radio aplicado aquí
+   también, las dos curvas (la del botón y la de este SVG) coinciden
+   exactas, así que la línea sí respeta la curva en vez de que la curva
+   la corte. */
 .bienvenida-carta__solapa {
   display: block;
   width: 100%;
   height: 24px;
-  overflow: visible;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow: hidden;
 }
 
 .bienvenida-carta__solapa path {
@@ -276,12 +288,47 @@
   }
 }
 
+/* 1.5rem (24px, no --space-md/28px) antes del contenido desplegado --
+   escala de espaciado consistente (16/24/32px) con el resto de los
+   ajustes de esta tarjeta. */
 .bienvenida__grid {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: var(--space-lg);
   align-items: start;
-  margin-top: var(--space-md);
+  margin-top: 1.5rem;
+}
+
+/* Misma anchura y alineación que la tarjeta cerrada (.bienvenida__nota,
+   max-width:640px centrado) -- para que lo que se despliega se lea
+   como la MISMA pieza abriéndose, no un bloque de texto flotante
+   seguido de una tarjeta aparte con su propio ancho. gap más chico
+   (1.75rem/28px, dentro de los 24-32px pedidos) que el valor base de
+   arriba (pensado para las dos columnas del modo sin Bento): en una
+   sola columna, ese gap es la distancia vertical entre el subtítulo y
+   el papel crema, y --space-lg (48px) se sentía como un salto, no
+   como una transición. */
+.bienvenida--bento .bienvenida__grid {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 1.75rem;
+}
+
+/* Velo oscuro sutil detrás del encabezado (degradado a ~25% de
+   opacidad, border-radius propio para que no se vea como un rectángulo
+   recortado de golpe): en el modo Bento, .bienvenida ya no pone su
+   propio fondo (background:none, ver arriba), así que lo que se ve
+   detrás del título es el degradado de la página (.cristal-root) a
+   través del cristal casi transparente de la tarjeta -- en los puntos
+   donde ese degradado se pone más claro (el resplandor dorado/rosa),
+   el contraste del texto bajaba. El velo sube el contraste sin tapar
+   el degradado del todo. */
+.bienvenida--bento .bienvenida__copy {
+  padding: 0.9rem 1rem;
+  margin: -0.9rem -1rem 0;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(10, 14, 36, 0.3), rgba(10, 14, 36, 0.12));
 }
 
 .bienvenida__copy {
@@ -298,28 +345,38 @@
   color: var(--color-paper);
 }
 
+/* 0.92 (no 0.82): con el velo oscuro de arriba el contraste ya mejoró,
+   pero se sube también el color mismo para quedar con margen sobrado
+   sobre el mínimo de 4.5:1 pedido en cualquier punto del degradado,
+   velo incluido o no (el modo sin Bento, hoy inalcanzable desde la
+   app, no lleva el velo). */
 .bienvenida__subtitle {
   max-width: 28em;
   font-size: 1.05rem;
   line-height: 1.6;
-  color: rgba(251, 241, 226, 0.82);
+  color: rgba(251, 241, 226, 0.92);
 }
 
 /* Marco parejo (antes 6px arriba / --radius-lg abajo, a juego con el
-   zigzag que ya no existe) + borde dorado a baja opacidad, mismo
-   lenguaje que .bienvenida__nota de arriba y que el resto de tarjetas
-   del sitio -- el papel crema cálido se conserva como área de lectura
-   (pedido explícito), nada más dentro de un marco coherente con la
-   paleta. opacity/transform: la carta se revela junto con el
-   acordeón (abajo, .is-abierta), en vez de aparecer de golpe en cuanto
-   el alto deja de ser 0 -- 0.28s, dentro de los ≤300ms pedidos. */
+   zigzag que ya no existe) + borde dorado de 1px completo + sombra
+   suave, igual que .bienvenida__nota de arriba (pedido explícito) --
+   --color-gold, no --color-gold-light como en la nota: el mismo
+   dorado-claro casi no se distingue sobre este papel crema (los dos
+   son colores muy claros, el borde casi desaparecía); este tono más
+   oscuro de la misma familia sí se ve como un borde dorado de verdad
+   aquí, sin dejar de ser "el mismo lenguaje" que la tarjeta cerrada.
+   El papel crema cálido se conserva como área de lectura (pedido
+   explícito), nada más dentro de este marco coherente con la paleta.
+   opacity/transform: la carta se revela junto con el acordeón (abajo,
+   .is-abierta), en vez de aparecer de golpe en cuanto el alto deja de
+   ser 0 -- 0.28s, dentro de los ≤300ms pedidos. */
 .bienvenida-carta {
   position: relative;
   border-radius: var(--radius-md);
   background: var(--color-paper);
   color: var(--color-ink);
-  border: 1px solid rgba(154, 108, 38, 0.35);
-  box-shadow: var(--shadow-deep);
+  border: 1px solid rgba(227, 171, 61, 0.45);
+  box-shadow: var(--shadow-soft);
   overflow: hidden;
   opacity: 0;
   transform: translateY(10px);
@@ -491,24 +548,17 @@
 }
 
 /* Más abajo de 480px (celular con la columna del menú angosta
-   siempre visible al lado en Inicio, igual que arriba) el título
-   seguía partiéndose en una palabra por línea aunque el icono y la
-   flecha ya fueran más chicos -- a la pista de texto solo le quedaban
-   unos 56px reales. Se quita la pista ("Toca para leerla"/"Toca para
-   ocultar", es información secundaria) y se encoge más el relleno
-   para que el título tenga sitio de sobra para dos líneas limpias. */
+   siempre visible al lado en Inicio, igual que arriba) el relleno se
+   encoge un poco más para dejarle más sitio al texto. La pista ("Toca
+   para leerla"/"Toca para ocultar") ya NO se oculta aquí -- display:none
+   escondía información real (y en los dos idiomas) sin ninguna otra
+   forma de verla en celular; con white-space normal (heredado, nunca
+   se puso nowrap) hace wrap solo si hace falta, sin recortarse. El
+   chevron se queda en el tamaño base (20px, ver arriba) -- ya no se
+   achica aquí, para no caer debajo de los 18-20px pedidos. */
 @media (max-width: 480px) {
   .bienvenida__nota-cuerpo {
     gap: 0.5rem;
-    padding: 0.8rem 0.9rem;
-  }
-
-  .bienvenida__nota-hint {
-    display: none;
-  }
-
-  .bienvenida__nota-chevron {
-    width: 16px;
-    height: 16px;
+    padding: 0.7rem 0.9rem 0.9rem;
   }
 }
