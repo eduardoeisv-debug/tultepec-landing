@@ -12,9 +12,9 @@ import "./JuegosSeccion.css";
 // mismo patrón de pestañas (SegmentedTabs) que ya usan Galería,
 // Relatos y Memorias, para no inventar un control nuevo. Cada juego
 // se carga diferido: nadie descarga los 3 solo por abrir esta vista.
-const ToritoPirotecnico = lazy(() => import("../../Juegos/ToritoPirotecnico.jsx"));
 const MemoramaTultepec = lazy(() => import("../../Juegos/MemoramaTultepec.jsx"));
 const SopaDeLetras = lazy(() => import("../../Juegos/SopaDeLetras.jsx"));
+const ToritoPirotecnico = lazy(() => import("../../Juegos/ToritoPirotecnico.jsx"));
 
 // Mismos 3 import() de arriba, sueltos de lazy() -- llamarlos aparte
 // no descarga nada de más (el navegador/Vite deduplica por URL del
@@ -24,14 +24,14 @@ const SopaDeLetras = lazy(() => import("../../Juegos/SopaDeLetras.jsx"));
 // "Juegos" del menú) y CristalShell.jsx (en idle, tras el primer
 // render) -- ver el historial de esta tarea para el porqué.
 export function preloadJuegos() {
-  import("../../Juegos/ToritoPirotecnico.jsx");
   import("../../Juegos/MemoramaTultepec.jsx");
   import("../../Juegos/SopaDeLetras.jsx");
+  import("../../Juegos/ToritoPirotecnico.jsx");
 }
 
 export default function JuegosSeccion() {
   const { t } = useLanguage();
-  const [juego, setJuego] = useState("torito");
+  const [juego, setJuego] = useState("memorama");
 
   return (
     <div className="cristal-juegos">
@@ -46,16 +46,6 @@ export default function JuegosSeccion() {
         // igual) y el texto se salía -- abajo de 480px se ve el
         // nombre corto, arriba el completo.
         tabs={[
-          {
-            id: "torito",
-            icon: Gamepad2,
-            label: (
-              <>
-                <span className="segmented-tabs__label-corta">{t("menu.opcion.toritoCorto")}</span>
-                <span className="segmented-tabs__label-larga">{t("menu.opcion.torito")}</span>
-              </>
-            ),
-          },
           {
             id: "memorama",
             icon: Gamepad2,
@@ -76,18 +66,28 @@ export default function JuegosSeccion() {
               </>
             ),
           },
+          {
+            id: "torito",
+            icon: Gamepad2,
+            label: (
+              <>
+                <span className="segmented-tabs__label-corta">{t("menu.opcion.toritoCorto")}</span>
+                <span className="segmented-tabs__label-larga">{t("menu.opcion.torito")}</span>
+              </>
+            ),
+          },
         ]}
       />
 
       <Suspense fallback={<div className="cristal-juegos__cargando" aria-hidden="true" />}>
-        <div role="tabpanel" id="juegos-panel-torito" aria-labelledby="juegos-tab-torito" hidden={juego !== "torito"}>
-          {juego === "torito" && <ToritoPirotecnico />}
-        </div>
         <div role="tabpanel" id="juegos-panel-memorama" aria-labelledby="juegos-tab-memorama" hidden={juego !== "memorama"}>
           {juego === "memorama" && <MemoramaTultepec />}
         </div>
         <div role="tabpanel" id="juegos-panel-sopa" aria-labelledby="juegos-tab-sopa" hidden={juego !== "sopa"}>
           {juego === "sopa" && <SopaDeLetras />}
+        </div>
+        <div role="tabpanel" id="juegos-panel-torito" aria-labelledby="juegos-tab-torito" hidden={juego !== "torito"}>
+          {juego === "torito" && <ToritoPirotecnico />}
         </div>
       </Suspense>
     </div>
