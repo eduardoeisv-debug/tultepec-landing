@@ -47,8 +47,8 @@ export const STRINGS = {
   },
   "footer.madeBy": { es: "Hecho por", en: "Made by" },
   "footer.copyright": {
-    es: "Tultepec · Pueblo Pirotécnico — proyecto de portafolio.",
-    en: "Tultepec · Firework-Making Town — portfolio project.",
+    es: "EA · Tultepec Digital",
+    en: "EA · Tultepec Digital",
   },
   "footer.privacyLink": { es: "Aviso de privacidad", en: "Privacy notice" },
   "footer.linksAriaLabel": { es: "Enlaces del pie de página", en: "Footer links" },
