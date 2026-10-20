@@ -68,6 +68,11 @@ export default function GaleriaView() {
   // poco, antes de que de verdad se vea), pide PAGE_SIZE fotos más --
   // mismo patrón de "cargar conforme se necesita" que loading="lazy" en
   // las imágenes, pero para las propias <button>/<img> de la cuadrícula.
+  // 150px, no 400px -- con márgenes grandes, el centinela de la primera
+  // tanda (12 fotos, pocas filas) ya caía DENTRO del margen desde el
+  // primer render, y la carga en cascada se adelantaba sola varias
+  // tandas de golpe (se vieron 36 montadas de inmediato en vez de 12)
+  // antes de que el usuario llegara a hacer scroll de verdad.
   useEffect(() => {
     const nodo = centinelaRef.current;
     if (!nodo || visibleCount >= filteredPhotos.length) return undefined;
@@ -75,7 +80,7 @@ export default function GaleriaView() {
       (entries) => {
         if (entries[0].isIntersecting) setVisibleCount((n) => Math.min(n + PAGE_SIZE, filteredPhotos.length));
       },
-      { rootMargin: "400px" }
+      { rootMargin: "150px" }
     );
     obs.observe(nodo);
     return () => obs.disconnect();
