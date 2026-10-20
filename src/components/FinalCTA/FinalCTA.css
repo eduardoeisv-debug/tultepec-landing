@@ -35,6 +35,18 @@
    con el morado de la página. :not(.final-cta--reducido): la versión
    reducida (fuera de Inicio) no tiene fondo propio (background:none,
    ver más abajo) -- no hay "bandas moradas" que corregir ahí. */
+/* padding-bottom: 32px (el valor más alto de la escala 16/24/32/48
+   pedida que SÍ cae dentro del rango de espacio real pedido, ver
+   abajo) + --cristal-stage-pb -- antes var(--space-xl) (88px) +
+   --cristal-stage-pb, un hueco de ~136px entre los botones de
+   compartir y Footer. Medido con Playwright (no solo calculado): el
+   espacio real entre los botones y Footer no es igual a este valor a
+   secas (el padding/gap propio de .final-cta__content arriba le suma
+   a lo que se ve) -- 32px de base da ~52px de espacio real, dentro del
+   rango 48-64px pedido. El +var(--cristal-stage-pb) no es parte de ese
+   respiro visual, es la cancelación del padding-bottom de
+   .cristal-stage (ver el comentario de arriba) y tiene que quedarse
+   igual o el fondo oscuro deja de llegar hasta Footer. */
 .final-cta:not(.final-cta--reducido) {
   margin-left: calc(-1 * var(--cristal-gutter));
   margin-right: calc(-1 * var(--cristal-gutter));
@@ -42,7 +54,7 @@
   padding-top: var(--space-xl);
   padding-left: var(--cristal-gutter);
   padding-right: var(--cristal-gutter);
-  padding-bottom: calc(var(--space-xl) + var(--cristal-stage-pb));
+  padding-bottom: calc(32px + var(--cristal-stage-pb));
 }
 
 @media (max-width: 700px) {
