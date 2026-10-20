@@ -42,13 +42,13 @@ export const STRINGS = {
     en: "Independent cultural project, made as a portfolio piece. It does not represent any government institution, pyrotechnic guild, or official organizer of the Feria Nacional de la Pirotecnia.",
   },
   "footer.sealTagline": {
-    es: "Dos mentes · Una visión · Creamos el futuro",
-    en: "Two minds · One vision · We create the future",
+    es: "Dos mentes · Una visión",
+    en: "Two minds · One vision",
   },
   "footer.madeBy": { es: "Hecho por", en: "Made by" },
   "footer.copyright": {
-    es: "EA · Tultepec Digital",
-    en: "EA · Tultepec Digital",
+    es: "Tultepec Digital",
+    en: "Tultepec Digital",
   },
   "footer.privacyLink": { es: "Aviso de privacidad", en: "Privacy notice" },
   "footer.linksAriaLabel": { es: "Enlaces del pie de página", en: "Footer links" },

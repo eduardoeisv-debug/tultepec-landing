@@ -153,8 +153,9 @@
 }
 
 .footer__signature-madeby {
-  font-size: 0.85rem;
+  font-size: 1.2rem; /* ~19px -- jerarquía principal del bloque, ver footer__signature-tagline abajo */
   color: rgba(251, 241, 226, 0.55);
+  text-wrap: balance;
 }
 
 /* Space Grotesk 700 (--font-logo, variables.css) -- el único texto del
@@ -169,10 +170,12 @@
 
 /* Tenue y chico (antes vivía solo como alt de la imagen, invisible) --
    texto normal en una sola línea, no una curva/círculo alrededor del
-   logo. */
+   logo. Opacidad 0.55 (no 0.45): a 0.45 el contraste contra el fondo
+   del pie caía justo debajo de 4.5:1. */
 .footer__signature-tagline {
-  font-size: 0.72rem;
-  color: rgba(251, 241, 226, 0.45);
+  font-size: 0.8125rem; /* ~13px */
+  color: rgba(251, 241, 226, 0.55);
+  text-wrap: balance;
 }
 
 .footer__copyright {
