@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import MENU from "../data/menu.js";
+import SECTIONS from "../data/sections.js";
 
 // Lee "#/pirotecnia/historia" -> { itemId: "pirotecnia", hijoId: "historia" }
 // o "#/museos" -> { itemId: "museos", hijoId: null". Sin hash, o un hash
-// que no coincide con nada de MENU, cae en Inicio ({ itemId: null,
+// que no coincide con nada de SECTIONS, cae en Inicio ({ itemId: null,
 // hijoId: null }) -- nunca un enlace roto, nunca una pantalla en blanco.
 function leerRuta() {
   const hash = window.location.hash;
@@ -16,11 +16,11 @@ function leerRuta() {
   // Menú Cristal lo pide en su lista de rutas) -- misma vista, mismo
   // itemId null.
   if (itemId === "inicio") return { itemId: null, hijoId: null };
-  // El aviso de privacidad no vive en MENU (no es una fila del menú,
-  // es el botón de escudo de la columna) pero sí es una ruta real.
+  // El aviso de privacidad no vive en SECTIONS (no es una fila del
+  // menú, es el botón de escudo de la columna) pero sí es una ruta real.
   if (itemId === "privacidad") return { itemId: "privacidad", hijoId: null };
 
-  const item = MENU.find((i) => i.id === itemId);
+  const item = SECTIONS.find((i) => i.id === itemId);
   if (!item) return { itemId: null, hijoId: null };
 
   if (item.hijos) {

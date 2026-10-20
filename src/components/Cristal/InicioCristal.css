@@ -127,19 +127,31 @@
   transform: translateY(2px) scale(0.97);
 }
 
-/* Agradecimientos ocupa toda la rejilla (no solo en celular, ver el
-   bloque de 700px de abajo) para que nunca quede como sobrante suelto
-   a la mitad de una fila -- en vez de depender de que la cantidad de
-   accesos sea múltiplo exacto de columnas en cada ancho (6 en
-   escritorio, 4 en tablet, 2 en celular), siempre cierra su propia
-   fila completa. Selector compuesto (no solo .cristal-bento__tile--ancho
-   a secas) porque el .cristal-bento__tile{grid-column:span 1} del
-   bloque de 700px de abajo tiene la misma especificidad y, al venir
-   después en el archivo, le ganaba a esta regla por orden de cascada
-   en celular -- con las dos clases juntas en el selector, gana
-   siempre, sin importar el orden. */
-.cristal-bento__tile.cristal-bento__tile--ancho {
-  grid-column: 1 / -1;
+/* Museos/Gastronomía/Música: mismo molde que las tarjetas activas
+   (ver ColumnaCristal.css para el equivalente del menú), solo
+   atenuada y sin puntero -- no son <a>, no navegan. */
+.cristal-bento__tile.is-proximamente {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.cristal-bento__tile.is-proximamente:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: none;
+}
+
+.cristal-bento__badge {
+  display: inline-block;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -191,11 +203,11 @@
   }
   .cristal-bento__tile {
     grid-column: span 1;
-    /* 128px, no 116 -- las 4 tarjetas sin bajada (sub) ya cabían en
-       116, pero las 5 con bajada necesitaban más y lo desbordaban,
-       quedando un poco más altas pese al min-height "igual". 128
-       alcanza para las 9 por igual, así que las 9 terminan exactamente
-       a la misma altura, no solo con el mismo piso. */
+    /* 128px, no 116 -- las tarjetas sin bajada (sub) ya cabían en
+       116, pero la de "juegos" (con bajada) necesitaba más y la
+       desbordaba, quedando un poco más alta pese al min-height
+       "igual". 128 alcanza para todas por igual, así que terminan
+       exactamente a la misma altura, no solo con el mismo piso. */
     min-height: 128px;
     gap: 0.4rem;
     padding: 0.9rem 0.6rem;
@@ -203,23 +215,6 @@
   .cristal-bento__tile b {
     font-size: clamp(0.72rem, 3.4vw, 0.84rem);
     line-height: 1.25;
-  }
-  /* Agradecimientos: el ancho completo ya lo da la regla sin media
-     query de arriba -- aquí solo queda el MISMO molde vertical
-     centrado que las otras tarjetas (nada de fila horizontal/chevron,
-     que se probaron en rondas anteriores y se descartaron), repetido
-     explícito para que esta tarjeta no dependa en silencio de que
-     .cristal-bento__tile nunca cambie esos valores. */
-  .cristal-bento__tile--ancho {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 8px;
-  }
-  .cristal-bento__tile--ancho .cristal-bento__tile-texto {
-    text-align: center;
   }
   .cristal-inicio__cta {
     margin-top: 2rem;

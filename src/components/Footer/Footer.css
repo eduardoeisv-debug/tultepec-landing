@@ -57,6 +57,33 @@
   color: rgba(251, 241, 226, 0.55);
 }
 
+/* Agradecimientos y Acerca de: viven solo aquí, no como tarjeta de
+   Inicio ni fila de menú aparte (ver sections.js, showInFooter) --
+   mismo tratamiento visual que el aviso de privacidad de abajo. */
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-top: 0.9rem;
+}
+
+.footer__links a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-gold-light);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer__links a:hover {
+  color: var(--color-gold);
+}
+
+.footer__links a:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 3px;
+}
+
 /* Tarjeta del agradecimiento especial -- arriba a la derecha en
    escritorio, debajo del nombre/aviso en celular (ver el breakpoint
    más abajo). */

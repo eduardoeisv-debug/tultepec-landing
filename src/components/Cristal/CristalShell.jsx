@@ -1,5 +1,5 @@
 import { lazy, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import MENU from "../../data/menu.js";
+import SECTIONS from "../../data/sections.js";
 import useHashRoute, { rutaHash } from "../../hooks/useHashRoute.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
 import useMediaQuery from "../../hooks/useMediaQuery.js";
@@ -174,7 +174,7 @@ export default function CristalShell() {
   // el mismo grupo -- si no, Seccion vería un componente "nuevo" en
   // cada render de CristalShell (p.ej. al abrir/cerrar el menú) y
   // remontaría GrupoResumen de más.
-  const item = ruta.itemId ? MENU.find((i) => i.id === ruta.itemId) : undefined;
+  const item = ruta.itemId ? SECTIONS.find((i) => i.id === ruta.itemId) : undefined;
   const vistaGrupoResumen = useMemo(() => {
     if (!item?.hijos) return null;
     return () => <GrupoResumen item={item} />;

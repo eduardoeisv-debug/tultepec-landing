@@ -181,6 +181,15 @@
   color: var(--color-paper);
 }
 
+/* Sin resaltado al pasar el mouse sobre una fila "próximamente" -- ya
+   no es clicable (ver el comentario de arriba), así que un hover que
+   la ilumina igual que a las demás se sentía engañoso. */
+.cristal-col__fila.is-proximamente:hover {
+  background: none;
+  border-color: transparent;
+  color: var(--cristal-soft);
+}
+
 /* La única fila resaltada en un momento dado (ColumnaCristal.jsx
    decide cuál vía la clase is-resaltada, no directamente por
    aria-current/aria-expanded -- ver el comentario grande de ahí
@@ -210,8 +219,15 @@
   outline-offset: 2px;
 }
 
+/* cursor:default -- las de nivel superior (museos, gastronomía,
+   música) ya no son <a> (ver ColumnaCristal.jsx), así que el
+   cursor:pointer heredado de .cristal-col__fila se vería como que
+   todavía se puede tocar. Las subopciones "próximamente" de un flyout
+   (.cristal-col__flyout a.is-proximamente, más abajo) siguen siendo
+   enlaces de verdad, fuera de este cambio -- no hace falta tocarlas. */
 .cristal-col__fila.is-proximamente {
   opacity: 0.65;
+  cursor: default;
 }
 
 .cristal-col__texto {

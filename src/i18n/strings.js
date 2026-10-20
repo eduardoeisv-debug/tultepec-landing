@@ -55,6 +55,7 @@ export const STRINGS = {
     en: "Tultepec · Firework-Making Town — portfolio project.",
   },
   "footer.privacyLink": { es: "Aviso de privacidad", en: "Privacy notice" },
+  "footer.linksAriaLabel": { es: "Enlaces del pie de página", en: "Footer links" },
 
   "finalCta.title": { es: "La memoria del pueblo sigue encendida", en: "The town's memory still burns bright" },
   "finalCta.text": {

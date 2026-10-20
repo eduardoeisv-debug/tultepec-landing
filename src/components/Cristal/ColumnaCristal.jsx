@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Home, Shield, Share2, Check, X } from "lucide-react";
-import MENU from "../../data/menu.js";
+import SECTIONS from "../../data/sections.js";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
@@ -8,6 +8,11 @@ import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { useSound } from "../../hooks/useSound.jsx";
 import BrandSparkles from "../shared/BrandSparkles.jsx";
 import "./ColumnaCristal.css";
+
+// Todo SECTIONS salvo "inicio" (que ya tiene su propia fila fija,
+// primera, justo abajo) -- calculado una sola vez al cargar el
+// módulo, no en cada render.
+const SECCIONES_MENU = SECTIONS.filter((s) => s.showInMenu && s.id !== "inicio");
 
 // Menú de "Menú Cristal": ya no es una columna siempre visible al lado
 // del contenido -- se abre como una capa a pantalla completa (en
@@ -32,7 +37,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   const { t } = useLanguage();
   const { playTap } = useSound();
   const [grupoAbierto, setGrupoAbierto] = useState(() => {
-    const item = MENU.find((i) => i.id === ruta.itemId);
+    const item = SECTIONS.find((i) => i.id === ruta.itemId);
     return item?.hijos ? item.id : null;
   });
   const [copiado, setCopiado] = useState(false);
@@ -108,10 +113,11 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
             </a>
           </li>
 
-          {MENU.map((item) => {
-            const Icono = item.icon;
+          {SECCIONES_MENU.map((item) => {
+            const Icono = item.menuIcon;
             const activo = ruta.itemId === item.id;
             const abierto = grupoAbierto === item.id;
+            const esProximamente = item.estado === "proximamente";
 
             return (
               <li className="cristal-col__item" key={item.id}>
@@ -129,16 +135,25 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                     <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
                     <span className="cristal-col__texto">{t(item.label)}</span>
                   </button>
+                ) : esProximamente ? (
+                  // Sin <a>/href: "próximamente" ya no navega a ningún
+                  // lado (antes caía en una vista de relleno) -- solo se
+                  // ve atenuada, con su etiqueta, sin reaccionar al clic
+                  // ni entrar al orden de tabulación.
+                  <div className="cristal-col__fila is-proximamente" aria-disabled="true">
+                    <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
+                    <span className="cristal-col__texto">{t(item.label)}</span>
+                    <span className="cristal-col__badge">{t("menu.proximamente.badge")}</span>
+                  </div>
                 ) : (
                   <a
-                    className={`cristal-col__fila${item.soon ? " is-proximamente" : ""}${activo && !grupoAbierto ? " is-resaltada" : ""}`}
+                    className={`cristal-col__fila${activo && !grupoAbierto ? " is-resaltada" : ""}`}
                     href={rutaHash(item.id)}
                     aria-current={activo ? "page" : undefined}
                     onClick={alSeleccionar}
                   >
                     <Icono className="cristal-col__icono" size={18} strokeWidth={1.8} aria-hidden="true" />
                     <span className="cristal-col__texto">{t(item.label)}</span>
-                    {item.soon && <span className="cristal-col__badge">{t("menu.proximamente.badge")}</span>}
                   </a>
                 )}
 
