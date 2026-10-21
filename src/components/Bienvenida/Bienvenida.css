@@ -451,9 +451,12 @@
    aquí, sin dejar de ser "el mismo lenguaje" que la tarjeta cerrada.
    El papel crema cálido se conserva como área de lectura (pedido
    explícito), nada más dentro de este marco coherente con la paleta.
-   opacity/transform: la carta se revela junto con el acordeón (abajo,
-   .is-abierta), en vez de aparecer de golpe en cuanto el alto deja de
-   ser 0 -- 0.28s, dentro de los ≤300ms pedidos. */
+   SIEMPRE visible (ya no opacity:0 por defecto) -- CartaContenido.jsx
+   (este mismo marcado) lo reutiliza también dentro de CartaSheet.jsx,
+   que no tiene el ancestro .bienvenida__acordeon.is-abierta de abajo;
+   quedaba invisible ahí (el "hueco azul" del bug) aunque seguía
+   reservando su alto real. El revelado animado del acordeón de
+   escritorio vive aparte, en .bienvenida__revelar (ver más abajo). */
 .bienvenida-carta {
   position: relative;
   border-radius: var(--radius-md);
@@ -462,18 +465,25 @@
   border: 1px solid rgba(227, 171, 61, 0.45);
   box-shadow: var(--shadow-soft);
   overflow: hidden;
+}
+
+/* Envoltorio SOLO del acordeón de escritorio (Bienvenida.jsx) --
+   CartaContenido.jsx no lo trae, así que CartaSheet.jsx nunca hereda
+   esta animación ni su opacity:0 de partida. 0.28s, dentro de los
+   ≤300ms pedidos. */
+.bienvenida__revelar {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.28s var(--ease-out), transform 0.28s var(--ease-out);
 }
 
-.bienvenida__acordeon.is-abierta .bienvenida-carta {
+.bienvenida__acordeon.is-abierta .bienvenida__revelar {
   opacity: 1;
   transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bienvenida-carta {
+  .bienvenida__revelar {
     transition: none;
   }
 }

@@ -81,6 +81,11 @@ export default function CartaSheet({ abierta, onCerrar }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="carta-sheet__encabezado" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+          {/* Asa de arrastre: puramente decorativa (el gesto de
+              verdad lo maneja el touchstart/touchend de arriba, en
+              todo el encabezado) -- la señal visual de "esto se
+              desliza" que un bottom sheet trae siempre. */}
+          <span className="carta-sheet__asa" aria-hidden="true" />
           <SobreSolapa />
         </div>
         <button

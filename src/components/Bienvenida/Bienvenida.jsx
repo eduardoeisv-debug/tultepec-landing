@@ -129,7 +129,14 @@ export default function Bienvenida({ className = "" }) {
 
         <div className={`bienvenida__acordeon${abierta ? " is-abierta" : ""}`} id="bienvenida-contenido">
           <div className="bienvenida__acordeon-inner" inert={!abierta}>
-            <CartaContenido />
+            {/* .bienvenida__revelar (Bienvenida.css): la animación de
+                aparición al abrir vive aquí, no en CartaContenido/
+                .bienvenida-carta -- esas clases se comparten con
+                CartaSheet.jsx (la hoja de celular), que no tiene el
+                ancestro .bienvenida__acordeon.is-abierta que la dispara. */}
+            <div className="bienvenida__revelar">
+              <CartaContenido />
+            </div>
           </div>
         </div>
       </div>

@@ -8,13 +8,15 @@
 @media (max-width: 768px) {
   /* Cubre la página pero no la barra inferior: z-index 63, entre el
      menú (ColumnaCristal.css, 60) y la barra (BottomNav.css, 65) --
-     mismo truco que ya deja esa barra tocable con el menú abierto. */
+     mismo truco que ya deja esa barra tocable con el menú abierto.
+     rgba del marino de verdad del sitio (--color-night-950, #0a0e24),
+     no un negro genérico -- al 65%, dentro del 60-70% pedido. */
   .carta-sheet__backdrop {
     position: fixed;
     inset: 0;
     z-index: 63;
     display: block;
-    background: rgba(5, 6, 18, 0.75);
+    background: rgba(10, 14, 36, 0.65);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.26s var(--ease-out);
@@ -36,7 +38,14 @@
      (ColumnaCristal.css). SIEMPRE montada (ver CartaSheet.jsx):
      transform/opacity nada más para la entrada/salida, con
      pointer-events:none cuando está cerrada como respaldo de `inert`
-     (algunos navegadores todavía no lo soportan del todo). */
+     (algunos navegadores todavía no lo soportan del todo).
+     Sin height propio: se ajusta a su contenido (flex-column, cada
+     hijo mide lo que mide) hasta el tope de max-height -- si el
+     contenido es más corto que eso, la hoja también lo es, sin dejar
+     hueco vacío debajo. max-height = 82dvh menos la barra (no 82dvh a
+     secas): así la suma de las dos nunca llega a ocupar más del 82%
+     real de la pantalla, con 100vh de respaldo para navegadores sin
+     dvh. */
   .carta-sheet {
     position: fixed;
     left: 0;
@@ -45,17 +54,21 @@
     z-index: 63;
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
-    max-height: 80dvh;
+    max-height: calc(82vh - var(--bottomnav-total-height, 0px));
+    max-height: calc(82dvh - var(--bottomnav-total-height, 0px));
     background: var(--color-night-700);
     color: var(--color-paper);
     border: 1px solid rgba(243, 205, 122, 0.3);
     border-bottom: none;
-    /* 16px, igual que .bienvenida__nota/.bienvenida-carta__solapa
-       (Bienvenida.css) -- la solapa que comparten (SobreSolapa) usa
-       ese mismo radio para su propio recorte. */
-    border-radius: 16px 16px 0 0;
-    box-shadow: var(--shadow-deep);
+    /* 24px, pedido explícito (antes 16px, igual que la tarjeta de
+       escritorio) -- la solapa (más abajo) recorta su propia esquina
+       a este MISMO valor, para que las dos curvas coincidan. */
+    border-radius: 24px 24px 0 0;
+    /* Sombra hacia ARRIBA (offset-y negativo) -- la hoja sube desde
+       abajo, su sombra cae del lado contrario de donde viene la luz
+       de siempre (hacia abajo), no repetir --shadow-deep (pensada
+       para paneles que caen desde arriba, como el menú). */
+    box-shadow: 0 -16px 40px -16px rgba(5, 6, 18, 0.6);
     overflow: hidden;
     transform: translateY(100%);
     opacity: 0;
@@ -75,23 +88,59 @@
     }
   }
 
+  /* position:relative -- el asa, la solapa y el botón de cerrar de
+     abajo se posicionan respecto a ESTE bloque, no a toda la hoja.
+     flex-shrink:0: encabezado fijo arriba, lo que scrollea es solo
+     .carta-sheet__scroll (más abajo). */
   .carta-sheet__encabezado {
-    display: block;
+    position: relative;
     flex-shrink: 0;
+    padding-top: 14px;
   }
 
-  /* Mismo círculo que el botón de cerrar del menú lateral
-     (.cristal-col__cerrar, ColumnaCristal.css) -- flotante sobre la
-     esquina de la solapa, no dentro de su propio renglón. */
+  /* Asa de arrastre: 40x4px, dorado al 40% -- la señal de "esto se
+     desliza" de cualquier bottom sheet. Centrada, por ENCIMA de la
+     solapa (que empieza debajo, ver .bienvenida-carta__solapa). */
+  .carta-sheet__asa {
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 0 auto 10px;
+    border-radius: 999px;
+    background: rgba(243, 205, 122, 0.4);
+  }
+
+  /* La solapa en V compartida con Bienvenida.jsx (SobreSolapa) recorta
+     su propio contenedor a border-radius + overflow:hidden -- aquí se
+     sobreescribe a 24px (el de ESTA hoja, no el de la tarjeta de
+     escritorio/16px) para que la curva coincida exacta con la de
+     arriba, sin que la línea sobresalga ni quede "flotando" fuera del
+     recorte. padding-right: dedica un hueco a la derecha del ancho
+     que la solapa en verdad usa (preserveAspectRatio="none" la
+     estira al 100% de SU contenedor) para que la línea diagonal
+     termine antes de llegar al botón de cerrar, en vez de cruzar por
+     debajo de él. */
+  .carta-sheet__encabezado .bienvenida-carta__solapa {
+    border-radius: 24px 24px 0 0;
+    padding-right: 56px;
+    box-sizing: border-box;
+  }
+
+  /* 44px (no 40, pedido explícito), alineado al borde derecho --
+     dentro del padding-right reservado arriba, así que nunca cruza la
+     línea de la solapa; top fijo cerca del asa, nunca tan abajo como
+     para pisar el título (que empieza después de todo el encabezado,
+     fuera de este position:relative). Mismo lenguaje que el botón de
+     cerrar del menú lateral (.cristal-col__cerrar, ColumnaCristal.css). */
   .carta-sheet__cerrar {
     all: unset;
     box-sizing: border-box;
     position: absolute;
-    top: 10px;
-    right: 14px;
+    top: 8px;
+    right: 12px;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border: 1.5px solid var(--cristal-line, rgba(255, 255, 255, 0.18));
     border-radius: 50%;
     display: grid;
@@ -113,8 +162,14 @@
   /* overscroll-behavior:contain -- un scroll que llega al tope/fondo
      del contenido no sigue "atravesando" hacia la página de atrás
      (bloqueada igual por useScrollLock, esto es la versión propia del
-     contenedor). */
+     contenedor). min-height:0 -- indispensable en un hijo flex para
+     que SÍ pueda encogerse y scrollear en vez de desbordar a su padre
+     (el valor por defecto, min-height:auto, le habría pedido a
+     .carta-sheet crecer para mostrarlo completo, sin dejarlo nunca
+     llegar a necesitar scroll interno). */
   .carta-sheet__scroll {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
