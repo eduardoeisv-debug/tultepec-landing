@@ -454,6 +454,11 @@ export const STRINGS = {
   // Barra de navegación inferior fija (celular, BottomNav.jsx).
   "bottomnav.ariaLabel": { es: "Navegación principal", en: "Main navigation" },
   "bottomnav.menu": { es: "Menú", en: "Menu" },
+  // Texto corto (a propósito, no "menu.movil.cerrar"/"Cerrar menú" --
+  // ahí no entra junto a los otros 3 rótulos de una palabra de esta
+  // barra) que reemplaza a "Menú" en este mismo botón mientras el menú
+  // está abierto (ver BottomNav.jsx).
+  "bottomnav.cerrar": { es: "Cerrar", en: "Close" },
   "bottomnav.sonido": { es: "Sonido", en: "Sound" },
   "sonido.activar": { es: "Activar sonido", en: "Enable sound" },
   "sonido.desactivar": { es: "Silenciar", en: "Mute" },

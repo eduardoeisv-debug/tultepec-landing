@@ -374,7 +374,7 @@ export default function CristalShell() {
           antes vivía dentro de cada vista (CierreComun.jsx) y el hueco
           del Suspense de Seccion.jsx se sentía como "el pie tarda". */}
       <Footer onOpenPrivacy={onOpenPrivacy} />
-      <BottomNav enInicio={!ruta.itemId} onAbrirMenu={abrirMenu} menuAbierto={menuAbierto} />
+      <BottomNav enInicio={!ruta.itemId} onAbrirMenu={abrirMenu} onCerrarMenu={cerrarMenu} menuAbierto={menuAbierto} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Home, Menu as MenuIcon, Volume2, VolumeX } from "lucide-react";
+import { Home, Menu as MenuIcon, Volume2, VolumeX, X } from "lucide-react";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { useSound } from "../../hooks/useSound.jsx";
@@ -11,7 +11,16 @@ import "./BottomNav.css";
 // "solo celular" de este proyecto, se oculta por CSS en vez de no
 // renderizarse, para no depender de un media query en JS para algo
 // que no cambia el comportamiento, solo el aspecto.
-export default function BottomNav({ enInicio, onAbrirMenu, menuAbierto }) {
+//
+// Con el menú abierto, ColumnaCristal.jsx (el panel + su fondo
+// oscuro) ya no la tapa -- va por encima en z-index (ver BottomNav.css)
+// a propósito, para que sus 3 botones se sigan pudiendo tocar. Por
+// eso necesita `onCerrarMenu` (cerrarMenu de CristalShell.jsx, la
+// misma función que ya usan Escape/clic-fuera/elegir-una-opción): este
+// botón de Menú se convierte en "Cerrar" y lo usa, e Inicio también lo
+// llama de paso al salir -- Sonido es el único que NO lo toca, para no
+// cerrar el menú sin que el usuario lo haya pedido.
+export default function BottomNav({ enInicio, onAbrirMenu, onCerrarMenu, menuAbierto }) {
   const { t } = useLanguage();
   const { enabled, toggle, playTap } = useSound();
 
@@ -20,14 +29,25 @@ export default function BottomNav({ enInicio, onAbrirMenu, menuAbierto }) {
   // disparar su propio reinicio de scroll (depende de que la ruta
   // cambie). instant, no smooth -- un salto animado acá se sentía
   // igual de lento que el bug real que se corrigió en CristalShell.jsx.
+  // onCerrarMenu() también es unconditional (no solo "si estaba
+  // abierto"): barato si ya estaba cerrado, y cubre el caso de
+  // entrar a Inicio con el menú abierto desde otra sección -- ahí el
+  // cambio de ruta SÍ lo cerraría solo (ver el efecto en
+  // CristalShell.jsx), pero si ya se estaba en Inicio esa ruta no
+  // cambia y nada más lo habría cerrado.
   const irAInicio = () => {
     playTap();
+    onCerrarMenu();
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   };
 
-  const abrirMenu = () => {
+  const alAbrirOCerrarMenu = () => {
     playTap();
-    onAbrirMenu();
+    if (menuAbierto) {
+      onCerrarMenu();
+    } else {
+      onAbrirMenu();
+    }
   };
 
   const alternarSonido = () => {
@@ -50,11 +70,15 @@ export default function BottomNav({ enInicio, onAbrirMenu, menuAbierto }) {
       <button
         type="button"
         className={`cristal-bottomnav__boton${menuAbierto ? " is-activo" : ""}`}
-        onClick={abrirMenu}
+        onClick={alAbrirOCerrarMenu}
         aria-expanded={menuAbierto}
       >
-        <MenuIcon size={22} strokeWidth={1.8} aria-hidden="true" />
-        <span>{t("bottomnav.menu")}</span>
+        {menuAbierto ? (
+          <X size={22} strokeWidth={1.8} aria-hidden="true" />
+        ) : (
+          <MenuIcon size={22} strokeWidth={1.8} aria-hidden="true" />
+        )}
+        <span>{t(menuAbierto ? "bottomnav.cerrar" : "bottomnav.menu")}</span>
       </button>
 
       <button

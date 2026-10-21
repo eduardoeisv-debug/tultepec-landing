@@ -77,10 +77,18 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
 
   // Clic fuera de la tarjeta del menú (sobre el fondo oscurecido) la
   // cierra -- Escape ya lo maneja CristalShell.jsx, que es quien monta
-  // este componente.
+  // este componente. La barra inferior (BottomNav.jsx) queda exenta a
+  // propósito: vive fuera de este panel en el DOM (la monta
+  // CristalShell.jsx, no este componente) pero ahora se ve y se puede
+  // tocar POR ENCIMA del menú abierto (ver BottomNav.css) -- sin esta
+  // excepción, cualquier toque ahí (incluido "Sonido", que no debe
+  // cerrar el menú) contaría como "fuera" y lo cerraría de más,
+  // compitiendo con la lógica propia de cada botón de esa barra.
   useEffect(() => {
     const onPointerDown = (e) => {
-      if (colRef.current && !colRef.current.contains(e.target)) onCerrar();
+      if (colRef.current && !colRef.current.contains(e.target) && !e.target.closest(".cristal-bottomnav")) {
+        onCerrar();
+      }
     };
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);

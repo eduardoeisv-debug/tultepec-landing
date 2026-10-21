@@ -412,17 +412,36 @@
 }
 
 @media (max-width: 700px) {
-  /* position:fixed + inset:0 en vez de depender solo del alto
+  /* position:fixed + top/right/left:0 en vez de depender solo del alto
      100dvh del flex item -- en algunos Android/Chrome el valor de
      dvh usado por el layout del panel y el que en verdad pinta el
      sistema para la barra de gestos se desincronizaban por un
      instante, dejando ver el fondo del sitio (su propio theme-color)
-     en esa franja en vez del fondo del panel. */
+     en esa franja en vez del fondo del panel.
+     bottom: var(--bottomnav-total-height) en vez de inset:0 completo
+     (BottomNav.css define esa variable) -- termina justo arriba de la
+     barra inferior, no debajo de ella: la barra ahora va por encima en
+     z-index (ver BottomNav.css) para seguir tocable con el menú
+     abierto, y sin este límite el panel se desplazaba igual hasta el
+     borde real de la pantalla, dejando su última fila (el pie con el
+     escudo/compartir, justo después de "Acerca de") tapada detrás de
+     la barra. overflow-y:auto ya viene puesto en .cristal-col (ver
+     arriba) -- con el panel más bajo, ese mismo scroll interno alcanza
+     para ver el pie completo. */
   .cristal-col {
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: var(--bottomnav-total-height, 0px);
+    /* auto, no 100dvh (la regla base de arriba la pone) -- con los
+       cuatro lados fijados (top/right/left/bottom) y una altura
+       explícita A LA VEZ, el alto gana por sobre bottom (está "sobre-
+       restringido", ver CSS 2.1 §10.6.4) y el panel volvía a estirarse
+       hasta el borde real de la pantalla, debajo de la barra, como si
+       este bottom no existiera. */
+    height: auto;
     width: 100%;
-    height: 100dvh;
     margin: 0;
     /* Mismo motivo que TopBarCristal.css/BottomNav.css: --cristal-glass-movil
        ya es 97% opaco, así que el blur(6px) de arriba no tapaba nada

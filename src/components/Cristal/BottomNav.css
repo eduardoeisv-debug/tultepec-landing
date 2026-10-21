@@ -6,14 +6,23 @@
 }
 
 @media (max-width: 768px) {
-  /* z-index 45: por encima de la barra superior (40) y del contenido,
-     por debajo del menú (ColumnaCristal.css, 60) -- al abrir el menú,
-     su panel (position:fixed; inset:0) lo tapa por completo solo por
-     estar más arriba en la pila, sin lógica aparte para ocultarlo. */
+  /* Altura total de esta barra (el 64px de abajo + su propio respiro
+     de abajo) -- variable, no el número suelto, porque ColumnaCristal.css
+     también la necesita: el panel del menú tiene que terminar justo
+     arriba de esta barra, no superponerse (ver ese archivo). */
+  :root {
+    --bottomnav-total-height: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* z-index 65: por encima de la barra superior (40) Y del menú
+     completo (ColumnaCristal.css, fondo oscuro + panel, los dos en
+     60) -- a propósito, para que sus 3 botones se sigan pudiendo
+     tocar con el menú abierto en vez de quedar tapados por su panel
+     (antes sí pasaba, por estar más abajo en la pila). */
   .cristal-bottomnav {
     position: fixed;
     inset: auto 0 0 0;
-    z-index: 45;
+    z-index: 65;
     display: flex;
     align-items: stretch;
     justify-content: space-around;
