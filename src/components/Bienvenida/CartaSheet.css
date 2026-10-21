@@ -1,0 +1,123 @@
+/* Solo celular -- en escritorio "Una carta para ti" se queda como el
+   acordeón de siempre (Bienvenida.jsx), esta hoja no existe ahí. */
+.carta-sheet__backdrop,
+.carta-sheet {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Cubre la página pero no la barra inferior: z-index 63, entre el
+     menú (ColumnaCristal.css, 60) y la barra (BottomNav.css, 65) --
+     mismo truco que ya deja esa barra tocable con el menú abierto. */
+  .carta-sheet__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 63;
+    display: block;
+    background: rgba(5, 6, 18, 0.75);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.26s var(--ease-out);
+  }
+
+  .carta-sheet__backdrop.is-abierta {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carta-sheet__backdrop {
+      transition: none;
+    }
+  }
+
+  /* bottom: var(--bottomnav-total-height) (no 0) -- termina justo
+     arriba de la barra, igual que ya hace el panel del menú
+     (ColumnaCristal.css). SIEMPRE montada (ver CartaSheet.jsx):
+     transform/opacity nada más para la entrada/salida, con
+     pointer-events:none cuando está cerrada como respaldo de `inert`
+     (algunos navegadores todavía no lo soportan del todo). */
+  .carta-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: var(--bottomnav-total-height, 0px);
+    z-index: 63;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    max-height: 80dvh;
+    background: var(--color-night-700);
+    color: var(--color-paper);
+    border: 1px solid rgba(243, 205, 122, 0.3);
+    border-bottom: none;
+    /* 16px, igual que .bienvenida__nota/.bienvenida-carta__solapa
+       (Bienvenida.css) -- la solapa que comparten (SobreSolapa) usa
+       ese mismo radio para su propio recorte. */
+    border-radius: 16px 16px 0 0;
+    box-shadow: var(--shadow-deep);
+    overflow: hidden;
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.26s var(--ease-out), opacity 0.26s var(--ease-out);
+  }
+
+  .carta-sheet.is-abierta {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carta-sheet {
+      transition: none;
+    }
+  }
+
+  .carta-sheet__encabezado {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Mismo círculo que el botón de cerrar del menú lateral
+     (.cristal-col__cerrar, ColumnaCristal.css) -- flotante sobre la
+     esquina de la solapa, no dentro de su propio renglón. */
+  .carta-sheet__cerrar {
+    all: unset;
+    box-sizing: border-box;
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid var(--cristal-line, rgba(255, 255, 255, 0.18));
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--color-paper);
+    background: rgba(10, 14, 36, 0.4);
+  }
+
+  .carta-sheet__cerrar:hover {
+    border-color: var(--color-gold-light);
+    color: var(--color-gold-light);
+  }
+
+  .carta-sheet__cerrar:focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 2px;
+  }
+
+  /* overscroll-behavior:contain -- un scroll que llega al tope/fondo
+     del contenido no sigue "atravesando" hacia la página de atrás
+     (bloqueada igual por useScrollLock, esto es la versión propia del
+     contenedor). */
+  .carta-sheet__scroll {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem 1.25rem 1.5rem;
+  }
+}

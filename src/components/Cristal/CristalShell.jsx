@@ -15,6 +15,7 @@ import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
 import BottomNav from "./BottomNav.jsx";
 import ColumnaCristal from "./ColumnaCristal.jsx";
+import CartaSheet from "../Bienvenida/CartaSheet.jsx";
 import Seccion from "./Seccion.jsx";
 import InicioCristal from "./InicioCristal.jsx";
 import GrupoResumen from "./GrupoResumen.jsx";
@@ -86,6 +87,31 @@ const INICIO_SCROLL_KEY = "tultepec:inicioScrollY";
 const COLOR_CHROME_MOVIL = "#0e0e26";
 const COLOR_CHROME_SITIO = "#1a1b4b";
 
+// Si ya se abrió "Una carta para ti" desde la barra inferior alguna
+// vez -- el punto de novedad del botón (BottomNav.jsx) no vuelve a
+// aparecer una vez que esto es true. try/catch: en modo privado o con
+// el almacenamiento bloqueado, localStorage.getItem/setItem puede
+// lanzar -- si falla, se trata como "nunca vista" (el punto sigue
+// apareciendo en cada visita, degradado pero no roto).
+const CARTA_VISTA_KEY = "tultepec:cartaVista";
+
+function leerCartaVista() {
+  try {
+    return localStorage.getItem(CARTA_VISTA_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function guardarCartaVista() {
+  try {
+    localStorage.setItem(CARTA_VISTA_KEY, "1");
+  } catch {
+    // Sin permisos de almacenamiento: no es crítico, el punto de
+    // novedad solo volvería a aparecer en la próxima visita.
+  }
+}
+
 // Punto de entrada de "Menú Cristal": barra superior siempre visible
 // (TopBarCristal.jsx, hamburguesa + casita) + el contenido de la ruta
 // activa a todo el ancho -- el menú (ColumnaCristal.jsx) ya no es una
@@ -109,6 +135,11 @@ export default function CristalShell() {
   // cambió de valor. Se resuelve en el efecto de cambio de ruta, más
   // abajo.
   const [origen, setOrigen] = useState(null);
+  const botonCartaRef = useRef(null);
+  const [cartaAbierta, setCartaAbierta] = useState(false);
+  // Lazy init (useState(fn), no useState(fn())): localStorage solo se
+  // lee una vez, al montar -- no en cada render.
+  const [cartaVista, setCartaVista] = useState(leerCartaVista);
   const esMovil = useMediaQuery("(max-width: 768px)");
 
   // Arranca de inmediato el sondeo de qué fotos/videos existen de
@@ -164,7 +195,32 @@ export default function CristalShell() {
     meta?.setAttribute("content", esMovil ? COLOR_CHROME_MOVIL : COLOR_CHROME_SITIO);
   }, [esMovil]);
 
-  const abrirMenu = useCallback(() => setMenuAbierto(true), []);
+  // setCartaAbierta(false) de paso: menú y carta nunca conviven
+  // abiertos a la vez (punto 6 del encargo) -- abrir uno cierra el
+  // otro, sin importar desde dónde se dispare (hamburguesa, barra
+  // inferior...), porque las dos pasan siempre por aquí.
+  const abrirMenu = useCallback(() => {
+    setCartaAbierta(false);
+    setMenuAbierto(true);
+  }, []);
+
+  // Marca "ya vista" siempre que se abre (no solo la primera vez): es
+  // barato si ya estaba marcada, y así el punto de novedad desaparece
+  // en cuanto se abre la hoja, como pide el punto 3 del encargo.
+  const abrirCarta = useCallback(() => {
+    setMenuAbierto(false);
+    setCartaAbierta(true);
+    guardarCartaVista();
+    setCartaVista(true);
+  }, []);
+
+  // Foco de vuelta al botón "Carta" de la barra inferior (el único
+  // disparador posible -- a diferencia del menú, esta hoja no tiene
+  // equivalente en el encabezado de escritorio).
+  const cerrarCarta = useCallback(() => {
+    setCartaAbierta(false);
+    botonCartaRef.current?.focus();
+  }, []);
 
   // Adelanta la descarga de verdad de las primeras miniaturas de la
   // Galería (no solo el sondeo de qué fotos existen, ya disparado
@@ -359,6 +415,12 @@ export default function CristalShell() {
       const esVueltaAtras = esNavegacionHistorialRef.current;
       esNavegacionHistorialRef.current = false;
 
+      // La hoja de "Una carta para ti" nunca sobrevive un cambio de
+      // ruta -- es contenido de Inicio, no tendría sentido verla
+      // abierta sobre otra sección (p.ej. tras tocar uno de sus
+      // propios enlaces, "Comparte tu historia"/"Lee las memorias").
+      setCartaAbierta(false);
+
       // Resuelve el origen de la sección a la que se ENTRA: si
       // ColumnaCristal.jsx dejó avisado que viene del menú, gana; si
       // el itemId no cambió (subsección nueva del mismo grupo), se
@@ -438,7 +500,21 @@ export default function CristalShell() {
           antes vivía dentro de cada vista (CierreComun.jsx) y el hueco
           del Suspense de Seccion.jsx se sentía como "el pie tarda". */}
       <Footer onOpenPrivacy={onOpenPrivacy} />
-      <BottomNav enInicio={!ruta.itemId} onAbrirMenu={abrirMenu} onCerrarMenu={cerrarMenu} menuAbierto={menuAbierto} />
+      {/* Siempre montada (no {cartaAbierta && ...} como ColumnaCristal) --
+          es lo que deja animar también la SALIDA al cerrar, ver el
+          comentario grande en CartaSheet.jsx. */}
+      <CartaSheet abierta={cartaAbierta} onCerrar={cerrarCarta} />
+      <BottomNav
+        enInicio={!ruta.itemId}
+        onAbrirMenu={abrirMenu}
+        onCerrarMenu={cerrarMenu}
+        menuAbierto={menuAbierto}
+        onAbrirCarta={abrirCarta}
+        onCerrarCarta={cerrarCarta}
+        cartaAbierta={cartaAbierta}
+        cartaVista={cartaVista}
+        botonCartaRef={botonCartaRef}
+      />
     </div>
   );
 }

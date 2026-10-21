@@ -82,3 +82,49 @@
     transition: none;
   }
 }
+
+/* Envoltura del ícono de "Carta" -- position:relative para que el
+   punto de novedad de abajo se ancle a la esquina del ícono mismo, no
+   a todo el botón (que incluye la etiqueta de texto debajo). */
+.cristal-bottomnav__icono-envoltura {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Punto de novedad ("todavía no abriste la carta") -- ~8px, dorado,
+   desaparece en cuanto se abre la hoja una vez (cartaVista, ver
+   CristalShell.jsx) y el estado queda en localStorage, así que no
+   vuelve a aparecer en visitas futuras. Solo transform/opacity en la
+   entrada, respeta prefers-reduced-motion abajo. */
+.cristal-bottomnav__badge {
+  position: absolute;
+  top: -2px;
+  right: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-gold-light);
+  box-shadow: 0 0 4px rgba(243, 205, 122, 0.8);
+  animation: cristal-bottomnav-badge-in 1.5s var(--ease-out);
+}
+
+@keyframes cristal-bottomnav-badge-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cristal-bottomnav__badge {
+    animation: none;
+  }
+}

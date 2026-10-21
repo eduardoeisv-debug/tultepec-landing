@@ -186,6 +186,20 @@
   margin-top: 2.5rem;
 }
 
+/* En celular (<=768px, el mismo corte que BottomNav.css -- ahí es
+   donde la barra inferior existe de verdad) esta tarjeta ya no vive en
+   Inicio: "Una carta para ti" se mudó al botón "Carta" de esa barra,
+   que la abre como hoja inferior (CartaSheet.jsx) en vez de como
+   acordeón en la rejilla. display:none en el CONTENEDOR (no solo en
+   Bienvenida.jsx/.css, la sección de adentro) -- ocultar solo el
+   contenido dejaba este envoltorio vacío reservando su celda del Bento
+   igual, con su propio padding. En escritorio se queda tal cual. */
+@media (max-width: 768px) {
+  .cristal-bento__carta {
+    display: none;
+  }
+}
+
 /* Tablet: la Principal y la Carta se apilan a todo el ancho (4+2 ya
    no entra con comodidad), pero los accesos siguen de a 2 por fila. */
 @media (max-width: 980px) {

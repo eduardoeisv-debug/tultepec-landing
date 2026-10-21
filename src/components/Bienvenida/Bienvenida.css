@@ -44,6 +44,14 @@
   padding: 0;
 }
 
+/* En celular esta tarjeta ya no vive en Inicio -- se mudó a la barra
+   inferior fija (botón "Carta", BottomNav.jsx) y se abre como hoja
+   inferior (CartaSheet.jsx/.css), con el mismo contenido
+   (CartaContenido.jsx). El ocultamiento en sí vive en InicioCristal.css
+   (sobre .cristal-bento__carta, el contenedor de la rejilla -- ocultar
+   solo esta sección adentro habría dejado su envoltorio vacío
+   reservando una celda del Bento igual). */
+
 /* .bienvenida__grid pasa a una columna por debajo de 860px de
    VIEWPORT (ver más abajo) -- pero en el Bento esta tarjeta mide
    siempre alrededor de 1/3 del ancho del stage (grid-column: span 2

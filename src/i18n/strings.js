@@ -459,6 +459,7 @@ export const STRINGS = {
   // barra) que reemplaza a "Menú" en este mismo botón mientras el menú
   // está abierto (ver BottomNav.jsx).
   "bottomnav.cerrar": { es: "Cerrar", en: "Close" },
+  "bottomnav.carta": { es: "Carta", en: "Letter" },
   "bottomnav.sonido": { es: "Sonido", en: "Sound" },
   "sonido.activar": { es: "Activar sonido", en: "Enable sound" },
   "sonido.desactivar": { es: "Silenciar", en: "Mute" },

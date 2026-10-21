@@ -1,21 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import CartaContenido from "./CartaContenido.jsx";
 import "./Bienvenida.css";
 
-// Solapa de sobre (línea dorada) para la tarjeta cerrada -- reemplaza
-// el borde en zigzag rosa fucsia de antes, ajeno a la paleta del
-// sitio. Un solo triángulo (no una fila repetida de dientes) desde las
-// dos esquinas superiores hasta un punto central, como la solapa de un
-// sobre real visto de frente. viewBox fijo + preserveAspectRatio="none"
-// para que se estire al ancho real de la tarjeta en cualquier
-// pantalla. El recorte a las esquinas redondeadas (para que la línea
-// arranque justo en la esquina de la tarjeta, no por fuera de su
-// curva) vive en el CSS, con un border-radius + overflow:hidden en
-// este mismo <svg> -- mismo radio que .bienvenida__nota, así que las
-// dos curvas coinciden exactas. Relleno dorado muy tenue (6%, opcional
-// por encargo) para darle volumen al triángulo, no solo una línea.
-function SobreSolapa() {
+// Solapa de sobre (línea dorada): reemplaza el borde en zigzag rosa
+// fucsia de antes, ajeno a la paleta del sitio. Un solo triángulo (no
+// una fila repetida de dientes) desde las dos esquinas superiores
+// hasta un punto central, como la solapa de un sobre real visto de
+// frente. viewBox fijo + preserveAspectRatio="none" para que se
+// estire al ancho real de quien la use en cualquier pantalla. El
+// recorte a las esquinas redondeadas (para que la línea arranque justo
+// en la esquina, no por fuera de su curva) vive en el CSS de cada
+// quien la usa, con un border-radius + overflow:hidden ahí -- mismo
+// radio que el contenedor, así que las dos curvas coinciden exactas.
+// Relleno dorado muy tenue (6%, opcional por encargo) para darle
+// volumen al triángulo, no solo una línea.
+//
+// Exportada (ya no local de este archivo): CartaSheet.jsx (la hoja
+// inferior de celular) también la usa como su propio encabezado, para
+// conservar el mismo lenguaje visual en los dos contextos.
+export function SobreSolapa() {
   return (
     <svg className="bienvenida-carta__solapa" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
       <path d="M1,1 L200,57 L399,1" fill="rgba(243, 205, 122, 0.07)" />
@@ -24,12 +29,19 @@ function SobreSolapa() {
 }
 
 // "Carta de bienvenida": va justo después del hero dentro de InicioView
-// (ver src/components/Panel/views/InicioView.jsx). Empieza compacta,
-// como una nota con solapa de papel picado: al tocarla se abre y
-// muestra el mensaje completo (dos columnas desde 860px); al salir de
-// la pantalla (scroll) se vuelve a compactar sola, igual que el
-// laberinto del torito se pausa solo al salir de vista -- así no queda
-// desplegada todo el tiempo, solo mientras alguien la está viendo.
+// (ver src/components/Panel/views/InicioView.jsx) y de InicioCristal.jsx
+// (el Bento de Inicio). Empieza compacta, como una nota con solapa de
+// papel picado: al tocarla se abre y muestra el mensaje completo (dos
+// columnas desde 860px); al salir de la pantalla (scroll) se vuelve a
+// compactar sola, igual que el laberinto del torito se pausa solo al
+// salir de vista -- así no queda desplegada todo el tiempo, solo
+// mientras alguien la está viendo.
+//
+// Solo en escritorio: en celular esta tarjeta ya no existe en Inicio
+// (display:none, ver Bienvenida.css) -- la carta se mudó a la barra
+// inferior fija (botón "Carta", BottomNav.jsx) y se abre como hoja
+// inferior (CartaSheet.jsx), que reutiliza CartaContenido igual que
+// este acordeón, así que el texto nunca se desincroniza entre los dos.
 export default function Bienvenida({ className = "" }) {
   const { t } = useLanguage();
   const [abierta, setAbierta] = useState(false);
@@ -117,40 +129,7 @@ export default function Bienvenida({ className = "" }) {
 
         <div className={`bienvenida__acordeon${abierta ? " is-abierta" : ""}`} id="bienvenida-contenido">
           <div className="bienvenida__acordeon-inner" inert={!abierta}>
-            <div className="bienvenida__grid">
-              <div className="bienvenida__copy">
-                <span className="eyebrow eyebrow--light">{t("bienvenida.eyebrow")}</span>
-                <h2>{t("bienvenida.title")}</h2>
-                <p className="bienvenida__subtitle">{t("bienvenida.subtitle")}</p>
-              </div>
-
-              <article className="bienvenida-carta">
-                <div className="bienvenida-carta__body">
-                  <p>{t("bienvenida.carta.p1")}</p>
-                  <p>{t("bienvenida.carta.p2")}</p>
-                  <p>{t("bienvenida.carta.p3")}</p>
-
-                  <div className="bienvenida-carta__firma">
-                    <span className="bienvenida-carta__despedida">{t("bienvenida.firma.despedida")}</span>
-                    <span className="bienvenida-carta__nombres">{t("bienvenida.firma.nombres")}</span>
-                  </div>
-
-                  <div className="bienvenida-carta__cierre" aria-hidden="true">
-                    <img src="/images/brand/logo-ea.svg" alt="" width="34" height="34" />
-                  </div>
-
-                  <div className="bienvenida-carta__cta">
-                    <p className="bienvenida-carta__pregunta">{t("bienvenida.cta.pregunta")}</p>
-                    <a href="#/memorias/comparte" className="btn btn--dark">
-                      {t("bienvenida.cta.compartir")}
-                    </a>
-                    <a href="#/memorias/pueblo" className="bienvenida-carta__link">
-                      {t("bienvenida.cta.leeMemorias")}
-                    </a>
-                  </div>
-                </div>
-              </article>
-            </div>
+            <CartaContenido />
           </div>
         </div>
       </div>
