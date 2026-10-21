@@ -81,7 +81,24 @@
   border-radius: var(--radius-md);
   color: var(--cristal-soft);
   text-decoration: none;
-  transition: background 0.15s var(--ease-out), border-color 0.15s var(--ease-out), transform 0.15s var(--ease-out);
+  transition: background 0.15s var(--ease-out), border-color 0.15s var(--ease-out), transform 0.15s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+  /* Mismo valor que el resto del sitio (FinalCTA.css, VisitInfo.css):
+     que el ícono al que se vuelve (ver el efecto de montaje en
+     InicioCristal.jsx) no quede tapado bajo la barra superior fija. */
+  scroll-margin-top: 80px;
+}
+
+/* Resaltado al volver desde una sección (ver el efecto de montaje en
+   InicioCristal.jsx): anillo + brillo dorado sutil, solo box-shadow --
+   nunca cambia tamaño/posición, así que no mueve el resto de la
+   cuadrícula. Un solo salto de opacidad (sin keyframes) que se retira
+   con su propia transición al quitar la clase: ya es breve (1.5-2s en
+   total) y evita tener que duplicar la regla dentro de
+   prefers-reduced-motion de abajo. */
+.cristal-bento__tile.is-resaltado {
+  border-color: rgba(243, 205, 122, 0.6);
+  box-shadow: 0 0 0 3px rgba(243, 205, 122, 0.45), 0 0 24px -6px rgba(243, 205, 122, 0.5);
 }
 
 .cristal-bento__tile-texto {

@@ -5,6 +5,7 @@ import useScrollLock from "../../hooks/useScrollLock.js";
 import useMediaQuery from "../../hooks/useMediaQuery.js";
 import { preloadGaleriaImages, preloadGaleriaThumbnails } from "../../hooks/useGaleriaImages.js";
 import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
+import { hayVueltaPendiente } from "../../hooks/useVolverASecciones.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
 import BottomNav from "./BottomNav.jsx";
@@ -66,6 +67,13 @@ const REGISTRO = {
 };
 
 const SITE_URL = "https://tultepec-landing.vercel.app/";
+
+// sessionStorage (no un ref/estado): tiene que sobrevivir a un
+// remontaje completo de CristalShell -- el botón atrás del navegador
+// recarga este mismo bundle desde el historial del navegador en
+// Safari/iOS con bfcache desactivado, así que un ref en memoria no
+// siempre llega vivo hasta ese momento.
+const INICIO_SCROLL_KEY = "tultepec:inicioScrollY";
 
 // Mismo tono sólido que BottomNav/ColumnaCristal usan como fondo
 // (--cristal-glass-movil, ~97% opaco) vs. el azul del degradado del
@@ -221,7 +229,13 @@ export default function CristalShell() {
   if (ruta.itemId === "privacidad") {
     tituloDocumento = `${t("cristal.privacidad.titulo")} · Tultepec`;
     contenido = (
-      <Seccion eyebrow="Tultepec" titulo={t("cristal.privacidad.titulo")} Vista={PrivacidadContenido} titleRef={titleRef} />
+      <Seccion
+        eyebrow="Tultepec"
+        seccionId={null}
+        titulo={t("cristal.privacidad.titulo")}
+        Vista={PrivacidadContenido}
+        titleRef={titleRef}
+      />
     );
   } else if (!ruta.itemId) {
     tituloDocumento = "Tultepec · Estado de México";
@@ -247,6 +261,7 @@ export default function CristalShell() {
       <Seccion
         eyebrow={t(item.label)}
         eyebrowHref={eyebrowHref}
+        seccionId={item.id}
         titulo={etiqueta}
         Vista={esResumenGrupo ? vistaGrupoResumen : REGISTRO[clave]}
         titleRef={titleRef}
@@ -256,6 +271,47 @@ export default function CristalShell() {
       <InicioCristal titleRef={titleRef} />
     );
   }
+
+  // popstate (no hashchange) distingue atrás/adelante del navegador de
+  // una navegación disparada por esta misma página (un <a href="#/...">
+  // normal, o nuestro propio window.location.hash = "..." en los
+  // enlaces "Secciones"/"Volver a las secciones" de Seccion.jsx): un
+  // cambio de hash por script o clic en un enlace solo dispara
+  // hashchange, nunca popstate -- eso es lo que deja distinguir "me
+  // trajo aquí el botón atrás" de "me trajo aquí un clic" en el efecto
+  // de scroll de abajo.
+  const esNavegacionHistorialRef = useRef(false);
+  useEffect(() => {
+    const onPopState = () => {
+      esNavegacionHistorialRef.current = true;
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  // Recuerda, MIENTRAS se está en Inicio, la posición de scroll más
+  // reciente -- no retroactivamente al salir de Inicio: para cuando
+  // ese otro momento llega, el contenido ya cambió a la sección nueva
+  // (puede medir menos alto que Inicio) y el navegador ya pudo haber
+  // recortado solo window.scrollY para que quepa, dejando un valor que
+  // ya no es el de verdad. rAF (no cada evento de scroll suelto) para
+  // no escribir en sessionStorage decenas de veces por segundo.
+  useEffect(() => {
+    if (ruta.itemId !== null) return undefined;
+    let cuadro = null;
+    const onScroll = () => {
+      if (cuadro) return;
+      cuadro = requestAnimationFrame(() => {
+        cuadro = null;
+        sessionStorage.setItem(INICIO_SCROLL_KEY, String(window.scrollY));
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (cuadro) cancelAnimationFrame(cuadro);
+    };
+  }, [ruta.itemId]);
 
   // Sube al inicio de la página y actualiza el título del documento al
   // cambiar de ruta -- saltando la primera carga, igual que hacía
@@ -277,7 +333,24 @@ export default function CristalShell() {
     if (esPrimerCambioRef.current) {
       esPrimerCambioRef.current = false;
     } else {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      const esVueltaAtras = esNavegacionHistorialRef.current;
+      esNavegacionHistorialRef.current = false;
+
+      if (hayVueltaPendiente()) {
+        // El enlace/botón "Secciones" ya dejó pedido su propio scroll
+        // dirigido a un ícono puntual (ver InicioCristal.jsx) -- este
+        // efecto no lo pisa con un salto al tope.
+      } else if (esVueltaAtras && ruta.itemId === null) {
+        // Atrás/adelante del navegador hacia Inicio: restaura lo que
+        // el efecto de arriba venía guardando, en vez del salto al
+        // tope de siempre -- el navegador ya no lo hace solo
+        // (scrollRestoration="manual" en main.jsx, puesto a propósito
+        // para que recargar la página no deje "a la mitad").
+        const guardado = sessionStorage.getItem(INICIO_SCROLL_KEY);
+        window.scrollTo({ top: guardado ? Number(guardado) : 0, left: 0, behavior: "instant" });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ruta.itemId, ruta.hijoId]);

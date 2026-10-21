@@ -533,6 +533,13 @@ export const STRINGS = {
     en: "This section is being prepared. Check back soon.",
   },
   "cristal.privacidad.titulo": { es: "Aviso de privacidad", en: "Privacy notice" },
+  // Enlace de regreso arriba de cada sección (Seccion.jsx): el texto
+  // que va después del icono de flecha cuando NO estamos dentro de una
+  // subsección (ahí el texto es el nombre del grupo padre, ya
+  // traducido por su propia clave menu.item.*, no una fija aparte).
+  "cristal.volver.secciones": { es: "Secciones", en: "Sections" },
+  // Botón al final de cada sección, antes de "Comparte esta página".
+  "cristal.volver.boton": { es: "Volver a las secciones", en: "Back to sections" },
   "cristal.error.titulo": { es: "Algo no cargó bien", en: "Something didn't load right" },
   "cristal.error.texto": {
     es: "Puede ser que el sitio se haya actualizado mientras tenías esta pestaña abierta. Recarga la página para seguir.",

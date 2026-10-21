@@ -5,6 +5,8 @@
 }
 
 .cristal-sec__pill {
+  display: block;
+  margin-top: 0.5rem;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -12,29 +14,65 @@
   color: var(--color-gold-light);
 }
 
-/* Miga de pan que vuelve al resumen del grupo (ver el comentario de
-   eyebrowHref en Seccion.jsx) -- margen negativo + padding para que
-   el área de toque sea más grande que el texto sin mover el resto
-   del bloque hacia la derecha. */
-.cristal-sec__pill--link {
+/* Enlace de regreso, siempre arriba de .cristal-sec__pill (ver
+   Seccion.jsx): texto dorado chico, sin mayúsculas forzadas ni
+   letter-spacing (así no compite visualmente con la píldora de abajo,
+   que sí los lleva) -- min-height de 44px para el área táctil pedida,
+   con el texto centrado adentro en vez de inflar el tamaño de letra.
+   Margen negativo + padding para que el área de toque sea más grande
+   que el texto sin mover el resto del bloque hacia la derecha. */
+.cristal-sec__volver {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  margin: -0.4rem 0 0 -0.5rem;
-  padding: 0.4rem 0.5rem;
+  min-height: 44px;
+  margin: 0 0 0 -0.5rem;
+  padding: 0 0.5rem;
   border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-gold-light);
   text-decoration: none;
   transition: background 0.15s var(--ease-out), color 0.15s var(--ease-out);
 }
 
-.cristal-sec__pill--link:hover {
+.cristal-sec__volver:hover {
   background: rgba(255, 255, 255, 0.08);
   color: var(--color-paper);
 }
 
-.cristal-sec__pill--link:focus-visible {
+.cristal-sec__volver:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 2px;
+}
+
+/* Botón de abajo, antes de "Comparte esta página" (CierreComun, ver
+   Seccion.jsx): contorno dorado de 1px (no sólido, para no competir
+   con el botón sólido de FinalCTA que viene justo después), texto
+   crema, 48px de área táctil. */
+.cristal-sec__volver-boton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  margin-top: 2rem;
+  padding: 0 1.4rem;
+  border: 1px solid var(--color-gold-light);
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-paper);
+  text-decoration: none;
+  transition: background 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
+}
+
+.cristal-sec__volver-boton:hover {
+  background: rgba(243, 205, 122, 0.12);
+  border-color: var(--color-gold);
+}
+
+.cristal-sec__volver-boton:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 3px;
 }
 
 .cristal-sec__titulo {

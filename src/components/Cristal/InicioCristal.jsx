@@ -1,11 +1,17 @@
+import { useEffect, useRef, useState } from "react";
 import { rutaHash } from "../../hooks/useHashRoute.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
+import { consumirVueltaPendiente } from "../../hooks/useVolverASecciones.js";
 import SECTIONS from "../../data/sections.js";
 import HeroCristal from "./HeroCristal.jsx";
 import Bienvenida from "../Bienvenida/Bienvenida.jsx";
 import CierreComun from "./CierreComun.jsx";
 import TultepecAhora from "./TultepecAhora.jsx";
 import "./InicioCristal.css";
+
+// Cuánto dura el resaltado del ícono al volver desde una sección (ver
+// el efecto de montaje más abajo) -- dentro del rango de 1.5-2s pedido.
+const DURACION_RESALTADO_MS = 1800;
 
 // Mismas 8 secciones que showInHome en sections.js (la fuente única
 // que también lee el menú lateral, ver ColumnaCristal.jsx) -- ya no
@@ -29,12 +35,55 @@ const ACCESOS = SECTIONS.filter((s) => s.showInHome);
 // dentro de HeroCristal.
 export default function InicioCristal({ titleRef }) {
   const { t } = useLanguage();
+  const bentoRef = useRef(null);
+  const [resaltarId, setResaltarId] = useState(null);
+  // Cachea lo leído de consumirVueltaPendiente() (ver más abajo) --
+  // StrictMode vuelve a invocar este efecto una vez en desarrollo
+  // (monta, limpia, monta de nuevo) y esa segunda pasada encontraría el
+  // valor del módulo ya vacío (lo consumió la primera), dejando el
+  // resaltado sin su setTimeout de cierre y el foco sin aplicarse de
+  // verdad. Con el valor cacheado aquí, las dos pasadas hacen el mismo
+  // trabajo -- la segunda (la que de verdad sobrevive) es la que deja
+  // su temporizador en pie.
+  const pendienteRef = useRef(undefined);
+
+  // Al llegar aquí desde el enlace/botón "Secciones" de una sección
+  // (ver Seccion.jsx y useVolverASecciones.js): hace scroll hasta el
+  // ícono de la sección de la que venimos (o, si no tiene tarjeta
+  // propia en Inicio -- Agradecimientos, Acerca de, el aviso de
+  // privacidad -- hasta el primer ícono de la cuadrícula) y lo resalta
+  // un momento. Solo en el montaje: esta vista se remonta por completo
+  // en cada cambio de ruta (key en CristalShell.jsx), así que un
+  // useEffect sin dependencias ya cubre "cada vez que se entra a
+  // Inicio" sin falsos disparos.
+  useEffect(() => {
+    if (pendienteRef.current === undefined) {
+      pendienteRef.current = consumirVueltaPendiente();
+    }
+    const pendiente = pendienteRef.current;
+    if (!pendiente) return undefined;
+    const grid = bentoRef.current;
+    if (!grid) return undefined;
+
+    const tileObjetivo = pendiente.seccionId && grid.querySelector(`[data-section-id="${pendiente.seccionId}"]`);
+    const destino = tileObjetivo || grid.querySelector("[data-section-id]");
+    if (!destino) return undefined;
+
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    destino.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    if (destino.matches("a, [tabindex]")) destino.focus({ preventScroll: true });
+
+    if (!tileObjetivo) return undefined;
+    setResaltarId(pendiente.seccionId);
+    const idTimeout = setTimeout(() => setResaltarId(null), DURACION_RESALTADO_MS);
+    return () => clearTimeout(idTimeout);
+  }, []);
 
   return (
     <div className="cristal-inicio">
       <TultepecAhora />
 
-      <div className="cristal-bento">
+      <div className="cristal-bento" ref={bentoRef}>
         <div className="cristal-bento__principal">
           <HeroCristal titleRef={titleRef} />
         </div>
@@ -59,17 +108,30 @@ export default function InicioCristal({ titleRef }) {
               </span>
             </>
           );
+          const claseResaltado = resaltarId === item.id ? " is-resaltado" : "";
 
           // "Próximamente" (Museos, Gastronomía, Música): tarjeta
           // atenuada con su etiqueta, sin <a>/href -- no navega a
           // ningún lado, igual que sus filas en el menú lateral (ver
           // ColumnaCristal.jsx).
           return esProximamente ? (
-            <div key={item.id} className="cristal-bento__tile is-proximamente" style={estilo} aria-disabled="true">
+            <div
+              key={item.id}
+              className={`cristal-bento__tile is-proximamente${claseResaltado}`}
+              style={estilo}
+              aria-disabled="true"
+              data-section-id={item.id}
+            >
               {contenido}
             </div>
           ) : (
-            <a key={item.id} className="cristal-bento__tile" href={rutaHash(item.id)} style={estilo}>
+            <a
+              key={item.id}
+              className={`cristal-bento__tile${claseResaltado}`}
+              href={rutaHash(item.id)}
+              style={estilo}
+              data-section-id={item.id}
+            >
               {contenido}
             </a>
           );
