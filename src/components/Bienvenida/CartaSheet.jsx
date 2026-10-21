@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
@@ -8,6 +8,11 @@ import CartaContenido from "./CartaContenido.jsx";
 import "./CartaSheet.css";
 
 const UMBRAL_DESLIZAR_PX = 70;
+// Tolerancia de redondeo (subpíxeles de scrollHeight/clientHeight en
+// algunos navegadores) para decidir "ya se ve el final" -- sin esto el
+// degradado de abajo podía quedar visible un pelo después de llegar
+// al fondo de verdad.
+const TOLERANCIA_FINAL_PX = 2;
 
 // "Una carta para ti" en celular: ya no vive como tarjeta en Inicio
 // (ver Bienvenida.css/InicioCristal.css) -- se abre desde el botón
@@ -27,7 +32,11 @@ export default function CartaSheet({ abierta, onCerrar }) {
   const { t } = useLanguage();
   const sheetRef = useRef(null);
   const cerrarRef = useRef(null);
+  const scrollRef = useRef(null);
   const inicioDeslizarRef = useRef(null);
+  // Degradado inferior del área de lectura: visible solo mientras
+  // queda contenido por ver debajo, se oculta al llegar al final.
+  const [quedaContenidoPorVer, setQuedaContenidoPorVer] = useState(false);
 
   useFocusTrap(sheetRef, abierta);
   useScrollLock(abierta);
@@ -46,6 +55,21 @@ export default function CartaSheet({ abierta, onCerrar }) {
   // al abrir un diálogo).
   useEffect(() => {
     if (abierta) cerrarRef.current?.focus();
+  }, [abierta]);
+
+  const actualizarDesvanecido = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const restante = el.scrollHeight - el.scrollTop - el.clientHeight;
+    setQuedaContenidoPorVer(restante > TOLERANCIA_FINAL_PX);
+  };
+
+  // Revisa también al abrir (no solo al hacer scroll) -- el contenido
+  // puede ya caber sin necesitar scroll, o puede necesitarlo desde el
+  // primer momento; el panel sigue montado (ver el comentario grande
+  // de arriba), así que sus medidas ya existen aunque esté oculto.
+  useEffect(() => {
+    if (abierta) actualizarDesvanecido();
   }, [abierta]);
 
   // Deslizar hacia abajo para cerrar -- solo desde la solapa/encabezado
@@ -86,20 +110,29 @@ export default function CartaSheet({ abierta, onCerrar }) {
               todo el encabezado) -- la señal visual de "esto se
               desliza" que un bottom sheet trae siempre. */}
           <span className="carta-sheet__asa" aria-hidden="true" />
+          {/* Borde a borde, sin recorte propio -- el botón de cerrar
+              ya NO vive encima/dentro de esta franja (ver la fila de
+              abajo), así que la solapa no necesita ceder ancho. */}
           <SobreSolapa />
+          <div className="carta-sheet__fila-cerrar">
+            <button
+              type="button"
+              ref={cerrarRef}
+              className="carta-sheet__cerrar"
+              onClick={onCerrar}
+              aria-label={t("common.cerrar")}
+            >
+              <X size={20} strokeWidth={2} />
+            </button>
+          </div>
         </div>
-        <button
-          type="button"
-          ref={cerrarRef}
-          className="carta-sheet__cerrar"
-          onClick={onCerrar}
-          aria-label={t("common.cerrar")}
-        >
-          <X size={20} strokeWidth={2} />
-        </button>
-        <div className="carta-sheet__scroll">
+        <div className="carta-sheet__scroll" ref={scrollRef} onScroll={actualizarDesvanecido}>
           <CartaContenido tituloId="carta-sheet-titulo" />
         </div>
+        {/* Decorativo nada más: pointer-events:none + aria-hidden (ver
+            CSS) -- solo indica que hay más texto debajo, no es un
+            control. */}
+        <div className={`carta-sheet__desvanecido${quedaContenidoPorVer ? " is-visible" : ""}`} aria-hidden="true" />
       </div>
     </div>
   );

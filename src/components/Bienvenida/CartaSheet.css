@@ -88,12 +88,9 @@
     }
   }
 
-  /* position:relative -- el asa, la solapa y el botón de cerrar de
-     abajo se posicionan respecto a ESTE bloque, no a toda la hoja.
-     flex-shrink:0: encabezado fijo arriba, lo que scrollea es solo
+  /* flex-shrink:0: encabezado fijo arriba, lo que scrollea es solo
      .carta-sheet__scroll (más abajo). */
   .carta-sheet__encabezado {
-    position: relative;
     flex-shrink: 0;
     padding-top: 14px;
   }
@@ -110,34 +107,41 @@
     background: rgba(243, 205, 122, 0.4);
   }
 
-  /* La solapa en V compartida con Bienvenida.jsx (SobreSolapa) recorta
-     su propio contenedor a border-radius + overflow:hidden -- aquí se
-     sobreescribe a 24px (el de ESTA hoja, no el de la tarjeta de
-     escritorio/16px) para que la curva coincida exacta con la de
-     arriba, sin que la línea sobresalga ni quede "flotando" fuera del
-     recorte. padding-right: dedica un hueco a la derecha del ancho
-     que la solapa en verdad usa (preserveAspectRatio="none" la
-     estira al 100% de SU contenedor) para que la línea diagonal
-     termine antes de llegar al botón de cerrar, en vez de cruzar por
-     debajo de él. */
+  /* Borde a borde, sin recorte propio: la base (Bienvenida.css) le
+     pone su propio border-radius+overflow:hidden a este SVG (pensado
+     para la tarjeta de escritorio, 16px) -- aquí se cancela porque
+     esta hoja ya tiene su PROPIO overflow:hidden + border-radius:24px
+     (ver .carta-sheet arriba), que es el que de verdad importa: con
+     el recorte puesto en el propio SVG (24px de radio sobre un
+     elemento de solo 24px de alto) la curva se habría comido TODA su
+     altura en el borde (radio = alto), cortando la línea antes de
+     llegar a las esquinas de verdad -- dejándolo sin recorte propio y
+     apoyándose en el de la hoja entera (mucho más alta que su propio
+     radio) sí sigue el contorno redondeado real, sin clip de más. */
   .carta-sheet__encabezado .bienvenida-carta__solapa {
-    border-radius: 24px 24px 0 0;
-    padding-right: 56px;
-    box-sizing: border-box;
+    border-radius: 0;
+    overflow: visible;
   }
 
-  /* 44px (no 40, pedido explícito), alineado al borde derecho --
-     dentro del padding-right reservado arriba, así que nunca cruza la
-     línea de la solapa; top fijo cerca del asa, nunca tan abajo como
-     para pisar el título (que empieza después de todo el encabezado,
-     fuera de este position:relative). Mismo lenguaje que el botón de
-     cerrar del menú lateral (.cristal-col__cerrar, ColumnaCristal.css). */
+  /* Fila propia para el botón de cerrar, DEBAJO de la solapa (no dentro
+     de ella) -- "de borde a borde" (arriba) y "sin encimarse con la
+     solapa" (aquí) solo conviven separando los dos verticalmente: la
+     línea en V llega más baja justo en los bordes izquierdo/derecho
+     (donde arranca desde la esquina), así que angostar la solapa para
+     esquivar el botón ya no es una opción. padding-top ~10px = el
+     margen de 8-12px pedido entre la solapa y el botón. */
+  .carta-sheet__fila-cerrar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 12px 4px;
+  }
+
+  /* 44px de área táctil, pedido explícito. Mismo lenguaje que el botón
+     de cerrar del menú lateral (.cristal-col__cerrar, ColumnaCristal.css). */
   .carta-sheet__cerrar {
     all: unset;
     box-sizing: border-box;
-    position: absolute;
-    top: 8px;
-    right: 12px;
+    flex-shrink: 0;
     cursor: pointer;
     width: 44px;
     height: 44px;
@@ -174,5 +178,37 @@
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0.5rem 1.25rem 1.5rem;
+  }
+
+  /* Indicador de scroll: degradado del fondo de la hoja a transparente
+     sobre el borde inferior del área de lectura, mientras queda
+     contenido por ver debajo (is-visible, ver el scroll handler en
+     CartaSheet.jsx) -- se oculta solo al llegar al final. Puramente
+     decorativo: pointer-events:none + aria-hidden (puesto en el JSX)
+     para que nunca compita por el toque/el foco con el contenido real
+     que tiene debajo. position:absolute respecto a .carta-sheet (ya
+     tiene su propio position:fixed, hace de ancla) -- hermano de
+     .carta-sheet__scroll, no hijo: superpuesto sobre su borde inferior
+     en vez de ocupar espacio propio dentro del área que scrollea. */
+  .carta-sheet__desvanecido {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 32px;
+    background: linear-gradient(to bottom, rgba(35, 40, 82, 0), var(--color-night-700));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s var(--ease-out);
+  }
+
+  .carta-sheet__desvanecido.is-visible {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carta-sheet__desvanecido {
+      transition: none;
+    }
   }
 }
