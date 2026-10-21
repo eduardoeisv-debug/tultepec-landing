@@ -6,6 +6,7 @@ import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { useSound } from "../../hooks/useSound.jsx";
+import { marcarProximaDesdeMenu, consumirVueltaAlMenu } from "../../hooks/useVolverASecciones.js";
 import { preloadJuegos } from "../Panel/views/JuegosSeccion.jsx";
 import { preloadGaleriaThumbnails } from "../../hooks/useGaleriaImages.js";
 import BrandSparkles from "../shared/BrandSparkles.jsx";
@@ -50,8 +51,16 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
     return item?.hijos ? item.id : null;
   });
   const [copiado, setCopiado] = useState(false);
+  const [visitadaId, setVisitadaId] = useState(null);
   const colRef = useRef(null);
   const cerrarRef = useRef(null);
+  // Cachea lo leído de consumirVueltaAlMenu() -- StrictMode vuelve a
+  // invocar el efecto de montaje una vez en desarrollo (monta, limpia,
+  // monta de nuevo) y esa segunda pasada encontraría el valor del
+  // módulo ya vacío (lo consumió la primera), perdiendo el scroll
+  // restaurado y el temporizador que quita el resaltado. Mismo arreglo
+  // que InicioCristal.jsx para su propio resaltado de vuelta.
+  const pendienteRef = useRef(undefined);
 
   const compartir = () => {
     playTap();
@@ -66,13 +75,35 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   // la página de atrás, visible detrás del fondo oscurecido.
   useFocusTrap(colRef, true);
 
-  // Autofoco al abrir: el botón de cerrar (useFocusTrap no mueve el
-  // foco por sí solo -- el logo de arriba queda antes en el DOM, pero
-  // es solo el enlace a Inicio, no el control que se espera recibir
-  // el foco al abrir un menú). Al cerrar, CristalShell.jsx devuelve el
-  // foco a la hamburguesa.
+  // Al abrir: si CristalShell.jsx dejó pedida una vuelta al menú (el
+  // botón "Volver al menú" de Seccion.jsx, o el botón atrás del
+  // navegador saliendo de una sección abierta así -- ver ese mismo
+  // archivo), restaura el scroll del panel donde estaba y resalta
+  // brevemente la fila de la sección recién visitada, con el foco ahí
+  // mismo. Si no hay nada pedido (abrir con la hamburguesa, la barra
+  // inferior, etc.), el comportamiento de siempre: foco al botón de
+  // cerrar. Al cerrar, CristalShell.jsx devuelve el foco a quien lo
+  // abrió.
   useEffect(() => {
-    cerrarRef.current?.focus();
+    if (pendienteRef.current === undefined) {
+      pendienteRef.current = consumirVueltaAlMenu();
+    }
+    const pendiente = pendienteRef.current;
+    if (!pendiente) {
+      cerrarRef.current?.focus();
+      return undefined;
+    }
+    const panel = colRef.current;
+    if (panel) panel.scrollTop = pendiente.scrollMenu;
+    const fila = pendiente.seccionId ? panel?.querySelector(`[data-section-id="${pendiente.seccionId}"]`) : null;
+    if (!fila) {
+      cerrarRef.current?.focus();
+      return undefined;
+    }
+    if (fila.matches("a, button, [tabindex]")) fila.focus({ preventScroll: true });
+    setVisitadaId(pendiente.seccionId);
+    const idTimeout = setTimeout(() => setVisitadaId(null), 1800);
+    return () => clearTimeout(idTimeout);
   }, []);
 
   // Clic fuera de la tarjeta del menú (sobre el fondo oscurecido) la
@@ -94,8 +125,16 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [onCerrar]);
 
+  // marcarProximaDesdeMenu antes de onCerrar/navegar (no después):
+  // CristalShell.jsx lo consume en su efecto de cambio de ruta para
+  // fijar el origen de la sección a la que se entra -- si llegara
+  // tarde, ese efecto ya habría resuelto "icons" por defecto. `ruta`
+  // es la prop de este mismo componente, la ruta activa DETRÁS del
+  // menú (la que estaba antes de este clic) -- exactamente lo que hay
+  // que recordar para volver aquí después.
   const alSeleccionar = () => {
     playTap();
+    marcarProximaDesdeMenu({ ruta, scrollMenu: colRef.current?.scrollTop ?? 0 });
     onCerrar();
   };
 
@@ -135,13 +174,18 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
             const activo = ruta.itemId === item.id;
             const abierto = grupoAbierto === item.id;
             const esProximamente = item.estado === "proximamente";
+            // Resaltado temporal (is-visitada, ver el efecto de montaje
+            // de arriba) aparte de is-resaltada (esa es la RUTA ACTIVA,
+            // un estado permanente, no relacionado).
+            const claseVisitada = visitadaId === item.id ? " is-visitada" : "";
 
             return (
               <li className="cristal-col__item" key={item.id}>
                 {item.hijos ? (
                   <button
                     type="button"
-                    className={`cristal-col__fila${abierto ? " is-resaltada" : ""}`}
+                    className={`cristal-col__fila${abierto ? " is-resaltada" : ""}${claseVisitada}`}
+                    data-section-id={item.id}
                     aria-expanded={abierto}
                     aria-haspopup="true"
                     onClick={() => {
@@ -172,7 +216,8 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                   </div>
                 ) : (
                   <a
-                    className={`cristal-col__fila${activo && !grupoAbierto ? " is-resaltada" : ""}`}
+                    className={`cristal-col__fila${activo && !grupoAbierto ? " is-resaltada" : ""}${claseVisitada}`}
+                    data-section-id={item.id}
                     href={rutaHash(item.id)}
                     aria-current={activo ? "page" : undefined}
                     onClick={alSeleccionar}

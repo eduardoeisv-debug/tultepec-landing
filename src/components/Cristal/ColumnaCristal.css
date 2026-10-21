@@ -228,6 +228,15 @@
   outline-offset: 2px;
 }
 
+/* Brillo breve al volver al menú desde una sección (ver el efecto de
+   montaje en ColumnaCristal.jsx) -- solo box-shadow, nunca cambia
+   tamaño/posición. Aparte de is-resaltada (la de arriba: la RUTA
+   ACTIVA, un estado permanente) -- esta es temporal y sin relación,
+   por eso puede convivir con ella o no, según el caso. */
+.cristal-col__fila.is-visitada {
+  box-shadow: 0 0 0 2px rgba(243, 205, 122, 0.55), 0 0 14px -4px rgba(243, 205, 122, 0.6);
+}
+
 /* cursor:default -- las de nivel superior (museos, gastronomía,
    música) ya no son <a> (ver ColumnaCristal.jsx), así que el
    cursor:pointer heredado de .cristal-col__fila se vería como que

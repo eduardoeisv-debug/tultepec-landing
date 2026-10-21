@@ -546,6 +546,11 @@ export const STRINGS = {
   "cristal.volver.secciones": { es: "Secciones", en: "Sections" },
   // Botón al final de cada sección, antes de "Comparte esta página".
   "cristal.volver.boton": { es: "Volver a las secciones", en: "Back to sections" },
+  // Mismo enlace/botón de arriba -- en los dos (arriba y abajo), el
+  // mismo texto cuando la sección se abrió desde el menú lateral (en
+  // vez de "Secciones"/"Volver a las secciones"): volver reabre el
+  // panel del menú en vez de ir a la cuadrícula de Inicio.
+  "cristal.volver.menu": { es: "Volver al menú", en: "Back to menu" },
   "cristal.error.titulo": { es: "Algo no cargó bien", en: "Something didn't load right" },
   "cristal.error.texto": {
     es: "Puede ser que el sitio se haya actualizado mientras tenías esta pestaña abierta. Recarga la página para seguir.",

@@ -5,7 +5,12 @@ import useScrollLock from "../../hooks/useScrollLock.js";
 import useMediaQuery from "../../hooks/useMediaQuery.js";
 import { preloadGaleriaImages, preloadGaleriaThumbnails } from "../../hooks/useGaleriaImages.js";
 import { preloadGaleriaVideos } from "../../hooks/useGaleriaVideos.js";
-import { hayVueltaPendiente } from "../../hooks/useVolverASecciones.js";
+import {
+  hayVueltaPendiente,
+  consumirProximaDesdeMenu,
+  marcarVueltaAlMenu,
+  hayVueltaAlMenuPendiente,
+} from "../../hooks/useVolverASecciones.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
 import BottomNav from "./BottomNav.jsx";
@@ -93,6 +98,17 @@ export default function CristalShell() {
   const stageRef = useRef(null);
   const botonMenuRef = useRef(null);
   const [menuAbierto, setMenuAbierto] = useState(false);
+  // De dónde vino la navegación a la sección ACTUAL: "menu" (una fila
+  // del menú lateral, ver ColumnaCristal.jsx), "icons" (una tarjeta de
+  // Inicio u otro enlace suelto), o null (Inicio mismo, enlace
+  // directo/recarga, o ya se limpió) -- de esto depende a dónde manda
+  // el botón "Volver" de Seccion.jsx. Estado de React (no una variable
+  // de módulo como el resto de useVolverASecciones.js): Seccion.jsx
+  // necesita que el texto del botón cambie con él, y nada obliga a
+  // React a volver a renderizar solo porque una variable suelta
+  // cambió de valor. Se resuelve en el efecto de cambio de ruta, más
+  // abajo.
+  const [origen, setOrigen] = useState(null);
   const esMovil = useMediaQuery("(max-width: 768px)");
 
   // Arranca de inmediato el sondeo de qué fotos/videos existen de
@@ -173,10 +189,6 @@ export default function CristalShell() {
     botonMenuRef.current?.focus();
   }, []);
 
-  useEffect(() => {
-    setMenuAbierto(false);
-  }, [ruta.itemId, ruta.hijoId]);
-
   useScrollLock(menuAbierto);
 
   useEffect(() => {
@@ -232,6 +244,7 @@ export default function CristalShell() {
       <Seccion
         eyebrow="Tultepec"
         seccionId={null}
+        origen={origen}
         titulo={t("cristal.privacidad.titulo")}
         Vista={PrivacidadContenido}
         titleRef={titleRef}
@@ -262,6 +275,7 @@ export default function CristalShell() {
         eyebrow={t(item.label)}
         eyebrowHref={eyebrowHref}
         seccionId={item.id}
+        origen={origen}
         titulo={etiqueta}
         Vista={esResumenGrupo ? vistaGrupoResumen : REGISTRO[clave]}
         titleRef={titleRef}
@@ -327,31 +341,81 @@ export default function CristalShell() {
   // global.css pone scroll-behavior:smooth en html (para los anclas
   // internos), así que "auto" heredaba ese scroll animado en cada
   // cambio de ruta.
+  // itemIdAnteriorRef: el itemId de ANTES de este cambio de ruta --
+  // distingue "nueva subsección del mismo grupo" (el origen del grupo
+  // sigue siendo el mismo) de "entramos a una sección distinta" (el
+  // origen se resuelve de nuevo), y es la sección a resaltar al
+  // reabrir el menú cuando se sale de ella con el botón atrás (ver
+  // más abajo).
   const esPrimerCambioRef = useRef(true);
+  const itemIdAnteriorRef = useRef(null);
   useLayoutEffect(() => {
     document.title = tituloDocumento;
     if (esPrimerCambioRef.current) {
       esPrimerCambioRef.current = false;
     } else {
+      const idAnterior = itemIdAnteriorRef.current;
+      const origenAlLlegar = origen; // el de la sección que se DEJA, antes de resolver el de la nueva
       const esVueltaAtras = esNavegacionHistorialRef.current;
       esNavegacionHistorialRef.current = false;
 
-      if (hayVueltaPendiente()) {
-        // El enlace/botón "Secciones" ya dejó pedido su propio scroll
-        // dirigido a un ícono puntual (ver InicioCristal.jsx) -- este
-        // efecto no lo pisa con un salto al tope.
-      } else if (esVueltaAtras && ruta.itemId === null) {
-        // Atrás/adelante del navegador hacia Inicio: restaura lo que
-        // el efecto de arriba venía guardando, en vez del salto al
-        // tope de siempre -- el navegador ya no lo hace solo
-        // (scrollRestoration="manual" en main.jsx, puesto a propósito
-        // para que recargar la página no deje "a la mitad").
-        const guardado = sessionStorage.getItem(INICIO_SCROLL_KEY);
-        window.scrollTo({ top: guardado ? Number(guardado) : 0, left: 0, behavior: "instant" });
-      } else {
+      // Resuelve el origen de la sección a la que se ENTRA: si
+      // ColumnaCristal.jsx dejó avisado que viene del menú, gana; si
+      // el itemId no cambió (subsección nueva del mismo grupo), se
+      // queda como estaba; si no, es una entrada "fresca" sin pasar
+      // por el menú (tarjeta de Inicio, enlace del pie, un CTA, un
+      // enlace directo...) -- "icons" por defecto (null si es Inicio),
+      // tal como pide el punto 6 del encargo.
+      const pendienteOrigenMenu = consumirProximaDesdeMenu();
+      const origenResuelto = pendienteOrigenMenu
+        ? { tipo: "menu", ...pendienteOrigenMenu }
+        : ruta.itemId === idAnterior
+          ? origenAlLlegar
+          : ruta.itemId === null
+            ? null
+            : { tipo: "icons" };
+      setOrigen(origenResuelto);
+
+      if (hayVueltaAlMenuPendiente()) {
+        // El botón "Volver al menú" (Seccion.jsx) ya dejó pedido
+        // reabrir el panel con su propio scroll/resaltado (ver
+        // ColumnaCristal.jsx) -- solo falta reabrirlo.
+        setMenuAbierto(true);
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      } else if (esVueltaAtras && origenAlLlegar?.tipo === "menu" && ruta.itemId !== idAnterior) {
+        // Atrás del navegador/teléfono saliendo de una sección abierta
+        // desde el menú: el mismo efecto que el botón de arriba, pero
+        // disparado por el historial -- idAnterior es la sección que
+        // se deja, la que hay que resaltar al reabrir.
+        marcarVueltaAlMenu({ scrollMenu: origenAlLlegar.scrollMenu, seccionId: idAnterior });
+        setMenuAbierto(true);
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      } else {
+        // Cualquier otro cambio de ruta cierra el menú si estaba
+        // abierto (antes vivía como un efecto aparte) -- un enlace
+        // normal ya lo cierra por su cuenta (ver onCerrar en
+        // ColumnaCristal.jsx), esto cubre el resto: editar el hash a
+        // mano, o un atrás/adelante que no entra en el caso de arriba.
+        setMenuAbierto(false);
+
+        if (hayVueltaPendiente()) {
+          // El enlace/botón "Secciones" ya dejó pedido su propio
+          // scroll dirigido a un ícono puntual (ver InicioCristal.jsx).
+        } else if (esVueltaAtras && ruta.itemId === null) {
+          // Atrás/adelante del navegador hacia Inicio (origen "icons"
+          // o ninguno): restaura lo que el efecto de arriba venía
+          // guardando, en vez del salto al tope de siempre -- el
+          // navegador ya no lo hace solo (scrollRestoration="manual"
+          // en main.jsx, puesto a propósito para que recargar la
+          // página no deje "a la mitad").
+          const guardado = sessionStorage.getItem(INICIO_SCROLL_KEY);
+          window.scrollTo({ top: guardado ? Number(guardado) : 0, left: 0, behavior: "instant" });
+        } else {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }
       }
     }
+    itemIdAnteriorRef.current = ruta.itemId;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ruta.itemId, ruta.hijoId]);
 
