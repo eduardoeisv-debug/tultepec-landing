@@ -473,6 +473,7 @@ export const STRINGS = {
   "menu.item.pirotecnia": { es: "Pirotecnia", en: "Fireworks" },
   "menu.item.memorias": { es: "Memorias", en: "Memories" },
   "menu.item.museos": { es: "Museos", en: "Museums" },
+  "menu.item.artesanias": { es: "Artesanías", en: "Crafts" },
   "menu.item.eventos": { es: "Eventos", en: "Events" },
   "menu.item.gastronomia": { es: "Gastronomía", en: "Food" },
   "menu.item.musica": { es: "Música", en: "Music" },

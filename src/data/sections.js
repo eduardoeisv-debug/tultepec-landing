@@ -39,6 +39,7 @@ import {
   Flame,
   BookOpen,
   Landmark,
+  Amphora,
   Ticket,
   CalendarDays,
   Utensils,
@@ -106,6 +107,23 @@ const SECTIONS = [
     menuIcon: Landmark,
     homeIcon: Landmark,
     homeColor: "var(--color-gold)",
+    homeInk: "#14163a",
+    hijos: null,
+  },
+  {
+    id: "artesanias",
+    label: "menu.item.artesanias",
+    estado: "proximamente",
+    showInMenu: true,
+    showInHome: true,
+    showInFooter: false,
+    menuIcon: Amphora,
+    homeIcon: Amphora,
+    // --color-turquoise-papel (variables.css), no --color-turquoise
+    // (ya la usa Visítanos, ver más abajo) -- mismo turquesa de las
+    // banderitas de papel picado (ver COLORS en HeroPapelPicado.jsx),
+    // así combina con ellas sin repetir el color de otra tarjeta.
+    homeColor: "var(--color-turquoise-papel)",
     homeInk: "#14163a",
     hijos: null,
   },

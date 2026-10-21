@@ -18,6 +18,12 @@
   --color-fire-red-dark: #a81b2d;
   --color-pink: #ff2d8a;
   --color-turquoise: #2bc4b4;
+  /* Mismo turquesa de las banderitas de papel picado (COLORS en
+     HeroPapelPicado.jsx) -- no --color-turquoise de arriba (ya la usa
+     Visítanos): la tarjeta de Artesanías (sections.js) necesitaba un
+     color propio que combinara con el papel picado sin repetir el de
+     otra sección. */
+  --color-turquoise-papel: #2fd3c8;
   /* Tarjetas de acceso de Inicio (InicioCristal.jsx): 6 destinos
      distintos necesitan 6 colores de círculo distintos para que
      ninguno se repita entre secciones diferentes -- los 5 tonos de
