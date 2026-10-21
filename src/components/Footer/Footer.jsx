@@ -44,7 +44,12 @@ export default function Footer({ onOpenPrivacy }) {
               dos, un lector de pantalla anunciaría la misma frase dos
               veces seguidas. */}
           <span className="footer__signature-seal">
-            <img src="/images/brand/logo-ea.svg" alt="" width="64" height="64" />
+            <img className="footer__signature-seal-icono" src="/images/brand/logo-ea.svg" alt="" width="72" height="72" />
+            {/* Reflejo decorativo: ver footer__signature-seal-reflejo en
+                Footer.css para por qué usa background-image en vez de
+                <img> (evita que el pulso de los nodos del SVG se repita
+                también aquí, en espejo). */}
+            <span className="footer__signature-seal-reflejo" aria-hidden="true" />
           </span>
           <span className="footer__signature-text">
             <span className="footer__signature-madeby">
