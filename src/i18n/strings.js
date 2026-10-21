@@ -109,12 +109,6 @@ export const STRINGS = {
     es: "Eduardo Israel Sánchez Villaseñor",
     en: "Eduardo Israel Sánchez Villaseñor",
   },
-  "bienvenida.cta.pregunta": {
-    es: "¿Tienes una historia de Tultepec?",
-    en: "Do you have a story about Tultepec?",
-  },
-  "bienvenida.cta.compartir": { es: "Comparte tu historia", en: "Share your story" },
-  "bienvenida.cta.leeMemorias": { es: "Lee las memorias del pueblo", en: "Read the town's memories" },
   "bienvenida.leerNota": { es: "Toca para leerla", en: "Tap to read it" },
   "bienvenida.ocultarNota": { es: "Toca para ocultar", en: "Tap to hide" },
 

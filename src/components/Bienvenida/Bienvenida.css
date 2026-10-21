@@ -541,9 +541,8 @@
 
 /* Cierre de la carta: línea divisoria fina + sello EA (mismo logo que
    Footer.jsx) centrado, chico -- un cierre discreto, no una firma
-   corporativa. Antes de .bienvenida-carta__cta (que ya trae su propia
-   línea divisoria para el bloque de "comparte tu historia", un bloque
-   funcional aparte, no parte del cierre de la carta en sí). */
+   corporativa. Último bloque del cuerpo (antes tenía después un CTA
+   de "comparte tu historia", quitado -- ver el historial). */
 .bienvenida-carta__cierre {
   display: flex;
   justify-content: center;
@@ -562,46 +561,6 @@
   display: block;
   width: 34px;
   height: 34px;
-}
-
-.bienvenida-carta__cta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.8rem 1.3rem;
-  margin-top: 0.6rem;
-  padding-top: 1.3rem;
-  border-top: 1px solid rgba(42, 28, 18, 0.15);
-  font-family: var(--font-body);
-}
-
-.bienvenida-carta__pregunta {
-  flex: 1 1 100%;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: var(--color-ink-soft);
-}
-
-/* Botón secundario (contorno) en vez de texto suelto -- como simple
-   enlace de color, sin borde ni forma de pastilla, no se leía como una
-   opción accionable junto al botón sólido de "Comparte tu historia". */
-.bienvenida-carta__link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 1.3rem;
-  border-radius: 999px;
-  border: 1.5px solid var(--color-fire-red-dark);
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--color-fire-red-dark);
-  text-decoration: none;
-  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
-}
-
-.bienvenida-carta__link:hover {
-  background: var(--color-fire-red-dark);
-  color: var(--color-paper);
 }
 
 @media (max-width: 860px) {

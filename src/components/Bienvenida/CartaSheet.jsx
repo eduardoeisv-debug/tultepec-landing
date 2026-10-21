@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
@@ -31,7 +31,7 @@ const TOLERANCIA_FINAL_PX = 2;
 export default function CartaSheet({ abierta, onCerrar }) {
   const { t } = useLanguage();
   const sheetRef = useRef(null);
-  const cerrarRef = useRef(null);
+  const tituloRef = useRef(null);
   const scrollRef = useRef(null);
   const inicioDeslizarRef = useRef(null);
   // Degradado inferior del área de lectura: visible solo mientras
@@ -50,11 +50,24 @@ export default function CartaSheet({ abierta, onCerrar }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [abierta, onCerrar]);
 
-  // Autofoco al abrir, igual que ColumnaCristal.jsx: el botón de
-  // cerrar, no el título (es el control que se espera recibir el foco
-  // al abrir un diálogo).
+  // Al abrir: scroll del cuerpo a 0 y foco al encabezado (el título,
+  // tituloRef -- ver CartaContenido.jsx) -- las dos cosas juntas, SOLO
+  // al abrir, nunca al cerrar (si corrieran también al cerrar se
+  // vería un salto del contenido durante la animación de salida, que
+  // sigue viéndose un rato con la hoja ya "cerrada" en React).
+  // useLayoutEffect (no useEffect) para el scroll: corre antes de que
+  // el navegador pinte el siguiente frame, así el reinicio ya pasó
+  // cuando la hoja se hace visible -- con useEffect alcanzaba a verse
+  // un instante en la posición vieja (p.ej. a mitad de la carta, si
+  // así se había quedado la vez anterior) antes de saltar a 0.
+  useLayoutEffect(() => {
+    if (abierta && scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, [abierta]);
+
   useEffect(() => {
-    if (abierta) cerrarRef.current?.focus();
+    if (abierta) tituloRef.current?.focus();
   }, [abierta]);
 
   const actualizarDesvanecido = () => {
@@ -117,7 +130,6 @@ export default function CartaSheet({ abierta, onCerrar }) {
           <div className="carta-sheet__fila-cerrar">
             <button
               type="button"
-              ref={cerrarRef}
               className="carta-sheet__cerrar"
               onClick={onCerrar}
               aria-label={t("common.cerrar")}
@@ -127,7 +139,7 @@ export default function CartaSheet({ abierta, onCerrar }) {
           </div>
         </div>
         <div className="carta-sheet__scroll" ref={scrollRef} onScroll={actualizarDesvanecido}>
-          <CartaContenido tituloId="carta-sheet-titulo" />
+          <CartaContenido tituloId="carta-sheet-titulo" tituloRef={tituloRef} />
         </div>
         {/* Decorativo nada más: pointer-events:none + aria-hidden (ver
             CSS) -- solo indica que hay más texto debajo, no es un

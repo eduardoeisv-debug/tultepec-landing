@@ -8,18 +8,23 @@ import "./Bienvenida.css";
 // clases que ya traía (bienvenida__grid/__copy/-carta...), así que
 // conserva su estilo actual en los dos contextos sin tocar Bienvenida.css.
 //
-// `tituloId`: opcional -- CartaSheet.jsx lo pasa (su <h2> necesita un id
-// para el aria-labelledby del diálogo); Bienvenida.jsx no lo manda
-// (no hace falta ahí, y los dos árboles conviven montados a la vez
-// -- uno oculto por CSS según el ancho -- así que un id fijo aquí
-// aparecería duplicado en el DOM).
-export default function CartaContenido({ tituloId }) {
+// `tituloId`/`tituloRef`: opcionales -- CartaSheet.jsx los pasa (su
+// <h2> necesita un id para el aria-labelledby del diálogo, y un ref
+// para poder enfocarlo al abrir, ver ese archivo); Bienvenida.jsx no
+// los manda (no hacen falta ahí, y los dos árboles conviven montados a
+// la vez -- uno oculto por CSS según el ancho -- así que un id fijo
+// aquí aparecería duplicado en el DOM). tabIndex solo cuando SÍ hay
+// tituloRef: sin él, este <h2> no necesita entrar al foco programático
+// para nada.
+export default function CartaContenido({ tituloId, tituloRef }) {
   const { t } = useLanguage();
   return (
     <div className="bienvenida__grid">
       <div className="bienvenida__copy">
         <span className="eyebrow eyebrow--light">{t("bienvenida.eyebrow")}</span>
-        <h2 id={tituloId}>{t("bienvenida.title")}</h2>
+        <h2 id={tituloId} ref={tituloRef} tabIndex={tituloRef ? -1 : undefined}>
+          {t("bienvenida.title")}
+        </h2>
         <p className="bienvenida__subtitle">{t("bienvenida.subtitle")}</p>
       </div>
 
@@ -36,16 +41,6 @@ export default function CartaContenido({ tituloId }) {
 
           <div className="bienvenida-carta__cierre" aria-hidden="true">
             <img src="/images/brand/logo-ea.svg" alt="" width="34" height="34" />
-          </div>
-
-          <div className="bienvenida-carta__cta">
-            <p className="bienvenida-carta__pregunta">{t("bienvenida.cta.pregunta")}</p>
-            <a href="#/memorias/comparte" className="btn btn--dark">
-              {t("bienvenida.cta.compartir")}
-            </a>
-            <a href="#/memorias/pueblo" className="bienvenida-carta__link">
-              {t("bienvenida.cta.leeMemorias")}
-            </a>
           </div>
         </div>
       </article>
