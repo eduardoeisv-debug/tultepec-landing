@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import "./Bienvenida.css";
 
@@ -105,18 +106,12 @@ export default function Bienvenida({ className = "" }) {
               </span>
               <span className="bienvenida__nota-hint">{t(abierta ? "bienvenida.ocultarNota" : "bienvenida.leerNota")}</span>
             </span>
-            <svg
-              className="bienvenida__nota-chevron"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
+            {/* ChevronRight, no una flecha hacia abajo: apunta "hacia
+                adelante" en reposo (misma señal de "desplegable" que
+                el resto del sitio) y gira 90° al abrir (ver CSS) para
+                apuntar hacia abajo -- ya no es un simple basculamiento
+                180°/arriba-abajo. */}
+            <ChevronRight className="bienvenida__nota-chevron" size={20} strokeWidth={2} aria-hidden="true" />
           </span>
         </button>
 

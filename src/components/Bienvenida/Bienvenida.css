@@ -80,13 +80,20 @@
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  border-radius: var(--radius-md);
+  /* 16px explícito (equivalente a rounded-2xl), no --radius-md (14px)
+     -- la curva de la solapa (.bienvenida-carta__solapa, más abajo)
+     usa este mismo valor para que las dos coincidan exactas. */
+  border-radius: 16px;
   background: var(--color-night-700);
   color: var(--color-paper);
   border: 1px solid rgba(243, 205, 122, 0.3);
   box-shadow: var(--shadow-soft), 0 0 22px -10px rgba(243, 205, 122, 0.35);
   overflow: hidden;
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  /* Solo box-shadow/border-color (sin transform): el "levantamiento"
+     al pasar el mouse se quita a propósito -- el resplandor dorado de
+     abajo ya es la señal de hover/foco, el ícono y el chevron traen
+     su propio micro-movimiento por separado. */
+  transition: box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
   /* Consulta por el ancho REAL de esta tarjeta, no por el del viewport:
      dentro del Bento (InicioCristal.css) mide ~320-330px incluso en
      escritorio ancho (2 de 6 columnas de un stage de 1180px), que es
@@ -96,28 +103,38 @@
   container-type: inline-size;
 }
 
+/* Resplandor dorado sutil al pasar el mouse o enfocar -- rgba(212,
+   175, 55, ...) tal cual se pidió (un dorado algo más oscuro que
+   --color-gold-light/#F3CD7A, el del borde -- los dos conviven bien,
+   sin desentonar). */
 .bienvenida__nota:hover {
-  transform: translateY(-2px);
   border-color: rgba(243, 205, 122, 0.55);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
+/* outline (no solo el resplandor): más confiable como señal de foco
+   -- un box-shadow a secas no se respeta en modos de alto contraste
+   forzado, el mismo motivo por el que el resto del sitio usa outline
+   para esto. El resplandor se suma, no lo reemplaza. */
 .bienvenida__nota:focus-visible {
   outline: 2px solid var(--color-gold-light);
   outline-offset: 3px;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
 .bienvenida__nota-cuerpo {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  /* padding-top más chico que el resto (0.85rem, no 1.05rem parejo):
-     la solapa de arriba (24px) ya aporta su propio "peso" visual sobre
-     el contenido -- con el mismo padding que abajo, el ícono/título
-     quedaban corridos hacia abajo respecto al triángulo de la solapa
-     en vez de centrados bajo ella. min-height explícito (no depender
-     solo de la suma de paddings + alto del ícono) para que el área
-     táctil se quede en 48px+ aunque el padding-top baje. */
-  padding: 0.85rem 1.3rem 1.05rem;
+  /* Escala 16/24/32px, igual que las tarjetas de Inicio vecinas (Hero
+     arriba, accesos abajo) -- top más chico que el resto (16px, no
+     parejo): la solapa de arriba (24px) ya aporta su propio "peso"
+     visual sobre el contenido -- con el mismo padding que abajo, el
+     ícono/título quedaban corridos hacia abajo respecto al triángulo
+     de la solapa en vez de centrados bajo ella. min-height explícito
+     (no depender solo de la suma de paddings + alto del ícono) para
+     que el área táctil se quede en 48px+ aunque el padding-top baje. */
+  padding: 1rem 1.5rem 1.5rem;
   min-height: 48px;
 }
 
@@ -135,11 +152,20 @@
   flex-shrink: 0;
   --icon-color: var(--color-gold-light);
   --icon-ink: #14163a;
+  transition: transform 0.2s var(--ease-out);
 }
 
 .bienvenida__nota-icono svg {
   width: 24px;
   height: 24px;
+}
+
+/* Zoom leve del sobre al pasar el mouse sobre la tarjeta entera (no
+   solo sobre el círculo) -- misma esfera con degradado que los demás
+   íconos de Inicio (.icono-3d, global.css), esto es lo único propio
+   de aquí. */
+.bienvenida__nota:hover .bienvenida__nota-icono {
+  transform: scale(1.06);
 }
 
 .bienvenida__nota-texto {
@@ -166,16 +192,15 @@
   white-space: nowrap;
 }
 
-/* --cristal-soft (no --color-ink-soft, pensado para texto sobre papel
-   crema): ya probado en otras pastillas de Menú Cristal sobre fondos
-   casi tan oscuros como este (--color-night-700/-800) con ~8.5:1 de
-   contraste, bien arriba del mínimo de 4.5:1 pedido. text-wrap:balance
-   como red de seguridad nada más -- a este ancho normalmente ya cabe
-   en una sola línea, pero si alguna vez no cupiera, reparte el texto
-   en vez de dejar una palabra sola. */
+/* #E2D4B7 (pedido explícito, no --cristal-soft): ~9.6:1 de contraste
+   contra el fondo marino de esta tarjeta (--color-night-700), bien
+   arriba del mínimo de 4.5:1 pedido. text-wrap:balance como red de
+   seguridad nada más -- a este ancho normalmente ya cabe en una sola
+   línea, pero si alguna vez no cupiera, reparte el texto en vez de
+   dejar una palabra sola. */
 .bienvenida__nota-hint {
   font-size: 0.82rem;
-  color: var(--cristal-soft);
+  color: #e2d4b7;
   text-wrap: balance;
 }
 
@@ -184,11 +209,23 @@
   width: 20px;
   height: 20px;
   color: var(--color-gold-light);
-  transition: transform 0.3s var(--ease-out);
+  transition: transform 0.2s var(--ease-out);
 }
 
+/* Micro-animación de hover (3-4px hacia la derecha) -- solo en
+   reposo/cerrada: con la tarjeta abierta el chevron ya está rotado
+   90° (ver abajo) y un translateX ahí se vería como un nudge vertical
+   (ocurre en el eje YA girado), no hacia un lado. */
+.bienvenida__nota:not(.is-abierta):hover .bienvenida__nota-chevron {
+  transform: translateX(4px);
+}
+
+/* 90° (no 180°): ChevronRight apunta "hacia adelante" en reposo y
+   gira a apuntar hacia abajo al abrir -- misma señal de "esto se
+   despliega", con el ícono de Lucide en vez del trazo a mano de antes
+   (ver Bienvenida.jsx). */
 .bienvenida__nota.is-abierta .bienvenida__nota-chevron {
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }
 
 /* Aviso de "hay algo aquí", una sola vez por visita (clase añadida por
@@ -238,6 +275,19 @@
   .bienvenida__nota.is-resaltada .bienvenida-carta__solapa {
     animation: none;
   }
+
+  /* Desactiva el zoom del ícono y el nudge del chevron al pasar el
+     mouse -- el resplandor dorado (box-shadow, no transform) se deja
+     tal cual, no es la clase de movimiento que este modo pide evitar. */
+  .bienvenida__nota-icono,
+  .bienvenida__nota-chevron {
+    transition: none;
+  }
+
+  .bienvenida__nota:hover .bienvenida__nota-icono,
+  .bienvenida__nota:not(.is-abierta):hover .bienvenida__nota-chevron {
+    transform: none;
+  }
 }
 
 /* Solapa de sobre: un solo triángulo de línea dorada (ver SobreSolapa
@@ -260,7 +310,9 @@
   display: block;
   width: 100%;
   height: 24px;
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  /* 16px, igual que .bienvenida__nota de arriba (ya no --radius-md) --
+     mismo valor en los dos para que las curvas sigan coincidiendo. */
+  border-radius: 16px 16px 0 0;
   overflow: hidden;
 }
 
