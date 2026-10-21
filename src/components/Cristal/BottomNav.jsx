@@ -113,6 +113,11 @@ export default function BottomNav({
         onClick={alAbrirOCerrarCarta}
         aria-expanded={cartaAbierta}
         aria-controls="carta-sheet"
+        // Mientras el punto de novedad está activo, el nombre accesible
+        // avisa "sin leer" -- sin el punto (ya se abrió, o aria-label
+        // directamente ausente), vuelve a ser el texto visible de
+        // siempre ("Carta"/"Letter"), sin repetirlo aquí.
+        aria-label={!cartaVista ? t("bottomnav.carta.sinLeer") : undefined}
       >
         <span className="cristal-bottomnav__icono-envoltura">
           <Mail size={22} strokeWidth={1.8} aria-hidden="true" />

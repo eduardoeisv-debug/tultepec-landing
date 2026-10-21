@@ -93,17 +93,23 @@
 
 /* Punto de novedad ("todavía no abriste la carta") -- ~8px, dorado,
    desaparece en cuanto se abre la hoja una vez (cartaVista, ver
-   CristalShell.jsx) y el estado queda en localStorage, así que no
-   vuelve a aparecer en visitas futuras. Solo transform/opacity en la
-   entrada, respeta prefers-reduced-motion abajo. */
+   CristalShell.jsx) y el estado (con la versión de la carta, ver
+   LETTER_VERSION ahí mismo) queda en localStorage, así que no vuelve
+   a aparecer en visitas futuras salvo que la carta cambie de verdad.
+   Solo transform/opacity en la entrada, respeta prefers-reduced-motion
+   abajo. Borde de 2px del mismo tono sólido que el fondo de la barra
+   (#0e0e26, ver .cristal-bottomnav arriba) -- separa el punto del
+   ícono dorado de abajo (los dos son dorados, sin este anillo el
+   punto se perdía contra el trazo del sobre en vez de resaltar). */
 .cristal-bottomnav__badge {
   position: absolute;
-  top: -2px;
-  right: -3px;
+  top: -4px;
+  right: -5px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--color-gold-light);
+  border: 2px solid #0e0e26;
   box-shadow: 0 0 4px rgba(243, 205, 122, 0.8);
   animation: cristal-bottomnav-badge-in 1.5s var(--ease-out);
 }

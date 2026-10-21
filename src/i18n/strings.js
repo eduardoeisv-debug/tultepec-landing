@@ -460,6 +460,12 @@ export const STRINGS = {
   // está abierto (ver BottomNav.jsx).
   "bottomnav.cerrar": { es: "Cerrar", en: "Close" },
   "bottomnav.carta": { es: "Carta", en: "Letter" },
+  // aria-label del mismo botón mientras el punto de novedad está
+  // activo (no se ha abierto la hoja todavía) -- reemplaza al nombre
+  // accesible de siempre (el texto visible "Carta"/"Letter") solo en
+  // ese momento; en cuanto se abre, vuelve a usarse el texto visible
+  // tal cual, sin esta clave.
+  "bottomnav.carta.sinLeer": { es: "Carta, sin leer", en: "Letter, unread" },
   "bottomnav.sonido": { es: "Sonido", en: "Sound" },
   "sonido.activar": { es: "Activar sonido", en: "Enable sound" },
   "sonido.desactivar": { es: "Silenciar", en: "Mute" },

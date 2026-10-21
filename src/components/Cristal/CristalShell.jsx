@@ -95,17 +95,30 @@ const COLOR_CHROME_SITIO = "#1a1b4b";
 // apareciendo en cada visita, degradado pero no roto).
 const CARTA_VISTA_KEY = "tultepec:cartaVista";
 
+// Cambia SOLO esto (a cualquier texto distinto, p.ej. "2026-11") el
+// día que el TEXTO de la carta cambie de verdad -- no hace falta
+// tocar nada más: quien ya la había marcado como vista con una
+// versión distinta a la de hoy vuelve a ver el punto de novedad, como
+// si no la hubiera leído, porque leerCartaVista() de abajo compara
+// las dos versiones, no solo si "ya se abrió alguna vez".
+const LETTER_VERSION = "2026-10";
+
 function leerCartaVista() {
   try {
-    return localStorage.getItem(CARTA_VISTA_KEY) === "1";
+    const guardado = localStorage.getItem(CARTA_VISTA_KEY);
+    if (!guardado) return false;
+    return JSON.parse(guardado)?.version === LETTER_VERSION;
   } catch {
+    // Sin permisos de almacenamiento, o un valor guardado que ya no
+    // tiene sentido (el formato viejo, un solo "1" sin versión): se
+    // trata como "nunca vista", nunca como un error que rompa algo.
     return false;
   }
 }
 
 function guardarCartaVista() {
   try {
-    localStorage.setItem(CARTA_VISTA_KEY, "1");
+    localStorage.setItem(CARTA_VISTA_KEY, JSON.stringify({ version: LETTER_VERSION }));
   } catch {
     // Sin permisos de almacenamiento: no es crítico, el punto de
     // novedad solo volvería a aparecer en la próxima visita.
