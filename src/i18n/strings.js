@@ -19,8 +19,8 @@ export const STRINGS = {
     en: "This is a space to keep and share the memories of our town: its history, its people, its festivities, and the craft that turns fire into art.",
   },
   "hero.verVideo": { es: "Ver video", en: "Watch video" },
-  "hero.verBienvenida": { es: "Ver bienvenida", en: "Watch welcome" },
-  "hero.videoCaption": { es: "Un recorrido por el pueblo en 1:28", en: "A tour of the town in 1:28" },
+  "hero.verBienvenida": { es: "Recorrido por el pueblo", en: "Tour of the town" },
+  "hero.videoCaption": { es: "Conoce Tultepec", en: "Discover Tultepec" },
 
   "hero.card.books.title": { es: "Relatos Escritos", en: "Written Accounts" },
   "hero.video.ariaLabel": {
@@ -92,23 +92,59 @@ export const STRINGS = {
     es: "Por qué existe esta página, contado por quienes la hacemos.",
     en: "Why this page exists, told by those who made it.",
   },
-  "bienvenida.carta.p1": {
-    es: "Tultepec es conocido por su pirotecnia, pero detrás de cada castillo y cada torito hay familias, recuerdos y tradiciones que han pasado de generación en generación.",
-    en: "Tultepec is known for its fireworks, but behind every castillo and every torito there are families, memories and traditions passed down from generation to generation.",
+  // Carta de bienvenida (CartaInfografia.jsx) -- mismo componente de
+  // contenido en la hoja de celular (CartaSheet.jsx) y en el acordeón
+  // de escritorio (Bienvenida.jsx). El párrafo 1 va partido en tres
+  // claves (antes/resaltado/después) solo para poder poner
+  // "familias, recuerdos y tradiciones" en dorado -- concatenadas dan
+  // el mismo párrafo de siempre, palabra por palabra.
+  "bienvenida.infografia.parrafo1Pre": {
+    es: "Tultepec es conocido por su pirotecnia, pero detrás de cada castillo y cada torito hay ",
+    en: "Tultepec is known for its fireworks, but behind every castillo and every torito there are ",
   },
-  "bienvenida.carta.p2": {
-    es: "Creamos este sitio para que esas memorias no se pierdan. Aquí encontrarás relatos de nuestra gente, la historia del pueblo, las fiestas que celebramos a lo largo del año y las imágenes que lo cuentan mejor que cualquier palabra.",
-    en: "We created this site so those memories don't get lost. Here you'll find stories from our people, the town's history, the festivities we celebrate throughout the year, and the images that tell it better than any words.",
+  "bienvenida.infografia.parrafo1Resaltado": {
+    es: "familias, recuerdos y tradiciones",
+    en: "families, memories and traditions",
   },
-  "bienvenida.carta.p3": {
-    es: "Si eres de aquí, esperamos que te reconozcas en estas páginas. Si nos visitas por primera vez, bienvenido: esta también es tu casa.",
-    en: "If you're from here, we hope you recognize yourself in these pages. If this is your first visit, welcome: this is your home too.",
+  "bienvenida.infografia.parrafo1Post": {
+    es: " que han pasado de generación en generación.",
+    en: " passed down from generation to generation.",
   },
+  "bienvenida.infografia.cita": {
+    es: "Creamos este sitio para que esas memorias no se pierdan.",
+    en: "We created this site so those memories don't get lost.",
+  },
+  "bienvenida.infografia.listaTitulo": { es: "Aquí encontrarás", en: "Here you'll find" },
+  "bienvenida.infografia.listaItem1": { es: "Relatos de nuestra gente", en: "Stories from our people" },
+  "bienvenida.infografia.listaItem2": { es: "La historia del pueblo", en: "The town's history" },
+  "bienvenida.infografia.listaItem3": {
+    es: "Las fiestas que celebramos a lo largo del año",
+    en: "The festivities we celebrate throughout the year",
+  },
+  "bienvenida.infografia.listaItem4": {
+    es: "Las imágenes que lo cuentan mejor que cualquier palabra",
+    en: "The images that tell it better than any words",
+  },
+  "bienvenida.infografia.siEresDeAquiEtiqueta": { es: "Si eres de aquí", en: "If you're from here" },
+  "bienvenida.infografia.siEresDeAquiTexto": {
+    es: "esperamos que te reconozcas en estas páginas.",
+    en: "we hope you recognize yourself in these pages.",
+  },
+  "bienvenida.infografia.siVisitasEtiqueta": { es: "Si nos visitas por primera vez", en: "If this is your first visit" },
+  "bienvenida.infografia.siVisitasTexto": {
+    es: "bienvenido: esta también es tu casa.",
+    en: "welcome: this is your home too.",
+  },
+
   "bienvenida.firma.despedida": { es: "Con cariño,", en: "With love," },
-  "bienvenida.firma.nombres": {
-    es: "Eduardo Israel Sánchez Villaseñor",
-    en: "Eduardo Israel Sánchez Villaseñor",
-  },
+  // Partido en dos (antes una sola clave, bienvenida.firma.nombres) --
+  // CartaInfografia.jsx junta las dos con un espacio entre spans
+  // inline-block, para que el nombre pueda romper en dos líneas justo
+  // ahí ("Eduardo Israel / Sánchez Villaseñor") en pantallas angostas
+  // sin partir ninguna de las dos palabras compuestas. Mismo nombre
+  // completo de siempre, no se traduce (es la firma real del autor).
+  "bienvenida.firma.nombrePila": { es: "Eduardo Israel", en: "Eduardo Israel" },
+  "bienvenida.firma.apellidos": { es: "Sánchez Villaseñor", en: "Sánchez Villaseñor" },
   "bienvenida.leerNota": { es: "Toca para leerla", en: "Tap to read it" },
   "bienvenida.ocultarNota": { es: "Toca para ocultar", en: "Tap to hide" },
 
