@@ -24,6 +24,20 @@ const preloadPrivacidad = () => import("../Panel/views/PrivacidadContenido.jsx")
 // módulo, no en cada render.
 const SECCIONES_MENU = SECTIONS.filter((s) => s.showInMenu && s.id !== "inicio");
 
+// Variable de módulo (no estado de React, mismo patrón que
+// useVolverASecciones.js): sobrevive a que CristalShell.jsx desmonte
+// y vuelva a montar este panel cada vez que se cierra/abre el menú.
+// Sin esto, tocar "Memorias" para explorar sus subopciones (sin llegar
+// a elegir ninguna) se veía bien AL MOMENTO -- pero cerrar el menú y
+// volver a abrirlo lo hacía recalcular `grupoAbierto` desde cero a
+// partir de la ruta activa (que nunca cambió, seguía en
+// "pirotecnia/historia"), mostrando Pirotecnia desplegada otra vez,
+// como si la exploración de Memorias nunca hubiera pasado. `undefined`
+// = sin preferencia explícita todavía (usa la ruta activa, como
+// siempre); cualquier otro valor (incluido `null`, grupo colapsado a
+// propósito) gana sobre la ruta hasta la próxima navegación real.
+let ultimoGrupoExplorado;
+
 // Menú de "Menú Cristal": ya no es una columna siempre visible al lado
 // del contenido -- se abre como una capa a pantalla completa (en
 // escritorio y en celular por igual) desde el botón de hamburguesa de
@@ -47,6 +61,7 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   const { t } = useLanguage();
   const { playTap } = useSound();
   const [grupoAbierto, setGrupoAbierto] = useState(() => {
+    if (ultimoGrupoExplorado !== undefined) return ultimoGrupoExplorado;
     const item = SECTIONS.find((i) => i.id === ruta.itemId);
     return item?.hijos ? item.id : null;
   });
@@ -132,9 +147,16 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   // es la prop de este mismo componente, la ruta activa DETRÁS del
   // menú (la que estaba antes de este clic) -- exactamente lo que hay
   // que recordar para volver aquí después.
+  //
+  // ultimoGrupoExplorado = undefined: cualquier navegación real
+  // descarta el "último grupo explorado a mano" (ver la variable de
+  // módulo, arriba) -- la próxima vez que se abra el menú debe
+  // reflejar la ruta a la que se acaba de llegar, no un grupo que se
+  // había quedado desplegado de una exploración anterior sin navegar.
   const alSeleccionar = () => {
     playTap();
     marcarProximaDesdeMenu({ ruta, scrollMenu: colRef.current?.scrollTop ?? 0 });
+    ultimoGrupoExplorado = undefined;
     onCerrar();
   };
 
@@ -190,7 +212,15 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                     aria-haspopup="true"
                     onClick={() => {
                       playTap();
-                      setGrupoAbierto((actual) => (actual === item.id ? null : item.id));
+                      setGrupoAbierto((actual) => {
+                        const siguiente = actual === item.id ? null : item.id;
+                        // Memoriza este toggle (incluido colapsar a
+                        // null) para que sobreviva un cierre/reapertura
+                        // del menú sin navegar -- ver la variable de
+                        // módulo ultimoGrupoExplorado, arriba.
+                        ultimoGrupoExplorado = siguiente;
+                        return siguiente;
+                      });
                     }}
                     // Pirotecnia es la única fila con hijos cuya
                     // Galería adentro tiene algo que de verdad vale la
