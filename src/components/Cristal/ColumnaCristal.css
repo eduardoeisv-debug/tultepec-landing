@@ -91,12 +91,17 @@
   text-decoration: none;
 }
 
+/* line-height: 1.2 (antes 1.05, muy ajustado) -- con el degradado de
+   .brand-mirror pintado vía background-clip:text (global.css), un
+   interlineado tan apretado dejaba muy poco alto de línea para los
+   rabitos (g, y) de "Digital", cortándolos por abajo. 1.2 es el
+   mínimo seguro para texto con descendentes, pedido explícito. */
 .cristal-col__logo h1 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 2.1rem;
-  line-height: 1.05;
+  line-height: 1.2;
   color: var(--color-gold);
   overflow-wrap: break-word;
 }

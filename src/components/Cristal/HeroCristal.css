@@ -27,12 +27,18 @@
   font-size: 0.95rem;
 }
 
+/* line-height: 1.2 (antes 1.05) -- mismo motivo que .cristal-col__logo
+   h1 (ColumnaCristal.css): la segunda línea usa .brand-mirror--static
+   (degradado vía background-clip:text) y un interlineado tan ajustado
+   corre el riesgo de cortar rabitos (g, y, p) si el texto alguna vez
+   los lleva -- hoy "Pirotecnia"/"Fireworks" no tienen, pero es el
+   mismo patrón de recorte, corregido igual por consistencia. */
 .cristal-hero__titulo {
   margin: 0.5rem 0 0;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(2.2rem, 5.5vw, 3.6rem);
-  line-height: 1.05;
+  line-height: 1.2;
   color: var(--color-paper);
 }
 
