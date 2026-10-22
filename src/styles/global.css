@@ -300,8 +300,7 @@ html {
 .btn--on-light:focus-visible,
 .share-memory-form--light :focus-visible,
 .privacy-modal :focus-visible,
-.comment-modal :focus-visible,
-.bienvenida-carta :focus-visible {
+.comment-modal :focus-visible {
   outline-color: var(--color-terracotta);
 }
 
