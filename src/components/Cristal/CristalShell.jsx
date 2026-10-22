@@ -10,6 +10,7 @@ import {
   consumirProximaDesdeMenu,
   marcarVueltaAlMenu,
   hayVueltaAlMenuPendiente,
+  recordarUltimaSubopcion,
 } from "../../hooks/useVolverASecciones.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import TopBarCristal from "./TopBarCristal.jsx";
@@ -317,6 +318,7 @@ export default function CristalShell() {
         titulo={t("cristal.privacidad.titulo")}
         Vista={PrivacidadContenido}
         titleRef={titleRef}
+        onVolverAlMenu={abrirMenu}
       />
     );
   } else if (!ruta.itemId) {
@@ -349,6 +351,7 @@ export default function CristalShell() {
         Vista={esResumenGrupo ? vistaGrupoResumen : REGISTRO[clave]}
         titleRef={titleRef}
         onOpenPrivacy={onOpenPrivacy}
+        onVolverAlMenu={abrirMenu}
       />
     ) : (
       <InicioCristal titleRef={titleRef} />
@@ -448,6 +451,20 @@ export default function CristalShell() {
   const itemIdAnteriorRef = useRef(null);
   useLayoutEffect(() => {
     document.title = tituloDocumento;
+    // Recuerda "grupo + última subopción elegida" en CADA cambio de
+    // ruta que caiga sobre una subopción real, venga del menú o no
+    // (una tarjeta, un enlace directo, atrás/adelante...) -- este
+    // efecto es el único punto que ve absolutamente todas las
+    // navegaciones, con o sin el menú de por medio. Entrar al resumen
+    // del grupo (ruta.hijoId null) no se guarda a propósito: no borra
+    // el recuerdo de cuál fue la última subopción elegida, que es
+    // justo lo que ColumnaCristal.jsx necesita para resaltarla ahí
+    // aunque la página visible ahora mismo sea ese resumen. Incluida
+    // la primera carga (fuera del if/else de abajo): un enlace
+    // compartido directo a una subopción también cuenta.
+    if (ruta.hijoId) {
+      recordarUltimaSubopcion(ruta.itemId, ruta.hijoId);
+    }
     if (esPrimerCambioRef.current) {
       esPrimerCambioRef.current = false;
     } else {

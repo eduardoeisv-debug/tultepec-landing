@@ -6,7 +6,7 @@ import useArrowNavigation from "../../hooks/useArrowNavigation.js";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import { useSound } from "../../hooks/useSound.jsx";
-import { marcarProximaDesdeMenu, consumirVueltaAlMenu } from "../../hooks/useVolverASecciones.js";
+import { marcarProximaDesdeMenu, consumirVueltaAlMenu, obtenerUltimaSubopcion } from "../../hooks/useVolverASecciones.js";
 import { preloadJuegos } from "../Panel/views/JuegosSeccion.jsx";
 import { preloadGaleriaThumbnails } from "../../hooks/useGaleriaImages.js";
 import BrandSparkles from "../shared/BrandSparkles.jsx";
@@ -356,10 +356,19 @@ function Flyout({ item, ruta, abierto, onElegir }) {
 
   if (!abierto) return null;
 
+  // Qué subopción resaltar: la última elegida DENTRO DE ESTE grupo
+  // (obtenerUltimaSubopcion, ver useVolverASecciones.js) si hay una
+  // guardada -- así sigue marcada aunque la página visible ahora
+  // mismo sea el resumen del grupo (ruta.hijoId null), por ejemplo
+  // tras "‹ Grupo". Si lo guardado es de OTRO grupo (o no hay nada
+  // guardado todavía), se usa la ruta activa tal cual, como siempre.
+  const ultima = obtenerUltimaSubopcion();
+  const hijoIdResaltado = ultima?.itemId === item.id ? ultima.hijoId : ruta.itemId === item.id ? ruta.hijoId : null;
+
   return (
     <ul className="cristal-col__flyout" onKeyDown={onKeyDown(0, () => {})}>
       {item.hijos.map((hijo, i) => {
-        const hijoActivo = ruta.itemId === item.id && ruta.hijoId === hijo.id;
+        const hijoActivo = hijoIdResaltado === hijo.id;
         return (
           <li key={hijo.id}>
             <a

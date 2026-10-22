@@ -73,3 +73,24 @@ export function consumirVueltaAlMenu() {
   pendienteMenu = null;
   return valor;
 }
+
+// ---- Última subopción visitada, por grupo ----
+// Para que el menú pueda resaltar "lo último que elegiste dentro de
+// este grupo" (ColumnaCristal.jsx) aunque la página visible en ese
+// momento sea el resumen del grupo (sin hijo en la ruta) -- un solo
+// par {itemId, hijoId} basta: lo único que importa es si coincide con
+// el grupo que el menú tiene desplegado en ese momento, nunca hace
+// falta comparar contra ningún otro. CristalShell.jsx lo actualiza en
+// su efecto de cambio de ruta (el único punto que ve TODAS las
+// navegaciones, vengan del menú o no) cada vez que la ruta cae sobre
+// una subopción real -- entrar al resumen del grupo (sin hijo) no lo
+// toca, para no perder el recuerdo de cuál fue la última elegida.
+let ultimaSubopcion = null;
+
+export function recordarUltimaSubopcion(itemId, hijoId) {
+  ultimaSubopcion = { itemId, hijoId };
+}
+
+export function obtenerUltimaSubopcion() {
+  return ultimaSubopcion;
+}

@@ -18,14 +18,30 @@ function esClicSimple(e) {
 // A dónde manda el botón/enlace de regreso de nivel superior (sin
 // eyebrowHref, ver más abajo): depende de cómo se entró a ESTA
 // sección (origen, prop que viene de CristalShell.jsx) -- "menu"
-// vuelve a la vista desde la que se abrió el menú y lo reabre ahí
-// (ColumnaCristal.jsx hace su propio scroll/resaltado al montar);
-// cualquier otro caso ("icons", o sin origen -- enlace directo,
-// recarga) es el comportamiento de siempre: la cuadrícula de Inicio.
-function volver(origen, seccionId) {
+// reabre el menú ENCIMA de la sección donde se está AHORA (no navega
+// a ningún lado); cualquier otro caso ("icons", o sin origen --
+// enlace directo, recarga) es el comportamiento de siempre: la
+// cuadrícula de Inicio.
+//
+// `onVolverAlMenu` (prop que llega desde CristalShell.jsx, ver más
+// abajo) abre el menú directamente -- antes se navegaba a
+// `origen.ruta` (la ruta que estaba activa cuando se entró a esta
+// sección DESDE EL MENÚ por primera vez) para que CristalShell.jsx
+// notara el cambio de ruta y reabriera el panel ahí; el problema es
+// que `origen.ruta` queda vieja en cuanto se navega DENTRO del mismo
+// grupo por otro camino que no sea el menú (p.ej. el enlace "‹
+// Grupo" hacia el resumen, ver eyebrowHref abajo) -- ese otro
+// movimiento no pasa por ColumnaCristal.jsx, así que origen.ruta
+// nunca se refresca, y "Volver" terminaba rebobinando la página
+// entera hasta la sección original, aunque hacía rato que ya no se
+// estaba ahí (confirmado con Playwright, ver el historial). Abrir el
+// menú en vez de navegar deja la vista/URL actuales intactas sin
+// importar qué tan vieja esté esa ruta guardada -- ya no hace falta
+// que esté al día para nada.
+function volver(origen, seccionId, onVolverAlMenu) {
   if (origen?.tipo === "menu") {
     marcarVueltaAlMenu({ scrollMenu: origen.scrollMenu, seccionId });
-    window.location.hash = rutaHash(origen.ruta.itemId, origen.ruta.hijoId);
+    onVolverAlMenu();
   } else {
     pedirVolverASecciones(seccionId);
     window.location.hash = "#/";
@@ -36,11 +52,11 @@ function volver(origen, seccionId) {
 // (vuelve al resumen del grupo, href normal, sin JS -- igual que
 // siempre, sin importar el origen) o el de nivel superior (ver
 // `volver`) en cualquier otro caso.
-function VolverLink({ href, label, origen, seccionId }) {
+function VolverLink({ href, label, origen, seccionId, onVolverAlMenu }) {
   const handleClick = (e) => {
     if (seccionId === undefined || !esClicSimple(e)) return;
     e.preventDefault();
-    volver(origen, seccionId);
+    volver(origen, seccionId, onVolverAlMenu);
   };
   return (
     <a className="cristal-sec__volver" href={href} onClick={handleClick}>
@@ -52,18 +68,22 @@ function VolverLink({ href, label, origen, seccionId }) {
 
 // Botón de abajo: mismo destino que el enlace de arriba cuando NO hay
 // subsección (ver `volver`) -- a diferencia de antes, ya NO siempre va
-// a Inicio: si la sección se abrió desde el menú, vuelve ahí (con el
-// panel reabierto) aunque se esté dentro de una subsección, en vez de
-// pasar primero por el resumen del grupo.
-function VolverBoton({ origen, seccionId }) {
+// a Inicio: si la sección se abrió desde el menú, reabre el panel ahí
+// mismo aunque se esté dentro de una subsección, en vez de pasar
+// primero por el resumen del grupo.
+function VolverBoton({ origen, seccionId, onVolverAlMenu }) {
   const { t } = useLanguage();
   const esDesdeMenu = origen?.tipo === "menu";
   const handleClick = (e) => {
     if (!esClicSimple(e)) return;
     e.preventDefault();
-    volver(origen, seccionId);
+    volver(origen, seccionId, onVolverAlMenu);
   };
-  const href = esDesdeMenu ? rutaHash(origen.ruta.itemId, origen.ruta.hijoId) : "#/";
+  // href de respaldo (clic modificado / sin JS): ya no apunta a
+  // origen.ruta (la misma ruta vieja que `volver` dejó de usar, ver
+  // arriba) -- el resumen de ESTA sección es el destino razonable que
+  // sí sigue siendo válido sin importar cuánto haya pasado.
+  const href = esDesdeMenu ? rutaHash(seccionId) : "#/";
   return (
     <a className="cristal-sec__volver-boton" href={href} onClick={handleClick}>
       {t(esDesdeMenu ? "cristal.volver.menu" : "cristal.volver.boton")}
@@ -90,7 +110,7 @@ function VolverBoton({ origen, seccionId }) {
 // incluso dentro de una subsección), y `origen` de dónde vino esa
 // navegación ("menu" | "icons" | null) -- juntos deciden texto y
 // destino del botón/enlace de regreso de nivel superior, ver `volver`.
-export default function Seccion({ eyebrow, eyebrowHref, seccionId, origen, titulo, Vista, titleRef, onOpenPrivacy }) {
+export default function Seccion({ eyebrow, eyebrowHref, seccionId, origen, titulo, Vista, titleRef, onOpenPrivacy, onVolverAlMenu }) {
   const { t } = useLanguage();
   const esDesdeMenu = !eyebrowHref && origen?.tipo === "menu";
   return (
@@ -99,10 +119,11 @@ export default function Seccion({ eyebrow, eyebrowHref, seccionId, origen, titul
         <VolverLink href={eyebrowHref} label={eyebrow} />
       ) : (
         <VolverLink
-          href={esDesdeMenu ? rutaHash(origen.ruta.itemId, origen.ruta.hijoId) : "#/"}
+          href={esDesdeMenu ? rutaHash(seccionId) : "#/"}
           label={t(esDesdeMenu ? "cristal.volver.menu" : "cristal.volver.secciones")}
           origen={origen}
           seccionId={seccionId}
+          onVolverAlMenu={onVolverAlMenu}
         />
       )}
       <span className="cristal-sec__pill">{eyebrow}</span>
@@ -118,7 +139,7 @@ export default function Seccion({ eyebrow, eyebrowHref, seccionId, origen, titul
         )}
       </Suspense>
 
-      <VolverBoton origen={origen} seccionId={seccionId} />
+      <VolverBoton origen={origen} seccionId={seccionId} onVolverAlMenu={onVolverAlMenu} />
 
       <CierreComun ctaClassName="cristal-sec__cta" reducido />
     </div>
