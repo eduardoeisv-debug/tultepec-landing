@@ -24,19 +24,54 @@ const preloadPrivacidad = () => import("../Panel/views/PrivacidadContenido.jsx")
 // módulo, no en cada render.
 const SECCIONES_MENU = SECTIONS.filter((s) => s.showInMenu && s.id !== "inicio");
 
-// Variable de módulo (no estado de React, mismo patrón que
-// useVolverASecciones.js): sobrevive a que CristalShell.jsx desmonte
+// Variables de módulo (no estado de React, mismo patrón que
+// useVolverASecciones.js): sobreviven a que CristalShell.jsx desmonte
 // y vuelva a montar este panel cada vez que se cierra/abre el menú.
 // Sin esto, tocar "Memorias" para explorar sus subopciones (sin llegar
 // a elegir ninguna) se veía bien AL MOMENTO -- pero cerrar el menú y
 // volver a abrirlo lo hacía recalcular `grupoAbierto` desde cero a
-// partir de la ruta activa (que nunca cambió, seguía en
-// "pirotecnia/historia"), mostrando Pirotecnia desplegada otra vez,
-// como si la exploración de Memorias nunca hubiera pasado. `undefined`
-// = sin preferencia explícita todavía (usa la ruta activa, como
-// siempre); cualquier otro valor (incluido `null`, grupo colapsado a
-// propósito) gana sobre la ruta hasta la próxima navegación real.
+// partir de la ruta activa, mostrando el grupo de esa ruta otra vez,
+// como si la exploración nunca hubiera pasado.
+//
+// `ultimoGrupoExplorado` por sí solo no bastaba: un primer intento lo
+// borraba a mano (ultimoGrupoExplorado = undefined) justo en
+// alSeleccionar, la única fila que SÍ navega -- pero cualquier otra
+// forma de cambiar de ruta (una tarjeta de Inicio, el botón "Volver",
+// atrás/adelante del navegador, un enlace suelto) nunca pasa por ahí,
+// así que la exploración vieja se quedaba pegada y el menú podía
+// reabrirse mostrando un grupo que ya no tenía nada que ver con la
+// sección activa -- confirmado con Playwright: explorar un grupo sin
+// elegir, cerrar, entrar a OTRA sección por una tarjeta de Inicio y
+// reabrir el menú mostraba el grupo viejo el 100% de las veces.
+//
+// La corrección no agrega un borrado por cada handler nuevo (bordes
+// fáciles de olvidar) -- en vez de eso, cada vez que se guarda una
+// exploración también se guarda el objeto `ruta` (la prop de este
+// componente) vigente en ese instante; el ÚNICO punto que decide si
+// esa exploración todavía vale es la propia lectura, al montar este
+// panel (ver el lazy init de grupoAbierto, abajo): solo se usa si el
+// `ruta` recibido ahora es EL MISMO objeto que cuando se guardó.
+//
+// Por REFERENCIA, no por valor (===, no comparar itemId/hijoId a
+// mano): useHashRoute.js crea un objeto `ruta` nuevo en CADA
+// navegación real, incluso si el destino final tiene el mismo
+// itemId/hijoId de antes -- un primer intento comparando por valor
+// fallaba justo en ese caso (ida y vuelta: explorar un grupo en
+// Inicio, entrar a otra sección por una tarjeta, volver a Inicio con
+// el botón "Volver" -- el valor de `ruta` al reabrir el menú es
+// IGUAL al de cuando se guardó la exploración, "Inicio" las dos
+// veces, aunque hubo una navegación real de por medio que debía
+// haberla invalidado). Comparar el objeto en sí, no sus campos,
+// detecta cualquier cambio de ruta sin importar cómo haya ocurrido ni
+// a dónde haya ido a parar, sin tener que enterarse de cada forma
+// posible de navegar.
+//
+// `undefined` = sin preferencia explícita todavía (usa la ruta activa,
+// como siempre); cualquier otro valor (incluido `null`, grupo
+// colapsado a propósito) gana sobre la ruta mientras el objeto `ruta`
+// guardado siga siendo el mismo que el activo.
 let ultimoGrupoExplorado;
+let rutaDeUltimoGrupoExplorado;
 
 // Menú de "Menú Cristal": ya no es una columna siempre visible al lado
 // del contenido -- se abre como una capa a pantalla completa (en
@@ -61,7 +96,9 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   const { t } = useLanguage();
   const { playTap } = useSound();
   const [grupoAbierto, setGrupoAbierto] = useState(() => {
-    if (ultimoGrupoExplorado !== undefined) return ultimoGrupoExplorado;
+    if (ultimoGrupoExplorado !== undefined && rutaDeUltimoGrupoExplorado === ruta) {
+      return ultimoGrupoExplorado;
+    }
     const item = SECTIONS.find((i) => i.id === ruta.itemId);
     return item?.hijos ? item.id : null;
   });
@@ -148,15 +185,15 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
   // menú (la que estaba antes de este clic) -- exactamente lo que hay
   // que recordar para volver aquí después.
   //
-  // ultimoGrupoExplorado = undefined: cualquier navegación real
-  // descarta el "último grupo explorado a mano" (ver la variable de
-  // módulo, arriba) -- la próxima vez que se abra el menú debe
-  // reflejar la ruta a la que se acaba de llegar, no un grupo que se
-  // había quedado desplegado de una exploración anterior sin navegar.
+  // Ya no hace falta borrar ultimoGrupoExplorado aquí a mano: en
+  // cuanto esta navegación cambie la ruta, la comparación del lazy
+  // init de arriba la va a encontrar vieja sola (ver el comentario
+  // grande junto a esa variable de módulo) -- elegir una opción es
+  // solo UNA de varias formas de cambiar de ruta, ya no un caso
+  // especial que este handler tenga que conocer.
   const alSeleccionar = () => {
     playTap();
     marcarProximaDesdeMenu({ ruta, scrollMenu: colRef.current?.scrollTop ?? 0 });
-    ultimoGrupoExplorado = undefined;
     onCerrar();
   };
 
@@ -215,10 +252,13 @@ export default function ColumnaCristal({ ruta, onCompartir, onCerrar }) {
                       setGrupoAbierto((actual) => {
                         const siguiente = actual === item.id ? null : item.id;
                         // Memoriza este toggle (incluido colapsar a
-                        // null) para que sobreviva un cierre/reapertura
-                        // del menú sin navegar -- ver la variable de
-                        // módulo ultimoGrupoExplorado, arriba.
+                        // null) junto con la ruta vigente AHORA mismo,
+                        // para que sobreviva un cierre/reapertura del
+                        // menú sin navegar pero se ignore solo en
+                        // cuanto la ruta cambie -- ver el comentario
+                        // grande junto a ultimoGrupoExplorado, arriba.
                         ultimoGrupoExplorado = siguiente;
+                        rutaDeUltimoGrupoExplorado = ruta;
                         return siguiente;
                       });
                     }}
