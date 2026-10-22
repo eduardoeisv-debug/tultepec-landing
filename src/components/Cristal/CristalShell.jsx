@@ -355,29 +355,50 @@ export default function CristalShell() {
     );
   }
 
-  // window.history.length (no popstate) distingue atrás/adelante del
-  // navegador de una navegación disparada por esta misma página (un
-  // <a href="#/..."> normal, o nuestro propio window.location.hash =
-  // "..." en los enlaces "Secciones"/"Volver a las secciones" de
-  // Seccion.jsx). Antes se usaba un listener de "popstate" bajo el
-  // supuesto de que un cambio de hash por script o clic en un enlace
-  // solo dispara "hashchange", nunca "popstate" -- FALSO en los
-  // navegadores actuales: un <a href="#/..."> normal SÍ dispara
-  // "popstate" además de "hashchange" (confirmado con un log directo
-  // en el propio listener, clic por clic). Eso dejaba
-  // esNavegacionHistorialRef.current en `true` después de CUALQUIER
-  // clic, no solo del botón atrás -- invisible casi siempre porque la
-  // rama de abajo que lo usa también exige que la sección de la que
-  // se sale tenga origen "menu", así que recién se notaba en el
-  // SEGUNDO salto por el menú (el primero nunca tiene ese origen
-  // todavía): la navegación sí cambiaba el hash, pero el menú se
-  // volvía a abrir encima un instante después, pisando visualmente el
-  // resultado -- se veía como si el clic no hubiera hecho nada.
-  // history.length SÍ distingue los dos casos de verdad: un clic
-  // normal (o un window.location.hash = "...") agrega una entrada
-  // nueva (length crece); atrás/adelante del navegador viaja entre
-  // entradas YA existentes (length se queda igual o baja).
-  const historyLengthRef = useRef(window.history.length);
+  // Índice propio en history.state (no popstate, no history.length)
+  // distingue atrás/adelante del navegador de una navegación disparada
+  // por esta misma página (un <a href="#/..."> normal, o nuestro
+  // propio window.location.hash = "..." en los enlaces "Secciones"/
+  // "Volver a las secciones" de Seccion.jsx).
+  //
+  // Se probaron dos heurísticas antes de esta, las dos con fallas
+  // reales (ver el historial):
+  // - popstate: un <a href="#/..."> normal SÍ lo dispara además de
+  //   hashchange en los navegadores actuales (confirmado con un log
+  //   directo en el listener) -- contradice el supuesto de que solo
+  //   el botón atrás lo hace.
+  // - window.history.length: un clic nuevo agrega una entrada
+  //   (length crece) y atrás/adelante viaja entre entradas ya
+  //   existentes (length se queda igual o baja) -- cierto, PERO el
+  //   historial de sesión tiene un tope (~50 entradas en Chrome/Edge):
+  //   al llegarle, el navegador empieza a descartar las más viejas en
+  //   vez de seguir creciendo, así que un clic normal en una sesión
+  //   larga también dejaría de crecer el length y volvería a
+  //   confundirse con "atrás".
+  //
+  // history.state SÍ aguanta eso: cada entrada nueva (clic normal o
+  // hash por script) nace SIN el índice que estampamos aquí abajo
+  // (null/undefined) hasta que este mismo efecto la estampa; una
+  // entrada ya visitada antes SIGUE llevando el índice que se le
+  // estampó esa vez, sin importar cuántas entradas nuevas se hayan
+  // creado o descartado desde entonces -- el navegador restaura ese
+  // mismo objeto de estado al volver a ella con atrás/adelante. No
+  // depende del tamaño del historial, solo de si ESTA entrada en
+  // particular ya tiene o no la marca propia.
+  const indiceNavRef = useRef(0);
+  useLayoutEffect(() => {
+    const estadoActual = window.history.state;
+    if (estadoActual && typeof estadoActual.indiceNav === "number") {
+      // Recarga de página (u otra causa) sobre una entrada que ya
+      // estaba estampada -- adopta su índice en vez de reiniciar a 0,
+      // para no desalinear la próxima comparación.
+      indiceNavRef.current = estadoActual.indiceNav;
+    } else {
+      window.history.replaceState({ ...estadoActual, indiceNav: 0 }, "", window.location.href);
+      indiceNavRef.current = 0;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Recuerda, MIENTRAS se está en Inicio, la posición de scroll más
   // reciente -- no retroactivamente al salir de Inicio: para cuando
@@ -432,13 +453,22 @@ export default function CristalShell() {
     } else {
       const idAnterior = itemIdAnteriorRef.current;
       const origenAlLlegar = origen; // el de la sección que se DEJA, antes de resolver el de la nueva
-      // Atrás/adelante del navegador viaja entre entradas YA
-      // existentes (length se queda igual o baja); un clic/hash nuevo
-      // agrega una entrada (length crece) -- ver el comentario grande
-      // junto a historyLengthRef, arriba.
-      const nuevoHistoryLength = window.history.length;
-      const esVueltaAtras = nuevoHistoryLength <= historyLengthRef.current;
-      historyLengthRef.current = nuevoHistoryLength;
+      // ¿Esta entrada ya tenía un índice propio estampado (de una
+      // visita anterior, restaurado por el navegador al volver a
+      // ella), distinto al que veníamos registrando? Entonces es un
+      // salto real entre entradas existentes (atrás/adelante). Si no
+      // (entrada nueva, sin marca, o casualmente el mismo índice que
+      // ya teníamos) la estampa con el siguiente índice -- ver el
+      // comentario grande junto a indiceNavRef, arriba.
+      const estadoActual = window.history.state;
+      const indiceEntrada = estadoActual && typeof estadoActual.indiceNav === "number" ? estadoActual.indiceNav : null;
+      const esVueltaAtras = indiceEntrada !== null && indiceEntrada !== indiceNavRef.current;
+      if (esVueltaAtras) {
+        indiceNavRef.current = indiceEntrada;
+      } else {
+        indiceNavRef.current += 1;
+        window.history.replaceState({ ...estadoActual, indiceNav: indiceNavRef.current }, "", window.location.href);
+      }
 
       // La hoja de "Una carta para ti" nunca sobrevive un cambio de
       // ruta -- es contenido de Inicio, no tendría sentido verla
