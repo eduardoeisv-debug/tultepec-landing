@@ -3,8 +3,7 @@ import { X } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
 import useFocusTrap from "../../hooks/useFocusTrap.js";
 import useScrollLock from "../../hooks/useScrollLock.js";
-import { SobreSolapa } from "./Bienvenida.jsx";
-import CartaContenido from "./CartaContenido.jsx";
+import CartaInfografia from "./CartaInfografia.jsx";
 import "./CartaSheet.css";
 
 const UMBRAL_DESLIZAR_PX = 70;
@@ -16,10 +15,14 @@ const TOLERANCIA_FINAL_PX = 2;
 
 // "Una carta para ti" en celular: ya no vive como tarjeta en Inicio
 // (ver Bienvenida.css/InicioCristal.css) -- se abre desde el botón
-// "Carta" de la barra inferior (BottomNav.jsx) como esta hoja, con el
-// mismo contenido (CartaContenido.jsx) y la misma solapa en V
-// (SobreSolapa, exportada de Bienvenida.jsx) que ya traía el acordeón
-// de escritorio.
+// "Carta" de la barra inferior (BottomNav.jsx) como esta hoja. Su
+// contenido (CartaInfografia.jsx) es el MISMO componente que usa el
+// acordeón de escritorio (Bienvenida.jsx) -- ver el comentario grande
+// al inicio de ese archivo. Ya no trae la solapa en V ni la asa de
+// arrastre visibles (rediseño al estilo de las secciones del sitio,
+// ver el historial) -- el sello circular de la llama (dentro de
+// CartaInfografia.jsx, montado sobre el borde superior) es ahora la
+// única pieza que corona la hoja.
 //
 // SIEMPRE montada (oculta por CSS en vez de desmontada condicionalmente,
 // como ya hace .bienvenida__acordeon en Bienvenida.jsx) -- es lo que
@@ -51,7 +54,7 @@ export default function CartaSheet({ abierta, onCerrar }) {
   }, [abierta, onCerrar]);
 
   // Al abrir: scroll del cuerpo a 0 y foco al encabezado (el título,
-  // tituloRef -- ver CartaContenido.jsx) -- las dos cosas juntas, SOLO
+  // tituloRef -- ver CartaInfografia.jsx) -- las dos cosas juntas, SOLO
   // al abrir, nunca al cerrar (si corrieran también al cerrar se
   // vería un salto del contenido durante la animación de salida, que
   // sigue viéndose un rato con la hoja ya "cerrada" en React).
@@ -85,9 +88,11 @@ export default function CartaSheet({ abierta, onCerrar }) {
     if (abierta) actualizarDesvanecido();
   }, [abierta]);
 
-  // Deslizar hacia abajo para cerrar -- solo desde la solapa/encabezado
-  // (no desde el contenido, para no competir con su scroll interno).
-  // Versión sencilla: un umbral al soltar, sin seguir el dedo en vivo.
+  // Deslizar hacia abajo para cerrar -- solo desde la franja superior
+  // (.carta-sheet__gesto, invisible, ver más abajo -- ya no hay
+  // solapa/asa visibles que sirvan de zona de arrastre), nunca desde
+  // el contenido, para no competir con su scroll interno. Versión
+  // sencilla: un umbral al soltar, sin seguir el dedo en vivo.
   const onTouchStart = (e) => {
     inicioDeslizarRef.current = e.touches[0]?.clientY ?? null;
   };
@@ -117,29 +122,15 @@ export default function CartaSheet({ abierta, onCerrar }) {
         // backdrop (que la cerraría de más).
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="carta-sheet__encabezado" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-          {/* Asa de arrastre: puramente decorativa (el gesto de
-              verdad lo maneja el touchstart/touchend de arriba, en
-              todo el encabezado) -- la señal visual de "esto se
-              desliza" que un bottom sheet trae siempre. */}
-          <span className="carta-sheet__asa" aria-hidden="true" />
-          {/* Borde a borde, sin recorte propio -- el botón de cerrar
-              ya NO vive encima/dentro de esta franja (ver la fila de
-              abajo), así que la solapa no necesita ceder ancho. */}
-          <SobreSolapa />
-          <div className="carta-sheet__fila-cerrar">
-            <button
-              type="button"
-              className="carta-sheet__cerrar"
-              onClick={onCerrar}
-              aria-label={t("common.cerrar")}
-            >
-              <X size={20} strokeWidth={2} />
-            </button>
-          </div>
-        </div>
+        {/* Franja invisible solo para el gesto de deslizar -- angosta y
+            centrada (no llega hasta la esquina del botón de cerrar, ver
+            CartaSheet.css) para no competir por los toques con él. */}
+        <div className="carta-sheet__gesto" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} aria-hidden="true" />
+        <button type="button" className="carta-sheet__cerrar" onClick={onCerrar} aria-label={t("common.cerrar")}>
+          <X size={18} strokeWidth={2} />
+        </button>
         <div className="carta-sheet__scroll" ref={scrollRef} onScroll={actualizarDesvanecido}>
-          <CartaContenido tituloId="carta-sheet-titulo" tituloRef={tituloRef} />
+          <CartaInfografia tituloId="carta-sheet-titulo" tituloRef={tituloRef} />
         </div>
         {/* Decorativo nada más: pointer-events:none + aria-hidden (ver
             CSS) -- solo indica que hay más texto debajo, no es un

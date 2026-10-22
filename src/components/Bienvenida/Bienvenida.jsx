@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "../../i18n/LanguageContext.jsx";
-import CartaContenido from "./CartaContenido.jsx";
+import CartaInfografia from "./CartaInfografia.jsx";
 import "./Bienvenida.css";
 
 // Solapa de sobre (línea dorada): reemplaza el borde en zigzag rosa
@@ -17,9 +17,9 @@ import "./Bienvenida.css";
 // Relleno dorado muy tenue (6%, opcional por encargo) para darle
 // volumen al triángulo, no solo una línea.
 //
-// Exportada (ya no local de este archivo): CartaSheet.jsx (la hoja
-// inferior de celular) también la usa como su propio encabezado, para
-// conservar el mismo lenguaje visual en los dos contextos.
+// Exportada (ya no local de este archivo): antes también decoraba la
+// hoja de celular (CartaSheet.jsx), pero ese rediseño le quitó la
+// solapa visible -- queda solo en la tarjeta CERRADA de abajo.
 export function SobreSolapa() {
   return (
     <svg className="bienvenida-carta__solapa" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
@@ -40,13 +40,17 @@ export function SobreSolapa() {
 // Solo en escritorio: en celular esta tarjeta ya no existe en Inicio
 // (display:none, ver Bienvenida.css) -- la carta se mudó a la barra
 // inferior fija (botón "Carta", BottomNav.jsx) y se abre como hoja
-// inferior (CartaSheet.jsx), que reutiliza CartaContenido igual que
-// este acordeón, así que el texto nunca se desincroniza entre los dos.
+// inferior (CartaSheet.jsx). Las dos muestran el MISMO componente de
+// contenido (CartaInfografia.jsx): un solo lugar con el texto/las
+// claves de traducción, dos contenedores distintos (hoja vs. este
+// acordeón) que lo visten distinto por CSS (ver los @media en
+// CartaInfografia.css), nunca duplicado.
 export default function Bienvenida({ className = "" }) {
   const { t } = useLanguage();
   const [abierta, setAbierta] = useState(false);
   const [resaltar, setResaltar] = useState(false);
   const seccionRef = useRef(null);
+  const botonRef = useRef(null);
   // Espejo de `abierta` legible dentro del observer sin tener que
   // reconstruirlo cada vez que cambia (su efecto solo se monta una vez).
   const abiertaRef = useRef(false);
@@ -56,6 +60,20 @@ export default function Bienvenida({ className = "" }) {
 
   useEffect(() => {
     abiertaRef.current = abierta;
+  }, [abierta]);
+
+  // Al abrir (nunca al cerrar, mismo motivo que el scrollTop=0 de
+  // CartaSheet.jsx: si corriera también al cerrar se vería un salto
+  // de scroll durante la animación de salida): sube la vista hasta el
+  // encabezado de la tarjeta -- sin scroll interno propio (el acordeón
+  // crece con grid-template-rows, no con un contenedor con overflow),
+  // así que "empieza arriba" significa que el botón que lo abre (el
+  // tope visual de toda la pieza) quede visible, no un scrollTop.
+  useEffect(() => {
+    if (!abierta || !botonRef.current) return;
+    const reduceMotion =
+      typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    botonRef.current.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
   }, [abierta]);
 
   useEffect(() => {
@@ -95,6 +113,7 @@ export default function Bienvenida({ className = "" }) {
     >
       <div className="container bienvenida__inner">
         <button
+          ref={botonRef}
           type="button"
           className={`bienvenida__nota${abierta ? " is-abierta" : ""}${resaltar ? " is-resaltada" : ""}`}
           onClick={() => {
@@ -130,12 +149,13 @@ export default function Bienvenida({ className = "" }) {
         <div className={`bienvenida__acordeon${abierta ? " is-abierta" : ""}`} id="bienvenida-contenido">
           <div className="bienvenida__acordeon-inner" inert={!abierta}>
             {/* .bienvenida__revelar (Bienvenida.css): la animación de
-                aparición al abrir vive aquí, no en CartaContenido/
-                .bienvenida-carta -- esas clases se comparten con
-                CartaSheet.jsx (la hoja de celular), que no tiene el
-                ancestro .bienvenida__acordeon.is-abierta que la dispara. */}
+                aparición al abrir vive aquí, no en CartaInfografia.css
+                -- ese componente se comparte con CartaSheet.jsx (la
+                hoja de celular), que no tiene este ancestro
+                .bienvenida__acordeon.is-abierta para dispararla (tiene
+                la suya propia, ligada a .carta-sheet.is-abierta). */}
             <div className="bienvenida__revelar">
-              <CartaContenido />
+              <CartaInfografia />
             </div>
           </div>
         </div>

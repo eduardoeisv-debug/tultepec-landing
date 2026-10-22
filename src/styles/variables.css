@@ -35,6 +35,21 @@
   --color-menu-row-bg: #171937;
   --color-menu-row-border: #2d3060;
 
+  /* Carta de bienvenida -- --carta-bg-top/--carta-bg-bottom: el azul
+     más claro que --color-night-700/800, pensado solo para esta
+     pieza. Ya NO lo usa el contenido abierto (CartaInfografia.jsx,
+     CartaSheet.css), que pasó a compartir el fondo plano de las
+     secciones del sitio, var(--color-night-900) -- se queda definido
+     aquí solo porque la tarjeta CERRADA (.bienvenida__nota,
+     Bienvenida.css) todavía lo usa y no se tocó en ese rediseño.
+     --carta-card/--carta-border: fondo/borde de las tarjetas de la
+     carta abierta, mismo patrón que .historia-timeline__card de
+     Pirotecnia (rgba blanco + borde dorado). */
+  --carta-bg-top: #2b3677;
+  --carta-bg-bottom: #1f2859;
+  --carta-card: rgba(255, 255, 255, 0.06);
+  --carta-border: rgba(242, 199, 92, 0.35);
+
   /* Semantic */
   --bg-page: var(--color-paper);
   --bg-night: var(--color-night-900);

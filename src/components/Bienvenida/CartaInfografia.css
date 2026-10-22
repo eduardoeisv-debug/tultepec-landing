@@ -1,0 +1,400 @@
+/* Contenido de la carta -- mismo lenguaje visual que las secciones del
+   sitio (Pirotecnia/Memorias: fondo plano var(--color-night-900), no
+   un degradado -- las secciones no usan uno equivalente al azul más
+   claro de antes, así que ese degradado se queda solo en la tarjeta
+   CERRADA, Bienvenida.css, que no se tocó) en vez de la infografía de
+   línea de tiempo que traía antes -- ver el historial. COMPARTIDO
+   entre la hoja de celular (CartaSheet.jsx) y el acordeón de
+   escritorio (Bienvenida.jsx): un solo componente, dos contenedores
+   que lo visten por ANCESTRO real (.carta-sheet / .bienvenida__acordeon),
+   no por ancho de viewport (los dos conviven siempre montados).
+   Tarjetas de lista: fondo/borde reutilizan --carta-card/--carta-border
+   (variables.css, mismo patrón rgba(255,255,255,.06)+borde dorado que
+   .historia-timeline__card/.hi-faq__item de Pirotecnia). Los 4 colores
+   de chip (morado/azul/gris/rosa oscuro) y el degradado del sello son
+   nuevos, solo para esta carta -- no hay tokens equivalentes en el
+   resto del sitio. hyphens/word-break/overflow-wrap normales en todo
+   el bloque: sin palabras sueltas ni cortes a medio word, pedido
+   explícito. */
+.carta-infografia {
+  position: relative;
+  color: #ede4d3;
+  background: var(--color-night-900);
+  /* Reserva espacio en el flujo del padre para el sello (más abajo,
+     position:absolute; top:-32px): así su mitad "de afuera" cae
+     exactamente en este margen en vez de quedar recortada por el
+     overflow del contenedor que scrollea (.carta-sheet__scroll) o del
+     que anima el alto del acordeón (.bienvenida__acordeon-inner) --
+     ninguno de los dos puede pasar a overflow:visible sin romper su
+     propio scroll/animación, así que el "espacio arriba" se resuelve
+     con este margen en vez de con overflow:visible en la hoja. */
+  margin-top: 32px;
+  padding: 50px 20px 32px;
+  hyphens: none;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+@container (min-width: 600px) {
+  .carta-infografia {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+/* MÓVIL: borde a borde dentro de la hoja -- el marco (borde dorado +
+   radio superior de 24px) ya lo da .carta-sheet (CartaSheet.css), no
+   hace falta repetirlo aquí encima. */
+.carta-sheet .carta-infografia {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  margin-bottom: -1.5rem;
+}
+
+/* ESCRITORIO: su propia tarjeta -- no hay "hoja" que le preste un
+   marco, así que lleva el suyo (borde dorado tenue arriba, radio
+   superior de 24px, pedido explícito). container-type: la tipografía
+   de abajo no necesita escalar por ahora (esta celda del Bento mide
+   ~260-320px reales, ver InicioCristal.css), pero deja la puerta
+   abierta si algún día tiene más ancho real. */
+.bienvenida__acordeon .carta-infografia {
+  container-type: inline-size;
+  border-top: 1px solid rgba(242, 199, 92, 0.25);
+  border-radius: 24px 24px 0 0;
+}
+
+/* Sello circular de la llama: mitad fuera/mitad dentro del borde
+   superior de la hoja, pedido explícito. z-index por encima del
+   contenido (sin necesitarlo en teoría, position ya lo pone encima,
+   pero explícito por las dudas con el stacking context de .carta-sheet). */
+.carta-infografia__sello {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fbe3a0, #f2c75c 60%, #b9852a);
+  box-shadow: 0 4px 14px rgba(242, 199, 92, 0.35);
+}
+
+.carta-infografia__selloIcono {
+  width: 28px;
+  height: 32px;
+  color: #3a2608;
+}
+
+.carta-infografia__encabezado {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.carta-infografia__eyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+  white-space: nowrap;
+}
+
+.carta-infografia__titulo {
+  margin-top: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  /* cqw (no vw): en escritorio el contenedor real (la celda del Bento,
+     ver el comentario grande de arriba) mide ~260-320px, muy por
+     debajo del viewport completo -- con vw el tamaño se topaba en el
+     máximo (34px) igual que en una pantalla angosta de verdad, y esa
+     letra no entraba en dos líneas dentro de un contenedor tan
+     angosto (confirmado: 3 líneas a 1440px). cqw responde al ancho
+     real del contenedor en los dos contextos (los dos ya tienen
+     container-type: inline-size, ver CartaInfografia.css arriba y
+     CartaSheet.css), no al del viewport. */
+  font-size: clamp(26px, 8cqw, 34px);
+  line-height: 1.1;
+  color: #fbf1e0;
+  text-wrap: balance;
+}
+
+.carta-infografia__subtitulo {
+  margin-top: 0.75rem;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #c9d2f0;
+  text-wrap: balance;
+}
+
+/* Separador con destello dorado centrado -- reutilizado arriba (tras
+   el subtítulo) y en el cierre. */
+.carta-infografia__separador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 220px;
+  margin: 24px auto 0;
+  color: var(--color-gold-light);
+}
+
+.carta-infografia__separador::before,
+.carta-infografia__separador::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+}
+
+.carta-infografia__separador::before {
+  background: linear-gradient(90deg, transparent, var(--color-gold-light));
+}
+
+.carta-infografia__separador::after {
+  background: linear-gradient(90deg, var(--color-gold-light), transparent);
+}
+
+.carta-infografia__cuerpo {
+  margin-top: 24px;
+}
+
+/* Ancho máximo de lectura (60-65 caracteres por línea) + bloque
+   centrado en anchos grandes, pedido explícito -- hoy esta celda
+   nunca llega a medir 600px reales (ver el comentario de arriba), así
+   que esto queda listo para cuando sí los tenga. */
+@container (min-width: 600px) {
+  .carta-infografia__cuerpo {
+    max-width: 62ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.carta-infografia__parrafo {
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1.6;
+  color: #ede4d3;
+  text-wrap: pretty;
+}
+
+.carta-infografia__resaltado {
+  font-weight: 600;
+  color: var(--color-gold-light);
+}
+
+.carta-infografia__cita {
+  margin: 24px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--color-gold-light);
+  font-family: var(--font-display);
+  font-weight: 600;
+  /* cqw, mismo motivo que .carta-infografia__titulo arriba. */
+  font-size: clamp(19px, 5.4cqw, 22px);
+  line-height: 1.3;
+  color: #fbf1e0;
+  text-wrap: balance;
+}
+
+.carta-infografia__seccionLista {
+  margin-top: 28px;
+}
+
+/* Mismo filete de 22px que el resto de las etiquetas .eyebrow del
+   sitio (global.css), reconstruido aquí porque esta etiqueta usa su
+   propio tamaño/color (11px, dorado) en vez de los de .eyebrow. */
+.carta-infografia__etiquetaFilete {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 12px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
+.carta-infografia__etiquetaFilete::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+}
+
+.carta-infografia__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Fondo/borde reutilizan --carta-card/--carta-border (variables.css),
+   mismo patrón que las tarjetas de Pirotecnia (.historia-timeline__card). */
+.carta-infografia__fila {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--carta-card);
+  border: 1px solid var(--carta-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.35;
+  color: #ede4d3;
+}
+
+.carta-infografia__filaIcono {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fbf1e0;
+}
+
+.carta-infografia__filaIcono--morado {
+  background: rgba(155, 107, 219, 0.28); /* var(--color-violet) en rgba */
+}
+
+.carta-infografia__filaIcono--azul {
+  background: rgba(74, 127, 201, 0.28);
+}
+
+.carta-infografia__filaIcono--gris {
+  background: rgba(123, 134, 166, 0.28);
+}
+
+.carta-infografia__filaIcono--rosaOscuro {
+  background: rgba(194, 49, 107, 0.28);
+}
+
+/* "Si eres de aquí" / "Si nos visitas..." -- dos tarjetas apiladas,
+   mismo estilo de tarjeta que la lista de arriba (pedido explícito:
+   "el mismo estilo de tarjeta" para las dos, sin una versión
+   destacada en dorado como en el diseño anterior). */
+.carta-infografia__tarjeta {
+  margin-top: 28px;
+  background: var(--carta-card);
+  border: 1px solid var(--carta-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.carta-infografia__tarjeta--espaciada {
+  margin-top: 12px;
+}
+
+.carta-infografia__etiqueta {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gold-light);
+}
+
+.carta-infografia__tarjetaTexto {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1.4;
+  color: #ede4d3;
+  text-wrap: balance;
+}
+
+.carta-infografia__tarjetaCabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.carta-infografia__tarjetaIcono {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(242, 199, 92, 0.18);
+  color: var(--color-gold-light);
+}
+
+.carta-infografia__tarjetaTextoGrande {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 21px;
+  line-height: 1.3;
+  color: #fbf1e0;
+  text-wrap: balance;
+}
+
+/* Cierre: separador + firma + logo con reflejo (104px, LogoEaReflejo
+   compartido) + "Hecho por EA". */
+.carta-infografia__cierre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.carta-infografia__despedida {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--color-gold-light);
+}
+
+.carta-infografia__nombres {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: #fbf1e0;
+  text-wrap: balance;
+}
+
+/* display:inline-block en cada mitad del nombre (no text-wrap:balance
+   a secas): así el único punto de quiebre posible es el espacio ENTRE
+   los dos spans -- "Eduardo Israel" y "Sánchez Villaseñor" nunca se
+   parten a media palabra en pantallas angostas. */
+.carta-infografia__nombreParte {
+  display: inline-block;
+}
+
+.carta-infografia__logo {
+  margin-top: 24px;
+}
+
+.carta-infografia__hechoPor {
+  margin-top: 14px;
+  font-size: 16px;
+  color: rgba(237, 228, 211, 0.75);
+}
+
+.carta-infografia__hechoPor strong {
+  font-family: var(--font-logo);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-gold-light);
+}
+
+.carta-infografia__lema {
+  margin-top: 3px;
+  font-size: 13px;
+  color: rgba(237, 228, 211, 0.6);
+}

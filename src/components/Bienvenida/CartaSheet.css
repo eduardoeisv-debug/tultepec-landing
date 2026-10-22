@@ -47,6 +47,12 @@
      real de la pantalla, con 100vh de respaldo para navegadores sin
      dvh. */
   .carta-sheet {
+    /* Contenedor de consulta para los @container de CartaInfografia.css
+       (padding 24px desde 600px, ancho de lectura centrado) -- sin esto
+       esas reglas nunca se activan aquí (ningún ancestro de .carta-sheet
+       establece containment), aunque la hoja sí puede llegar a medir
+       600-768px real en tablets/celulares grandes. */
+    container-type: inline-size;
     position: fixed;
     left: 0;
     right: 0;
@@ -56,13 +62,14 @@
     flex-direction: column;
     max-height: calc(82vh - var(--bottomnav-total-height, 0px));
     max-height: calc(82dvh - var(--bottomnav-total-height, 0px));
-    background: var(--color-night-700);
+    /* var(--color-night-900) (no --carta-bg-top): mismo fondo plano que
+       CartaInfografia.css (el rediseño al estilo de las secciones del
+       sitio, ver el historial) -- sin esto se notaba una costura de
+       color entre este contenedor y el contenido de adentro. */
+    background: var(--color-night-900);
     color: var(--color-paper);
     border: 1px solid rgba(243, 205, 122, 0.3);
     border-bottom: none;
-    /* 24px, pedido explícito (antes 16px, igual que la tarjeta de
-       escritorio) -- la solapa (más abajo) recorta su propia esquina
-       a este MISMO valor, para que las dos curvas coincidan. */
     border-radius: 24px 24px 0 0;
     /* Sombra hacia ARRIBA (offset-y negativo) -- la hoja sube desde
        abajo, su sombra cae del lado contrario de donde viene la luz
@@ -88,63 +95,39 @@
     }
   }
 
-  /* flex-shrink:0: encabezado fijo arriba, lo que scrollea es solo
-     .carta-sheet__scroll (más abajo). */
-  .carta-sheet__encabezado {
-    flex-shrink: 0;
-    padding-top: 14px;
+  /* Franja invisible solo para el gesto de deslizar -- ya no hay
+     asa/solapa visibles (rediseño al estilo de las secciones, ver el
+     historial), pero el gesto de cerrar deslizando se conserva: esta
+     franja centrada (200px, no todo el ancho) capta el touchstart/
+     touchend de CartaSheet.jsx sin llegar hasta la esquina del botón
+     de cerrar, así los dos conviven sin robarse los toques. Encima
+     del sello/encabezado (z-index 1) pero sin pointer-events propios
+     más que el touch -- aria-hidden, no es un control real. */
+  .carta-sheet__gesto {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: 200px;
+    height: 70px;
   }
 
-  /* Asa de arrastre: 40x4px, dorado al 40% -- la señal de "esto se
-     desliza" de cualquier bottom sheet. Centrada, por ENCIMA de la
-     solapa (que empieza debajo, ver .bienvenida-carta__solapa). */
-  .carta-sheet__asa {
-    display: block;
-    width: 40px;
-    height: 4px;
-    margin: 0 auto 10px;
-    border-radius: 999px;
-    background: rgba(243, 205, 122, 0.4);
-  }
-
-  /* Borde a borde, sin recorte propio: la base (Bienvenida.css) le
-     pone su propio border-radius+overflow:hidden a este SVG (pensado
-     para la tarjeta de escritorio, 16px) -- aquí se cancela porque
-     esta hoja ya tiene su PROPIO overflow:hidden + border-radius:24px
-     (ver .carta-sheet arriba), que es el que de verdad importa: con
-     el recorte puesto en el propio SVG (24px de radio sobre un
-     elemento de solo 24px de alto) la curva se habría comido TODA su
-     altura en el borde (radio = alto), cortando la línea antes de
-     llegar a las esquinas de verdad -- dejándolo sin recorte propio y
-     apoyándose en el de la hoja entera (mucho más alta que su propio
-     radio) sí sigue el contorno redondeado real, sin clip de más. */
-  .carta-sheet__encabezado .bienvenida-carta__solapa {
-    border-radius: 0;
-    overflow: visible;
-  }
-
-  /* Fila propia para el botón de cerrar, DEBAJO de la solapa (no dentro
-     de ella) -- "de borde a borde" (arriba) y "sin encimarse con la
-     solapa" (aquí) solo conviven separando los dos verticalmente: la
-     línea en V llega más baja justo en los bordes izquierdo/derecho
-     (donde arranca desde la esquina), así que angostar la solapa para
-     esquivar el botón ya no es una opción. padding-top ~10px = el
-     margen de 8-12px pedido entre la solapa y el botón. */
-  .carta-sheet__fila-cerrar {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px 12px 4px;
-  }
-
-  /* 44px de área táctil, pedido explícito. Mismo lenguaje que el botón
-     de cerrar del menú lateral (.cristal-col__cerrar, ColumnaCristal.css). */
+  /* Botón de cerrar: 40px (pedido explícito), arriba a la derecha a
+     16px del borde, dentro de la hoja -- ya no vive en una fila
+     propia (sin encabezado que lo contenga, ver arriba), position:
+     absolute directo sobre .carta-sheet. */
   .carta-sheet__cerrar {
     all: unset;
     box-sizing: border-box;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
     flex-shrink: 0;
     cursor: pointer;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border: 1.5px solid var(--cristal-line, rgba(255, 255, 255, 0.18));
     border-radius: 50%;
     display: grid;
@@ -196,7 +179,7 @@
     right: 0;
     bottom: 0;
     height: 32px;
-    background: linear-gradient(to bottom, rgba(35, 40, 82, 0), var(--color-night-700));
+    background: linear-gradient(to bottom, rgba(16, 19, 43, 0), var(--color-night-900));
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.2s var(--ease-out);
