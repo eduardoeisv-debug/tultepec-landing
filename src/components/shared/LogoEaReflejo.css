@@ -1,0 +1,86 @@
+/* Icono + reflejo, parametrizado por --logo-ea-size (ver LogoEaReflejo.jsx).
+   Los números de abajo son exactamente los que ya traía el pie
+   (Footer.css, extraído de ahí): a 72px dan 73.5px/56px/96px/36px/54px,
+   idénticos a los originales -- a cualquier otro tamaño escalan en la
+   misma proporción. */
+.logo-ea-reflejo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: var(--logo-ea-size);
+  flex-shrink: 0;
+}
+
+.logo-ea-reflejo__icono {
+  display: block;
+  width: var(--logo-ea-size);
+  height: var(--logo-ea-size);
+}
+
+/* Línea de cristal entre el ícono y el reflejo. */
+.logo-ea-reflejo::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--logo-ea-size) + 1.5px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 208, 255, 0.6), transparent);
+  pointer-events: none;
+}
+
+/* Resplandor cian muy tenue debajo del ícono. */
+.logo-ea-reflejo::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(var(--logo-ea-size) * 0.7778);
+  width: calc(var(--logo-ea-size) * 1.3333);
+  height: calc(var(--logo-ea-size) * 0.5);
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(56, 208, 255, 0.15), transparent 72%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Reflejo: el mismo ícono invertido verticalmente, recortado a 75% de
+   su alto para que se vea "cortado" como un reflejo de verdad. Ver
+   Footer.css (de donde se extrajo) para el porqué de background-image
+   en vez de <img>. */
+.logo-ea-reflejo__reflejo {
+  display: block;
+  width: var(--logo-ea-size);
+  height: calc(var(--logo-ea-size) * 0.75);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.logo-ea-reflejo__reflejo::before {
+  content: "";
+  display: block;
+  width: var(--logo-ea-size);
+  height: var(--logo-ea-size);
+  background-image: url("/images/brand/logo-ea.svg");
+  background-size: var(--logo-ea-size) var(--logo-ea-size);
+  background-repeat: no-repeat;
+  transform: scaleY(-1);
+  opacity: 0.5;
+  filter: blur(1.4px);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 70%);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent 70%);
+}
+
+@supports not ((mask-image: linear-gradient(#000, transparent)) or (-webkit-mask-image: linear-gradient(#000, transparent))) {
+  .logo-ea-reflejo__reflejo {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .logo-ea-reflejo__reflejo,
+  .logo-ea-reflejo::before,
+  .logo-ea-reflejo::after {
+    display: none;
+  }
+}
